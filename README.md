@@ -1,2 +1,0 @@
-# GL
-Projet GL
