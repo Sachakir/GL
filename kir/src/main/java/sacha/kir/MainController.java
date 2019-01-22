@@ -105,7 +105,8 @@ public class MainController {
     @RequestMapping("/addUser")
     public String addUser(Model model)
     {      
-        UtilisateurService.killBill();
+        //UtilisateurService.killBill();
+    	System.out.println(UtilisateurService.findbyname("Saad"));
         return "loginPage";
     }
  

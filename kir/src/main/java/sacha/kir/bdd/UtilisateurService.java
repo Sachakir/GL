@@ -42,9 +42,9 @@ public class UtilisateurService implements InterfaceUtilisateurService
 
 	}
 	
-/*	@Override
+	@Override
 	public String findbyname(String name) {
-		return repository.findAllActiveUsers().getNom();
-	}*/
+		return repository.find(name).get(0).getNom();
+	}
 
 }
