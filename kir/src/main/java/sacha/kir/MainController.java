@@ -2,16 +2,25 @@ package sacha.kir;
 
 import java.security.Principal;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import sacha.kir.bdd.InterfaceUtilisateurService;
+import sacha.kir.bdd.Utilisateur;
+
+import java.util.List;
  
 @Controller
 public class MainController {
  
+	@Autowired
+    InterfaceUtilisateurService UtilisateurService;
+	
     @RequestMapping(value = { "/", "/welcome" }, method = RequestMethod.GET)
     public String welcomePage(Model model) {
         model.addAttribute("title", "Welcome");
@@ -78,6 +87,26 @@ public class MainController {
         }
  
         return "403Page";
+    }
+    
+    @RequestMapping("/showCities")
+    public String findCities(Model model) {
+        
+        List<Utilisateur> cities = (List<Utilisateur>) UtilisateurService.findAll();
+        for (int i = 0;i<cities.size();i++)
+        {
+        	System.out.println(cities.get(i));
+        }
+        model.addAttribute("cities", cities);
+        
+        return "showCities";
+    }
+    
+    @RequestMapping("/addUser")
+    public String addUser(Model model)
+    {      
+        UtilisateurService.killBill();
+        return "loginPage";
     }
  
 }

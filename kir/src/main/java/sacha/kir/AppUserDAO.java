@@ -25,6 +25,7 @@ public class AppUserDAO extends JdbcDaoSupport {
         AppUserMapper mapper = new AppUserMapper();
         try {
             AppUser userInfo = this.getJdbcTemplate().queryForObject(sql, params, mapper);
+            
             return userInfo;
         } catch (EmptyResultDataAccessException e) {
             return null;
