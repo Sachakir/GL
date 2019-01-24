@@ -10,8 +10,22 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import sacha.kir.bdd.InterfaceUtilisateurService;
-import sacha.kir.bdd.Utilisateur;
+import sacha.kir.bdd.conges.Conges;
+import sacha.kir.bdd.conges.InterfaceCongesService;
+import sacha.kir.bdd.justificatif.InterfaceJustificatifService;
+import sacha.kir.bdd.justificatif.Justificatif;
+import sacha.kir.bdd.membresmission.InterfaceMembresMissionService;
+import sacha.kir.bdd.membresmission.MembresMission;
+import sacha.kir.bdd.mission.InterfaceMissionService;
+import sacha.kir.bdd.mission.Mission;
+import sacha.kir.bdd.missionnote.InterfaceMissionsNoteService;
+import sacha.kir.bdd.missionnote.MissionsNote;
+import sacha.kir.bdd.note.InterfaceNoteService;
+import sacha.kir.bdd.note.Note;
+import sacha.kir.bdd.remboursement.InterfaceRemboursementService;
+import sacha.kir.bdd.remboursement.Remboursement;
+import sacha.kir.bdd.utilisateur.InterfaceUtilisateurService;
+import sacha.kir.bdd.utilisateur.Utilisateur;
 
 import java.util.List;
  
@@ -19,7 +33,21 @@ import java.util.List;
 public class MainController {
  
 	@Autowired
+    InterfaceCongesService CongesService;
+	@Autowired
     InterfaceUtilisateurService UtilisateurService;
+    @Autowired
+    InterfaceMissionService MissionService;
+    @Autowired
+    InterfaceMembresMissionService MembresMissionService;
+    @Autowired
+    InterfaceJustificatifService JustificatifService;
+    @Autowired
+    InterfaceRemboursementService RemboursementService;
+    @Autowired
+    InterfaceNoteService NoteService;
+    @Autowired
+    InterfaceMissionsNoteService MissionsNoteService;
 	
     @RequestMapping(value = { "/", "/welcome" }, method = RequestMethod.GET)
     public String welcomePage(Model model) {
@@ -89,6 +117,7 @@ public class MainController {
         return "403Page";
     }
     
+    
     @RequestMapping("/showCities")
     public String findCities(Model model) {
         
@@ -99,14 +128,106 @@ public class MainController {
         }
         model.addAttribute("cities", cities);
         
-        return "showCities";
+        return "loginPage";
     }
     
     @RequestMapping("/addUser")
     public String addUser(Model model)
     {      
         //UtilisateurService.killBill();
-    	System.out.println(UtilisateurService.findbyname("Saad"));
+    	System.out.println(UtilisateurService.findbyname("Test"));
+        return "loginPage";
+    }
+   
+    
+    @RequestMapping("/addConges")
+    public String addConges(Model model)
+    {
+    	CongesService.addConges();
+
+    	List<Conges> cs = CongesService.findAll();
+    	for (int i =0;i < cs.size();i++)
+    	{
+    		System.out.println(cs.get(i).toString());
+    	}
+        return "loginPage";
+    }
+    
+    @RequestMapping("/addMission")
+    public String addMission(Model model)
+    {
+    	MissionService.addMission();
+
+    	List<Mission> cs = MissionService.findAll();
+    	for (int i =0;i < cs.size();i++)
+    	{
+    		System.out.println(cs.get(i).toString());
+    	}
+        return "loginPage";
+    }
+    
+    @RequestMapping("/addMembresMission")
+    public String addMembresMission(Model model)
+    {
+    	MembresMissionService.addMembresMission();
+
+    	List<MembresMission> cs = MembresMissionService.findAll();
+    	for (int i =0;i < cs.size();i++)
+    	{
+    		System.out.println(cs.get(i).toString());
+    	}
+        return "loginPage";
+    }
+    
+    @RequestMapping("/addJustificatif")
+    public String addJustificatif(Model model)
+    {
+    	JustificatifService.addJustificatif();
+
+    	List<Justificatif> cs = JustificatifService.findAll();
+    	for (int i = 0;i < cs.size();i++)
+    	{
+    		System.out.println(cs.get(i).toString());
+    	}
+        return "loginPage";
+    }
+    
+    @RequestMapping("/addRemboursement")
+    public String addRemboursement(Model model)
+    {
+    	RemboursementService.addRemboursement();
+
+    	List<Remboursement> cs = RemboursementService.findAll();
+    	for (int i = 0;i < cs.size();i++)
+    	{
+    		System.out.println(cs.get(i).toString());
+    	}
+        return "loginPage";
+    }
+    
+    @RequestMapping("/addNote")
+    public String addNote(Model model)
+    {
+    	NoteService.addNote();
+
+    	List<Note> cs = NoteService.findAll();
+    	for (int i = 0;i < cs.size();i++)
+    	{
+    		System.out.println(cs.get(i).toString());
+    	}
+        return "loginPage";
+    }
+    
+    @RequestMapping("/addMissionsNote")
+    public String addMissionsNote(Model model)
+    {
+    	MissionsNoteService.addNote();
+
+    	List<MissionsNote> cs = MissionsNoteService.findAll();
+    	for (int i = 0;i < cs.size();i++)
+    	{
+    		System.out.println(cs.get(i).toString());
+    	}
         return "loginPage";
     }
  
