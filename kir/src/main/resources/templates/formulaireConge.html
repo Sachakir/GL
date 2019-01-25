@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+   <head>
+      <title>Login</title>
+   </head>
+   <body>
+      <!-- Include _menu.html -->
+      <th:block th:include="/_menu"></th:block>
+       
+      <h1>Demande de cong&eacute;s</h1>
+     
+      <h3>Entrez votre demande :</h3>
+      <form name="f" action="/j_spring_security_check" method="POST">
+         <table>
+            <tbody><tr>
+               <td>User:</td>
+               <td><input type="text" name="username"></td>
+            </tr>
+            <tr>
+               <td>date_debut:</td>
+               <td><input type="text" name="date_debut"></td>
+            </tr>
+            <tr>
+               <td>date_fin:</td>
+               <td><input type="text" name="date_fin"></td>
+            </tr>
+            <tr>
+               <td><input name="submit" type="submit" value="submit"></td>
+            </tr>
+         </tbody></table>
+      </form>
+       
+   </body>
+   
+</html>
