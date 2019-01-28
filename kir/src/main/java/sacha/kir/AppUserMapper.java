@@ -8,7 +8,7 @@ import org.springframework.jdbc.core.RowMapper;
 public class AppUserMapper implements RowMapper<AppUser> {
  
     public static final String BASE_SQL //
-            = "Select u.User_Id, u.User_Name, u.Encryted_Password From APP_USER u ";
+            = "Select u.User_Id, u.User_Name, u.Encryted_Password From app_user u ";
  
     @Override
     public AppUser mapRow(ResultSet rs, int rowNum) throws SQLException {
