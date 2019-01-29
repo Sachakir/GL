@@ -9,12 +9,4 @@ public class EncrytedPasswordUtils {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         return encoder.encode(password);
     }
- 
-    public static void main(String[] args) {
-        String password = "123";
-        String encrytedPassword = encryptePassword(password);
- 
-        System.out.println("Encryted Password: " + encrytedPassword);
-    }
- 
 }
