@@ -4,5 +4,6 @@ import java.util.List;
 
 public interface InterfaceUserRoleService {
 	public List<UserRole> findAll();
-	public void addUserRole();
+	public void addUserRole(UserRole r);
+	public int getMaxId();
 }

@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface InterfaceAppUserService {
 	public List<AppUser> findAll();
-	public void addAppUser();
+	public void addAppUser(AppUser a);
 }

@@ -18,14 +18,7 @@ public class AppUserService implements InterfaceAppUserService {
 	}
 
 	@Override
-	public void addAppUser() {
-		AppUser a = new AppUser();
-		EncrytedPasswordUtils ep = new EncrytedPasswordUtils();
-		
-		a.setEncrypted_password(ep.encryptePassword("toto"));
-		a.setUser_id((long) 4);
-		a.setUser_name("Arthur");
-		
+	public void addAppUser(AppUser a) {
 		repository.save(a);
 	}
 

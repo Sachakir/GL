@@ -5,19 +5,27 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "users")
 public class Utilisateur {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    //@GeneratedValue(strategy = GenerationType.AUTO)
+    @NotNull
     private Long UID;
-
+    @NotNull
+    @Size(min=1, max=42)
     private String Nom;
+    //@NotNull
     private String Prenom;
+    //@NotNull
     private String Numerotel;
+    //@NotNull
     private String datenaissance;
+    //@NotNull
     private long Jourscongesrestants;
     
     public Utilisateur() {}

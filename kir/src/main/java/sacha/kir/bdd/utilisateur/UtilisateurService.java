@@ -18,28 +18,9 @@ public class UtilisateurService implements InterfaceUtilisateurService
 	}
 
 	@Override
-	public void killBill()
+	public void addUser(Utilisateur u)
 	{
-		Utilisateur n = new Utilisateur();
-		n.setDateNaissance("1996-12-31");
-		n.setJoursCongesRestants(42);
-		n.setNom("Saad");
-		n.setNumeroTel("06");
-		n.setPrenom("Saad");
-		
-		repository.save(n);
-		
-		Utilisateur n2 = new Utilisateur();
-		n2.setDateNaissance("1996-12-31");
-		n2.setJoursCongesRestants(42);
-		n2.setNom("Saad");
-		n2.setNumeroTel("06");
-		n2.setPrenom("Saad2");
-		
-		
-		
-		repository.save(n2);
-
+		repository.save(u);
 	}
 	
 	@Override
@@ -48,4 +29,14 @@ public class UtilisateurService implements InterfaceUtilisateurService
 		return repository.find(name).get(0).getPrenom();
 	}
 
+	@Override
+	public Utilisateur findPrenomNom(String nom, String Prenom) {
+		return repository.trouverParPrenomNom(nom, Prenom);
+	}
+	
+	@Override
+	public int getMaxId()
+	{
+		return repository.getMaxId();
+	}
 }

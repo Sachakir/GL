@@ -1,21 +1,53 @@
 <html>
     <body>
-        <form action="#" th:action="@{/adminAdd}" th:object="${personForm}" method="post">
+        <form action="#" th:action="@{/adminAdd}" th:object="${userForm}" method="post">
             <table>
                 <tr>
-                    <td>Name:</td>
-                    <td><input type="text" th:field="*{name}" /></td>
-                    <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</td>
+                    <td>Nom:</td>
+                    <td><input type="text" th:field="*{nom}" /></td>
+                    
+                    <td th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}">erreur nom</td>
+                    
+                </tr>
+                
+                <tr>
+                    <td>Prenom:</td>
+                    <td><input type="text" th:field="*{prenom}" /></td>
+                    <td th:if="${#fields.hasErrors('prenom')}" th:errors="*{prenom}">erreur prenom</td>
+                </tr>
+                
+                <tr>
+                    <td>NumeroTel:</td>
+                    <td><input type="text" th:field="*{numTel}" /></td>
+                    <td th:if="${#fields.hasErrors('numTel')}" th:errors="*{numTel}">erreur numeroTel</td>
+                </tr>
+                
+                <tr>
+                    <td>DateNaissance:</td>
+                    <td><input type="text" th:field="*{dateNaissance}" /></td>
+                    <td th:if="${#fields.hasErrors('dateNaissance')}" th:errors="*{dateNaissance}">erreur dateNaissance</td>
                 </tr>
                 <tr>
-                    <td>Age:</td>
-                    <td><input type="text" th:field="*{age}" /></td>
-                    <td th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age Error</td>
+                    <td>JoursCongesRest:</td>
+                    <td><input type="text" th:field="*{joursCongesRest}" /></td>
+                    <td th:if="${#fields.hasErrors('joursCongesRest')}" th:errors="*{joursCongesRest}">erreur joursConges</td>
+                </tr>
+                <tr>
+                    <td>Mdp:</td>
+                    <td><input type="text" th:field="*{mdp}" /></td>
+                    <td th:if="${#fields.hasErrors('mdp')}" th:errors="*{mdp}">erreur mdp</td>
+                </tr>
+                <tr>
+                    <td>Role:</td>
+                    <td><input type="text" th:field="*{role}" /></td>
+                    <td th:if="${#fields.hasErrors('role')}" th:errors="*{role}">erreur role</td>
                 </tr>
                 <tr>
                     <td><button type="submit">Submit</button></td>
                 </tr>
             </table>
         </form>
+        
+        <div th:if="${userExists != null}" th:utext="${userExists}"></div>
     </body>
 </html>

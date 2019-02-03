@@ -18,13 +18,13 @@ public class UserRoleService implements InterfaceUserRoleService{
 	}
 
 	@Override
-	public void addUserRole() {
-		UserRole u = new UserRole();
-		u.setId((long) 5);
-		u.setRole_id((long) 4);
-		u.setUser_id((long) 2);
-		
-		repository.save(u);
+	public void addUserRole(UserRole r) {
+		repository.save(r);
+	}
+
+	@Override
+	public int getMaxId() {
+		return repository.getMaxId();
 	}
 
 }

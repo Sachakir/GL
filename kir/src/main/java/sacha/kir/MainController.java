@@ -34,6 +34,7 @@ import sacha.kir.bdd.userrole.InterfaceUserRoleService;
 import sacha.kir.bdd.userrole.UserRole;
 import sacha.kir.bdd.utilisateur.InterfaceUtilisateurService;
 import sacha.kir.bdd.utilisateur.Utilisateur;
+import sacha.kir.form.UserForm;
 
 import java.util.List;
 
@@ -150,7 +151,6 @@ public class MainController {
     @RequestMapping("/addUser")
     public String addUser(Model model)
     {      
-        //UtilisateurService.killBill();
     	System.out.println(UtilisateurService.findbyname("Test"));
         return "loginPage";
     }
@@ -248,26 +248,68 @@ public class MainController {
     }
     
     @GetMapping("/adminAdd")
-    public String showForm(PersonForm personForm) {
+    public String showForm(UserForm userForm) {
         return "form";
     }
 
     @PostMapping("/adminAdd")
-    public String checkPersonInfo(@Valid PersonForm personForm, BindingResult bindingResult) {
+    public String checkPersonInfo(@Valid UserForm userForm, BindingResult bindingResult,Model model) {
 
         if (bindingResult.hasErrors()) {
             return "form";
         }
-        int a = personForm.getAge();
-        System.out.println(a + " " + personForm.getName());
+        
+        System.out.println(userForm.getDateNaissance());
+        System.out.println(userForm.getJoursCongesRest());
+        System.out.println(userForm.getMdp());
+        System.out.println(userForm.getNom());
+        System.out.println(userForm.getNumTel());
+        System.out.println(userForm.getPrenom());
+        System.out.println(userForm.getRole());
+        
+        Utilisateur u = UtilisateurService.findPrenomNom(userForm.getNom(),userForm.getPrenom());
+        if (u != null)//Utilisateur avec ce nom et prenom existe deja
+        {
+        	model.addAttribute("userExists", "Cet utilisateur existe deja");
+        	return "form";
+        }
+        //Sinon on met le user dans la bd.
+        Utilisateur user = new Utilisateur();
+        user.setDateNaissance(userForm.getDateNaissance());
+        user.setJoursCongesRestants(userForm.getJoursCongesRest());
+        user.setNom(userForm.getNom());
+        user.setNumeroTel(userForm.getNumTel());
+        user.setPrenom(userForm.getPrenom());
+        
+        int maxId = UtilisateurService.getMaxId();//On recupere ID le plus haut de la table.
+        user.setUID((long) (maxId + 1));        
+        UtilisateurService.addUser(user);
+        
+        sacha.kir.bdd.appuser.AppUser appUser = new sacha.kir.bdd.appuser.AppUser();
+        appUser.setUser_id((long) (maxId + 1));
+		EncrytedPasswordUtils ep = new EncrytedPasswordUtils();
+		appUser.setEncrypted_password(ep.encryptePassword(userForm.getMdp()));
+		appUser.setUser_name(userForm.getPrenom() + "." + userForm.getNom());
+		
+		AppUserService.addAppUser(appUser);
+        
+        UserRole userRole = new UserRole();
+        userRole.setUser_id((long) (maxId + 1));
+        userRole.setRole_id((long) 1);//Admin par defaut TODO a changer
+        userRole.setId((long) UserRoleService.getMaxId() + 1);
 
+        UserRoleService.addUserRole(userRole);
+        
+        
+
+        
         return "results";
     }
     
     @RequestMapping("/addAppUser")
     public String addAppUser(Model model)
     {
-    	AppUserService.addAppUser();
+    	//AppUserService.addAppUser();
 
     	List<sacha.kir.bdd.appuser.AppUser> cs = AppUserService.findAll();
     	for (int i =0;i < cs.size();i++)
@@ -293,7 +335,7 @@ public class MainController {
     @RequestMapping("/addUserRole")
     public String addUserRole(Model model)
     {
-    	UserRoleService.addUserRole();
+    	//UserRoleService.addUserRole();
 
     	List<UserRole> cs = UserRoleService.findAll();
     	for (int i =0;i < cs.size();i++)
