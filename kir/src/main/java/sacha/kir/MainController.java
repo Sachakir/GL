@@ -70,7 +70,7 @@ public class MainController {
     public String welcomePage(Model model) {
         model.addAttribute("title", "Welcome");
         model.addAttribute("message", "This is welcome page!");
-        return "welcomePage";
+        return "Login";
     }
  
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
@@ -295,7 +295,7 @@ public class MainController {
         
         UserRole userRole = new UserRole();
         userRole.setUser_id((long) (maxId + 1));
-        userRole.setRole_id((long) 1);//Admin par defaut TODO a changer
+        userRole.setRole_id((long) 2);//Admin par defaut TODO a changer
         userRole.setId((long) UserRoleService.getMaxId() + 1);
 
         UserRoleService.addUserRole(userRole);
@@ -343,5 +343,11 @@ public class MainController {
     		System.out.println(cs.get(i).toString());
     	}
         return "loginPage";
+    }
+    
+    @RequestMapping("/Accueil")
+    public String accueil(Model model)
+    {
+        return "welcomePage-Thibaut";
     }
 }
