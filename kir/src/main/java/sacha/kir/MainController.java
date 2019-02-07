@@ -393,20 +393,18 @@ public class MainController {
     
     @GetMapping("/roleChanged")
     public String roleChanged(UserForm userForm,Model model) {
+    	if (userForm.getRole().contains("NoChanges"))
+    	{
+    		model.addAttribute("change", "non change");
+    	}
     	AppRole ar = AppRoleService.findByRole(userForm.getRole());
     	System.out.println(ar.getRole_id());
     	System.out.println("userForm.getUid() " + userForm.getUid() + userForm.getRole());
     	UserRoleService.updateRole(/*TODO recuper id du user30*/userForm.getUid(), ar.getRole_id());
     	System.out.println("APRES updateRole");
-
-    	if (userForm.getRole().contains("NoChanges"))
-    	{
-    		model.addAttribute("change", "non change");
-    	}
-    	else
-    	{
-    		model.addAttribute("change", "change");
-    	}
+    	
+    	model.addAttribute("change", "change");
+    	
         return "roleChanged";
     }
 }
