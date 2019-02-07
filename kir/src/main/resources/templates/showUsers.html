@@ -1,0 +1,19 @@
+<table>
+	<thead>
+		<tr>
+			<th>Nom</th>
+			<th>Prenom</th>
+			<th>ID</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr th:if="${listUsers.empty}">
+			<td colspan="2">No users !</td>
+		</tr>
+		<tr th:each="user : ${listUsers}">		
+			<td><a th:href="@{'/showUserDetails/'+${user.UID}}"><span th:text="${user.Nom}"> Nom </span></a></td>	
+			<td><span th:text="${user.Prenom}"> Prenom </span></td>
+			<td><span th:text="${user.UID}"> UID </span></td>				
+		</tr>
+	</tbody>
+</table>

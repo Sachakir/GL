@@ -19,4 +19,7 @@ public interface UtilisateurRepository extends CrudRepository<Utilisateur, Long>
 	
 	@Query("SELECT MAX(UID) FROM Utilisateur")
 	public int getMaxId();
+	
+	@Query("SELECT p FROM Utilisateur p WHERE p.UID = :id")
+	public Utilisateur findById(@Param("id") long id);
 }	

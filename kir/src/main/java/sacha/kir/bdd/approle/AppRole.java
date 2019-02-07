@@ -14,7 +14,6 @@ public class AppRole {
 	@Id
 	@Column(name="ROLE_ID")
 	@NotNull
-	@Min(18)
 	private Long role_id;
 	@NotNull
 	@Size(min=2, max=30)

@@ -1,6 +1,9 @@
 package sacha.kir.bdd.utilisateur;
 
 import java.util.List;
+
+import javax.validation.ReportAsSingleViolation;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,5 +41,10 @@ public class UtilisateurService implements InterfaceUtilisateurService
 	public int getMaxId()
 	{
 		return repository.getMaxId();
+	}
+
+	@Override
+	public Utilisateur findById(long id) {
+		return repository.findById(id);
 	}
 }

@@ -27,4 +27,9 @@ public class UserRoleService implements InterfaceUserRoleService{
 		return repository.getMaxId();
 	}
 
+	@Override
+	public UserRole findById(long id) {
+		return repository.findById(id);
+	}
+
 }

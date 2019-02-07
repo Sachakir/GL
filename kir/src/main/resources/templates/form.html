@@ -37,11 +37,28 @@
                     <td><input type="text" th:field="*{mdp}" /></td>
                     <td th:if="${#fields.hasErrors('mdp')}" th:errors="*{mdp}">erreur mdp</td>
                 </tr>
+                <!--
                 <tr>
                     <td>Role:</td>
                     <td><input type="text" th:field="*{role}" /></td>
                     <td th:if="${#fields.hasErrors('role')}" th:errors="*{role}">erreur role</td>
                 </tr>
+                -->
+                 <tr>
+                <td>Select Country:</td>
+                <td>
+                    <select th:field="*{role}">
+                        <option value=""> -- </option>
+                        <option value="Admin">Admin</option>
+                        <option value="UserInfo">UserInfo</option>
+                        <option value="ChefInfo">ChefInfo</option>
+                        <option value="UserFinance">UserFinance</option>
+                        <option value="ChefFinance ">ChefFinance</option>
+                  </select>
+ 
+                </td>
+            </tr>
+                
                 <tr>
                     <td><button type="submit">Submit</button></td>
                 </tr>

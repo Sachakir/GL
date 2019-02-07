@@ -1,0 +1,48 @@
+	<thead>
+	</thead>
+	<tbody>
+	<form action="#" th:action="@{/roleChanged}" th:object="${userForm}">
+		<table>
+  <tr>
+    <td>Nom</td>
+    <td><span th:text="${user.nom}"> Nom </span></td>
+  </tr>
+  <tr>
+    <td>Prenom</td>
+    <td><span th:text="${user.prenom}"> Prenom </span></td>
+
+  </tr>
+  <tr>
+    <td>numTel</td>
+    <td><span th:text="${user.numTel}"> numTel </span></td>
+  </tr>
+  <tr>
+    <td>dateNaissance</td>
+    <td><span th:text="${user.dateNaissance}"> dateNaissance </span></td>
+  </tr>
+  <tr>
+    <td>joursCongesRest</td>
+    <td><span th:text="${user.joursCongesRest}"> joursCongesRest </span></td>
+  </tr>
+  <tr>
+    <td>role</td>
+    
+    <td><span th:text="${user.role}"> joursCongesRest </span></td>
+    <td>changer pour :</td>
+    <td>
+    	<select th:field="${user.role}">
+       		<option value="NoChanges"> -- </option>
+           	<option value="Admin">Admin</option>
+           	<option value="UserInfo">UserInfo</option>
+   	 		<option value="ChefInfo">ChefInfo</option>
+   <option value="UserFinance">UserFinance</option>
+  			<option value="ChefFinance ">ChefFinance</option>
+   		</select>
+    </td>
+  </tr> 
+	<tr>
+  		<td><button type="submit">Ok</button></td>
+	</tr>
+</table>
+</form>
+	</tbody>

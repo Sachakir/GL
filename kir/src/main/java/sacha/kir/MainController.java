@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -159,14 +160,14 @@ public class MainController {
     @RequestMapping("/addConges")
     public String addConges(Model model)
     {
-    	CongesService.addConges();
+    	//CongesService.addConges();
 
     	List<Conges> cs = CongesService.findAll();
     	for (int i =0;i < cs.size();i++)
     	{
     		System.out.println(cs.get(i).toString());
     	}
-        return "loginPage";
+        return "addCongesPage";
     }
     
     @RequestMapping("/addMission")
@@ -254,7 +255,7 @@ public class MainController {
 
     @PostMapping("/adminAdd")
     public String checkPersonInfo(@Valid UserForm userForm, BindingResult bindingResult,Model model) {
-
+    	
         if (bindingResult.hasErrors()) {
             return "form";
         }
@@ -299,10 +300,7 @@ public class MainController {
         userRole.setId((long) UserRoleService.getMaxId() + 1);
 
         UserRoleService.addUserRole(userRole);
-        
-        
 
-        
         return "results";
     }
     
@@ -349,5 +347,55 @@ public class MainController {
     public String accueil(Model model)
     {
         return "welcomePage-Thibaut";
+    }
+    
+    @RequestMapping("/adminShow")
+    public String adminShow(Model model)
+    {
+    	List<Utilisateur> cs = UtilisateurService.findAll();
+    	for (int i =0;i < cs.size();i++)
+    	{
+    		System.out.println(cs.get(i).toString());
+    	}
+    	model.addAttribute("listUsers", cs);
+        return "showUsers";
+    }
+    
+    @RequestMapping(path="/showUserDetails/{id}")
+    public String getMessage(@PathVariable("id") long id,Model model,UserForm userForm) 
+    {
+        System.out.println("ID : " + id);
+        
+        Utilisateur u = UtilisateurService.findById(id);
+        UserRole ur = UserRoleService.findById(id);
+        long roleId = ur.getRole_id();
+        AppRole ar = AppRoleService.findById(roleId);
+        
+        userForm.setDateNaissance(u.getDateNaissance());
+        userForm.setJoursCongesRest((int) u.getJoursCongesRestants());
+        userForm.setNom(u.getNom());
+        userForm.setNumTel(u.getNumeroTel());
+        userForm.setPrenom(u.getPrenom());
+        userForm.setRole(ar.getRole_name());
+  
+        model.addAttribute("user", userForm);
+        return "showUserDetails";
+    }
+    
+    @GetMapping("/roleChanged")
+    public String roleChanged(UserForm userForm,Model model) {
+    	System.out.println("NEW ROLE : " + userForm.getRole());
+    	AppRole ar = AppRoleService.findByRole(userForm.getRole());
+    	Utilisateur u = UtilisateurService.findPrenomNom(userForm.getNom(), userForm.getPrenom());
+    	
+    	if (userForm.getRole().contains("NoChanges"))
+    	{
+    		model.addAttribute("change", "non change");
+    	}
+    	else
+    	{
+    		model.addAttribute("change", "change");
+    	}
+        return "roleChanged";
     }
 }

@@ -19,10 +19,20 @@ public class AppRoleService implements InterfaceAppRoleService{
 	@Override
 	public void addAppRole() {
 		AppRole a = new AppRole();
-		a.setRole_id((long) 4);
-		a.setRole_name("ChefFinances");
+		a.setRole_id((long) 5);
+		a.setRole_name("Admin");
 		
 		repository.save(a);
+	}
+
+	@Override
+	public AppRole findById(long id) {
+		return repository.findById(id);
+	}
+
+	@Override
+	public AppRole findByRole(String role) {
+		return repository.findByRole(role);
 	}
 
 }

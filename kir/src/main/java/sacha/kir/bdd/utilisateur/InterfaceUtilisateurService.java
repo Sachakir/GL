@@ -8,4 +8,5 @@ public interface InterfaceUtilisateurService
 	public String findbyname(String name);
 	public Utilisateur findPrenomNom(String nom,String Prenom);
 	public int getMaxId();
+	public Utilisateur findById(long id);
 }
