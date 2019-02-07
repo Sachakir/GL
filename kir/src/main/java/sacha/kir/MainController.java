@@ -396,11 +396,12 @@ public class MainController {
     	if (userForm.getRole().contains("NoChanges"))
     	{
     		model.addAttribute("change", "non change");
+    		return "roleChanged";
     	}
     	AppRole ar = AppRoleService.findByRole(userForm.getRole());
     	System.out.println(ar.getRole_id());
     	System.out.println("userForm.getUid() " + userForm.getUid() + userForm.getRole());
-    	UserRoleService.updateRole(/*TODO recuper id du user30*/userForm.getUid(), ar.getRole_id());
+    	UserRoleService.updateRole(userForm.getUid(), ar.getRole_id());
     	System.out.println("APRES updateRole");
     	
     	model.addAttribute("change", "change");
