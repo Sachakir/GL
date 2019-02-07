@@ -32,4 +32,8 @@ public class UserRoleService implements InterfaceUserRoleService{
 		return repository.findById(id);
 	}
 
+	@Override
+	public void updateRole(long id, long newroleid) {
+		repository.updateRole(id, newroleid);
+	}
 }

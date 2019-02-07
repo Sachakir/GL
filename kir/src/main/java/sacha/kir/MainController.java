@@ -385,17 +385,20 @@ public class MainController {
         userForm.setNumTel(u.getNumeroTel());
         userForm.setPrenom(u.getPrenom());
         userForm.setRole(ar.getRole_name());
-  
+  		userForm.setUid(id);
+
         model.addAttribute("user", userForm);
         return "showUserDetails";
     }
     
     @GetMapping("/roleChanged")
     public String roleChanged(UserForm userForm,Model model) {
-    	System.out.println("NEW ROLE : " + userForm.getRole());
     	AppRole ar = AppRoleService.findByRole(userForm.getRole());
-    	Utilisateur u = UtilisateurService.findPrenomNom(userForm.getNom(), userForm.getPrenom());
-    	
+    	System.out.println(ar.getRole_id());
+    	System.out.println("userForm.getUid() " + userForm.getUid() + userForm.getRole());
+    	UserRoleService.updateRole(/*TODO recuper id du user30*/userForm.getUid(), ar.getRole_id());
+    	System.out.println("APRES updateRole");
+
     	if (userForm.getRole().contains("NoChanges"))
     	{
     		model.addAttribute("change", "non change");

@@ -7,4 +7,5 @@ public interface InterfaceUserRoleService {
 	public void addUserRole(UserRole r);
 	public int getMaxId();
 	public UserRole findById(long id);
+	public void updateRole(long id, long newroleid);
 }

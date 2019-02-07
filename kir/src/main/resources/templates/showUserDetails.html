@@ -1,8 +1,8 @@
-	<thead>
-	</thead>
-	<tbody>
-	<form action="#" th:action="@{/roleChanged}" th:object="${userForm}">
-		<table>
+  <thead>
+  </thead>
+  <tbody>
+  <form action="#" th:action="@{/roleChanged}" th:object="${userForm}">
+    <table>
   <tr>
     <td>Nom</td>
     <td><span th:text="${user.nom}"> Nom </span></td>
@@ -30,19 +30,20 @@
     <td><span th:text="${user.role}"> joursCongesRest </span></td>
     <td>changer pour :</td>
     <td>
-    	<select th:field="${user.role}">
-       		<option value="NoChanges"> -- </option>
-           	<option value="Admin">Admin</option>
-           	<option value="UserInfo">UserInfo</option>
-   	 		<option value="ChefInfo">ChefInfo</option>
+      <select th:field="${user.role}">
+          <option value="NoChanges"> -- </option>
+            <option value="Admin">Admin</option>
+            <option value="UserInfo">UserInfo</option>
+        <option value="ChefInfo">ChefInfo</option>
    <option value="UserFinance">UserFinance</option>
-  			<option value="ChefFinance ">ChefFinance</option>
-   		</select>
+        <option value="ChefFinance ">ChefFinance</option>
+      </select>
     </td>
-  </tr> 
-	<tr>
-  		<td><button type="submit">Ok</button></td>
-	</tr>
+    <input type="hidden" th:field="${user.uid}" />
+  <tr>
+      <td><button type="submit">Ok</button></td>
+  </tr>
 </table>
 </form>
-	</tbody>
+<div th:if="${user.uid != null}" th:utext="${user.uid}"></div>
+  </tbody>
