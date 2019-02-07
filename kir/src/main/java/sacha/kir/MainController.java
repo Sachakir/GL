@@ -1,6 +1,9 @@
 package sacha.kir;
 
 import java.security.Principal;
+import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -35,11 +38,8 @@ import sacha.kir.bdd.userrole.InterfaceUserRoleService;
 import sacha.kir.bdd.userrole.UserRole;
 import sacha.kir.bdd.utilisateur.InterfaceUtilisateurService;
 import sacha.kir.bdd.utilisateur.Utilisateur;
+import sacha.kir.form.CongeForm;
 import sacha.kir.form.UserForm;
-
-import java.util.List;
-
-import javax.validation.Valid;
  
 @Controller
 public class MainController {
@@ -154,20 +154,6 @@ public class MainController {
     {      
     	System.out.println(UtilisateurService.findbyname("Test"));
         return "loginPage";
-    }
-   
-    
-    @RequestMapping("/addConges")
-    public String addConges(Model model)
-    {
-    	//CongesService.addConges();
-
-    	List<Conges> cs = CongesService.findAll();
-    	for (int i =0;i < cs.size();i++)
-    	{
-    		System.out.println(cs.get(i).toString());
-    	}
-        return "addCongesPage";
     }
     
     @RequestMapping("/addMission")
@@ -302,6 +288,28 @@ public class MainController {
         UserRoleService.addUserRole(userRole);
 
         return "results";
+    }
+    
+    @GetMapping("/addConges")
+    public String addConges(CongeForm congeForm) {
+
+    	List<Conges> cs = CongesService.findAll();
+    	for (int i =0; i<cs.size(); i++)
+    	{
+    		System.out.println(cs.get(i).toString());
+    	}
+        return "addCongesPage";
+    }
+    
+    @PostMapping("/addConges")
+    public String submitConges(@Valid CongeForm congeForm, BindingResult bindingResult, Model model) {
+    	//CongesService.addConges();
+    	
+    	System.out.println(congeForm.getUsername());
+        System.out.println(congeForm.getDateDebut());
+        System.out.println(congeForm.getDateFin());
+    	
+    	return "login";
     }
     
     @RequestMapping("/addAppUser")
