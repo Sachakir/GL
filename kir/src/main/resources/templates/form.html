@@ -1,74 +1,186 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<title>Formulaire de création d'utilisateur</title>
-	</head>
-    <body>
-        <form action="#" th:action="@{/adminAdd}" th:object="${userForm}" method="post">
-            <table>
-                <tr>
-                    <td>Nom:</td>
-                    <td><input type="text" th:field="*{nom}" /></td>
-                    
-                    <td th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}">erreur nom</td>
-                    
-                </tr>
-                
-                <tr>
-                    <td>Prenom:</td>
-                    <td><input type="text" th:field="*{prenom}" /></td>
-                    <td th:if="${#fields.hasErrors('prenom')}" th:errors="*{prenom}">erreur prenom</td>
-                </tr>
-                
-                <tr>
-                    <td>NumeroTel:</td>
-                    <td><input type="text" th:field="*{numTel}" /></td>
-                    <td th:if="${#fields.hasErrors('numTel')}" th:errors="*{numTel}">erreur numeroTel</td>
-                </tr>
-                
-                <tr>
-                    <td>DateNaissance:</td>
-                    <td><input type="text" th:field="*{dateNaissance}" /></td>
-                    <td th:if="${#fields.hasErrors('dateNaissance')}" th:errors="*{dateNaissance}">erreur dateNaissance</td>
-                </tr>
-                <tr>
-                    <td>JoursCongesRest:</td>
-                    <td><input type="text" th:field="*{joursCongesRest}" /></td>
-                    <td th:if="${#fields.hasErrors('joursCongesRest')}" th:errors="*{joursCongesRest}">erreur joursConges</td>
-                </tr>
-                <tr>
-                    <td>Mdp:</td>
-                    <td><input type="text" th:field="*{mdp}" /></td>
-                    <td th:if="${#fields.hasErrors('mdp')}" th:errors="*{mdp}">erreur mdp</td>
-                </tr>
-                <!--
-                <tr>
-                    <td>Role:</td>
-                    <td><input type="text" th:field="*{role}" /></td>
-                    <td th:if="${#fields.hasErrors('role')}" th:errors="*{role}">erreur role</td>
-                </tr>
-                -->
-                 <tr>
-                <td>Choix du role:</td>
-                <td>
-                    <select th:field="*{role}">
-                        <option value=""> -- </option>
-                        <option value="Admin">Admin</option>
-                        <option value="UserInfo">UserInfo</option>
-                        <option value="ChefInfo">ChefInfo</option>
-                        <option value="UserFinances">UserFinance</option>
-                        <option value="ChefFinances">ChefFinance</option>
-                  </select>
- 
-                </td>
-            </tr>
-                
-                <tr>
-                    <td><button type="submit">Submit</button></td>
-                </tr>
-            </table>
-        </form>
-        
-        <div th:if="${userExists != null}" th:utext="${userExists}"></div>
-    </body>
+<head>
+  <title th:utext="${title}"></title>
+  <meta charset="utf-8">
+  <link href="assets/css/bootstrap.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css" />    
+</head>
+
+<body>
+  <div class="container">
+    <nav class="navbar navbar-default" role="navigation">   
+      <div class="navbar-header">   
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand">PoPS1819</a>
+  </div>
+  <div class="collapse navbar-collapse">
+    <ul class="nav navbar-nav">
+      <li> <a href="/Accueil"> <span class="glyphicon glyphicon-home"></span> Accueil</a> </li>
+      <li class="dropdown"> 
+        <a data-toggle="dropdown" href="#"> <span class="glyphicon glyphicon-calendar"></span> Demandes de congés <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li><a href="#">Mes demandes de congés</a></li>
+          <li><a href="#">Demandes reçues <span class="label label-warning label-pill">5</span></a></li>
+      </ul>
+  </li> 
+  <li class="dropdown"> 
+    <a data-toggle="dropdown" href="#"> <span class="glyphicon glyphicon-credit-card"></span> Notes de frais <b class="caret"></b></a>
+    <ul class="dropdown-menu">
+      <li><a href="#">Mes notes de frais</a></li>
+      <li><a href="#">Demandes reçues <span class="label label-warning label-pill">4</span></a></li>
+  </ul>
+</li> 
+</ul>
+<ul class="nav navbar-nav navbar-right">
+  <li id="notification_li">
+    <a href="#" id="notificationLink"><span class="glyphicon glyphicon-bell"></span> Notifications <span id="notification_count" class="label label-danger label-pill">9</span></a>
+    <div id="notificationContainer">
+      <div id="notificationTitle">Notifications</div>
+      <div id="notificationsBody" class="notifications">
+        <div class="list-group pre-scrollable">
+          <a href="#" id="notificationLink1" class="list-group-item">
+            Demande de remboursement
+            <span class="badge">12 Janvier 2019</span>
+        </a>
+        <a href="https://www.google.fr/" class="list-group-item">
+            Demande de congés - 10 jour(s)
+            <span class="badge">12 Janvier 2019</span>
+        </a>
+        <a href="#" class="list-group-item">
+            Demande de congés - 10 jour(s)
+            <span class="badge">12 Janvier 2019</span>
+        </a>
+        <a href="#" class="list-group-item">
+            Demande de congés - 10 jour(s)
+            <span class="badge">12 Janvier 2019</span>
+        </a>
+        <a href="#" class="list-group-item">
+            Demande de congés - 10 jour(s)
+            <span class="badge">12 Janvier 2019</span>
+        </a>
+        <a href="#" class="list-group-item">
+            Demande de congés - 10 jour(s)
+            <span class="badge">12 Janvier 2019</span>
+        </a>
+        <a href="#" class="list-group-item">
+            Demande de congés - 10 jour(s)
+            <span class="badge">12 Janvier 2019</span>
+        </a>
+        <a href="#" class="list-group-item">
+            Demande de congés - 10 jour(s)
+            <span class="badge">12 Janvier 2019</span>
+        </a>
+        <a href="#" class="list-group-item">
+            Demande de congés - 10 jour(s)
+            <span class="badge">12 Janvier 2019</span>
+        </a>
+        <a href="#" class="list-group-item">
+            Demande de congés - 14 jour(s)
+            <span class="badge">12 Janvier 2019</span>
+        </a>
+    </div></div>
+    <div id="notificationFooter"><a href="https://www.google.fr/">Voir tout</a></div>
+</div>
+
+</li>
+<li class="dropdown"> 
+  <a data-toggle="dropdown" href="#"> <span class="glyphicon glyphicon-user"></span> Mon compte <b class="caret"></b></a>
+  <ul class="dropdown-menu">
+    <li><a href="#">Paramètres</a></li>
+    <li><a th:if="${#request.userPrincipal != null}" th:href="@{/logout}">Deconnexion</a></li>
+</ul>
+</li> 
+</ul>
+</div>
+</nav>
+<br>
+
+<div class="container">
+
+
+    <section class="row">
+      <div class="col-md-offset-3 col-md-6">
+        <form class="form-horizontal" action="#" th:action="@{/adminAdd}" th:object="${userForm}" method="post">
+          <fieldset>
+            <div class="form-group">
+              <label class="control-label" for="nom">Nom</label>  
+              <div>
+                <input id="nom" name="nom" type="text" placeholder="ex : Dupont" class="form-control input-md" th:field="*{nom}">
+                <label th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}">erreur nom</label>
+            </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="prenom">Prénom</label>  
+          <div>
+            <input id="prenom" name="prenom" type="text" placeholder="ex : Jeanne" class="form-control input-md" th:field="*{prenom}">
+            <label th:if="${#fields.hasErrors('prenom')}" th:errors="*{prenom}">erreur prenom</label>
+        </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="numTel">Téléphone</label>  
+      <div>
+        <input id="numTel" name="numTel" type="text" placeholder="ex : 0606060606" class="form-control input-md" th:field="*{numTel}">
+        <label th:if="${#fields.hasErrors('numTel')}" th:errors="*{numTel}">erreur numéro de téléphone</label>
+    </div>
+</div>
+<div class="form-group">
+  <label class="control-label" for="textinput">Date de naissance</label>  
+  <div>
+    <input id="textinput" name="textinput" type="text" placeholder="ex : 31/12/2019" class="form-control input-md" th:field="*{dateNaissance}">
+    <label th:if="${#fields.hasErrors('dateNaissance')}" th:errors="*{dateNaissance}">erreur dateNaissance</label>
+</div>
+</div>
+<div class="form-group">
+  <label class="control-label" for="textinput">Jours de congés restants</label>  
+  <div>
+    <input id="textinput" name="textinput" type="text" placeholder="ex : 42" class="form-control input-md" th:field="*{joursCongesRest}">
+    <label th:if="${#fields.hasErrors('joursCongesRest')}" th:errors="*{joursCongesRest}">erreur joursCongesRest</label>
+</div>
+</div>
+<div class="form-group">
+  <label class="control-label" for="textinput">Mot de passe</label>  
+  <div>
+    <input id="textinput" name="textinput" type="text" placeholder="ex : ***************" class="form-control input-md" th:field="*{mdp}">
+    <label th:if="${#fields.hasErrors('mdp')}" th:errors="*{mdp}">erreur mdp</label>
+</div>
+</div>
+<div class="form-group">
+  <label class="control-label" for="role">Rôle</label>
+  <div>
+    <select id="role" name="role" class="form-control">
+      <option value=""> -- </option>
+      <option value="Admin">Admin</option>
+      <option value="UserInfo">UserInfo</option>
+      <option value="ChefInfo">ChefInfo</option>
+      <option value="UserFinance">UserFinance</option>
+      <option value="ChefFinance">ChefFinance</option>
+  </select>
+</div>
+</div>
+</fieldset>
+</form>
+</section>
+
+<section class="row">
+    <div style="text-align:center;">
+      <button id="" name="" class="btn btn-primary">Soumettre</button>
+  </div>
+</section>
+<br>
+</div>
+</div>
+<div th:if="${userExists != null}" th:utext="${userExists}"></div>
+
+
+<script src="assets/js/jquery.js"></script>
+<script src="assets/js/bootstrap.js"></script>
+
+<script src="assets/js/scripts.js"></script>
+
+</body>
 </html>

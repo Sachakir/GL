@@ -1,288 +1,298 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-   <head>
-    	<title th:utext="${title}"></title>
-    	<meta charset="utf-8">
-    	<link href="assets/css/bootstrap.css" rel="stylesheet">
-		<link rel="stylesheet" href="assets/css/style.css" />    
-   </head>
-   
-   <body>
-   <a href="/adminAdd">Page pour ajouter un users (Admin Only)</a>
-   <a href="/adminShow">Page pour gerer les users (Admin Only)</a>
-   		<div class="container">
-   			<nav class="navbar navbar-default" role="navigation">   
-        		<div class="navbar-header">   
-          			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            			<span class="icon-bar"></span>
-            			<span class="icon-bar"></span>
-            			<span class="icon-bar"></span>
-          			</button>
-          			<a class="navbar-brand">PoPS1819</a>
-        		</div>
-        		<div class="collapse navbar-collapse">
-          			<ul class="nav navbar-nav">
-            			<li> <a href="#"> <span class="glyphicon glyphicon-home"></span> Accueil</a> </li>
-            			<li class="dropdown"> 
-              				<a data-toggle="dropdown" href="#"> <span class="glyphicon glyphicon-calendar"></span> Demandes de congés <b class="caret"></b></a>
-              				<ul class="dropdown-menu">
-                				<li><a href="/addConges">Mes demandes de congés</a></li>
-                				<li><a href="#">Demandes reçues <span class="label label-warning label-pill">5</span></a></li>
-              				</ul>
-            			</li> 
-            			<li class="dropdown"> 
-              				<a data-toggle="dropdown" href="#"> <span class="glyphicon glyphicon-credit-card"></span> Notes de frais <b class="caret"></b></a>
-              				<ul class="dropdown-menu">
-                				<li><a href="#">Mes notes de frais</a></li>
-                				<li><a href="#">Demandes reçues <span class="label label-warning label-pill">4</span></a></li>
-              				</ul>
-            			</li> 
-          			</ul>
-          			<ul class="nav navbar-nav navbar-right">
-          				<li id="notification_li">
+<head>
+	<title th:utext="${title}"></title>
+	<meta charset="utf-8">
+	<link href="assets/css/bootstrap.css" rel="stylesheet">
+	<link rel="stylesheet" href="assets/css/style.css" />    
+</head>
+
+<body>
+	<div class="container">
+		<nav class="navbar navbar-default" role="navigation">   
+			<div class="navbar-header">   
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand">PoPS1819</a>
+			</div>
+			<div class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li> <a href="/Accueil"> <span class="glyphicon glyphicon-home"></span> Accueil</a> </li>
+					<li class="dropdown"> 
+						<a data-toggle="dropdown" href="#"> <span class="glyphicon glyphicon-calendar"></span> Demandes de congés <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="/addConges">Mes demandes de congés</a></li>
+							<li><a href="#">Demandes reçues <span class="label label-warning label-pill">5</span></a></li>
+						</ul>
+					</li> 
+					<li class="dropdown"> 
+						<a data-toggle="dropdown" href="#"> <span class="glyphicon glyphicon-credit-card"></span> Notes de frais <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="#">Mes notes de frais</a></li>
+							<li><a href="#">Demandes reçues <span class="label label-warning label-pill">4</span></a></li>
+						</ul>
+					</li> 
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li id="notification_li">
 						<a href="#" id="notificationLink"><span class="glyphicon glyphicon-bell"></span> Notifications <span id="notification_count" class="label label-danger label-pill">9</span></a>
-							<div id="notificationContainer">
-								<div id="notificationTitle">Notifications</div>
-								<div id="notificationsBody" class="notifications">
-									<div class="list-group pre-scrollable">
-              <a href="#" id="notificationLink1" class="list-group-item">
-                Demande de remboursement
-                <span class="badge">12 Janvier 2019</span>
-              </a>
-              <a href="https://www.google.fr/" class="list-group-item">
-                Demande de congés - 10 jour(s)
-                <span class="badge">12 Janvier 2019</span>
-              </a>
-              <a href="#" class="list-group-item">
-                Demande de congés - 10 jour(s)
-                <span class="badge">12 Janvier 2019</span>
-              </a>
-              <a href="#" class="list-group-item">
-                Demande de congés - 10 jour(s)
-                <span class="badge">12 Janvier 2019</span>
-              </a>
-              <a href="#" class="list-group-item">
-                Demande de congés - 10 jour(s)
-                <span class="badge">12 Janvier 2019</span>
-              </a>
-              <a href="#" class="list-group-item">
-                Demande de congés - 10 jour(s)
-                <span class="badge">12 Janvier 2019</span>
-              </a>
-              <a href="#" class="list-group-item">
-                Demande de congés - 10 jour(s)
-                <span class="badge">12 Janvier 2019</span>
-              </a>
-              <a href="#" class="list-group-item">
-                Demande de congés - 10 jour(s)
-                <span class="badge">12 Janvier 2019</span>
-              </a>
-              <a href="#" class="list-group-item">
-                Demande de congés - 10 jour(s)
-                <span class="badge">12 Janvier 2019</span>
-              </a>
-              <a href="#" class="list-group-item">
-                Demande de congés - 14 jour(s)
-                <span class="badge">12 Janvier 2019</span>
-              </a>
-            </div></div>
+						<div id="notificationContainer">
+							<div id="notificationTitle">Notifications</div>
+							<div id="notificationsBody" class="notifications">
+								<div class="list-group pre-scrollable">
+									<a href="#" id="notificationLink1" class="list-group-item">
+										Demande de remboursement
+										<span class="badge">12 Janvier 2019</span>
+									</a>
+									<a href="https://www.google.fr/" class="list-group-item">
+										Demande de congés - 10 jour(s)
+										<span class="badge">12 Janvier 2019</span>
+									</a>
+									<a href="#" class="list-group-item">
+										Demande de congés - 10 jour(s)
+										<span class="badge">12 Janvier 2019</span>
+									</a>
+									<a href="#" class="list-group-item">
+										Demande de congés - 10 jour(s)
+										<span class="badge">12 Janvier 2019</span>
+									</a>
+									<a href="#" class="list-group-item">
+										Demande de congés - 10 jour(s)
+										<span class="badge">12 Janvier 2019</span>
+									</a>
+									<a href="#" class="list-group-item">
+										Demande de congés - 10 jour(s)
+										<span class="badge">12 Janvier 2019</span>
+									</a>
+									<a href="#" class="list-group-item">
+										Demande de congés - 10 jour(s)
+										<span class="badge">12 Janvier 2019</span>
+									</a>
+									<a href="#" class="list-group-item">
+										Demande de congés - 10 jour(s)
+										<span class="badge">12 Janvier 2019</span>
+									</a>
+									<a href="#" class="list-group-item">
+										Demande de congés - 10 jour(s)
+										<span class="badge">12 Janvier 2019</span>
+									</a>
+									<a href="#" class="list-group-item">
+										Demande de congés - 14 jour(s)
+										<span class="badge">12 Janvier 2019</span>
+									</a>
+								</div></div>
 								<div id="notificationFooter"><a href="https://www.google.fr/">Voir tout</a></div>
 							</div>
 
 						</li>
-            			<li class="dropdown"> 
-              				<a data-toggle="dropdown" href="#"> <span class="glyphicon glyphicon-user"></span> Mon compte <b class="caret"></b></a>
-              				<ul class="dropdown-menu">
-                				<li><a href="#">Paramètres</a></li>
-                				<li><a th:if="${#request.userPrincipal != null}" th:href="@{/logout}">Deconnexion</a></li>
-              				</ul>
-            			</li> 
-            		</ul>
-        		</div>
-      		</nav>
+						<li class="dropdown"> 
+							<a data-toggle="dropdown" href="#"> <span class="glyphicon glyphicon-user"></span> Mon compte <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="#">Paramètres</a></li>
+								<li><a th:if="${#request.userPrincipal != null}" th:href="@{/logout}">Deconnexion</a></li>
+							</ul>
+						</li> 
+					</ul>
+				</div>
+			</nav>
 
-      	<br>
-      	<section class="row">
-      		<div class="col-lg-4">
-      			<h4>Bienvenue *Todo : Prénom*</h4>
-      		</div>
-      		<div class="col-lg-4">
-      			<button type="button" class="btn btn-primary">
-					Nouvelle demande de congés
-				</button>
-      		</div>
-      		<div class="col-lg-4">
-      			<button type="button" class="btn btn-primary">
-					Nouvelle demande de remboursement
-				</button>
-      		</div>
-      	</section>
-      	<section class="row">
-      		<div class="col-lg-6">
-      			<section class="row">
-      				<div class="col-lg-10">
-          <div class="panel panel-primary">
-            <div class="panel-heading">
-              <h3 class="panel-title">Dernières notifications</h3>
-            </div>
-            <div class="list-group">
-              <a href="#" class="list-group-item" data-toggle="modal">
-                Demande de remboursement
-                <span class="badge">12 Janvier 2019</span>
-              </a>
-              <a href="#" class="list-group-item" data-toggle="modal">
-                Demande de congés - 10 jour(s)
-                <span class="badge">12 Janvier 2019</span>
-              </a>
-              <a href="#" class="list-group-item" data-toggle="modal">
-                Demande de remboursement
-                <span class="badge">12 Janvier 2019</span>
-              </a>
-              <a href="#" class="list-group-item" data-toggle="modal">
-                Demande de remboursement
-                <span class="badge">12 Janvier 2019</span>
-              </a>
-              <a href="#" class="list-group-item" data-toggle="modal">
-                Demande de remboursement
-                <span class="badge">12 Janvier 2019</span>
-              </a>
-              <a href="#" class="list-group-item" data-toggle="modal">
-                Demande de congés - 21 jour(s)
-                <span class="badge">12 Janvier 2019</span>
-              </a>
-              <a href="#" class="list-group-item" data-toggle="modal">
-                Demande de congés - 1 jour(s)
-                <span class="badge">12 Janvier 2019</span>
-              </a>
-              <a href="#" class="list-group-item" data-toggle="modal">
-                Demande de congés - 0.5 jour(s)
-                <span class="badge">12 Janvier 2019</span>
-              </a>
-              <a href="#" class="list-group-item" data-toggle="modal">
-                Demande de congés - 14 jour(s)
-                <span class="badge">12 Janvier 2019</span>
-              </a>
-              <a href="#" class="list-group-item" data-toggle="modal">
-                Demande de congés - 14 jour(s)
-                <span class="badge">12 Janvier 2019</span>
-              </a>
-              <a href="#" class="list-group-item" data-toggle="modal">
-                Demande de congés - 14 jour(s)
-                <span class="badge">12 Janvier 2019</span>
-              </a>
-              <a href="#" class="list-group-item" data-toggle="modal">
-                Demande de congés - 14 jour(s)
-                <span class="badge">12 Janvier 2019</span>
-              </a>
-            </div>
-          </div>
-      </div>
-      </section>
-      		</div>
-      		<div class="col-lg-6">
-      			<section class="row">
-      				<div class="col-lg-12">
-      				<h2>Mes congés</h2>
-      				<h4>Jour(s) de congé(s) payé(s) restant(s) : 4.5</h4>
-      				<h4>RTT(s) restant(s) : 0.0</h4>
-      			</div>
-      			</section>
-      	<section class="row">
-      				<div class="col-lg-12 col-xs-12">
-      		<div class="panel panel-primary">
-  <table class="table table-striped table-condensed">
-    <div class="panel-heading"> 
-      <h3 class="panel-title">Mes dernières demandes de remboursement</h3>
-    </div>
-    <thead>
-      <tr>
-        <th>Nom</th>
-        <th>Prix</th>
-        <th>Mission</th>
-        <th>Date</th>
-        <th>Etat</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a href="#">Nuit à l'hôtel</a></td>
-        <td>50€</td>
-        <td>Audit Barcelone</td>
-        <td>10 Janvier 2019</td>
-        <td>En attente</td>
-      </tr>
-      <tr>
-        <td><a href="#">Nuit à l'hôtel</a></td>
-        <td>50€</td>
-        <td>Audit Barcelone</td>
-        <td>10 Janvier 2019</td>
-        <td>En attente</td>
-      </tr>
-      <tr>
-        <td><a href="#">Nuit à l'hôtel</a></td>
-        <td>50€</td>
-        <td>Audit Barcelone</td>
-        <td>10 Janvier 2019</td>
-        <td>En attente</td>
-      </tr>
-      <tr>
-        <td><a href="#">Nuit à l'hôtel</a></td>
-        <td>50€</td>
-        <td>Audit Barcelone</td>
-        <td>10 Janvier 2019</td>
-        <td>En attente</td>
-      </tr>
-      <tr>
-        <td><a href="#">Nuit à l'hôtel</a></td>
-        <td>50€</td>
-        <td>Audit Barcelone</td>
-        <td>10 Janvier 2019</td>
-        <td>En attente</td>
-      </tr>
-      <tr>
-        <td><a href="#">Nuit à l'hôtel</a></td>
-        <td>50€</td>
-        <td>Audit Barcelone</td>
-        <td>10 Janvier 2019</td>
-        <td>En attente</td>
-      </tr>
-      <tr>
-        <td><a href="#">Nuit à l'hôtel</a></td>
-        <td>50€</td>
-        <td>Audit Barcelone</td>
-        <td>10 Janvier 2019</td>
-        <td>En attente</td>
-      </tr>
-      <tr>
-        <td><a href="#">Nuit à l'hôtel</a></td>
-        <td>50€</td>
-        <td>Audit Barcelone</td>
-        <td>10 Janvier 2019</td>
-        <td>En attente</td>
-      </tr>
-      <tr>
-        <td><a href="#">Nuit à l'hôtel</a></td>
-        <td>50€</td>
-        <td>Audit Barcelone</td>
-        <td>10 Janvier 2019</td>
-        <td>En attente</td>
-      </tr>
-      </tr>
-    </tbody>
-  </table>
-</div>
-</div>
-      </section>
-      		</div>
-      	</section>
+			<br>
+			<section class="row">
+				<div class="col-lg-4">
+					<h4>Bienvenue *Todo : Prénom*</h4>
+				</div>
+				<div class="col-lg-4">
+					<button type="button" class="btn btn-primary">
+						Nouvelle demande de congés
+					</button>
+				</div>
+				<div class="col-lg-4">
+					<button type="button" class="btn btn-primary">
+						Nouvelle demande de remboursement
+					</button>
+				</div>
+			</section>
+			<section class="row">
+				<div class="col-lg-6">
+					<section class="row">
+						<div class="col-lg-10">
+							<div class="panel panel-primary">
+								<div class="panel-heading">
+									<h3 class="panel-title">Dernières notifications</h3>
+								</div>
+								<div class="list-group">
+									<a href="#" class="list-group-item" data-toggle="modal">
+										Demande de remboursement
+										<span class="badge">12 Janvier 2019</span>
+									</a>
+									<a href="#" class="list-group-item" data-toggle="modal">
+										Demande de congés - 10 jour(s)
+										<span class="badge">12 Janvier 2019</span>
+									</a>
+									<a href="#" class="list-group-item" data-toggle="modal">
+										Demande de remboursement
+										<span class="badge">12 Janvier 2019</span>
+									</a>
+									<a href="#" class="list-group-item" data-toggle="modal">
+										Demande de remboursement
+										<span class="badge">12 Janvier 2019</span>
+									</a>
+									<a href="#" class="list-group-item" data-toggle="modal">
+										Demande de remboursement
+										<span class="badge">12 Janvier 2019</span>
+									</a>
+									<a href="#" class="list-group-item" data-toggle="modal">
+										Demande de congés - 21 jour(s)
+										<span class="badge">12 Janvier 2019</span>
+									</a>
+									<a href="#" class="list-group-item" data-toggle="modal">
+										Demande de congés - 1 jour(s)
+										<span class="badge">12 Janvier 2019</span>
+									</a>
+									<a href="#" class="list-group-item" data-toggle="modal">
+										Demande de congés - 0.5 jour(s)
+										<span class="badge">12 Janvier 2019</span>
+									</a>
+									<a href="#" class="list-group-item" data-toggle="modal">
+										Demande de congés - 14 jour(s)
+										<span class="badge">12 Janvier 2019</span>
+									</a>
+									<a href="#" class="list-group-item" data-toggle="modal">
+										Demande de congés - 14 jour(s)
+										<span class="badge">12 Janvier 2019</span>
+									</a>
+									<a href="#" class="list-group-item" data-toggle="modal">
+										Demande de congés - 14 jour(s)
+										<span class="badge">12 Janvier 2019</span>
+									</a>
+									<a href="#" class="list-group-item" data-toggle="modal">
+										Demande de congés - 14 jour(s)
+										<span class="badge">12 Janvier 2019</span>
+									</a>
+								</div>
+							</div>
+						</div>
+					</section>
+				</div>
+				<div class="col-lg-6">
+					<section class="row">
+						<div class="col-lg-12">
+							<h2>Mes congés</h2>
+							<h4>Jour(s) de congé(s) payé(s) restant(s) : 4.5</h4>
+							<h4>RTT(s) restant(s) : 0.0</h4>
+						</div>
+					</section>
+					<section class="row">
+						<div class="col-lg-12 col-xs-12">
+							<div class="panel panel-primary">
+								<table class="table table-striped table-condensed">
+									<div class="panel-heading"> 
+										<h3 class="panel-title">Mes dernières demandes de remboursement</h3>
+									</div>
+									<thead>
+										<tr>
+											<th>Nom</th>
+											<th>Prix</th>
+											<th>Mission</th>
+											<th>Date</th>
+											<th>Etat</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td><a href="#">Nuit à l'hôtel</a></td>
+											<td>50€</td>
+											<td>Audit Barcelone</td>
+											<td>10 Janvier 2019</td>
+											<td>En attente</td>
+										</tr>
+										<tr>
+											<td><a href="#">Nuit à l'hôtel</a></td>
+											<td>50€</td>
+											<td>Audit Barcelone</td>
+											<td>10 Janvier 2019</td>
+											<td>En attente</td>
+										</tr>
+										<tr>
+											<td><a href="#">Nuit à l'hôtel</a></td>
+											<td>50€</td>
+											<td>Audit Barcelone</td>
+											<td>10 Janvier 2019</td>
+											<td>En attente</td>
+										</tr>
+										<tr>
+											<td><a href="#">Nuit à l'hôtel</a></td>
+											<td>50€</td>
+											<td>Audit Barcelone</td>
+											<td>10 Janvier 2019</td>
+											<td>En attente</td>
+										</tr>
+										<tr>
+											<td><a href="#">Nuit à l'hôtel</a></td>
+											<td>50€</td>
+											<td>Audit Barcelone</td>
+											<td>10 Janvier 2019</td>
+											<td>En attente</td>
+										</tr>
+										<tr>
+											<td><a href="#">Nuit à l'hôtel</a></td>
+											<td>50€</td>
+											<td>Audit Barcelone</td>
+											<td>10 Janvier 2019</td>
+											<td>En attente</td>
+										</tr>
+										<tr>
+											<td><a href="#">Nuit à l'hôtel</a></td>
+											<td>50€</td>
+											<td>Audit Barcelone</td>
+											<td>10 Janvier 2019</td>
+											<td>En attente</td>
+										</tr>
+										<tr>
+											<td><a href="#">Nuit à l'hôtel</a></td>
+											<td>50€</td>
+											<td>Audit Barcelone</td>
+											<td>10 Janvier 2019</td>
+											<td>En attente</td>
+										</tr>
+										<tr>
+											<td><a href="#">Nuit à l'hôtel</a></td>
+											<td>50€</td>
+											<td>Audit Barcelone</td>
+											<td>10 Janvier 2019</td>
+											<td>En attente</td>
+										</tr>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</section>
+			</div>
+		</section>
+		<section class="row">
+			<div class="col-sm-offset-3 col-sm-3">
+				<a href="/adminAdd" class="btn btn-primary" role="button">
+					Ajouter un utilisateur (Admin only)
+				</a>
+			</div>
+			<div class="col-sm-3">
+				<a href="/adminShow" class="btn btn-primary" role="button">
+					Gérer les utilisateurs (Admin only)
+				</a>
+			</div>
+		</section>
 
-  		</div>
+	</div>
 
-    	<script src="assets/js/jquery.js"></script>
-    	<script src="assets/js/bootstrap.js"></script>
+	<script src="assets/js/jquery.js"></script>
+	<script src="assets/js/bootstrap.js"></script>
 
-    	<script src="assets/js/scripts.js"></script>
-  </body>
+	<script src="assets/js/scripts.js"></script>
+</body>
 
-   </body>
+</body>
 </html>
