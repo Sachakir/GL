@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Formulaire de création de demande de remboursement</title>
+	</head>
+    <body>
+        <!-- Include _menu.html -->
+      	<th:block th:include="/_menu"></th:block>
+      	
+        <form action="#" th:action="@{/remboursementForm}" th:object="${remboursementForm}" method="post">
+            <table>
+                <tr>
+                    <td>Titre de la demande : </td>
+                    <td><input type="text" th:field="*{titre}" /></td>
+                    
+                    <td th:if="${#fields.hasErrors('titre')}" th:errors="*{titre}">Titre incorrect</td>
+                    
+                </tr>
+                
+                <tr>
+                    <td>Montant : </td>
+                    <td><input type="text" th:field="*{montant}" /></td>
+                    <td th:if="${#fields.hasErrors('montant')}" th:errors="*{montant}">Montant incorrect</td>
+                </tr>
+                
+                <tr>
+                    <td>Date : </td>
+                    <td><input type="text" th:field="*{date}" /></td>
+                    <td th:if="${#fields.hasErrors('date')}" th:errors="*{date}">Erreur dans la date</td>
+                </tr>
+                
+                <tr>
+                    <td>DateNaissance:</td>
+                    <td><input type="text" th:field="*{motif}" /></td>
+                    <td th:if="${#fields.hasErrors('motif')}" th:errors="*{motif}">erreur dateNaissance</td>
+                </tr>
+           			
+                <tr>
+                    <td><button type="submit">Submit</button></td>
+                </tr>
+            </table>
+        </form>
+    </body>
+</html>

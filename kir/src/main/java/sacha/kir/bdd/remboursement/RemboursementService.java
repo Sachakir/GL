@@ -22,6 +22,7 @@ public class RemboursementService implements InterfaceRemboursementService {
 		Remboursement r = new Remboursement();
 		r.setDate("2019-01-23");
 		r.setDemande_id((long) 1);
+		r.setTitre("Demande type");
 		r.setJustificatifid(1);
 		r.setMontant((float) 1.5);
 		r.setMotif("Parce que, oui");

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import sacha.kir.bdd.approle.AppRole;
 import sacha.kir.bdd.approle.InterfaceAppRoleService;
@@ -39,6 +40,7 @@ import sacha.kir.bdd.userrole.UserRole;
 import sacha.kir.bdd.utilisateur.InterfaceUtilisateurService;
 import sacha.kir.bdd.utilisateur.Utilisateur;
 import sacha.kir.form.CongeForm;
+import sacha.kir.form.RemboursementForm;
 import sacha.kir.form.UserForm;
  
 @Controller
@@ -68,10 +70,19 @@ public class MainController {
 	InterfaceUserRoleService UserRoleService;
 	
     @RequestMapping(value = { "/", "/welcome" }, method = RequestMethod.GET)
-    public String welcomePage(Model model) {
+    public String welcomePage(Model model, Principal principal) {
         model.addAttribute("title", "Welcome");
         model.addAttribute("message", "This is welcome page!");
-        return "Login";
+        if(principal == null)
+        {
+        	System.out.println("Pas d'utilisateur !!!");
+        	return "Login";
+        }
+        else
+        {
+        	return "welcomePage-Thibaut";
+        }
+        
     }
  
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
@@ -274,8 +285,7 @@ public class MainController {
         
         sacha.kir.bdd.appuser.AppUser appUser = new sacha.kir.bdd.appuser.AppUser();
         appUser.setUser_id((long) (maxId + 1));
-		EncrytedPasswordUtils ep = new EncrytedPasswordUtils();
-		appUser.setEncrypted_password(ep.encryptePassword(userForm.getMdp()));
+		appUser.setEncrypted_password(EncrytedPasswordUtils.encryptePassword(userForm.getMdp()));
 		appUser.setUser_name(userForm.getPrenom() + "." + userForm.getNom());
 		
 		AppUserService.addAppUser(appUser);
@@ -408,4 +418,32 @@ public class MainController {
     	
         return "roleChanged";
     }
+    
+    // TEST FORMULAIRE DEMANDE REMBOURSEMENT
+    /* *************************************************** */
+    /*@RequestMapping(value = "/demandeRemboursement", method = RequestMethod.GET)
+    public String demandeRemboursementPage(Model model) {
+        return "remboursementForm";
+    }*/
+    
+    @GetMapping("/demandeRemboursement")
+    public String remboursementForm(Model model) {
+        model.addAttribute("remboursementForm", new RemboursementForm());
+        return "remboursementForm";
+    }
+    
+    /*@RequestMapping(value = "/recapRemboursement", method = RequestMethod.POST)
+    public String userInfo(Model model, Principal principal) {
+        String userName = principal.getName();
+ 
+        System.out.println("User Name: " + userName);
+ 
+        User loginedUser = (User) ((Authentication) principal).getPrincipal();
+ 
+        String userInfo = WebUtils.toString(loginedUser);
+        model.addAttribute("userInfo", userInfo);
+ 
+        return "userInfoPage";
+    }*/
+    /* *************************************************** */
 }

@@ -13,6 +13,9 @@ public class Remboursement {
 	@Column(name="DemandeID")
 	private Long demande_id;
 	
+	@Column(name="Titre")
+	private String titre;
+	
 	@Column(name="Montant")
 	private float montant;
 	
@@ -36,9 +39,10 @@ public class Remboursement {
 	
 	public Remboursement() {}
 
-	public Remboursement(Long demande_id, float montant, String date, String motif, String validationrh,
+	public Remboursement(Long demande_id, String titre, float montant, String date, String motif, String validationrh,
 			String validationchefservice, long justificatifid, long uid) {
 		this.demande_id = demande_id;
+		this.titre = titre;
 		this.montant = montant;
 		this.date = date;
 		this.motif = motif;
@@ -54,6 +58,14 @@ public class Remboursement {
 
 	public void setDemande_id(Long demande_id) {
 		this.demande_id = demande_id;
+	}
+	
+	public String getTitre() {
+		return titre;
+	}
+	
+	public void setTitre(String titre) {
+		this.titre = titre;
 	}
 
 	public float getMontant() {
