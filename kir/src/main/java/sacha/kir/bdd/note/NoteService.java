@@ -21,9 +21,9 @@ public class NoteService implements InterfaceNoteService {
 	public void addNote()
 	{
 		Note n = new Note();
-		n.setMois("Fevrier");
-		n.setNote_id((long) 0);
-		n.setUid((long) 1);
+		n.setMois("Janvier");
+		n.setNote_id((long) 4);
+		n.setUid((long) 30);
 		
 		repository.save(n);
 		

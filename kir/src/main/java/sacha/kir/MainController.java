@@ -1,6 +1,9 @@
 package sacha.kir;
 
 import java.security.Principal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -73,6 +76,7 @@ public class MainController {
     public String welcomePage(Model model, Principal principal) {
         model.addAttribute("title", "Welcome");
         model.addAttribute("message", "This is welcome page!");
+
         if(principal == null)
         {
         	System.out.println("Pas d'utilisateur !!!");
@@ -98,7 +102,7 @@ public class MainController {
  
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage(Model model) {
- 
+    	
         return "Login";
     }
  
@@ -368,6 +372,46 @@ public class MainController {
     	String prenomnom = principal.getName();
     	String[] names = prenomnom.split("\\.");
     	model.addAttribute("WelcomeMsg", "Bienvenue " + names[0] + " " + names[1]);
+    	
+    	/**** NOTIFICATION ***********/
+        LocalDate localDate = LocalDate.now();
+    	System.out.println(localDate.getDayOfMonth());
+    	System.out.println("Mois : " + localDate.getMonthValue());
+        System.out.println(DateTimeFormatter.ofPattern("yyy/MM/dd").format(localDate));
+        if (localDate.getDayOfMonth() == 15)//LE 15 DU MOIS SEULEMENT
+        {   
+	        Utilisateur ut = UtilisateurService.findPrenomNom(names[1], names[0]);
+	        long uid = ut.getUID();
+	        boolean noteExiste = false;
+	        List<Note> notes = NoteService.findAll();
+	        for (int i = 0;i < notes.size();i++)
+	        {
+	        	if (notes.get(i).getUid() == uid)
+	        	{
+	        		DateUtilities du = new DateUtilities();
+	        		int moisValue = du.moisToInt(notes.get(i).getMois());
+	        		if (localDate.getMonthValue() != 1)
+	        		{
+	        			if (localDate.getMonthValue() == moisValue + 1)
+	        			{
+	        				noteExiste = true;
+	        				break;
+	        			}
+	        		}
+	        	}
+	        }
+	        if (!noteExiste)
+	        {
+	        	System.out.println("Pas de note pour le mois davant !");
+	        	model.addAttribute("NotifNote", "Vous n\'avez pas de note de frais pour le mois precedent !");
+	        }
+	        else
+	        {
+	        	System.out.println("Une note pour le mois davant !");
+	        }
+        }
+        /**** NOTIFICATION ***********/
+
         return "welcomePage-Thibaut";
     }
     

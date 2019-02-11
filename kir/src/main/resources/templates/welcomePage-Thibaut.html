@@ -104,6 +104,9 @@
 				<div
 					th:if="${WelcomeMsg != null}" th:utext="${WelcomeMsg}">
 				</div>
+				<div style="background:red;"
+					th:if="${NotifNote != null}" th:utext="${NotifNote}">
+				</div>
 				<div class="col-lg-4">
 					<button type="button" class="btn btn-primary">
 						Nouvelle demande de congés
