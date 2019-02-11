@@ -273,6 +273,7 @@ public class MainController {
         }
         //Sinon on met le user dans la bd.
         Utilisateur user = new Utilisateur();
+        user.setSexe("m");//TODO changer
         user.setDateNaissance(userForm.getDateNaissance());
         user.setJoursCongesRestants(userForm.getJoursCongesRest());
         user.setNom(userForm.getNom());
@@ -362,8 +363,11 @@ public class MainController {
     }
     
     @RequestMapping("/Accueil")
-    public String accueil(Model model)
+    public String accueil(Model model,Principal principal)
     {
+    	String prenomnom = principal.getName();
+    	String[] names = prenomnom.split("\\.");
+    	model.addAttribute("WelcomeMsg", "Bienvenue " + names[0] + " " + names[1]);
         return "welcomePage-Thibaut";
     }
     

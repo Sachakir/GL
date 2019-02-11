@@ -27,7 +27,7 @@ public class Utilisateur {
     private String datenaissance;
     //@NotNull
     private long Jourscongesrestants;
-    
+    private String Sexe;
     public Utilisateur() {}
 
 	public Utilisateur(Long uID, String nom, String prenom, String numeroTel, String dateNaissance,
@@ -89,6 +89,14 @@ public class Utilisateur {
 		Jourscongesrestants = joursCongesRestants;
 	}
 	
+	public String getSexe() {
+		return Sexe;
+	}
+
+	public void setSexe(String sexe) {
+		Sexe = sexe;
+	}
+
 	@Override
     public String toString() {
         return Prenom + " " + Nom;

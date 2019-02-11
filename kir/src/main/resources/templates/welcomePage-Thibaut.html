@@ -101,8 +101,8 @@
 
 			<br>
 			<section class="row">
-				<div class="col-lg-4">
-					<h4>Bienvenue *Todo : Prénom*</h4>
+				<div
+					th:if="${WelcomeMsg != null}" th:utext="${WelcomeMsg}">
 				</div>
 				<div class="col-lg-4">
 					<button type="button" class="btn btn-primary">
