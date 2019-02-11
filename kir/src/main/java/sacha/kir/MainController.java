@@ -73,7 +73,7 @@ public class MainController {
 	InterfaceUserRoleService UserRoleService;
 	
     @RequestMapping(value = { "/", "/welcome" }, method = RequestMethod.GET)
-    public String welcomePage(Model model, Principal principal) {
+    public String welcomePage(Model model, Principal principal, UserForm userForm) {
         model.addAttribute("title", "Welcome");
         model.addAttribute("message", "This is welcome page!");
 
@@ -258,7 +258,7 @@ public class MainController {
     public String checkPersonInfo(@Valid UserForm userForm, BindingResult bindingResult,Model model) {
     	
         if (bindingResult.hasErrors()) {
-            return "form";
+            return "welcomePage-Thibaut";
         }
         
         System.out.println(userForm.getDateNaissance());
@@ -273,7 +273,7 @@ public class MainController {
         if (u != null)//Utilisateur avec ce nom et prenom existe deja
         {
         	model.addAttribute("userExists", "Cet utilisateur existe deja");
-        	return "form";
+        	return "welcomePage-Thibaut";
         }
         //Sinon on met le user dans la bd.
         Utilisateur user = new Utilisateur();
@@ -302,7 +302,7 @@ public class MainController {
 
         UserRoleService.addUserRole(userRole);
 
-        return "results";
+        return "welcomePage-Thibaut";
     }
     
     @GetMapping("/addConges")
@@ -367,7 +367,7 @@ public class MainController {
     }
     
     @RequestMapping("/Accueil")
-    public String accueil(Model model,Principal principal)
+    public String accueil(Model model,Principal principal, UserForm userForm)
     {
     	String prenomnom = principal.getName();
     	String[] names = prenomnom.split("\\.");

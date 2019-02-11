@@ -101,11 +101,8 @@
 
 			<br>
 			<section class="row">
-				<div
-					th:if="${WelcomeMsg != null}" th:utext="${WelcomeMsg}">
-				</div>
-				<div style="background:red;"
-					th:if="${NotifNote != null}" th:utext="${NotifNote}">
+				<div class="col-lg-4">
+					<h4 th:if="${WelcomeMsg != null}" th:utext="${WelcomeMsg}"></h4>
 				</div>
 				<div class="col-lg-4">
 					<button type="button" class="btn btn-primary">
@@ -277,10 +274,10 @@
 			</div>
 		</section>
 		<section class="row">
-			<div class="col-sm-offset-3 col-sm-3">
-				<a href="/adminAdd" class="btn btn-primary" role="button">
+			<div id="html" class="col-sm-offset-3 col-sm-3">
+				<button data-toggle="modal" data-target="#formulaire" class="btn btn-primary" type="button">
 					Ajouter un utilisateur (Admin only)
-				</a>
+				</button>
 			</div>
 			<div class="col-sm-3">
 				<a href="/adminShow" class="btn btn-primary" role="button">
@@ -289,13 +286,84 @@
 			</div>
 		</section>
 
+		<div class="modal fade" th:id="formulaire" role="dialog">
+			<div class="modal-dialog" role="document"> 
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">x</button>
+						<h4 class="modal-title">Ajouter un utilisateur</h4>
+					</div>
+					<div class="modal-body">
+						<form class="form-horizontal" action="#" th:action="@{/adminAdd}" th:object="${userForm}" method="post">
+							<div class="form-group">
+								<label class="control-label" for="nom">Nom</label>  
+								<div>
+									<input id="nom" name="nom" type="text" placeholder="ex : Dupont" class="form-control input-md" th:field="*{nom}">
+									<label th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}">erreur nom</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label" for="prenom">Prénom</label>  
+								<div>
+									<input id="prenom" name="prenom" type="text" placeholder="ex : Jeanne" class="form-control input-md" th:field="*{prenom}">
+									<label th:if="${#fields.hasErrors('prenom')}" th:errors="*{prenom}">erreur prenom</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label" for="numTel">Téléphone</label>  
+								<div>
+									<input id="numTel" name="numTel" type="text" placeholder="ex : 0606060606" class="form-control input-md" th:field="*{numTel}">
+									<label th:if="${#fields.hasErrors('numTel')}" th:errors="*{numTel}">erreur numéro de téléphone</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label" for="dateNaissance">Date de naissance</label>  
+								<div>
+									<input id="dateNaissance" name="dateNaissance" type="text" placeholder="ex : 31/12/2019" class="form-control input-md" th:field="*{dateNaissance}">
+									<label th:if="${#fields.hasErrors('dateNaissance')}" th:errors="*{dateNaissance}">erreur dateNaissance</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label" for="joursCongesRest">Jours de congés restants</label>  
+								<div>
+									<input id="joursCongesRest" name="joursCongesRest" type="text" placeholder="ex : 42" class="form-control input-md" th:field="*{joursCongesRest}">
+									<label th:if="${#fields.hasErrors('joursCongesRest')}" th:errors="*{joursCongesRest}">erreur joursCongesRest</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label" for="mdp">Mot de passe</label>  
+								<div>
+									<input id="mdp" name="mdp" type="text" placeholder="ex : ***************" class="form-control input-md" th:field="*{mdp}">
+									<label th:if="${#fields.hasErrors('mdp')}" th:errors="*{mdp}">erreur mdp</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label" for="role">Rôle</label>
+								<div>
+									<select id="role" name="role" class="form-control" th:field="*{role}">
+										<option value=""> - </option>
+										<option value="Admin">Admin</option>
+										<option value="UserInfo">UserInfo</option>
+										<option value="ChefInfo">ChefInfo</option>
+										<option value="UserFinance">UserFinance</option>
+										<option value="ChefFinance">ChefFinance</option>
+									</select>
+								</div>
+							</div>
+
+						<button id="" name="" type="submit" class="btn btn-primary">Soumettre</button>
+
+						<button class="btn btn-danger" data-dismiss="modal">Annuler</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 
 	<script src="assets/js/jquery.js"></script>
 	<script src="assets/js/bootstrap.js"></script>
 
 	<script src="assets/js/scripts.js"></script>
-</body>
-
 </body>
 </html>

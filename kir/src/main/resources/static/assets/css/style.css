@@ -192,3 +192,8 @@ a:active, a:focus { outline:none; }
 }
 
 .panel-body > .table{margin-bottom:0px;}
+
+.modal-body {
+  margin-left: 30px;
+  margin-right: 30px;
+}
