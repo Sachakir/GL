@@ -103,7 +103,11 @@
 			<section class="row">
 				<div class="col-lg-4">
 					<h4 th:if="${WelcomeMsg != null}" th:utext="${WelcomeMsg}"></h4>
+					<h4 style="text-decoration-color: red;"
+					th:if="${NotifNote != null}" th:utext="${NotifNote}">
+					</h4>
 				</div>
+
 				<div class="col-lg-4">
 					<button type="button" class="btn btn-primary">
 						Nouvelle demande de congés

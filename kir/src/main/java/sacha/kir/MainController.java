@@ -378,7 +378,7 @@ public class MainController {
     	System.out.println(localDate.getDayOfMonth());
     	System.out.println("Mois : " + localDate.getMonthValue());
         System.out.println(DateTimeFormatter.ofPattern("yyy/MM/dd").format(localDate));
-        if (localDate.getDayOfMonth() == 15)//LE 15 DU MOIS SEULEMENT
+        if (localDate.getDayOfMonth() >= 15)//LE 15 DU MOIS SEULEMENT
         {   
 	        Utilisateur ut = UtilisateurService.findPrenomNom(names[1], names[0]);
 	        long uid = ut.getUID();
