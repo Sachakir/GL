@@ -23,11 +23,12 @@ $("#notificationLink1").click(function()
 	window.location.href="https://www.google.fr/"
 });
 
+
 $(function(){
 	$("form").submit(function(e) {
 		e.preventDefault();
 		var $form = $(this);
-		$form.submit()
+		$form.submit();
 		.done(function(data) {
 			$("#html").html(data);
 			$("#formulaire").modal("hide"); 

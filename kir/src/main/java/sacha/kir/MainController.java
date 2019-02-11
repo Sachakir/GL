@@ -73,7 +73,7 @@ public class MainController {
 	InterfaceUserRoleService UserRoleService;
 	
     @RequestMapping(value = { "/", "/welcome" }, method = RequestMethod.GET)
-    public String welcomePage(Model model, Principal principal, UserForm userForm) {
+    public String welcomePage(Model model, Principal principal) {
         model.addAttribute("title", "Welcome");
         model.addAttribute("message", "This is welcome page!");
 
@@ -84,7 +84,7 @@ public class MainController {
         }
         else
         {
-        	return "welcomePage-Thibaut";
+        	return "Login";//"welcomePage-Thibaut";
         }
         
     }
@@ -367,7 +367,7 @@ public class MainController {
     }
     
     @RequestMapping("/Accueil")
-    public String accueil(Model model,Principal principal, UserForm userForm)
+    public String accueil(Model model,Principal principal,UserForm userForm)
     {
     	String prenomnom = principal.getName();
     	String[] names = prenomnom.split("\\.");
@@ -378,7 +378,7 @@ public class MainController {
     	System.out.println(localDate.getDayOfMonth());
     	System.out.println("Mois : " + localDate.getMonthValue());
         System.out.println(DateTimeFormatter.ofPattern("yyy/MM/dd").format(localDate));
-        if (localDate.getDayOfMonth() >= 15)//LE 15 DU MOIS SEULEMENT
+        if (localDate.getDayOfMonth() >= 14)
         {   
 	        Utilisateur ut = UtilisateurService.findPrenomNom(names[1], names[0]);
 	        long uid = ut.getUID();
