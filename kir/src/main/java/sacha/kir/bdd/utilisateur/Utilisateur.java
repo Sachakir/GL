@@ -1,8 +1,6 @@
 package sacha.kir.bdd.utilisateur;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -27,7 +25,6 @@ public class Utilisateur {
     private String datenaissance;
     //@NotNull
     private long Jourscongesrestants;
-    private String Sexe;
     public Utilisateur() {}
 
 	public Utilisateur(Long uID, String nom, String prenom, String numeroTel, String dateNaissance,
@@ -87,14 +84,6 @@ public class Utilisateur {
 
 	public void setJoursCongesRestants(long joursCongesRestants) {
 		Jourscongesrestants = joursCongesRestants;
-	}
-	
-	public String getSexe() {
-		return Sexe;
-	}
-
-	public void setSexe(String sexe) {
-		Sexe = sexe;
 	}
 
 	@Override

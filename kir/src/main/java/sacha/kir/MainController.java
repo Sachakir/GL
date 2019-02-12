@@ -277,7 +277,6 @@ public class MainController {
         }
         //Sinon on met le user dans la bd.
         Utilisateur user = new Utilisateur();
-        user.setSexe("m");//TODO changer
         user.setDateNaissance(userForm.getDateNaissance());
         user.setJoursCongesRestants(userForm.getJoursCongesRest());
         user.setNom(userForm.getNom());
