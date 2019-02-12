@@ -18,11 +18,11 @@ $(document).ready(function()
 			});
 
 		});
+
 $("#notificationLink1").click(function()
 {
 	window.location.href="https://www.google.fr/"
 });
-
 
 $(function(){
 	$("form").submit(function(e) {
@@ -32,6 +32,7 @@ $(function(){
 		.done(function(data) {
 			$("#html").html(data);
 			$("#formulaire").modal("hide"); 
+		    $('#success_msg').modal('show');
 		})
 		.fail(function() {
 			alert("Erreur d'envoi");
