@@ -93,7 +93,7 @@ public class MainController {
     public String adminPage(Model model, Principal principal) {
          
         User loginedUser = (User) ((Authentication) principal).getPrincipal();
- 
+       
         String userInfo = WebUtils.toString(loginedUser);
         model.addAttribute("userInfo", userInfo);
          
@@ -468,29 +468,20 @@ public class MainController {
     
     // TEST FORMULAIRE DEMANDE REMBOURSEMENT
     /* *************************************************** */
-    /*@RequestMapping(value = "/demandeRemboursement", method = RequestMethod.GET)
-    public String demandeRemboursementPage(Model model) {
-        return "remboursementForm";
-    }*/
-    
     @GetMapping("/demandeRemboursement")
-    public String remboursementForm(Model model) {
+    public String remboursementForm(Model model, Principal principal) {
+    	String[] names = principal.getName().split("\\.");
+    	Long userId = UtilisateurService.findPrenomNom(names[1], names[0]).getUID();
+    	List<Long> missionsIDs = MembresMissionService.findMissionsByUID(userId);
+    	for(long missionID : missionsIDs)
+    	{
+    		System.out.println("Mission ID : " + missionID);
+    	}
         model.addAttribute("remboursementForm", new RemboursementForm());
+        //model.addAttribute("missionsAssociated", attributeValue);
         return "remboursementForm";
+        
+        //List<Mission> listm = MissionService.findAll();
     }
-    
-    /*@RequestMapping(value = "/recapRemboursement", method = RequestMethod.POST)
-    public String userInfo(Model model, Principal principal) {
-        String userName = principal.getName();
- 
-        System.out.println("User Name: " + userName);
- 
-        User loginedUser = (User) ((Authentication) principal).getPrincipal();
- 
-        String userInfo = WebUtils.toString(loginedUser);
-        model.addAttribute("userInfo", userInfo);
- 
-        return "userInfoPage";
-    }*/
     /* *************************************************** */
 }

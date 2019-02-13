@@ -10,6 +10,8 @@ import javax.validation.constraints.Size;
 public class RemboursementForm {
 
 	@NotNull
+	private String mission;
+	@NotNull
 	@Size(min=1, max=60)
 	private String titre;
 	@NotNull
@@ -23,6 +25,10 @@ public class RemboursementForm {
 	
 	
 	//Getters
+	public String getMission() {
+		return mission;
+	}
+	
 	public String getTitre() {
 		return titre;
 	}
@@ -40,6 +46,10 @@ public class RemboursementForm {
 	}
 	
 	//Setters
+	public void setMission(String mission) {
+		this.mission = mission;
+	}
+	
 	public void setTitre(String titre) {
 		this.titre = titre;
 	}

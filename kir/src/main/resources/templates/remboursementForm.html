@@ -10,6 +10,19 @@
         <form action="#" th:action="@{/remboursementForm}" th:object="${remboursementForm}" method="post">
             <table>
                 <tr>
+                	<td>Mission associée : </td>
+                    <td><select th:field="*{mission}">
+          <option value="NoChanges"> -- </option>
+            <option value="Admin">Admin</option>
+            <option value="UserInfo">UserInfo</option>
+        <option value="ChefInfo">ChefInfo</option>
+   <option value="UserFinances">UserFinances</option>
+        <option value="ChefFinances">ChefFinances</option>
+      </select></td>
+                    
+                </tr>
+                
+                <tr>
                     <td>Titre de la demande : </td>
                     <td><input type="text" th:field="*{titre}" /></td>
                     

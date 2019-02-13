@@ -42,7 +42,7 @@ public class AppUser {
  
     @Override
     public String toString() {
-        return this.userName + "/" + this.encrytedPassword;
+        return this.userId + ":" + this.userName + "/" + this.encrytedPassword;
     }
  
 }

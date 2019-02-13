@@ -3,6 +3,7 @@ package sacha.kir.bdd.membresmission;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 
@@ -27,5 +28,10 @@ public class MembresMissionService implements InterfaceMembresMissionService{
 		
 		repository.save(m);
 	}
-
+	
+	public List<Long> findMissionsByUID (Long userId)
+	{
+		List<Long> missions = (List<Long>) repository.findMissionsByUID(userId);
+		return missions;
+	}
 }

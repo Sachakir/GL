@@ -5,4 +5,5 @@ import java.util.List;
 public interface InterfaceMembresMissionService {
 	public List<MembresMission> findAll();
 	public void addMembresMission();
+	public List<Long> findMissionsByUID (Long userId);
 }
