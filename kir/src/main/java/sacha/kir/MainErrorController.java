@@ -5,10 +5,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-@Controller
-public class MainErrorController implements ErrorController {
+//@Controller
+public class MainErrorController {//implements ErrorController {
 
-	@RequestMapping(value = "/error", method = RequestMethod.GET)
+	/*@RequestMapping(value = "/error", method = RequestMethod.GET)
     public String handleError()
     {
     	return "errorPage";
@@ -17,5 +17,5 @@ public class MainErrorController implements ErrorController {
     @Override
     public String getErrorPath() {
         return "/error";
-    }
+    }*/
 }
