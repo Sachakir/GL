@@ -1,6 +1,7 @@
 package sacha.kir.bdd.mission;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -37,15 +38,7 @@ public class MissionService implements InterfaceMissionService{
 	
 	public Mission findMissionById(Long missionId)
 	{
-		Optional<Mission> m = repository.findById(missionId);
-		try {
-			Mission mission = m.get();
-			return mission;
-		}
-		catch(NoSuchElementException e) {
-			e.printStackTrace();
-			return null;
-		}
+		return repository.findById(missionId).orElse(null);
 	}
 	
 	public List<Mission> findMissionsById(List<Long> missionIds)
@@ -58,7 +51,6 @@ public class MissionService implements InterfaceMissionService{
 				missions.add(m);
 			}
 		}
-		
 		return missions;
 	}
 
