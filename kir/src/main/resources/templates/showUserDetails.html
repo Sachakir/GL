@@ -1,49 +1,73 @@
-  <thead>
-  </thead>
-  <tbody>
-  <form action="#" th:action="@{/roleChanged}" th:object="${userForm}">
-    <table>
-  <tr>
-    <td>Nom</td>
-    <td><span th:text="${user.nom}"> Nom </span></td>
-  </tr>
-  <tr>
-    <td>Prenom</td>
-    <td><span th:text="${user.prenom}"> Prenom </span></td>
+  <!DOCTYPE HTML>
+  <html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title th:utext="${title}"></title>
+    <meta charset="utf-8">
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css" />    
+</head>
 
-  </tr>
-  <tr>
-    <td>numTel</td>
-    <td><span th:text="${user.numTel}"> numTel </span></td>
-  </tr>
-  <tr>
-    <td>dateNaissance</td>
-    <td><span th:text="${user.dateNaissance}"> dateNaissance </span></td>
-  </tr>
-  <tr>
-    <td>joursCongesRest</td>
-    <td><span th:text="${user.joursCongesRest}"> joursCongesRest </span></td>
-  </tr>
-  <tr>
-    <td>role</td>
-    
-    <td><span th:text="${user.role}"> joursCongesRest </span></td>
-    <td>changer pour :</td>
-    <td>
-      <select th:field="${user.role}">
-          <option value="NoChanges"> -- </option>
-            <option value="Admin">Admin</option>
-            <option value="UserInfo">UserInfo</option>
-        <option value="ChefInfo">ChefInfo</option>
-   <option value="UserFinances">UserFinances</option>
-        <option value="ChefFinances">ChefFinances</option>
-      </select>
-    </td>
-    <input type="hidden" th:field="${user.uid}" />
-  <tr>
-      <td><button type="submit">Ok</button></td>
-  </tr>
-</table>
-</form>
-<div th:if="${user.uid != null}" th:utext="${user.uid}"></div>
+<body>
+    <div class="container">
+
+        <div th:replace="~{navBar :: #navBar}"></div>
+
+<div>
+        <thead>
+        </thead>
+        <tbody>
+          <form action="#" th:action="@{/roleChanged}" th:object="${userForm}">
+            <table>
+              <tr>
+                <td>Nom</td>
+                <td><span th:text="${user.nom}"> Nom </span></td>
+            </tr>
+            <tr>
+                <td>Prenom</td>
+                <td><span th:text="${user.prenom}"> Prenom </span></td>
+
+            </tr>
+            <tr>
+                <td>numTel</td>
+                <td><span th:text="${user.numTel}"> numTel </span></td>
+            </tr>
+            <tr>
+                <td>dateNaissance</td>
+                <td><span th:text="${user.dateNaissance}"> dateNaissance </span></td>
+            </tr>
+            <tr>
+                <td>joursCongesRest</td>
+                <td><span th:text="${user.joursCongesRest}"> joursCongesRest </span></td>
+            </tr>
+            <tr>
+                <td>role</td>
+
+                <td><span th:text="${user.role}"> joursCongesRest </span></td>
+                <td>changer pour :</td>
+                <td>
+                  <select th:field="${user.role}">
+                      <option value="NoChanges"> -- </option>
+                      <option value="Admin">Admin</option>
+                      <option value="UserInfo">UserInfo</option>
+                      <option value="ChefInfo">ChefInfo</option>
+                      <option value="UserFinances">UserFinances</option>
+                      <option value="ChefFinances">ChefFinances</option>
+                  </select>
+              </td>
+              <input type="hidden" th:field="${user.uid}" />
+              <tr>
+                  <td><button type="submit">Ok</button></td>
+              </tr>
+          </table>
+      </form>
+      <div th:if="${user.uid != null}" th:utext="${user.uid}"></div>
   </tbody>
+</div>
+    </div>
+
+
+<script src="assets/js/jquery.js"></script>
+<script src="assets/js/bootstrap.js"></script>
+<script src="assets/js/scripts.js"></script>
+</body>
+</html>

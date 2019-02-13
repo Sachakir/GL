@@ -1,19 +1,55 @@
-<table>
-	<thead>
-		<tr>
-			<th>Nom</th>
-			<th>Prenom</th>
-			<th>ID</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr th:if="${listUsers.empty}">
-			<td colspan="2">No users !</td>
-		</tr>
-		<tr th:each="user : ${listUsers}">		
-			<td><a th:href="@{'/showUserDetails/'+${user.UID}}"><span th:text="${user.Nom}"> Nom </span></a></td>	
-			<td><span th:text="${user.Prenom}"> Prenom </span></td>
-			<td><span th:text="${user.UID}"> UID </span></td>				
-		</tr>
-	</tbody>
-</table>
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title th:utext="${title}"></title>
+	<meta charset="utf-8">
+	<link href="assets/css/bootstrap.css" rel="stylesheet">
+	<link rel="stylesheet" href="assets/css/style.css" />    
+</head>
+
+<body>
+	<div class="container">
+		
+		<div th:replace="~{navBar :: #navBar}"></div>
+
+		<div class="col-md-offset-2 col-md-8">
+			<div class="panel panel-primary table-responsive">
+				<table class="table table-striped w-auto">
+					<div class="panel-heading"> 
+						<h3 class="panel-title">Liste des utilisateurs</h3>
+					</div>
+					<thead>
+						<tr>
+							<th>Nom</th>
+							<th>Prénom</th>
+							<th>Détails</th>
+							<th>Suppr</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:if="${listUsers.empty}">
+							<td colspan="2">No users !</td>
+						</tr>
+						<tr th:each="user : ${listUsers}">		
+							<td><span th:text="${user.Nom}"> Nom </span></td>	
+							<td><span th:text="${user.Prenom}"> Prenom </span></td>
+							<td>
+								<a id="details" th:href="@{'/showUserDetails/'+${user.UID}}" type="button" class="btn btn-primary">
+									<span class="glyphicon glyphicon-search"></span>
+								</a>
+							</td>
+							<td><a class="btn btn-danger"><span class="glyphicon glyphicon-ban-circle"></span></a></td>				
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+	</div>
+
+
+	<script src="assets/js/jquery.js"></script>
+	<script src="assets/js/bootstrap.js"></script>
+	<script src="assets/js/scripts.js"></script>
+</body>
+</html>

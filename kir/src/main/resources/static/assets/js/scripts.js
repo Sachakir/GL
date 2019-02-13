@@ -17,7 +17,7 @@ $(document).ready(function()
 				return false;
 			});
 
-		});
+});
 
 $("#notificationLink1").click(function()
 {
@@ -30,9 +30,9 @@ $(function(){
 		var $form = $(this);
 		$form.submit();
 		.done(function(data) {
-			$("#html").html(data);
 			$("#formulaire").modal("hide"); 
 		    $('#success_msg').modal('show');
+			$("#html").html(data);
 		})
 		.fail(function() {
 			alert("Erreur d'envoi");
