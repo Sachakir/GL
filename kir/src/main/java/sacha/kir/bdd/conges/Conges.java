@@ -9,29 +9,29 @@ import javax.persistence.Table;
 @Table(name = "conges")
 public class Conges {
 	
-	 @Id
-	 @Column(name="CongesID")
-	 private Long conges_id;
-	 
-	 @Column(name="ValidationRH")
-	 private String validation_rh;
-	 
-	 @Column(name="validation_chef_service")
-	 private String validation_chef_service;
-	 
-	 @Column(name="UID")
-	 private long UID;
-	 
-	 @Column(name="date_fin")
-	 private String date_fin;
-	 
-	 @Column(name="date_debut")
-	 private String date_debut;
-	 
-	 
-	 
-	 public Conges() {}
-
+	@Id
+	@Column(name="CongesID")
+	private Long conges_id;
+	
+	@Column(name="ValidationRH")
+	private String validation_rh;
+	
+	@Column(name="validation_chef_service")
+	private String validation_chef_service;
+	
+	@Column(name="UID")
+	private long UID;
+	
+	@Column(name="date_fin")
+	private String date_fin;
+	
+	@Column(name="date_debut")
+	private String date_debut;
+	
+	
+	
+	public Conges() {}
+ 
 	public Conges(Long congesid, String datedebut, String datefin, String validationrh, String validationchefdeservice,
 			long uid)
 	{

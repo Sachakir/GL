@@ -24,7 +24,7 @@ public class CongeForm {
 	public String getDateDebut() {
 		return dateDebut;
 	}
-	public void setDatedebut(String dateDebut) {
+	public void setDateDebut(String dateDebut) {
 		this.dateDebut = dateDebut;
 	}
 	public String getDateFin() {
