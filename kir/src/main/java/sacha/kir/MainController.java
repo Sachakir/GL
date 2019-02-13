@@ -15,12 +15,17 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import sacha.kir.bdd.approle.AppRole;
 import sacha.kir.bdd.approle.InterfaceAppRoleService;
@@ -75,19 +80,11 @@ public class MainController {
 	
     @RequestMapping(value = { "/", "/welcome" }, method = RequestMethod.GET)
     public String welcomePage(Model model, Principal principal) {
-        model.addAttribute("title", "Welcome");
-        model.addAttribute("message", "This is welcome page!");
-
-        if(principal == null)
+        if(principal != null)
         {
-        	System.out.println("Pas d'utilisateur !!!");
-        	return "Login";
+        	return "redirect:/Accueil";
         }
-        else
-        {
-        	return "Login";//"welcomePage-Thibaut";
-        }
-        
+        else return "Login";   
     }
  
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
@@ -484,6 +481,17 @@ public class MainController {
         
         // Appel de la page du formulaire
         return "remboursementForm";
+    }
+    
+    
+    @PostMapping("/test")
+    public String handleFileUpload(Model model, @RequestParam("file") MultipartFile file) {
+
+        //JustificatifService.storeJustificatif(file);
+        model.addAttribute("message",
+                "You successfully uploaded " + file.getOriginalFilename() + "!");
+
+        return "test";
     }
     /* *************************************************** */
 }

@@ -3,11 +3,7 @@ body {
   padding-top: 10px;
 }
 
-[class*="col-"] { 
-  background-color: #dbedff;
 
-  margin-bottom: 20px; 
-}
 
 img { width: 100%; }
 
@@ -186,4 +182,15 @@ a:active, a:focus { outline:none; }
 .modal-body {
 	margin-left: 20px;
 	margin-right: 20px;
+}
+.highlight {
+    background-color: gray;
+}
+.details {
+    background-color: white;
+    padding-left: 10px;
+}
+.total{
+    width :4em;
+    padding: 0px;
 }
