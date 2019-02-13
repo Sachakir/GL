@@ -3,6 +3,7 @@ package sacha.kir;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -470,18 +471,19 @@ public class MainController {
     /* *************************************************** */
     @GetMapping("/demandeRemboursement")
     public String remboursementForm(Model model, Principal principal) {
+    	// Recuperation des missions assignees a l'user
     	String[] names = principal.getName().split("\\.");
     	Long userId = UtilisateurService.findPrenomNom(names[1], names[0]).getUID();
     	List<Long> missionsIDs = MembresMissionService.findMissionsByUID(userId);
-    	for(long missionID : missionsIDs)
-    	{
-    		System.out.println("Mission ID : " + missionID);
-    	}
+    	Collections.sort(missionsIDs);
+    	List<Mission> userMissions = MissionService.findMissionsById(missionsIDs);
+    	
+    	// Ajout des attributs pour la mise en forme du formulaire
         model.addAttribute("remboursementForm", new RemboursementForm());
-        //model.addAttribute("missionsAssociated", attributeValue);
-        return "remboursementForm";
+        model.addAttribute("missions", userMissions);
         
-        //List<Mission> listm = MissionService.findAll();
+        // Appel de la page du formulaire
+        return "remboursementForm";
     }
     /* *************************************************** */
 }

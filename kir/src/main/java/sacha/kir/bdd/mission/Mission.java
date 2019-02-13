@@ -7,11 +7,14 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "mission")
-public class Mission 
+public class Mission
 {
 	@Id
 	@Column(name="MissionID")
 	private Long mission_id;
+	
+	@Column(name="Titre")
+	private String titre;
 	
 	@Column(name="Description")
 	private String description;
@@ -27,9 +30,10 @@ public class Mission
 	
 	public Mission() {}
 
-	public Mission(Long mission_id, String description, String date_debut, String date_fin, Long responsable_id)
+	public Mission(Long mission_id, String titre, String description, String date_debut, String date_fin, Long responsable_id)
 	{
 		this.mission_id = mission_id;
+		this.titre = titre;
 		this.description = description;
 		this.date_debut = date_debut;
 		this.date_fin = date_fin;
@@ -43,7 +47,15 @@ public class Mission
 	public void setMission_id(Long mission_id) {
 		this.mission_id = mission_id;
 	}
-
+	
+	public String getTitre() {
+		return titre;
+	}
+	
+	public void setTitre(String titre) {
+		this.titre = titre;
+	}
+	
 	public String getDescription() {
 		return description;
 	}

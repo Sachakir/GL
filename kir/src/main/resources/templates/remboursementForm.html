@@ -12,14 +12,9 @@
                 <tr>
                 	<td>Mission associée : </td>
                     <td><select th:field="*{mission}">
-          <option value="NoChanges"> -- </option>
-            <option value="Admin">Admin</option>
-            <option value="UserInfo">UserInfo</option>
-        <option value="ChefInfo">ChefInfo</option>
-   <option value="UserFinances">UserFinances</option>
-        <option value="ChefFinances">ChefFinances</option>
-      </select></td>
-                    
+          				<option value="Nothing"> -- </option>
+          				<option th:each="mission : ${missions}" th:value="${mission.mission_id}" th:text="${mission.mission_id} + ' : ' + ${mission.titre}"></option>
+      				</select></td>
                 </tr>
                 
                 <tr>
