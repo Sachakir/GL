@@ -464,35 +464,4 @@ public class MainController {
     	
         return "roleChanged";
     }
-    
-    // TEST FORMULAIRE DEMANDE REMBOURSEMENT
-    /* *************************************************** */
-    @GetMapping("/demandeRemboursement")
-    public String remboursementForm(Model model, Principal principal) {
-    	// Recuperation des missions assignees a l'user
-    	String[] names = principal.getName().split("\\.");
-    	Long userId = UtilisateurService.findPrenomNom(names[1], names[0]).getUID();
-    	List<Long> missionsIDs = MembresMissionService.findMissionsByUID(userId);
-    	Collections.sort(missionsIDs);
-    	List<Mission> userMissions = MissionService.findMissionsById(missionsIDs);
-    	
-    	// Ajout des attributs pour la mise en forme du formulaire
-        model.addAttribute("remboursementForm", new RemboursementForm());
-        model.addAttribute("missions", userMissions);
-        
-        // Appel de la page du formulaire
-        return "remboursementForm";
-    }
-    
-    
-    @PostMapping("/demandeRemboursement")
-    public String handleFileUpload(@RequestParam("file") MultipartFile file, Model model) {
-
-        JustificatifService.storeJustificatif(file);
-        model.addAttribute("message",
-                "You successfully uploaded " + file.getOriginalFilename() + "!");
-
-        return "redirect:/demandeRemboursement";
-    }
-    /* *************************************************** */
 }

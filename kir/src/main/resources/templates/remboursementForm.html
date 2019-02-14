@@ -12,9 +12,11 @@
                 <tr>
                 	<td>Mission associée : </td>
                     <td><select th:field="*{mission}">
-          				<option value="Nothing"> -- </option>
+          				<option value=""> -- </option>
           				<option th:each="mission : ${missions}" th:value="${mission.mission_id}" th:text="${mission.mission_id} + ' : ' + ${mission.titre}"></option>
       				</select></td>
+      				
+      				<td th:if="${#fields.hasErrors('mission')}" th:errors="*{mission}">Mission incorrect</td>
                 </tr>
                 
                 <tr>
