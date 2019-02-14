@@ -83,9 +83,27 @@ public class SachaController
     }
 	
 	@RequestMapping(path="/Chef/{id}")
-    public String getMessage(@PathVariable("id") long id,CongesV2 conges,Model model) 
+    public String getMessage(@PathVariable("id") long id,CongesV2 congesv2,Model model,Principal principal) 
     {
+		Conges c = CongesService.findByCongesId(id);
+
+		String prenomnom = principal.getName();
+		String[] names = prenomnom.split("\\.");
+		congesv2.setCongesid(id);
+		congesv2.setDatedebut(c.getDatedebut());
+		congesv2.setDatefin(c.getDatefin());
+		congesv2.setPrenomNom(names[0] + " " + names[1]);
+		congesv2.setValidationchefservice(c.getValidationchefdeservice());
+		congesv2.setValidationrh(c.getValidationrh());
 		
+		model.addAttribute("conges", congesv2);
 		return "showCongesDetails";
+    }
+	
+	@GetMapping("/congesChanged")
+    public String congesChanged(CongesV2 congesv2)
+    {
+		CongesService.updateChefState(congesv2.getCongesid(), congesv2.getValidationchefservice());
+		return "Login";
     }
 }

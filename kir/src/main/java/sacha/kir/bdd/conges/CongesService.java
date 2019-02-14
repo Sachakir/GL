@@ -30,4 +30,14 @@ public class CongesService implements InterfaceCongesService
 		repository.save(c);
 	}
 
+	@Override
+	public Conges findByCongesId(long congesid) {
+		return repository.findByCongesId(congesid);
+	}
+
+	@Override
+	public void updateChefState(long congesid, String newstate) {
+		repository.updateChefState(congesid, newstate);
+	}
+
 }

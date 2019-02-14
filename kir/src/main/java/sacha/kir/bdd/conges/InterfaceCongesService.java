@@ -5,4 +5,6 @@ public interface InterfaceCongesService
 {
 	public List<Conges> findAll();
 	public void addConges();
+	public Conges findByCongesId(long congesid);
+	public void updateChefState(long congesid, String newstate);
 }
