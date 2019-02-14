@@ -26,4 +26,9 @@ public interface CongesRepository extends CrudRepository<Conges, Long>{
 	
 	@Query("SELECT MAX(conges_id) FROM Conges")
 	public int getMaxId();
+	
+	@Transactional
+	@Modifying
+	@Query("DELETE FROM Conges WHERE UID = :userid")
+	public void deleteConges(@Param("userid") long uid);
 }

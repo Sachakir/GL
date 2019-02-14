@@ -47,4 +47,9 @@ public class UtilisateurService implements InterfaceUtilisateurService
 	public Utilisateur findById(long id) {
 		return repository.findById(id);
 	}
+
+	@Override
+	public void deleteUser(long uid) {
+		repository.deleteUser(uid);
+	}
 }

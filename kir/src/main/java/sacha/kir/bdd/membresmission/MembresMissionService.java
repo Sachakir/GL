@@ -34,4 +34,9 @@ public class MembresMissionService implements InterfaceMembresMissionService{
 		List<Long> missions = (List<Long>) repository.findMissionsByUID(userId);
 		return missions;
 	}
+
+	@Override
+	public void deleteMembresMission(long uid) {
+		repository.deleteMembresMission(uid);
+	}
 }

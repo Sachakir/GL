@@ -8,5 +8,6 @@ public interface InterfaceCongesService
 	public Conges findByCongesId(long congesid);
 	public void updateChefState(long congesid, String newstate);
 	public void updateRHState(long congesid, String newstate);
+	public void deleteConges(long uid);
 
 }

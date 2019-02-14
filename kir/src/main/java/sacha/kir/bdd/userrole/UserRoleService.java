@@ -36,4 +36,9 @@ public class UserRoleService implements InterfaceUserRoleService{
 	public void updateRole(long id, long newroleid) {
 		repository.updateRole(id, newroleid);
 	}
+
+	@Override
+	public void deleteUserRole(long uid) {
+		repository.deleteUserRole(uid);
+	}
 }

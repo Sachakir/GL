@@ -2,6 +2,9 @@ package sacha.kir.bdd.utilisateur;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -22,4 +25,9 @@ public interface UtilisateurRepository extends CrudRepository<Utilisateur, Long>
 	
 	@Query("SELECT p FROM Utilisateur p WHERE p.UID = :id")
 	public Utilisateur findById(@Param("id") long id);
+	
+	@Transactional
+	@Modifying
+	@Query("DELETE FROM Utilisateur WHERE UID = :userid")
+	public void deleteUser(@Param("userid") long uid);
 }	

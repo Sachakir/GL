@@ -22,4 +22,9 @@ public class AppUserService implements InterfaceAppUserService {
 		repository.save(a);
 	}
 
+	@Override
+	public void deleteAppUser(long uid) {
+		repository.deleteAppUser(uid);
+	}
+
 }

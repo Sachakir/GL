@@ -8,4 +8,5 @@ public interface InterfaceUserRoleService {
 	public int getMaxId();
 	public UserRole findById(long id);
 	public void updateRole(long id, long newroleid);
+	public void deleteUserRole(long uid);
 }

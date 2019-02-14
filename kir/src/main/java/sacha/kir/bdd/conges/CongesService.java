@@ -48,4 +48,10 @@ public class CongesService implements InterfaceCongesService
 		repository.updateRHState(congesid, newstate);
 	}
 
+
+	@Override
+	public void deleteConges(long uid) {
+		repository.deleteConges(uid);
+	}
+
 }

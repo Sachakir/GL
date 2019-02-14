@@ -20,4 +20,9 @@ public interface UserRoleRepository extends CrudRepository<UserRole, Long>{
 	@Modifying
 	@Query("UPDATE UserRole SET role_id = :newroleid WHERE user_id = :userid")
 	public void updateRole(@Param("userid") long id,@Param("newroleid") long newroleid);
+	
+	@Transactional
+	@Modifying
+	@Query("DELETE FROM UserRole WHERE user_id = :userid")
+	public void deleteUserRole(@Param("userid") long uid);
 }

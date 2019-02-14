@@ -13,8 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import sacha.kir.bdd.approle.AppRole;
 import sacha.kir.bdd.approle.InterfaceAppRoleService;
+import sacha.kir.bdd.appuser.AppUserService;
+import sacha.kir.bdd.appuser.InterfaceAppUserService;
 import sacha.kir.bdd.conges.Conges;
 import sacha.kir.bdd.conges.InterfaceCongesService;
+import sacha.kir.bdd.membresmission.InterfaceMembresMissionService;
 import sacha.kir.bdd.userrole.InterfaceUserRoleService;
 import sacha.kir.bdd.userrole.UserRole;
 import sacha.kir.bdd.utilisateur.InterfaceUtilisateurService;
@@ -33,6 +36,10 @@ public class SachaController
 	InterfaceUserRoleService UserRoleService;
 	@Autowired
     InterfaceAppRoleService AppRoleService;
+	@Autowired
+    InterfaceAppUserService AppUserService;
+	@Autowired
+    InterfaceMembresMissionService MembresMissionService;
 	
 	@GetMapping("/validationConges")
     public String addConges(Principal principal,Model model) 
@@ -160,5 +167,30 @@ public class SachaController
 		
 		model.addAttribute("conges", congesv2);
 		return "showCongesDetailsRH";
+    }
+	
+	@RequestMapping(path="/deleteUser/{id}")
+    public String getMessage(@PathVariable("id") long id,Model model,UserForm userForm) 
+    {	
+		UserRole ur = UserRoleService.findById(id);
+		if (ur != null)
+		{
+			System.out.println(ur.getId());
+			System.out.println(ur.getRole_id());
+			System.out.println(ur.getUser_id());
+		}
+		MembresMissionService.deleteMembresMission(id);
+		CongesService.deleteConges(id);
+		
+		UserRoleService.deleteUserRole(id);
+		AppUserService.deleteAppUser(id);
+		UtilisateurService.deleteUser(id);
+		
+		System.out.println("DELETED " + id);
+		
+		List<Utilisateur> cs = UtilisateurService.findAll();
+    	model.addAttribute("listUsers", cs);
+		
+		return "showUsers";
     }
 }

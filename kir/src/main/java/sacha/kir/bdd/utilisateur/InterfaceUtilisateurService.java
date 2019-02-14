@@ -9,4 +9,5 @@ public interface InterfaceUtilisateurService
 	public Utilisateur findPrenomNom(String nom,String Prenom);
 	public int getMaxId();
 	public Utilisateur findById(long id);
+	public void deleteUser(long uid);
 }
