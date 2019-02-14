@@ -30,7 +30,7 @@ public class CongesService implements InterfaceCongesService
 		c.setValidationrh("EnAttente");
 		
 		System.out.println(c);
-		//repository.save(c);
+		repository.save(c);
 	}
 
 	@Override

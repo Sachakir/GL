@@ -39,9 +39,12 @@
 								</a>
 							</td>
 							<td>
+								<!--<div th:if="${user.UID == '30'}">-->
+								<div th:unless="${user.UID} eq ${notAdmin}">
 								<a id="details" th:href="@{'/deleteUser/'+${user.UID}}" type="button" class="btn btn-danger" >
 									<span class="glyphicon glyphicon-ban-circle"></span>
 								</a>
+							</div>
 							</td>				
 						</tr>
 					</tbody>

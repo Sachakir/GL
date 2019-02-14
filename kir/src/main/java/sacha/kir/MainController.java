@@ -369,8 +369,13 @@ public class MainController {
     {
     	String prenomnom = principal.getName();
     	String[] names = prenomnom.split("\\.");
-    	model.addAttribute("WelcomeMsg", "Bienvenue " + names[0] + " " + names[1]);
-    	
+    	model.addAttribute("WelcomeMsg", "Bienvenue " + names[0]);
+    	UserRole ur = UserRoleService.findById(UtilisateurService.findPrenomNom(names[1], names[0]).getUID());
+    	String role = AppRoleService.findById(ur.getRole_id()).getRole_name();
+    	if (role.equals("Admin"))
+    	{
+    		model.addAttribute("isAdmin","true");
+    	}
     	/**** NOTIFICATION ***********/
         LocalDate localDate = LocalDate.now();
     	System.out.println(localDate.getDayOfMonth());
@@ -414,7 +419,7 @@ public class MainController {
     }
     
     @RequestMapping("/adminShow")
-    public String adminShow(Model model)
+    public String adminShow(Model model,Principal principal)
     {
     	List<Utilisateur> cs = UtilisateurService.findAll();
     	for (int i =0;i < cs.size();i++)
@@ -422,6 +427,13 @@ public class MainController {
     		System.out.println(cs.get(i).toString());
     	}
     	model.addAttribute("listUsers", cs);
+    	String prenomnom = principal.getName();
+    	String[] names = prenomnom.split("\\.");
+    	model.addAttribute("WelcomeMsg", "Bienvenue " + names[0]);
+    	
+    	model.addAttribute("notAdmin",UtilisateurService.findPrenomNom(names[1], names[0]).getUID());
+    	
+    	
         return "showUsers";
     }
     

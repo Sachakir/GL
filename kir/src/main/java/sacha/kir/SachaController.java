@@ -193,4 +193,11 @@ public class SachaController
 		
 		return "showUsers";
     }
+	
+	@RequestMapping(path="/test")
+    public String test()
+    {
+		CongesService.addConges("14/02/2019", "21/02/2019", 31);
+		return "Login";
+    }
 }

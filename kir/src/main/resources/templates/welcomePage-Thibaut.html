@@ -192,15 +192,17 @@
 	</div>
 </section>
 <section class="row">
-	<div id="html" class="col-sm-offset-3 col-sm-3">
-		<button data-toggle="modal" data-target="#formulaire" class="btn btn-primary" type="button">
-			Ajouter un utilisateur (Admin only)
-		</button>
-	</div>
-	<div class="col-sm-3">
-		<a href="/adminShow" class="btn btn-primary" role="button">
-			Gérer les utilisateurs (Admin only)
-		</a>
+	<div th:if="${isAdmin}">
+		<div id="html" class="col-sm-offset-3 col-sm-3">
+			<button data-toggle="modal" data-target="#formulaire" class="btn btn-primary" type="button">
+				Ajouter un utilisateur (Admin only)
+			</button>
+		</div>
+		<div class="col-sm-3">
+			<a href="/adminShow" class="btn btn-primary" role="button">
+				Gérer les utilisateurs (Admin only)
+			</a>
+		</div>
 	</div>
 </section>
 
@@ -236,27 +238,27 @@
 	}
 
 	function sendData()
-{
-        $.ajax(
-        {
-            type: "POST",
-            data: $("#addUserForm").serialize(),
-            cache: false,
-            url: "/adminAdd",
-            success: function(data) 
-            {
-                
-			$("#formulaire").modal("hide"); 
-		    $('#success_msg').modal('show');
-                
-            },
-            error: function()
-            {
-                alert("Error - Data not saved");
-            }
+	{
+		$.ajax(
+		{
+			type: "POST",
+			data: $("#addUserForm").serialize(),
+			cache: false,
+			url: "/adminAdd",
+			success: function(data) 
+			{
 
-        });
-}
+				$("#formulaire").modal("hide"); 
+				$('#success_msg').modal('show');
+
+			},
+			error: function()
+			{
+				alert("Error - Data not saved");
+			}
+
+		});
+	}
 </script>
 
 <script src="assets/js/jquery.js"></script>
