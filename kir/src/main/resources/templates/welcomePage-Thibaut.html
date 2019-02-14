@@ -3,8 +3,8 @@
 <head>
 	<title th:utext="${title}"></title>
 	<meta charset="utf-8"/>
-	<link href="assets/css/bootstrap.css" rel="stylesheet"/>
-	<link rel="stylesheet" href="assets/css/style.css" />    
+	<link href="/assets/css/bootstrap.css" rel="stylesheet"/>
+	<link rel="stylesheet" href="/assets/css/style.css" />    
 </head>
 
 <body>
@@ -193,7 +193,7 @@
 </section>
 <section class="row">
 	<div id="html" class="col-sm-offset-3 col-sm-3">
-		<button data-toggle="modal" th:href="@{/adminAdd}" data-target="#formulaire" class="btn btn-primary" type="button">
+		<button data-toggle="modal" data-target="#formulaire" class="btn btn-primary" type="button">
 			Ajouter un utilisateur (Admin only)
 		</button>
 	</div>
@@ -225,8 +225,19 @@
 </div>
 <!-- TODO -->
 
-<script src="assets/js/jquery.js"></script>
-<script src="assets/js/bootstrap.js"></script>
-<script src="assets/js/scripts.js"></script>
+<script type="text/javascript">
+	function myFunction() {
+		var x = document.getElementById("mdp");
+		if (x.type === "password") {
+			x.type = "text";
+		} else {
+			x.type = "password";
+		}
+	}
+</script>
+
+<script src="/assets/js/jquery.js"></script>
+<script src="/assets/js/bootstrap.js"></script>
+<script src="/assets/js/scripts.js"></script>
 </body>
 </html>

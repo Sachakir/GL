@@ -194,3 +194,17 @@ a:active, a:focus { outline:none; }
     width :4em;
     padding: 0px;
 }
+
+
+.field-icon {
+  float: right;
+  margin-left: -25px;
+  margin-top: -25px;
+  position: relative;
+  z-index: 2;
+}
+
+.container{
+  padding-top:50px;
+  margin: auto;
+}

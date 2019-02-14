@@ -3,8 +3,8 @@
 <head>
 	<title th:utext="${title}"></title>
 	<meta charset="utf-8">
-	<link href="assets/css/bootstrap.css" rel="stylesheet">
-	<link rel="stylesheet" href="assets/css/style.css" />    
+	<link href="/assets/css/bootstrap.css" rel="stylesheet">
+	<link rel="stylesheet" href="/assets/css/style.css" />    
 </head>
 
 <body>
@@ -56,7 +56,8 @@
 							<div class="form-group">
 								<label class="control-label" for="mdp">Mot de passe</label>  
 								<div>
-									<input id="mdp" name="mdp" type="text" placeholder="ex : ***************" class="form-control input-md" th:field="*{mdp}">
+									<input id="mdp" name="mdp" type="password" placeholder="ex : *********" class="form-control input-md" th:field="*{mdp}">
+									<input type="checkbox" onclick="myFunction()"> Voir Mot de passe
 									<label th:if="${#fields.hasErrors('mdp')}" th:errors="*{mdp}">erreur mdp</label>
 								</div>
 							</div>
@@ -84,5 +85,8 @@
 			</div>
 		</div>
 
+<script src="/assets/js/jquery.js"></script>
+<script src="/assets/js/bootstrap.js"></script>
+<script src="/assets/js/scripts.js"></script>
 </body>
 </html>
