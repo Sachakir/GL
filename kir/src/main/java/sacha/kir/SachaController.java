@@ -170,7 +170,7 @@ public class SachaController
     }
 	
 	@RequestMapping(path="/deleteUser/{id}")
-    public String getMessage(@PathVariable("id") long id,Model model,UserForm userForm) 
+    public String getMessage(@PathVariable("id") long id,Model model,UserForm userForm,Principal principal) 
     {	
 		UserRole ur = UserRoleService.findById(id);
 		if (ur != null)
@@ -190,14 +190,10 @@ public class SachaController
 		
 		List<Utilisateur> cs = UtilisateurService.findAll();
     	model.addAttribute("listUsers", cs);
-		
+    	String prenomnom = principal.getName();
+    	String[] names = prenomnom.split("\\.");
+    	model.addAttribute("notAdmin",UtilisateurService.findPrenomNom(names[1], names[0]).getUID());
 		return "showUsers";
     }
 	
-	@RequestMapping(path="/test")
-    public String test()
-    {
-		CongesService.addConges("14/02/2019", "21/02/2019", 31);
-		return "Login";
-    }
 }
