@@ -484,14 +484,14 @@ public class MainController {
     }
     
     
-    @PostMapping("/test")
-    public String handleFileUpload(Model model, @RequestParam("file") MultipartFile file) {
+    @PostMapping("/demandeRemboursement")
+    public String handleFileUpload(@RequestParam("file") MultipartFile file, Model model) {
 
-        //JustificatifService.storeJustificatif(file);
+        JustificatifService.storeJustificatif(file);
         model.addAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
 
-        return "test";
+        return "redirect:/demandeRemboursement";
     }
     /* *************************************************** */
 }
