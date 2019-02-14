@@ -40,8 +40,12 @@ public class JustificatifService implements InterfaceJustificatifService {
 			if(filepath.contains("..")) {
                 System.err.println("Sorry! Filename contains invalid path sequence " + filepath);
             }
-
-            Justificatif j = new Justificatif((long)repository.getMaxId() + 1, file.getBytes());
+			
+			Justificatif j;
+			if(repository.count() == 0)
+				j = new Justificatif((long)1, file.getBytes());
+			else
+				j = new Justificatif((long)repository.getMaxId() + 1, file.getBytes());
 
             return repository.save(j);
         } catch (IOException e) {

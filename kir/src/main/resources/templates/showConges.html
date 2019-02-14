@@ -1,0 +1,26 @@
+<table>
+	<thead>
+		<tr>
+			<th>Debut</th>
+			<th>Fin</th>
+			<th>ChefService</th>
+			<th>RH</th>
+			<th>Personne</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr th:if="${listConges.empty}">
+			<td colspan="2">Pas de demandes de conges !</td>
+		</tr>
+		<tr th:each="conges : ${listConges}">		
+		
+			<td><span th:text="${conges.datedebut}"> DateDebut </span></td>
+			<td><span th:text="${conges.datefin}"> DateFin </span></td>
+			<td><span th:text="${conges.validationchefservice}"> ValidationChefService </span></td>
+			<td><span th:text="${conges.validationrh}"> ValidationRh </span></td>
+			<td><span th:text="${conges.PrenomNom}"> Personne </span></td>
+			<td><a th:href="@{'/'+${pageValidation}+'/'+${conges.congesid}}">Modifier</a></td>
+			
+		</tr>
+	</tbody>
+</table>

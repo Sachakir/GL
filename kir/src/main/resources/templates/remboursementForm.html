@@ -7,7 +7,7 @@
         <!-- Include _menu.html -->
       	<th:block th:include="/_menu"></th:block>
       	
-        <form action="#" th:action="@{/test}" th:object="${remboursementForm}" method="post">
+        <form action="#" enctype="multipart/form-data" th:action="@{/demandeRemboursement}" th:object="${remboursementForm}" method="post">
             <table>
                 <tr>
                 	<td>Mission associée : </td>

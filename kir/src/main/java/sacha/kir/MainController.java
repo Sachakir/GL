@@ -259,12 +259,6 @@ public class MainController {
             return "welcomePage-Thibaut";
         }
         
-        System.out.println(userForm.getDateNaissance());
-        System.out.println(userForm.getJoursCongesRest());
-        System.out.println(userForm.getMdp());
-        System.out.println(userForm.getNom());
-        System.out.println(userForm.getNumTel());
-        System.out.println(userForm.getPrenom());
         System.out.println(userForm.getRole());
         
         Utilisateur u = UtilisateurService.findPrenomNom(userForm.getNom(),userForm.getPrenom());
@@ -294,7 +288,8 @@ public class MainController {
         
         UserRole userRole = new UserRole();
         userRole.setUser_id((long) (maxId + 1));
-        userRole.setRole_id((long) 2);//Admin par defaut TODO a changer
+        AppRole aptmp = AppRoleService.findByRole(userForm.getRole());
+        userRole.setRole_id(aptmp.getRole_id());
         userRole.setId((long) UserRoleService.getMaxId() + 1);
 
         UserRoleService.addUserRole(userRole);
@@ -303,8 +298,11 @@ public class MainController {
     }
     
     @GetMapping("/addConges")
-    public String addConges(CongeForm congeForm) {
+    public String addConges(CongeForm congeForm, Principal principal) {
 
+    	String[] names = principal.getName().split("\\.");
+    	Long userId = UtilisateurService.findPrenomNom(names[1], names[0]).getUID();
+    	
     	List<Conges> cs = CongesService.findAll();
     	for (int i =0; i<cs.size(); i++)
     	{
@@ -314,13 +312,16 @@ public class MainController {
     }
     
     @PostMapping("/addConges")
-    public String submitConges(@Valid CongeForm congeForm, BindingResult bindingResult, Model model) {
-    	//CongesService.addConges();
+    public String submitConges(@Valid CongeForm congeForm, BindingResult bindingResult, Model model, Principal principal) {
     	
-    	System.out.println(congeForm.getUsername());
         System.out.println(congeForm.getDateDebut());
         System.out.println(congeForm.getDateFin());
+
+    	String[] names = principal.getName().split("\\.");
+    	Long uID = UtilisateurService.findPrenomNom(names[1], names[0]).getUID();
     	
+    	CongesService.addConges(congeForm.getDateDebut(), congeForm.getDateFin(), uID);
+        
     	return "login";
     }
     
@@ -484,14 +485,14 @@ public class MainController {
     }
     
     
-    @PostMapping("/test")
-    public String handleFileUpload(Model model, @RequestParam("file") MultipartFile file) {
+    @PostMapping("/demandeRemboursement")
+    public String handleFileUpload(@RequestParam("file") MultipartFile file, Model model) {
 
-        //JustificatifService.storeJustificatif(file);
+        JustificatifService.storeJustificatif(file);
         model.addAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
 
-        return "test";
+        return "redirect:/demandeRemboursement";
     }
     /* *************************************************** */
 }

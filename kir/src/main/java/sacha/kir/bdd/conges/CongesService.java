@@ -17,17 +17,35 @@ public class CongesService implements InterfaceCongesService
 		return users;
 	}
 
+
 	@Override
-	public void addConges() 
-	{
+	public void addConges(String date_debut, String date_fin, long uID) {
+		
 		Conges c = new Conges();
-		c.setCongesid((long) 41);
-		c.setDatedebut("2019-01-22");
-		c.setDatefin("2019-01-23");
-		c.setUid(9);
+		c.setCongesid(repository.count()==0 ? 1 : (long) repository.getMaxId());
+		c.setDatedebut(date_debut);
+		c.setDatefin(date_fin);
+		c.setUid(uID);
 		c.setValidationchefdeservice("EnAttente");
 		c.setValidationrh("EnAttente");
-		repository.save(c);
+		
+		System.out.println(c);
+		//repository.save(c);
+	}
+
+	@Override
+	public Conges findByCongesId(long congesid) {
+		return repository.findByCongesId(congesid);
+	}
+
+	@Override
+	public void updateChefState(long congesid, String newstate) {
+		repository.updateChefState(congesid, newstate);
+	}
+
+	@Override
+	public void updateRHState(long congesid, String newstate) {
+		repository.updateRHState(congesid, newstate);
 	}
 
 }
