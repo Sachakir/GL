@@ -298,8 +298,11 @@ public class MainController {
     }
     
     @GetMapping("/addConges")
-    public String addConges(CongeForm congeForm) {
+    public String addConges(CongeForm congeForm, Principal principal) {
 
+    	String[] names = principal.getName().split("\\.");
+    	Long userId = UtilisateurService.findPrenomNom(names[1], names[0]).getUID();
+    	
     	List<Conges> cs = CongesService.findAll();
     	for (int i =0; i<cs.size(); i++)
     	{
@@ -309,13 +312,16 @@ public class MainController {
     }
     
     @PostMapping("/addConges")
-    public String submitConges(@Valid CongeForm congeForm, BindingResult bindingResult, Model model) {
-    	//CongesService.addConges();
+    public String submitConges(@Valid CongeForm congeForm, BindingResult bindingResult, Model model, Principal principal) {
     	
-    	System.out.println(congeForm.getUsername());
         System.out.println(congeForm.getDateDebut());
         System.out.println(congeForm.getDateFin());
+
+    	String[] names = principal.getName().split("\\.");
+    	Long uID = UtilisateurService.findPrenomNom(names[1], names[0]).getUID();
     	
+    	CongesService.addConges(congeForm.getDateDebut(), congeForm.getDateFin(), uID);
+        
     	return "login";
     }
     

@@ -23,4 +23,7 @@ public interface CongesRepository extends CrudRepository<Conges, Long>{
 	@Modifying
 	@Query("UPDATE Conges SET validation_rh = :newstate WHERE conges_id = :congesid")
 	public void updateRHState(@Param("congesid") long id,@Param("newstate") String newstate);
+	
+	@Query("SELECT MAX(conges_id) FROM Conges")
+	public int getMaxId();
 }
