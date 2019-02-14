@@ -5,9 +5,6 @@
 	<meta charset="utf-8"/>
 	<link href="/assets/css/bootstrap.css" rel="stylesheet"/>
 	<link rel="stylesheet" href="/assets/css/style.css" />
-	<script src="/assets/js/jquery.js"></script>
-	<script src="/assets/js/bootstrap.js"></script>
-	<script src="/assets/js/scripts.js"></script>  
 </head>
 
 <body>
@@ -198,12 +195,12 @@
 	<div th:if="${isAdmin}">
 		<div id="html" class="col-sm-offset-3 col-sm-3">
 			<button data-toggle="modal" data-target="#formulaire" class="btn btn-primary" type="button">
-				Ajouter un utilisateur (Admin only)
+				Ajouter un utilisateur
 			</button>
 		</div>
 		<div class="col-sm-3">
 			<a href="/adminShow" class="btn btn-primary" role="button">
-				Gérer les utilisateurs (Admin only)
+				Gérer les utilisateurs
 			</a>
 		</div>
 	</div>
@@ -211,20 +208,23 @@
 
 <div th:replace="~{addUserForm :: #formulaire}"></div>
 
-<div class="modal fade" id="success_msg" role="dialog" tabindex="-1">
-	<div class="success">
-		<div class="modal-dialog-success">
-			<div class="col-xs-12 pade_none">
-				<button type="button" class="close" onClick="closeConfirm();" data-dismiss="modal">&times;</button>
-				<div class="col-xs-12 pade_none">
-					<h2>Success!</h2>
-					<p>Your message has been sent.</p>
-				</div>
-				<div class="col-xs-12 pad_none">
-				</div>
+<div class="modal fade" id="success_msg" role="dialog">
+	<div class="modal-dialog modal-sm"> 
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">x</button>
+				<h4 class="modal-title">Réussite</h4>
+			</div>
+			<div class="modal-body">
+				<p>Utilisateur ajouté</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
 			</div>
 		</div>
 	</div>
+</div>
+
 </div>
 
 </div>
@@ -264,5 +264,8 @@
 	}
 </script>
 
+<script type="text/javascript" src="/assets/js/jquery.js"></script>
+<script type="text/javascript" src="/assets/js/bootstrap.js"></script>
+<script type="text/javascript" src="/assets/js/scripts.js"></script>  
 </body>
 </html>
