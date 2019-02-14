@@ -17,7 +17,7 @@
 						<h4 class="modal-title">Ajouter un utilisateur</h4>
 					</div>
 					<div class="modal-body">
-						<form class="form-horizontal" action="#" th:action="@{/adminAdd}" th:object="${userForm}" method="post">
+						<form id="addUserForm" class="form-horizontal" action="#" th:action="@{/adminAdd}" th:object="${userForm}" method="post">
 							<div class="form-group">
 								<label class="control-label" for="nom">Nom</label>  
 								<div>
@@ -76,7 +76,7 @@
 								</div>
 							</div>
 
-						<button id="" name="" type="submit" class="btn btn-primary">Soumettre</button>
+						<button id="post" name="" type="button" class="btn btn-primary" onclick="sendData()">Soumettre</button>
 
 						<button class="btn btn-danger" data-dismiss="modal">Annuler</button>
 						</form>
@@ -85,8 +85,8 @@
 			</div>
 		</div>
 
-<script src="/assets/js/jquery.js"></script>
-<script src="/assets/js/bootstrap.js"></script>
-<script src="/assets/js/scripts.js"></script>
+<script src="assets/js/jquery.js"></script>
+<script src="assets/js/bootstrap.js"></script>
+<script src="assets/js/scripts.js"></script>
 </body>
 </html>

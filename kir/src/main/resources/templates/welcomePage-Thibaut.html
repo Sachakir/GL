@@ -234,10 +234,33 @@
 			x.type = "password";
 		}
 	}
+
+	function sendData()
+{
+        $.ajax(
+        {
+            type: "POST",
+            data: $("#addUserForm").serialize(),
+            cache: false,
+            url: "/adminAdd",
+            success: function(data) 
+            {
+                
+			$("#formulaire").modal("hide"); 
+		    $('#success_msg').modal('show');
+                
+            },
+            error: function()
+            {
+                alert("Error - Data not saved");
+            }
+
+        });
+}
 </script>
 
-<script src="/assets/js/jquery.js"></script>
-<script src="/assets/js/bootstrap.js"></script>
-<script src="/assets/js/scripts.js"></script>
+<script src="assets/js/jquery.js"></script>
+<script src="assets/js/bootstrap.js"></script>
+<script src="assets/js/scripts.js"></script>
 </body>
 </html>
