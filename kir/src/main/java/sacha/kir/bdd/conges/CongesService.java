@@ -40,4 +40,9 @@ public class CongesService implements InterfaceCongesService
 		repository.updateChefState(congesid, newstate);
 	}
 
+	@Override
+	public void updateRHState(long congesid, String newstate) {
+		repository.updateRHState(congesid, newstate);
+	}
+
 }

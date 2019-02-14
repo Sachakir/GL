@@ -1,0 +1,64 @@
+  <!DOCTYPE HTML>
+  <html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title th:utext="${title}"></title>
+    <meta charset="utf-8">
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css" />    
+</head>
+
+<body>
+    <div class="container">
+
+        <div th:replace="~{navBar :: #navBar}"></div>
+<div>
+        <thead>
+        </thead>
+        <tbody>
+          <form action="#" th:action="@{/congesChanged}" th:object="${congesv2}">
+            <table>
+              <tr>
+                <td>Date debut</td>
+                <td><span th:text="${conges.datedebut}"> Date debut </span></td>
+            </tr>
+            <tr>
+                <td>Date debut</td>
+                <td><span th:text="${conges.datefin}"> Date fin </span></td>
+
+            </tr>
+            <tr>
+                <td>Personne</td>
+                <td><span th:text="${conges.PrenomNom}"> Personne </span></td>
+            </tr>
+            <tr>
+                <td>Etat Chef</td>
+                <td><span th:text="${conges.validationchefservice}"> Etat Chef </span></td>
+            </tr>
+            <tr>
+                <td>Etat RH</td>
+                <td><span th:text="${conges.validationrh}"> Etat RH </span></td>
+                <td>changer pour :</td>
+                <td>
+                  <select th:field="${conges.validationrh}">
+                      <option value="NoChanges"> -- </option>
+                      <option value="EnAttente">EnAttente</option>
+                      <option value="Valide">Valide</option>
+                      <option value="Refuse">Refuse</option>
+                  </select>
+              </td>
+             	<input type="hidden" th:field="${conges.congesid}" />          
+              <tr>
+                  <td><button type="submit">Ok</button></td>
+              </tr>
+          </table>
+      </form>
+  </tbody>
+</div>
+    </div>
+
+
+<script src="assets/js/jquery.js"></script>
+<script src="assets/js/bootstrap.js"></script>
+<script src="assets/js/scripts.js"></script>
+</body>
+</html>

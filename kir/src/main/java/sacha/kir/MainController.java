@@ -259,12 +259,6 @@ public class MainController {
             return "welcomePage-Thibaut";
         }
         
-        System.out.println(userForm.getDateNaissance());
-        System.out.println(userForm.getJoursCongesRest());
-        System.out.println(userForm.getMdp());
-        System.out.println(userForm.getNom());
-        System.out.println(userForm.getNumTel());
-        System.out.println(userForm.getPrenom());
         System.out.println(userForm.getRole());
         
         Utilisateur u = UtilisateurService.findPrenomNom(userForm.getNom(),userForm.getPrenom());
@@ -294,7 +288,8 @@ public class MainController {
         
         UserRole userRole = new UserRole();
         userRole.setUser_id((long) (maxId + 1));
-        userRole.setRole_id((long) 2);//Admin par defaut TODO a changer
+        AppRole aptmp = AppRoleService.findByRole(userForm.getRole());
+        userRole.setRole_id(aptmp.getRole_id());
         userRole.setId((long) UserRoleService.getMaxId() + 1);
 
         UserRoleService.addUserRole(userRole);

@@ -46,6 +46,25 @@ public class SachaController
     	if (ar.getRole_name().contains("RH")) 
     	{
         	model.addAttribute("pageValidation","RH");
+        	List<CongesV2> conges = new ArrayList<CongesV2>();
+        	List<Conges> cs = CongesService.findAll();
+        	for (int i =0; i<cs.size(); i++)
+        	{	
+        		Utilisateur tmpu = UtilisateurService.findById(cs.get(i).getUid());
+        			
+        		CongesV2 c2 = new CongesV2();
+        		c2.setCongesid(cs.get(i).getCongesid());
+        		c2.setDatedebut(cs.get(i).getDatedebut());
+        		c2.setDatefin(cs.get(i).getDatefin());
+        		c2.setUid(cs.get(i).getUid());
+        		c2.setValidationchefservice(cs.get(i).getValidationchefdeservice());
+        		c2.setValidationrh(cs.get(i).getValidationrh());
+        		c2.setPrenomNom(tmpu.getPrenom() + " " + tmpu.getNom());
+        		conges.add(c2);
+        	}
+
+        	model.addAttribute("listConges",conges);//Envoie de toutes les demandes au RH
+            return "showConges";
     	}
     	else
     	{
@@ -55,6 +74,11 @@ public class SachaController
     	if (ar.getRole_name().contains("ChefInfo"))//TODO pour autres chefs de services, rh
     	{
     		ar = AppRoleService.findByRole("UserInfo");
+    		roleId = ar.getRole_id();
+    	}
+    	else if (ar.getRole_name().contains("ChefFinances"))
+    	{
+    		ar = AppRoleService.findByRole("UserFinances");
     		roleId = ar.getRole_id();
     	}
     	
@@ -87,23 +111,54 @@ public class SachaController
     {
 		Conges c = CongesService.findByCongesId(id);
 
-		String prenomnom = principal.getName();
-		String[] names = prenomnom.split("\\.");
+		Utilisateur ut = UtilisateurService.findById(c.getUid());
 		congesv2.setCongesid(id);
 		congesv2.setDatedebut(c.getDatedebut());
 		congesv2.setDatefin(c.getDatefin());
-		congesv2.setPrenomNom(names[0] + " " + names[1]);
+		congesv2.setPrenomNom(ut.getPrenom() + " " + ut.getNom());
 		congesv2.setValidationchefservice(c.getValidationchefdeservice());
 		congesv2.setValidationrh(c.getValidationrh());
 		
 		model.addAttribute("conges", congesv2);
-		return "showCongesDetails";
+		return "showCongesDetailsChef";
     }
 	
 	@GetMapping("/congesChanged")
-    public String congesChanged(CongesV2 congesv2)
+    public String congesChanged(CongesV2 congesv2,Model model)
     {
-		CongesService.updateChefState(congesv2.getCongesid(), congesv2.getValidationchefservice());
-		return "Login";
+		if ( (congesv2.getValidationchefservice() != null && !congesv2.getValidationchefservice().contains("NoChanges") ) || (congesv2.getValidationrh() != null && !congesv2.getValidationrh().contains("NoChanges") ) )
+		{
+			if (congesv2.getValidationchefservice() != null)
+			{
+				CongesService.updateChefState(congesv2.getCongesid(), congesv2.getValidationchefservice());
+			}
+			else if (congesv2.getValidationrh() != null)
+			{
+				CongesService.updateRHState(congesv2.getCongesid(), congesv2.getValidationrh());
+			}
+			model.addAttribute("change","Changement effectue !");
+		}
+		else
+		{
+			model.addAttribute("change","Pas de changement");
+		}
+		return "resultatValidation";
+    }
+	
+	@RequestMapping(path="/RH/{id}")
+    public String getMessageRH(@PathVariable("id") long id,CongesV2 congesv2,Model model,Principal principal) 
+    {
+		Conges c = CongesService.findByCongesId(id);
+
+		Utilisateur ut = UtilisateurService.findById(c.getUid());
+		congesv2.setCongesid(id);
+		congesv2.setDatedebut(c.getDatedebut());
+		congesv2.setDatefin(c.getDatefin());
+		congesv2.setPrenomNom(ut.getPrenom() + " " + ut.getNom());
+		congesv2.setValidationchefservice(c.getValidationchefdeservice());
+		congesv2.setValidationrh(c.getValidationrh());
+		
+		model.addAttribute("conges", congesv2);
+		return "showCongesDetailsRH";
     }
 }
