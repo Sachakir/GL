@@ -3,8 +3,6 @@ package sacha.kir;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -15,17 +13,11 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
 
 import sacha.kir.bdd.approle.AppRole;
 import sacha.kir.bdd.approle.InterfaceAppRoleService;
@@ -38,18 +30,16 @@ import sacha.kir.bdd.membresmission.InterfaceMembresMissionService;
 import sacha.kir.bdd.membresmission.MembresMission;
 import sacha.kir.bdd.mission.InterfaceMissionService;
 import sacha.kir.bdd.mission.Mission;
-import sacha.kir.bdd.missionnote.InterfaceMissionsNoteService;
-import sacha.kir.bdd.missionnote.MissionsNote;
 import sacha.kir.bdd.note.InterfaceNoteService;
 import sacha.kir.bdd.note.Note;
 import sacha.kir.bdd.remboursement.InterfaceRemboursementService;
 import sacha.kir.bdd.remboursement.Remboursement;
+import sacha.kir.bdd.remboursementsnote.InterfaceRemboursementsNoteService;
 import sacha.kir.bdd.userrole.InterfaceUserRoleService;
 import sacha.kir.bdd.userrole.UserRole;
 import sacha.kir.bdd.utilisateur.InterfaceUtilisateurService;
 import sacha.kir.bdd.utilisateur.Utilisateur;
 import sacha.kir.form.CongeForm;
-import sacha.kir.form.RemboursementForm;
 import sacha.kir.form.UserForm;
  
 @Controller
@@ -70,7 +60,7 @@ public class MainController {
     @Autowired
     InterfaceNoteService NoteService;
     @Autowired
-    InterfaceMissionsNoteService MissionsNoteService;
+    InterfaceRemboursementsNoteService RemboursementsNoteService;
     @Autowired
     InterfaceAppUserService AppUserService;
     @Autowired
@@ -222,7 +212,7 @@ public class MainController {
         return "loginPage";
     }
     
-    @RequestMapping("/addMissionsNote")
+    /*@RequestMapping("/addMissionsNote")
     public String addMissionsNote(Model model)
     {
     	MissionsNoteService.addNote();
@@ -233,7 +223,7 @@ public class MainController {
     		System.out.println(cs.get(i).toString());
     	}
         return "loginPage";
-    }
+    }*/
     
     @GetMapping("/adminAdd")
     public String showForm(UserForm userForm) {
@@ -368,7 +358,7 @@ public class MainController {
         LocalDate localDate = LocalDate.now();
     	System.out.println(localDate.getDayOfMonth());
     	System.out.println("Mois : " + localDate.getMonthValue());
-        System.out.println(DateTimeFormatter.ofPattern("yyy/MM/dd").format(localDate));
+        System.out.println(DateTimeFormatter.ofPattern("dd/MM/yyyy").format(localDate));
         if (localDate.getDayOfMonth() >= 14)
         {   
 	        Utilisateur ut = UtilisateurService.findPrenomNom(names[1], names[0]);

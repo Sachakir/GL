@@ -26,7 +26,11 @@ public class NoteService implements InterfaceNoteService {
 		n.setUid((long) 30);
 		
 		repository.save(n);
-		
+	}
+	
+	public Note findNoteByMonthAndUID(String mois, Long uid)
+	{
+		return repository.findNoteByMonthAndUID(mois, uid);
 	}
 
 }

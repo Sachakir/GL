@@ -1,10 +1,9 @@
-package sacha.kir.bdd.note;
+package sacha.kir.bdd.remboursementsnote;
 
 import java.io.Serializable;
 
 public class CompositeKey implements Serializable
 {
 	private Long note_id;
-	private String mois;
-	private Long uid;
+	private Long demande_id;
 }

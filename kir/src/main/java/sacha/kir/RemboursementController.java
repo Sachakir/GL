@@ -26,10 +26,11 @@ import sacha.kir.bdd.justificatif.Justificatif;
 import sacha.kir.bdd.membresmission.InterfaceMembresMissionService;
 import sacha.kir.bdd.mission.InterfaceMissionService;
 import sacha.kir.bdd.mission.Mission;
-import sacha.kir.bdd.missionnote.InterfaceMissionsNoteService;
 import sacha.kir.bdd.note.InterfaceNoteService;
+import sacha.kir.bdd.note.Note;
 import sacha.kir.bdd.remboursement.InterfaceRemboursementService;
 import sacha.kir.bdd.remboursement.Remboursement;
+import sacha.kir.bdd.remboursementsnote.InterfaceRemboursementsNoteService;
 import sacha.kir.bdd.userrole.InterfaceUserRoleService;
 import sacha.kir.bdd.utilisateur.InterfaceUtilisateurService;
 import sacha.kir.form.RemboursementForm;
@@ -51,7 +52,7 @@ public class RemboursementController {
     @Autowired
     InterfaceNoteService NoteService;
     @Autowired
-    InterfaceMissionsNoteService MissionsNoteService;
+    InterfaceRemboursementsNoteService RemboursementsNoteService;
     @Autowired
     InterfaceAppUserService AppUserService;
     @Autowired
@@ -59,8 +60,6 @@ public class RemboursementController {
 	@Autowired
 	InterfaceUserRoleService UserRoleService;
 	
-	// TEST FORMULAIRE DEMANDE REMBOURSEMENT
-    /* *************************************************** */
     @GetMapping("/demandeRemboursement")
     public String remboursementForm(Model model, Principal principal) {
     	// Recuperation des missions assignees a l'user
@@ -73,6 +72,13 @@ public class RemboursementController {
     	// Ajout des attributs pour la mise en forme du formulaire
         model.addAttribute("remboursementForm", new RemboursementForm());
         model.addAttribute("missions", userMissions);
+        
+        //TEST NOTE FRAIS SEARCH
+        Note n = NoteService.findNoteByMonthAndUID("03/2019", (long)30);
+        if(n == null) //Creer une note de frais
+        {
+        	return "redirect:/Accueil";
+        }
         
         // Appel de la page du formulaire
         return "remboursementForm";

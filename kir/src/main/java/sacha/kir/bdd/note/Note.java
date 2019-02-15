@@ -3,20 +3,18 @@ package sacha.kir.bdd.note;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 @Entity
-@IdClass(CompositeKey.class)
 @Table(name = "note_frais")
 public class Note {
 	@Id
 	@Column(name="NoteID")
 	private Long note_id;
-	@Id
+	
 	@Column(name="Mois")
 	private String mois;
-	@Id
+	
 	@Column(name="UID")
 	private Long uid;
 
