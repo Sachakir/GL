@@ -12,7 +12,7 @@ $(document).ready(function()
 	{
 		$("#notificationContainer").hide();
 	});
-	
+
 	//Popup on click
 	$("#notificationContainer").click(function()
 	{
@@ -23,13 +23,10 @@ $(document).ready(function()
 	{
 		window.location.href="https://www.google.fr/"
 	});
-
-	
-
-	
 });
 
-function myFunction() {
+function myFunction()
+{
 	var x = document.getElementById("mdp");
 	if (x.type === "password") {
 		x.type = "text";
@@ -58,6 +55,22 @@ function sendData()
 		{
 			alert("Error - Data not saved");
 		}
-
 	});
+}
+
+function deleteUser(id) 
+{
+    $.ajax({
+        type: "POST",
+        cache: false,
+        url: "/deleteUser/"+id,
+        success: function() {
+        	$("#warning_msg").modal("hide"); 
+        	alert("User deleted");
+        }
+		error: function()
+		{
+			alert("Error - Data not saved");
+		}
+    });
 }

@@ -34,23 +34,40 @@
 							<td><span th:text="${user.Nom}"> Nom </span></td>	
 							<td><span th:text="${user.Prenom}"> Prenom </span></td>
 							<td>
-								<a id="details" th:href="@{'/showUserDetails/'+${user.UID}}" type="button" class="btn btn-primary">
+								<a id="details" th:attr="data-object-id='${user.UID}'" type="button" class="btn btn-primary">
 									<span class="glyphicon glyphicon-search"></span>
 								</a>
 							</td>
 							<td>
-								<!--<div th:if="${user.UID == '30'}">-->
 								<div th:unless="${user.UID} eq ${notAdmin}">
-								<a id="details" th:href="@{'/deleteUser/'+${user.UID}}" type="button" class="btn btn-danger" >
-									<span class="glyphicon glyphicon-ban-circle"></span>
-								</a>
-							</div>
+									<button id="suppr" data-toggle="modal" data-target="#warning_msg" type="button" class="btn btn-danger" >
+										<span class="glyphicon glyphicon-ban-circle"></span>
+									</button>
+								</div>
 							</td>				
 						</tr>
 					</tbody>
 				</table>
 			</div>
 		</div>
+
+<div class="modal fade" id="warning_msg" role="dialog">
+	<div class="modal-dialog modal-sm"> 
+		<div class="modal-content panel-danger">
+			<div class="modal-header panel-heading">
+				<button type="button" class="close" data-dismiss="modal">x</button>
+				<h4 class="modal-title">Confirmation de suppression</h4>
+			</div>
+			<div class="modal-body">
+				<p>Voulez-vous vraiment supprimer cet utilisateur?</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger btn-ok" onclick="deleteUser(data-object-id)">Supprimer</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal">Annuler</button>
+			</div>
+		</div>
+	</div>
+</div>
 
 	</div>
 
