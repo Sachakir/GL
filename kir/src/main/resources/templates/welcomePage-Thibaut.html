@@ -227,41 +227,6 @@
 
 </div>
 
-<!-- TODO -->
-
-<script type="text/javascript">
-	function myFunction() {
-		var x = document.getElementById("mdp");
-		if (x.type === "password") {
-			x.type = "text";
-		} else {
-			x.type = "password";
-		}
-	}
-
-	function sendData()
-	{
-		$.ajax(
-		{
-			type: "POST",
-			data: $("#addUserForm").serialize(),
-			cache: false,
-			url: "/adminAdd",
-			success: function(data) 
-			{
-
-				$("#formulaire").modal("hide"); 
-				$('#success_msg').modal('show');
-
-			},
-			error: function()
-			{
-				alert("Error - Data not saved");
-			}
-
-		});
-	}
-</script>
 
 <script type="text/javascript" src="/assets/js/jquery.js"></script>
 <script type="text/javascript" src="/assets/js/bootstrap.js"></script>
