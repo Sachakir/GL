@@ -172,7 +172,7 @@ public class MainController {
     @RequestMapping("/addMission")
     public String addMission(Model model)
     {
-    	MissionService.addMission();
+    	//MissionService.addMission();
 
     	List<Mission> cs = MissionService.findAll();
     	for (int i =0;i < cs.size();i++)

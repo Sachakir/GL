@@ -4,11 +4,14 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import sacha.kir.bdd.approle.AppRole;
@@ -18,6 +21,8 @@ import sacha.kir.bdd.appuser.InterfaceAppUserService;
 import sacha.kir.bdd.conges.Conges;
 import sacha.kir.bdd.conges.InterfaceCongesService;
 import sacha.kir.bdd.membresmission.InterfaceMembresMissionService;
+import sacha.kir.bdd.mission.InterfaceMissionService;
+import sacha.kir.bdd.mission.Mission;
 import sacha.kir.bdd.userrole.InterfaceUserRoleService;
 import sacha.kir.bdd.userrole.UserRole;
 import sacha.kir.bdd.utilisateur.InterfaceUtilisateurService;
@@ -40,6 +45,8 @@ public class SachaController
     InterfaceAppUserService AppUserService;
 	@Autowired
     InterfaceMembresMissionService MembresMissionService;
+	@Autowired
+    InterfaceMissionService MissionService;
 	
 	@GetMapping("/validationConges")
     public String addConges(Principal principal,Model model) 
@@ -193,7 +200,48 @@ public class SachaController
     	String prenomnom = principal.getName();
     	String[] names = prenomnom.split("\\.");
     	model.addAttribute("notAdmin",UtilisateurService.findPrenomNom(names[1], names[0]).getUID());
-		return "showUsers";
+		return "redirect:/adminShow";
+    }
+	
+	@GetMapping("/newMission")
+    public String addMission(Mission mission,Model model)
+    {
+		AppRole chefsInfos = AppRoleService.findByRole("ChefInfo");
+		AppRole chefsFinances = AppRoleService.findByRole("ChefFinances");
+		
+		List<UserRole> userroles = UserRoleService.findAll();
+    	List<Utilisateur> utilisateurs = new ArrayList<Utilisateur>();
+
+    	
+    	for (int i = 0;i < userroles.size();i++)
+    	{
+    		if (userroles.get(i).getRole_id() == chefsInfos.getRole_id() || userroles.get(i).getRole_id() == chefsFinances.getRole_id())
+    		{
+    			Utilisateur utilisateur = UtilisateurService.findById(userroles.get(i).getUser_id());
+    			Utilisateur u = new Utilisateur();
+    			u.setPrenom(utilisateur.getPrenom());
+    			u.setNom(utilisateur.getNom());
+    			u.setUID(utilisateur.getUID());
+    			utilisateurs.add(u);
+    		}
+    	}
+    	model.addAttribute("users",utilisateurs);
+        return "newMissionPage";
+    }
+	
+	@PostMapping("/newMission")
+    public String checkMission(@Valid Mission mission)
+    {
+		System.out.println(mission.getResponsable_id());
+		System.out.println(mission.getDate_debut());
+		System.out.println(mission.getDate_fin());
+		System.out.println(mission.getTitre());
+		System.out.println(mission.getDescription());
+		int maxid = MissionService.getMaxMissionId();
+		mission.setMission_id((long) (maxid + 1));
+		
+		MissionService.addMission(mission);
+        return "redirect:/Accueil";
     }
 	
 }

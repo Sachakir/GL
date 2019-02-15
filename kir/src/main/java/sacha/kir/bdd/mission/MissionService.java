@@ -23,17 +23,9 @@ public class MissionService implements InterfaceMissionService{
 	}
 
 	@Override
-	public void addMission() 
+	public void addMission(Mission mission) 
 	{
-		Mission m = new Mission();
-		m.setDate_debut("2019-01-23");
-		m.setDate_fin("2019-01-24");
-		m.setTitre("Mission en France");
-		m.setDescription("Une mission en France.");
-		m.setMission_id((long)0);
-		m.setResponsable_id((long)1);
-		
-		repository.save(m);
+		repository.save(mission);
 	}
 	
 	public Mission findMissionById(Long missionId)
@@ -52,6 +44,11 @@ public class MissionService implements InterfaceMissionService{
 			}
 		}
 		return missions;
+	}
+
+	@Override
+	public int getMaxMissionId() {
+		return repository.getMaxMissionId();
 	}
 
 }
