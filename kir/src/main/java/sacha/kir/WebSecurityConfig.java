@@ -45,8 +45,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/userInfo").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')");
         
         // Redirect to login page if the user is not connected
-        http.authorizeRequests().antMatchers("/*").authenticated();
- 
+        http.authorizeRequests().antMatchers("/assets/**").permitAll();
+        http.authorizeRequests().antMatchers("/**").authenticated();
+        
         // For ADMIN only.
         http.authorizeRequests().antMatchers("/admin","/adminAdd","/adminShow","/showUserDetails/**").access("hasRole('ROLE_Admin')");
  
@@ -65,7 +66,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("username")//
                 .passwordParameter("password")
                 // Config for Logout Page
-                .and().logout().logoutUrl("/logout").logoutSuccessUrl("/logoutSuccessful");
+                .and().logout().logoutUrl("/logout").logoutSuccessUrl("/login");
  
     }
 }

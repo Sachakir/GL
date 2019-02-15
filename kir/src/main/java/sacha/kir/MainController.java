@@ -78,7 +78,7 @@ public class MainController {
 	@Autowired
 	InterfaceUserRoleService UserRoleService;
 	
-    @RequestMapping(value = { "/", "/welcome" }, method = RequestMethod.GET)
+    @RequestMapping(value = {"/", "/login"} , method = RequestMethod.GET)
     public String welcomePage(Model model, Principal principal) {
         if(principal != null)
         {
@@ -96,18 +96,6 @@ public class MainController {
         model.addAttribute("userInfo", userInfo);
          
         return "adminPage";
-    }
- 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String loginPage(Model model) {
-    	
-        return "Login";
-    }
- 
-    @RequestMapping(value = "/logoutSuccessful", method = RequestMethod.GET)
-    public String logoutSuccessfulPage(Model model) {
-        model.addAttribute("title", "Logout");
-        return "logoutSuccessfulPage";
     }
  
     @RequestMapping(value = "/userInfo", method = RequestMethod.GET)
