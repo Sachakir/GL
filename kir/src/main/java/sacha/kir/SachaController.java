@@ -244,4 +244,10 @@ public class SachaController
         return "redirect:/Accueil";
     }
 	
+	@RequestMapping(path="/lists")
+    public String lists()
+    {
+		return "ListToList";
+    }
+	
 }

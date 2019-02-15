@@ -4,7 +4,9 @@
   <title th:utext="${title}"></title>
   <meta charset="utf-8">
   <link href="assets/css/bootstrap.css" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css" />    
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <script type="text/javascript" src="/assets/js/list.js"></script>
+  <link rel="stylesheet" href="/assets/css/list.css">
 </head>
 
 <body>
@@ -147,13 +149,29 @@
       	</select>		
       	<!-- <td th:if="${#fields.hasErrors('mission')}" th:errors="*{mission}">Mission incorrect</td> -->
 	</div>
+	
+
 
 </fieldset>
 
     <div style="text-align:center;">
-      <button id="" name="" class="btn btn-primary">Soumettre</button>
+      <button id="" name="" class="btn btn-primary" onclick="sub()">Soumettre</button>
   </div>
 </form>
+
+	<div class="row">
+    <select id="left" multiple="multiple">
+    	<option th:each="mission : ${users}" th:value="${mission.UID}" th:text="${mission.Prenom} + ' ' + ${mission.Nom}"></option>
+    </select>
+  <div class="btns">
+    <button id="leftbtn" class="btn btn-primary" onclick="swapSelectedLine(true)">>></button>
+    <button id="rightbtn" class="btn btn-primary" onclick="swapSelectedLine(false)"><<</button>
+  </div>
+    <select id="right" multiple="multiple">
+    </select>
+</div>
+
+<!-- <button class="btn btn-primary" onclick="sub()">Submit</button>  -->
 </section>
 <br>
 </div>
