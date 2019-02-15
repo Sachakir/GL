@@ -15,14 +15,12 @@ public class RemboursementForm {
 	@Size(min=1, max=60, message="Le titre doit être composé de 1 à 60 caractères")
 	private String titre;
 	
-	@NotNull(message="Vous n'avez pas entré de montant")
-	@Min(value=0, message="Le montant entré doit être positif")
-	@Pattern(regexp = "^[1-9][0-9]*((,|.)[0-9]+)?$", message="Vous n'avez pas entré un montant correct")
+	@NotNull
+	@Pattern(regexp = "^[1-9][0-9]*((,|.)[0-9]+)?$", message="Montant incorrect")
 	private String montant;
 	
 	@NotNull
 	@Pattern(regexp = "^((30|[12][0-9]|0?[1-9])/(0?[469]|11)|(3[0-1]|[12][0-9]|0?[1-9])/(0?[13578]|1[02])|([12][0-9]|0?[1-9])/(0?2))/[0-9]{4}$", message="Date incorrecte")
-	@Size(min=1, max=42)
 	private String date;
 	
 	@NotNull

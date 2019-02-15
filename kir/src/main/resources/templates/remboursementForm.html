@@ -28,13 +28,13 @@
                 </tr>
                 
                 <tr>
-                    <td>Montant : </td>
+                    <td>Montant (€) : </td>
                     <td><input type="text" th:field="*{montant}" /></td>
                     <td th:if="${#fields.hasErrors('montant')}" th:errors="*{montant}">Montant incorrect</td>
                 </tr>
                 
                 <tr>
-                    <td>Date : </td>
+                    <td>Date (format dd/mm/yyyy) : </td>
                     <td><input type="text" th:field="*{date}" /></td>
                     <td th:if="${#fields.hasErrors('date')}" th:errors="*{date}">Erreur dans la date</td>
                 </tr>

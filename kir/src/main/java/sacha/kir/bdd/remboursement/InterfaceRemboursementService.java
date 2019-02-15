@@ -5,4 +5,5 @@ import java.util.List;
 public interface InterfaceRemboursementService {
 	public List<Remboursement> findAll();
 	public void addRemboursement();
+	public void addNewRemboursement(Remboursement r);
 }

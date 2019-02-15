@@ -32,15 +32,18 @@ public class Remboursement {
 	private String validationchefservice;
 	
 	@Column(name="JustificatifID")
-	private long justificatifid;
+	private Long justificatifid;
 	
 	@Column(name="UID")
-	private long uid;
+	private Long uid;
+	
+	@Column(name="MissionID")
+	private Long mission_id;
 	
 	public Remboursement() {}
 
 	public Remboursement(Long demande_id, String titre, float montant, String date, String motif, String validationrh,
-			String validationchefservice, long justificatifid, long uid) {
+			String validationchefservice, Long justificatifid, Long uid, Long mission_id) {
 		this.demande_id = demande_id;
 		this.titre = titre;
 		this.montant = montant;
@@ -50,6 +53,7 @@ public class Remboursement {
 		this.validationchefservice = validationchefservice;
 		this.justificatifid = justificatifid;
 		this.uid = uid;
+		this.mission_id = mission_id;
 	}
 
 	public Long getDemande_id() {
@@ -108,28 +112,32 @@ public class Remboursement {
 		this.validationchefservice = validationchefservice;
 	}
 
-	public long getJustificatifid() {
+	public Long getJustificatifid() {
 		return justificatifid;
 	}
 
-	public void setJustificatifid(long justificatifid) {
+	public void setJustificatifid(Long justificatifid) {
 		this.justificatifid = justificatifid;
 	}
 
-	public long getUid() {
+	public Long getUid() {
 		return uid;
 	}
 
-	public void setUid(long uid) {
+	public void setUid(Long uid) {
 		this.uid = uid;
 	}
 	
+	public Long getMission_id() {
+		return mission_id;
+	}
+
+	public void setMission_id(Long mission_id) {
+		this.mission_id = mission_id;
+	}
+
 	@Override
     public String toString() {
         return motif + " " + montant;
-    }	
-	
-	
-	
-	
+    }		
 }
