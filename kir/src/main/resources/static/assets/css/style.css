@@ -208,3 +208,7 @@ a:active, a:focus { outline:none; }
   padding-top:50px;
   margin: auto;
 }
+
+[hidden] {
+  display: none !important;
+}

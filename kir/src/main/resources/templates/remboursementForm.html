@@ -1,65 +1,77 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<title>Formulaire de création de demande de remboursement</title>
-		<script type="text/javascript" src="/assets/js/confirmCreationNote.js"></script>
-	</head>
-    <body>
-        <!-- Include _menu.html -->
-      	<th:block th:include="/_menu"></th:block>
+<head>
+    <title th:utext="${title}"></title>
+    <meta charset="utf-8"/>
+    <link href="/assets/css/bootstrap.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/assets/css/style.css" />    
+</head>
+
+<body>
+    <div class="container">
+
+        <div th:replace="~{navBar :: #navBar}"></div>
         
-        <form action="#" enctype="multipart/form-data" th:action="@{/remboursements/demande-remboursement}" th:object="${remboursementForm}" method="post">
-            <table>
-                <tr>
-                	<td>Mission associée : </td>
-                    <td><select th:field="*{mission}">
-          				<option value=""> -- </option>
-          				<option th:each="mission : ${missions}" th:value="${mission.mission_id}" th:text="${mission.mission_id} + ' : ' + ${mission.titre}"></option>
-      				</select></td>
-      				
-      				<td th:if="${#fields.hasErrors('mission')}" th:errors="*{mission}">Mission incorrect</td>
-                </tr>
-                
-                <tr>
-                    <td>Titre de la demande : </td>
-                    <td><input type="text" th:field="*{titre}" /></td>
-                    
-                    <td th:if="${#fields.hasErrors('titre')}" th:errors="*{titre}">Titre incorrect</td>
-                    
-                </tr>
-                
-                <tr>
-                    <td>Montant (€) : </td>
-                    <td><input type="text" th:field="*{montant}" /></td>
-                    <td th:if="${#fields.hasErrors('montant')}" th:errors="*{montant}">Montant incorrect</td>
-                </tr>
-                
-                <tr>
-                    <td>Date (format dd/mm/yyyy) : </td>
-                    <td><input type="text" th:field="*{date}" /></td>
-                    <td th:if="${#fields.hasErrors('date')}" th:errors="*{date}">Erreur dans la date</td>
-                </tr>
-                
-                <tr>
-                    <td>Motif : </td>
-                    <td><input type="text" style="width: 300px; height: 300px;" th:field="*{motif}" /></td>
-                    <td th:if="${#fields.hasErrors('motif')}" th:errors="*{motif}">erreur dateNaissance</td>
-                </tr>
-                
-                <tr>
-            		<td>Justificatif : </td>
-            		<td><input type="file" name="file" /></td>
-        		</tr>
-           			
-                <tr>
-                    <td><button type="submit">Submit</button></td>
-                </tr>
-            </table>
-        </form>
+        <div class="col-md-offset-3 col-md-6">
+            <form id="addNDF" class="form-horizontal" action="#" enctype="multipart/form-data" th:action="@{/remboursements/demande-remboursement}" th:object="${remboursementForm}" method="post" style="text-align: center;">
+                <div class="form-group">
+                    <label class="control-label" for="titreMission">Mission associée</label>  
+                    <div>
+                        <select id="titreMission" name="titreMission" th:field="*{mission}">
+                            <option value=""> -- </option>
+                            <option th:each="mission : ${missions}" th:value="${mission.mission_id}" th:text="${mission.mission_id} + ' : ' + ${mission.titre}"></option>
+                        </select>
+                        <label th:if="${#fields.hasErrors('mission')}" th:errors="*{mission}">Mission incorrecte</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="titreDemande">Titre de la demande</label>  
+                    <div>
+                        <input id="titreDemande" name="titreDemande" type="text" placeholder="ex : Billets avion" class="form-control input-md" th:field="*{titre}">
+                        <label th:if="${#fields.hasErrors('titre')}" th:errors="*{titre}">Titre incorrect</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="montant">Montant (€)</label>  
+                    <div>
+                        <input id="montant" name="montant" type="text" placeholder="ex : 42.00" class="form-control input-md" th:field="*{montant}">
+                        <label th:if="${#fields.hasErrors('montant')}" th:errors="*{montant}">Montant incorrect</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="date">Date (format dd/mm/yyyy)</label>  
+                    <div>
+                        <input id="date" name="date" type="text" placeholder="ex : 31/12/2019" class="form-control input-md" th:field="*{date}">
+                        <label th:if="${#fields.hasErrors('date')}" th:errors="*{date}">Erreur dans la date</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="motif">Motif</label>  
+                    <div>
+                        <textarea id="motif" name="motif" type="text" class="form-control" th:field="*{motif}"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="filebutton">Justificatif</label>
+                    <div class="input-group">
+                        <label class="input-group-btn">
+                            <span class="btn btn-primary">
+                                Choisir un fichier <input type="file" hidden multiple>
+                            </span>
+                        </label>
+                        <input type="text" class="form-control" readonly>
+                    </div>
+                </div>
+            <button id="post" name="" type="button" class="btn btn-primary">Soumettre</button>
+            </form>
+        </div>
 	
 	<script th:if="${noNoteFrais} != null" th:inline="javascript">
 		confirmCreationNote(/*[[${urlNote}]]*/null, /*[[${urlRedirect}]]*/null, /*[[${messageConfirmation}]]*/null);
 	</script>
+    <script type="text/javascript" src="/assets/js/jquery.js"></script>
+    <script type="text/javascript" src="/assets/js/bootstrap.js"></script>
+    <script type="text/javascript" src="/assets/js/scripts.js"></script>  
 	
     </body>
 </html>
