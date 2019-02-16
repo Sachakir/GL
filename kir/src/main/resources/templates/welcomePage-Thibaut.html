@@ -2,17 +2,22 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<title th:utext="${title}"></title>
-	<meta charset="utf-8"/>
-	<link href="/assets/css/bootstrap.css" rel="stylesheet"/>
+	<meta charset="utf-8">
+	<link href="/assets/css/bootstrap.css" rel="stylesheet">
 	<link rel="stylesheet" href="/assets/css/style.css" />
+	<link href='/assets/css/calendrier.css' rel='stylesheet' />
+	<link href='/assets/css/calendrier.print.css' rel='stylesheet' />    
 </head>
 
 <body>
+
+	<div id='calendar'></div>
 	<div class="container">
 		
 		<div th:replace="~{navBar :: #navBar}"></div>
 
 		<br>
+
 		<section class="row">
 			<div class="col-lg-4">
 				<h4 th:if="${WelcomeMsg != null}" th:utext="${WelcomeMsg}"></h4>
@@ -103,6 +108,12 @@
 					<h4>RTT(s) restant(s) : 0.0</h4>
 				</div>
 			</section>
+			<section class="row">
+				<a href="/Calendrier" class="btn btn-primary" type="button" style="text-align: center;">
+					Voir calendrier
+				</a>
+			</section>
+			<br>
 			<section class="row">
 				<div class="col-lg-12 col-xs-12">
 					<div class="panel panel-primary table-responsive">

@@ -216,7 +216,6 @@ public class MainController {
     public String addMissionsNote(Model model)
     {
     	MissionsNoteService.addNote();
-
     	List<MissionsNote> cs = MissionsNoteService.findAll();
     	for (int i = 0;i < cs.size();i++)
     	{
@@ -273,6 +272,12 @@ public class MainController {
         UserRoleService.addUserRole(userRole);
 
         return "welcomePage-Thibaut";
+    }
+    
+
+    @GetMapping("/Calendrier")
+    public String getCalendrier(Model model) {
+        return "calendrier";
     }
     
     @GetMapping("/addConges")
@@ -363,32 +368,29 @@ public class MainController {
         {   
 	        Utilisateur ut = UtilisateurService.findPrenomNom(names[1], names[0]);
 	        long uid = ut.getUID();
-	        boolean noteExiste = false;
-	        List<Note> notes = NoteService.findAll();
-	        for (int i = 0;i < notes.size();i++)
+	        String moisPrecedent = "";
+	        int moisInt = localDate.getMonthValue();
+        	int yearInt = localDate.getYear();
+	        if(localDate.getMonthValue() == 1)
 	        {
-	        	if (notes.get(i).getUid() == uid)
-	        	{
-	        		DateUtilities du = new DateUtilities();
-	        		int moisValue = du.moisToInt(notes.get(i).getMois());
-	        		if (localDate.getMonthValue() != 1)
-	        		{
-	        			if (localDate.getMonthValue() == moisValue + 1)
-	        			{
-	        				noteExiste = true;
-	        				break;
-	        			}
-	        		}
-	        	}
+	        	moisInt = 12;
+	        	yearInt--;
 	        }
-	        if (!noteExiste)
+	        else 
+	        {
+	        	moisInt--;
+	        }
+	        moisPrecedent = (moisInt < 10 ? "0" + moisInt : moisInt) + "/" + yearInt;
+	        System.out.println("Mois précedent :  " + moisPrecedent);
+	        Note notePrecedente = NoteService.findNoteByMonthAndUID(moisPrecedent, uid);
+	        if (notePrecedente == null)
 	        {
 	        	System.out.println("Pas de note pour le mois davant !");
 	        	model.addAttribute("NotifNote", "Vous n\'avez pas de note de frais pour le mois precedent !");
 	        }
 	        else
 	        {
-	        	System.out.println("Une note pour le mois davant !");
+	        	System.out.println("Une note pour le mois d'avant !");
 	        }
         }
         /**** NOTIFICATION ***********/
