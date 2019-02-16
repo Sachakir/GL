@@ -16,17 +16,20 @@
 		<section class="row">
 			<div class="col-lg-4">
 				<h4 th:if="${WelcomeMsg != null}" th:utext="${WelcomeMsg}"></h4>
-				<h4 style="text-decoration-color: red;"
-				th:if="${NotifNote != null}" th:utext="${NotifNote}">
-			</h4>
-		</div>
+				<div style="text-decoration-color: red;" th:if="${NotifNote != null}">
+					<h4 th:text="${NotifNote}"></h4>
+					<a href="/remboursements/creer-note-frais?mois=precedent" class="btn btn-primary" role="button">
+						Créer une note de frais pour le mois précédent
+					</a>
+				</div>
+			</div>
 		<div class="col-lg-4">
 			<a href="/addConges" class="btn btn-primary" role="button">
 				Nouvelle demande de congés
 			</a>
 		</div>
 		<div class="col-lg-4">
-			<a href="/demandeRemboursement" class="btn btn-primary" role="button">
+			<a href="/remboursements/demande-remboursement" class="btn btn-primary" role="button">
 				Nouvelle demande de remboursement
 			</a>
 		</div>

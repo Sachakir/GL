@@ -2,12 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<title>Formulaire de création de demande de remboursement</title>
+		<script type="text/javascript" src="/assets/js/confirmCreationNote.js"></script>
 	</head>
     <body>
         <!-- Include _menu.html -->
       	<th:block th:include="/_menu"></th:block>
         
-        <form action="#" enctype="multipart/form-data" th:action="@{/demandeRemboursement}" th:object="${remboursementForm}" method="post">
+        <form action="#" enctype="multipart/form-data" th:action="@{/remboursements/demande-remboursement}" th:object="${remboursementForm}" method="post">
             <table>
                 <tr>
                 	<td>Mission associée : </td>
@@ -56,9 +57,9 @@
             </table>
         </form>
 	
-	<div th:if="${message}">
-		<h2 th:text="${message}"></h2>
-	</div>
+	<script th:if="${noNoteFrais} != null" th:inline="javascript">
+		confirmCreationNote(/*[[${urlNote}]]*/null, /*[[${urlRedirect}]]*/null, /*[[${messageConfirmation}]]*/null);
+	</script>
 	
     </body>
 </html>
