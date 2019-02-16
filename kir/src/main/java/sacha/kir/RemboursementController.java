@@ -5,6 +5,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Collections;
 import java.util.List;
 
@@ -65,8 +67,15 @@ public class RemboursementController {
 	InterfaceUserRoleService UserRoleService;
 	
 	@GetMapping("/demande-remboursement")
-    public String remboursementForm(Model model, Principal principal) {
-    	// Deux cas : soit la note de frais pour l'utilisateur et pour le mois est crée,
+    public String remboursementForm(@RequestParam(value = "mois", required = false) String monthRequested, Model model, Principal principal) {
+		if(monthRequested == null) {
+    		monthRequested = "actuel";
+    	}
+    	else if(!monthRequested.equals("actuel") && !monthRequested.equals("precedent")) {
+    		return "redirect:/remboursements/demande-remboursement";
+    	}
+		
+		// Deux cas : soit la note de frais pour l'utilisateur et pour le mois est crée,
     	// 		      soit elle ne l'est pas dans quel cas on en crée une
     	
     	// Recuperation des missions assignees a l'user
@@ -79,32 +88,82 @@ public class RemboursementController {
     	// Ajout des attributs pour la mise en forme du formulaire
         model.addAttribute("remboursementForm", new RemboursementForm());
         model.addAttribute("missions", userMissions);
+        model.addAttribute("monthRequested", monthRequested);
         
         // Recherche d'une note de frais poir le mois actuel
         LocalDate localDate = LocalDate.now();
         int moisInt = localDate.getMonthValue();
-        String mois = (moisInt < 10 ? "0" + moisInt : moisInt) + "/" + localDate.getYear();
-        Note n = NoteService.findNoteByMonthAndUID(mois, userId);
-        if(n == null) //Creer une note de frais
-        {
-        	System.out.println("Note non existante");
-        	model.addAttribute("noNoteFrais", "");
-        	model.addAttribute("messageConfirmation", "La note du mois actuel n'a pas été crée. Voulez vous la créer ou annuler votre demande de remboursement ?");
-        	model.addAttribute("urlNote", "/remboursements/creer-note-frais?mois=actuel");
-        	model.addAttribute("urlRedirect", "/Accueil");	
+        int yearInt = localDate.getYear();
+        
+        if(monthRequested.equals("precedent")) {
+        	if(moisInt == 1)
+        	{
+        		moisInt = 12;
+        		yearInt--;
+        	}
+        	else moisInt--;
         }
         
+        String moisStr = (moisInt < 10 ? "0" + moisInt : moisInt) + "/" + yearInt;
+        
+        // Verification de l'existence d'une note de frais
+        Note n = NoteService.findNoteByMonthAndUID(moisStr, userId);
+        if(n == null) //Creer une note de frais
+        {
+        	String message = "La note du mois ";
+        	if(monthRequested.equals("actuel")) {
+        		message += "actuel";
+        	}
+        	else {
+        		message += "précédent";
+        	}
+        	message += " n'a pas été créée. Voulez vous la créer ou annuler votre demande de remboursement ?";
+        	
+        	model.addAttribute("noNoteFrais", "");
+        	model.addAttribute("messageConfirmation", message);
+        	model.addAttribute("urlNote", "/remboursements/creer-note-frais?mois=" + monthRequested);
+        	model.addAttribute("urlRedirect", "/Accueil");	
+        }
         
         // Appel de la page du formulaire
         return "remboursementForm";
     }
-    
-    
-    @PostMapping("/demande-remboursement")
+
+	@PostMapping("/demande-remboursement")
     public String sendRemboursementForm(Model model, Principal principal, @RequestParam("file") MultipartFile file, @Valid RemboursementForm remboursementForm, Errors errors) {
     	// Recuperation des missions assignees a l'user
+    	String monthRequested = remboursementForm.getMoisNote();
+    	
     	String[] names = principal.getName().split("\\.");
     	Long userId = UtilisateurService.findPrenomNom(names[1], names[0]).getUID();
+    	LocalDate localDate = LocalDate.now();
+    	int moisNow = localDate.getMonthValue();
+		int yearNow = localDate.getYear();
+    	
+    	try {
+    		DateTimeFormatter df = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    		
+    		// Verification de l'entree de la date (dans le mois de la note de frais)
+			df.parse(remboursementForm.getDate());
+			LocalDate date = LocalDate.parse(remboursementForm.getDate(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+			
+			if(monthRequested.equals("precedent")) {
+				if(moisNow == 1) {
+					moisNow = 12;
+					yearNow--;
+				}
+				else {
+					moisNow--;
+				}
+			}
+			if(moisNow != date.getMonthValue() || yearNow != date.getYear()) {
+				errors.rejectValue("date", "Pattern", "Date non comprise dans le mois " + monthRequested);
+			}
+    	}
+    	catch(DateTimeParseException e) {
+			errors.rejectValue("date", "Pattern", "Date incorrecte");
+    	}
+    	
     	if(errors.hasErrors())
     	{
     		List<Long> missionsIDs = MembresMissionService.findMissionsByUID(userId);
@@ -112,60 +171,52 @@ public class RemboursementController {
         	List<Mission> userMissions = MissionService.findMissionsById(missionsIDs);
         	
             model.addAttribute("missions", userMissions);
+            model.addAttribute("monthRequested", monthRequested);
         	
         	return "remboursementForm";
     	}
     	else
-    	{
-    		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-    		df.setLenient(false);
+    	{	
+			// Creation du remboursement
+    		Remboursement r = new Remboursement();
+    		r.setTitre(remboursementForm.getTitre());
+    		r.setMission_id(Long.parseLong(remboursementForm.getMission()));
+    		r.setUid(userId);
+    		r.setDate(remboursementForm.getDate());
+    		r.setMontant(Float.parseFloat(remboursementForm.getMontant()));
+    		r.setMotif(remboursementForm.getMotif());
+    		r.setValidationchefservice("En attente");
+    		r.setValidationrh("En attente");
     		
-    		try {
-    			df.parse(remboursementForm.getDate());
-    			
-    			Remboursement r = new Remboursement();
-        		r.setTitre(remboursementForm.getTitre());
-        		r.setMission_id(Long.parseLong(remboursementForm.getMission()));
-        		r.setUid(userId);
-        		r.setDate(remboursementForm.getDate());
-        		r.setMontant(Float.parseFloat(remboursementForm.getMontant()));
-        		r.setMotif(remboursementForm.getMotif());
-        		r.setValidationchefservice("En attente");
-        		r.setValidationrh("En attente");
-        		
-        		if(!file.isEmpty())
-        		{
-        			Justificatif j = JustificatifService.storeJustificatif(file);
-        			r.setJustificatifid(j.getJustificatif_id());
-        		}
-        		else
-        		{
-        			r.setJustificatifid(null);
-        		}
-        		
-        		RemboursementService.addNewRemboursement(r);
-        		
-        		return "redirect:/Accueil";
+    		// Stockage du fichier dans la BD
+    		if(!file.isEmpty())
+    		{
+    			Justificatif j = JustificatifService.storeJustificatif(file);
+    			r.setJustificatifid(j.getJustificatif_id());
     		}
-    		catch(ParseException e) {
-    			errors.rejectValue("date", "Pattern", "Date incorrecte");
-    			
-    			List<Long> missionsIDs = MembresMissionService.findMissionsByUID(userId);
-            	Collections.sort(missionsIDs);
-            	List<Mission> userMissions = MissionService.findMissionsById(missionsIDs);
-            	
-                model.addAttribute("missions", userMissions);
-            	
-            	return "remboursementForm";
+    		else
+    		{
+    			r.setJustificatifid(null);
     		}
+    		
+    		// Ajout de la demande de remboursement à la BD
+    		r = RemboursementService.addNewRemboursement(r);
+    		
+    		// Association de la demande avec la note de frais
+    		String moisStr = (moisNow < 10 ? "0" + moisNow : moisNow) + "/" + yearNow;
+    		Note n = NoteService.findNoteByMonthAndUID(moisStr, userId);
+    		
+    		RemboursementsNoteService.addRemboursementToNote(n.getNote_id(), r.getDemande_id());
+    		
+    		return "redirect:/Accueil";
     	}
     }
     
     @GetMapping("/creer-note-frais")
     public String createNoteFrais(@RequestHeader(value = "referer", required = false) final String referer, 
-    							  @RequestParam("mois") String monthRequested,
+    							  @RequestParam(value = "mois", required = false) String monthRequested,
     							  Model model, Principal principal) {
-    	if(referer == null)
+    	if(referer == null || monthRequested == null)
     		return "redirect:/Accueil";
     	else 
     	{

@@ -18,12 +18,16 @@ public class Justificatif
     @Column(name = "PDF", columnDefinition="BLOB")
     private byte[] pdf;
 	
+	@Column(name="Del")
+	private boolean del;
+	
 	public Justificatif() {}
 
 	public Justificatif(Long justificatif_id, byte[] pdf) 
 	{
 		this.justificatif_id = justificatif_id;
 		this.pdf = pdf;
+		this.del = false;
 	}
 
 	public Long getJustificatif_id() {
@@ -40,6 +44,14 @@ public class Justificatif
 
 	public void setPdf(byte[] pdf) {
 		this.pdf = pdf;
+	}
+	
+	public boolean getDel() {
+		return del;
+	}
+	
+	public void setDel(boolean del) {
+		this.del = del;
 	}
 	
 	@Override

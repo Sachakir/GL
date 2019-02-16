@@ -5,6 +5,7 @@
     <meta charset="utf-8"/>
     <link href="/assets/css/bootstrap.css" rel="stylesheet"/>
     <link rel="stylesheet" href="/assets/css/style.css" />    
+    <script type="text/javascript" src="/assets/js/demandeRemboursement.js"></script>  
 </head>
 
 <body>
@@ -14,6 +15,9 @@
         
         <div class="col-md-offset-3 col-md-6">
             <form id="addNDF" class="form-horizontal" action="#" enctype="multipart/form-data" th:action="@{/remboursements/demande-remboursement}" th:object="${remboursementForm}" method="post" style="text-align: center;">
+                
+                <input class="form-control" type="text" th:value="${monthRequested}" id="moisNote" name="moisNote" style="display:none;"/>
+                
                 <div class="form-group">
                     <label class="control-label" for="titreMission">Mission associée</label>  
                     <div>
@@ -56,13 +60,13 @@
                     <div class="input-group">
                         <label class="input-group-btn">
                             <span class="btn btn-primary">
-                                Choisir un fichier <input type="file" hidden multiple>
+                                Choisir un fichier <input type="file" name="file" hidden multiple>
                             </span>
                         </label>
                         <input type="text" class="form-control" readonly>
                     </div>
                 </div>
-            <button id="post" name="" type="button" class="btn btn-primary">Soumettre</button>
+            <button id="post" name="" type="submit" class="btn btn-primary">Soumettre</button>
             </form>
         </div>
 	
@@ -72,6 +76,5 @@
     <script type="text/javascript" src="/assets/js/jquery.js"></script>
     <script type="text/javascript" src="/assets/js/bootstrap.js"></script>
     <script type="text/javascript" src="/assets/js/scripts.js"></script>  
-	
     </body>
 </html>

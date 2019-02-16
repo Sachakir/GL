@@ -33,13 +33,16 @@ public class RemboursementService implements InterfaceRemboursementService {
 		repository.save(r);
 	}
 	
-	public void addNewRemboursement(Remboursement r) {
+	@Override
+	public Remboursement addNewRemboursement(Remboursement r) {
 		long demande_id = 1;
 		if(repository.count() != 0) {
-			demande_id = repository.getMaxId();
+			demande_id += repository.getMaxId();
 		}
 		
 		r.setDemande_id(demande_id);
 		repository.save(r);
+		
+		return r;
 	}
 }

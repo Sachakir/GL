@@ -26,6 +26,9 @@ public class RemboursementForm {
 	@NotNull
 	private String motif;
 	
+	@NotNull
+	private String moisNote;
+	
 	
 	//Getters
 	public String getMission() {
@@ -48,6 +51,10 @@ public class RemboursementForm {
 		return motif;
 	}
 	
+	public String getMoisNote() {
+		return moisNote;
+	}
+	
 	//Setters
 	public void setMission(String mission) {
 		this.mission = mission;
@@ -67,6 +74,10 @@ public class RemboursementForm {
 	
 	public void setMotif(String motif) {
 		this.motif = motif;
+	}
+	
+	public void setMoisNote(String moisNote) {
+		this.moisNote = moisNote;
 	}
 	
 }

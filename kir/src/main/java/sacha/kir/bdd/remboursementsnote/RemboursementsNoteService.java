@@ -16,5 +16,14 @@ public class RemboursementsNoteService implements InterfaceRemboursementsNoteSer
 		List<RemboursementsNote> rembNotes = (List<RemboursementsNote>) repository.findAll();
 		return rembNotes;
 	}
+	
+	@Override
+	public RemboursementsNote addRemboursementToNote(long note_id, long remboursement_id)
+	{
+		RemboursementsNote r = new RemboursementsNote(note_id, remboursement_id);
+		repository.save(r);
+		
+		return r;
+	}
 
 }
