@@ -7,7 +7,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface NoteRepository extends CrudRepository<Note, Long>{
 	
-	@Query("SELECT n FROM Note n WHERE n.mois = :mois AND n.uid = :uid")
+	@Query("SELECT n FROM Note n WHERE n.mois LIKE :mois AND n.uid = :uid")
 	public Note findNoteByMonthAndUID(String mois, Long uid);
 	
+	@Query("SELECT MAX(note_id) FROM Note")
+	public int findMaxId();
 }
