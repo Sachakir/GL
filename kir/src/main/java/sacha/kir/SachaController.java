@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,7 @@ import sacha.kir.bdd.appuser.InterfaceAppUserService;
 import sacha.kir.bdd.conges.Conges;
 import sacha.kir.bdd.conges.InterfaceCongesService;
 import sacha.kir.bdd.membresmission.InterfaceMembresMissionService;
+import sacha.kir.bdd.membresmission.MembresMission;
 import sacha.kir.bdd.mission.InterfaceMissionService;
 import sacha.kir.bdd.mission.Mission;
 import sacha.kir.bdd.userrole.InterfaceUserRoleService;
@@ -29,6 +31,7 @@ import sacha.kir.bdd.utilisateur.InterfaceUtilisateurService;
 import sacha.kir.bdd.utilisateur.Utilisateur;
 import sacha.kir.form.CongesV2;
 import sacha.kir.form.UserForm;
+import sacha.kir.form.UserList;
 
 @Controller
 public class SachaController 
@@ -211,7 +214,7 @@ public class SachaController
 		
 		List<UserRole> userroles = UserRoleService.findAll();
     	List<Utilisateur> utilisateurs = new ArrayList<Utilisateur>();
-
+    	List<Utilisateur> usersMembres = UtilisateurService.findAll();
     	
     	for (int i = 0;i < userroles.size();i++)
     	{
@@ -225,13 +228,19 @@ public class SachaController
     			utilisateurs.add(u);
     		}
     	}
+    	
+    	UserList ul = new UserList(); 	
     	model.addAttribute("users",utilisateurs);
+    	model.addAttribute("userlist",ul);
+    	model.addAttribute("membres",usersMembres);
         return "newMissionPage";
     }
 	
 	@PostMapping("/newMission")
-    public String checkMission(@Valid Mission mission)
+    public String checkMission(@Valid Mission mission,@ModelAttribute("userlist") UserList userlist)
     {
+		//Creation de la mission
+		
 		System.out.println(mission.getResponsable_id());
 		System.out.println(mission.getDate_debut());
 		System.out.println(mission.getDate_fin());
@@ -241,6 +250,17 @@ public class SachaController
 		mission.setMission_id((long) (maxid + 1));
 		
 		MissionService.addMission(mission);
+		//Ajout des membres
+		System.out.println(userlist.getUserList().size());
+		MembresMission membresMission = new MembresMission();
+
+		for (int i = 0;i < userlist.getUserList().size();i++)
+		{
+			membresMission.setMission_id((long) (maxid + 1));
+			membresMission.setMembre_uid(userlist.getUserList().get(i).getUID());
+			MembresMissionService.addMembresMission(membresMission);
+		}
+		
         return "redirect:/Accueil";
     }
 	

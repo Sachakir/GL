@@ -21,12 +21,8 @@ public class MembresMissionService implements InterfaceMembresMissionService{
 	}
 
 	@Override
-	public void addMembresMission() {
-		MembresMission m = new MembresMission();
-		m.setMembre_uid((long) 1);
-		m.setMission_id((long) 0);
-		
-		repository.save(m);
+	public void addMembresMission(MembresMission membresMission) {		
+		repository.save(membresMission);
 	}
 	
 	public List<Long> findMissionsByUID (Long userId)

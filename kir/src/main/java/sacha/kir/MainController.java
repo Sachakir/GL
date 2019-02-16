@@ -163,7 +163,7 @@ public class MainController {
     @RequestMapping("/addMembresMission")
     public String addMembresMission(Model model)
     {
-    	MembresMissionService.addMembresMission();
+    	//MembresMissionService.addMembresMission();
 
     	List<MembresMission> cs = MembresMissionService.findAll();
     	for (int i =0;i < cs.size();i++)
