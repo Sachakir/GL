@@ -34,13 +34,13 @@
 							<td><span th:text="${user.Nom}"> Nom </span></td>	
 							<td><span th:text="${user.Prenom}"> Prenom </span></td>
 							<td>
-								<a id="details" th:attr="data-object-id='${user.UID}'" type="button" class="btn btn-primary">
+								<a id="details" th:href="@{'/showUserDetails/'+${user.UID}}" type="button" class="btn btn-primary">
 									<span class="glyphicon glyphicon-search"></span>
 								</a>
 							</td>
 							<td>
 								<div th:unless="${user.UID} eq ${notAdmin}">
-									<button id="suppr" data-toggle="modal" data-target="#warning_msg" type="button" class="btn btn-danger" >
+									<button id="suppr" th:attr="data-object-id='${user.UID}'" data-toggle="modal" data-target="#warning_msg" type="button" class="btn btn-danger" >
 										<span class="glyphicon glyphicon-ban-circle"></span>
 									</button>
 								</div>
@@ -62,7 +62,7 @@
 				<p>Voulez-vous vraiment supprimer cet utilisateur?</p>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-danger btn-ok" onclick="deleteUser(data-object-id)">Supprimer</button>
+				<button type="button" class="btn btn-danger btn-ok" th:onclick="deleteUser(data-object-id)">Supprimer</button>
 				<button type="button" class="btn btn-primary" data-dismiss="modal">Annuler</button>
 			</div>
 		</div>

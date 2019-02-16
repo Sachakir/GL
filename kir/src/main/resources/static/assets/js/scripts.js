@@ -57,7 +57,7 @@ function sendData()
 		}
 	});
 }
-
+ /*
 function deleteUser(id) 
 {
     $.ajax({
@@ -73,4 +73,4 @@ function deleteUser(id)
 			alert("Error - Data not saved");
 		}
     });
-}
+}*/
