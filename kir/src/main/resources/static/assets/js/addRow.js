@@ -52,10 +52,13 @@ $(document).ready(function () {
         $("#validationf").text($(this).find("td:nth-child(7)").text());
         $("#demandeid").text($(this).find("td:nth-child(8)").text());
         
-        //var fic=$(this).find("td:nth-child(8)").text();
-        var fic=$(this).find("td:nth-child(8)").text();
-        //alert();
-		document.getElementById('linko').href = fic;
+        var fic = "/ValidationRemb/";
+        fic=fic+$(this).find("td:nth-child(8)").text();
+		document.getElementById('accept').href = fic;
+		
+		var fic2 = "/RefusRemb/";
+        fic2=fic2+$(this).find("td:nth-child(8)").text();
+		document.getElementById('refuse').href = fic2;
         
       });
     document.getElementById("editer").onclick = function() {bouttonDeRow()};
