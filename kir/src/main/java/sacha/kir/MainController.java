@@ -353,7 +353,8 @@ public class MainController {
     	String prenomnom = principal.getName();
     	String[] names = prenomnom.split("\\.");
     	model.addAttribute("WelcomeMsg", "Bienvenue " + names[0]);
-    	UserRole ur = UserRoleService.findById(UtilisateurService.findPrenomNom(names[1], names[0]).getUID());
+    	Long userId = UtilisateurService.findPrenomNom(names[1], names[0]).getUID();
+    	UserRole ur = UserRoleService.findById(userId);
     	String role = AppRoleService.findById(ur.getRole_id()).getRole_name();
     	if (role.equals("Admin"))
     	{
@@ -394,6 +395,11 @@ public class MainController {
 	        }
         }
         /**** NOTIFICATION ***********/
+        
+        /**** DERNIERES DEMANDES DE CONGES ****/
+        //List<Remboursement>
+        
+        /**** DERNIERES DEMANDES DE CONGES ****/
 
         return "welcomePage-Thibaut";
     }

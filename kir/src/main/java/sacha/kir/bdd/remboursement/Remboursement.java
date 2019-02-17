@@ -1,9 +1,13 @@
 package sacha.kir.bdd.remboursement;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "remboursement")
@@ -40,10 +44,17 @@ public class Remboursement {
 	@Column(name="MissionID")
 	private Long mission_id;
 	
-	public Remboursement() {}
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="Timestamp")
+	private final Date timestamp;
+	
+	public Remboursement() {
+		this.timestamp = new Date();
+	}
 
 	public Remboursement(Long demande_id, String titre, float montant, String date, String motif, String validationrh,
 			String validationchefservice, Long justificatifid, Long uid, Long mission_id) {
+		this();
 		this.demande_id = demande_id;
 		this.titre = titre;
 		this.montant = montant;
@@ -134,6 +145,10 @@ public class Remboursement {
 
 	public void setMission_id(Long mission_id) {
 		this.mission_id = mission_id;
+	}
+	
+	public Date getTimestamp() {
+		return timestamp;
 	}
 
 	@Override
