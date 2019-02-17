@@ -1,6 +1,6 @@
 .login-dark {
   height:1000px;
-  background:#475d62 url(../../assets/img/star-sky.jpg);
+  background:#3472d5;
   background-size:cover;
   position:relative;
 }
@@ -37,7 +37,7 @@
 }
 
 .login-dark form .btn-primary {
-  background:#214a80;
+  background:#3472d5;
   border:none;
   border-radius:4px;
   padding:11px;

@@ -264,3 +264,7 @@ a:active, a:focus { outline:none; }
 [hidden] {
   display: none !important;
 }
+
+[centered] {
+  text-align: center;
+}
