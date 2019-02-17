@@ -391,7 +391,7 @@ public class MainController {
         /**** NOTIFICATION ***********/
         
         /**** DERNIERES DEMANDES DE CONGES ****/
-        List<Remboursement> recentDemandesRemboursement = RemboursementService.getAllByIdAsc(userId, 10);
+        List<Remboursement> recentDemandesRemboursement = RemboursementService.getAllByIdDesc(userId, 10);
         Map<Long, String> missionNames = new HashMap<Long, String>();
         
         for(Remboursement r : recentDemandesRemboursement) {
