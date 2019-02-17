@@ -78,54 +78,6 @@ function deleteUser() {
 	});
 }
 
-/*
-function successShow()
-{
-	
-}
-
-$('#warning_msg').on('show.bs.modal', function (e) {
-  $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
-  $('#deleteVersionHiddenId').val($(this).find('.btn-ok').attr('href'));
-});
-
-$('#deleteVersionHiddenbtn').click(function (e){
-  e.preventDefault();
-  var Id = $('#deleteVersionHiddenId').val();
-  $.ajax({
-        type: "DELETE",
-        data: Id,
-        cache: false,
-        url: "/deleteUser/",
-        success: function() {
-        	$("#warning_msg").modal("hide"); 
-        	alert("User deleted");
-        }
-		error: function()
-		{
-			alert("Error - Data not saved");
-		}
-    });
-});
-
-
-function deleteUser() 
-{
-    $.ajax({
-        type: "POST",
-        cache: false,
-        url: "/deleteUser/"+$('#deleteVersionHiddenId').val(),
-        success: function() {
-        	$("#warning_msg").modal("hide"); 
-        	alert("User deleted");
-        }
-		error: function()
-		{
-			alert("Error - Data not saved");
-		}
-    });
-}*/
-
 $(function() {
   $(document).on('change', ':file', function() {
     var input = $(this),
