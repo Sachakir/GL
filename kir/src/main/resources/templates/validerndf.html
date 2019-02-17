@@ -109,13 +109,13 @@
 							</thead>
 							<tbody>
 								<tr th:each="remb : ${remboursements}">
-									<td><span th:text="${remb.uid}"> UID </span></td>
+									<td><span th:text="${remb.prenomnom}"> prenomNom </span></td>
 									<td><span th:text="${remb.titre}"> Titre </span></td>
 									<td><span th:text="${remb.date}"> Date </span></td>
 									<td><span th:text="${remb.montant}"> Montant </span></td>
-									<td style="display: none;">EnAttente</td>
-									<td style="display: none;">EnAttente</td>
-									<td style="display: none;">EnAttente</td>
+									<td style="display: none;"><span th:text="${remb.validationrh}"> VRH </span></td>
+									<td style="display: none;"><span th:text="${remb.validationchefservice}"> VCS </span></td>
+									<td style="display: none;"><span th:text="${remb.etatFinal}"> VCS </span></td>
 									<td style="display: none;"><span
 										th:text="${remb.demande_id}"> UID </span></td>
 								</tr>
@@ -128,8 +128,8 @@
 			<div class="col-md-7" value="locked" id="ndf">
 				<div class="panel panel-primary">
 					<div class="panel-heading">
-						<h2 class="panel-title text-center">Détails de la note de
-							frais</h2>
+						<h2 class="panel-title text-center">Détails de la demande de
+							remboursement</h2>
 					</div>
 					<div class="panel-body">
 						<!--Détails de notes de frais-->
@@ -179,10 +179,10 @@
 							</div>
 						</div>
 						<section class="row">
-							<a href=??? id='accept' class="btn btn-info btn-lg"><span
+							<a href="" id='accept' class="btn btn-info btn-lg"><span
 								class="glyphicon glyphicon-font"></span> Accepter 
 							</a> 
-							<a href=??? id='refuse' class="btn btn-info btn-lg"><span
+							<a href="" id='refuse' class="btn btn-info btn-lg"><span
 								class="glyphicon glyphicon-font"></span> Refuser 
 							</a>
 

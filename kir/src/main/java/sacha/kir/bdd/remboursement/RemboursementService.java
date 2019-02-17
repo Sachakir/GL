@@ -73,4 +73,14 @@ public class RemboursementService implements InterfaceRemboursementService {
 		else
 			return l.subList(0, limit);
 	}
+
+	@Override
+	public void updateRHState(long demandeid, String newstate) {
+		repository.updateRHState(demandeid, newstate);
+	}
+
+	@Override
+	public void updateChefState(long demandeid, String newstate) {
+		repository.updateChefState(demandeid, newstate);
+	}
 }

@@ -32,6 +32,7 @@ import sacha.kir.bdd.userrole.UserRole;
 import sacha.kir.bdd.utilisateur.InterfaceUtilisateurService;
 import sacha.kir.bdd.utilisateur.Utilisateur;
 import sacha.kir.form.CongesV2;
+import sacha.kir.form.RemboursementV2;
 import sacha.kir.form.UserForm;
 import sacha.kir.form.UserList;
 
@@ -272,12 +273,89 @@ public class SachaController
     public String validationNDF(Model model)
     {
 		List<Remboursement> rembs = RemboursementService.findAll();
+		List<RemboursementV2> rv2 = new ArrayList<RemboursementV2>();
 		for (int i =0;i<rembs.size();i++)
 		{
-			System.out.println(rembs.get(i).getValidationchefservice());
+			Utilisateur tmpUs = UtilisateurService.findById(rembs.get(i).getUid());
+			
+			
+			RemboursementV2 tmpRem = new RemboursementV2();
+			tmpRem.setDate(rembs.get(i).getDate());
+			tmpRem.setDemande_id(rembs.get(i).getDemande_id());
+			tmpRem.setJustificatifid(rembs.get(i).getJustificatifid());
+			tmpRem.setMission_id(rembs.get(i).getMission_id());
+			tmpRem.setMontant(rembs.get(i).getMontant());
+			tmpRem.setMotif(rembs.get(i).getMotif());
+			tmpRem.setPrenomnom(tmpUs.getPrenom() + " " + tmpUs.getNom());
+			tmpRem.setTitre(rembs.get(i).getTitre());
+			tmpRem.setValidationchefservice(rembs.get(i).getValidationchefservice());
+			tmpRem.setValidationrh(rembs.get(i).getValidationrh());
+			if (rembs.get(i).getValidationchefservice().contains("Valide") && rembs.get(i).getValidationrh().contains("Valide"))
+			{
+				tmpRem.setEtatFinal("Valide");
+			}
+			else if (rembs.get(i).getValidationchefservice().contains("Refuse") && rembs.get(i).getValidationrh().contains("Refuse"))
+			{
+				tmpRem.setEtatFinal("Refuse");
+			}
+			else 
+			{
+				tmpRem.setEtatFinal("EnAttente");
+			}
+			rv2.add(tmpRem);
+			
 		}
-		model.addAttribute("remboursements", rembs);
+		model.addAttribute("remboursements", rv2);
 		return "validerndf";
     }
 	
+	
+	@RequestMapping(path="/ValidationRemb/{id}")
+    public String ValidationRemb(@PathVariable("id") long demandeId,Principal principal)
+    {
+		String prenomnom = principal.getName();
+    	String[] names = prenomnom.split("\\.");
+    	Utilisateur ut = UtilisateurService.findPrenomNom(names[1], names[0]);
+    	UserRole ur = UserRoleService.findById(ut.getUID());
+    	String role = AppRoleService.findById(ur.getRole_id()).getRole_name();
+    	System.out.println(role);
+    	if (role.contains("RH"))
+    	{
+    		RemboursementService.updateRHState(demandeId, "Valide");
+    	}
+    	else if (role.contains("Chef"))
+    	{
+    		RemboursementService.updateChefState(demandeId, "Valide");
+    	}
+    	else
+    	{
+    		System.out.println("Vous ne pouvez pas valider de demandes de remboursement votre role est : " + role);
+    	}
+		return "redirect:/validationNDF";
+    }
+	
+	
+	@RequestMapping(path="/RefusRemb/{id}")
+    public String RefusRemb(@PathVariable("id") long demandeId,Principal principal)
+    {
+		String prenomnom = principal.getName();
+    	String[] names = prenomnom.split("\\.");
+    	Utilisateur ut = UtilisateurService.findPrenomNom(names[1], names[0]);
+    	UserRole ur = UserRoleService.findById(ut.getUID());
+    	String role = AppRoleService.findById(ur.getRole_id()).getRole_name();
+    	System.out.println(role);
+    	if (role.contains("RH"))
+    	{
+    		RemboursementService.updateRHState(demandeId, "Refuse");
+    	}
+    	else if (role.contains("Chef"))
+    	{
+    		RemboursementService.updateChefState(demandeId, "Refuse");
+    	}
+    	else
+    	{
+    		System.out.println("Vous ne pouvez pas refuser de demandes de remboursement votre role est : " + role);
+    	}
+		return "redirect:/validationNDF";
+    }
 }
