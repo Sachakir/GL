@@ -3,7 +3,9 @@ package sacha.kir;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -389,8 +391,19 @@ public class MainController {
         /**** NOTIFICATION ***********/
         
         /**** DERNIERES DEMANDES DE CONGES ****/
-        //List<Remboursement>
+        List<Remboursement> recentDemandesRemboursement = RemboursementService.getAllByIdAsc(userId, 10);
+        Map<Long, String> missionNames = new HashMap<Long, String>();
         
+        for(Remboursement r : recentDemandesRemboursement) {
+        	Long mission_id = r.getMission_id();
+        	if(!missionNames.containsKey(mission_id)) {
+        		Mission m = MissionService.findMissionById(mission_id);
+        		missionNames.put(mission_id, m.getTitre());
+        	}
+        }
+        
+        model.addAttribute("recentDemandesRemboursement", recentDemandesRemboursement);
+        model.addAttribute("missionNames", missionNames);
         /**** DERNIERES DEMANDES DE CONGES ****/
 
         return "welcomePage-Thibaut";
