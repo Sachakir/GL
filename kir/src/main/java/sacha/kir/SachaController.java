@@ -358,4 +358,16 @@ public class SachaController
     	}
 		return "redirect:/validationNDF";
     }
+	
+	@RequestMapping("/parametres")
+    public String parametres()
+    {
+		return "parametres";
+    }
+	
+	@RequestMapping("/changeMdp")
+    public String changeMdp()
+    {
+		return "parametres";
+    }
 }
