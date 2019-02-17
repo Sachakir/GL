@@ -9,5 +9,4 @@ public interface InterfaceCongesService
 	public void updateChefState(long congesid, String newstate);
 	public void updateRHState(long congesid, String newstate);
 	public void deleteConges(long uid);
-
 }

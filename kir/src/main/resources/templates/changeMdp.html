@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Changement de mot de passe</title>
+</head>
+<body>
+	<form action="#" th:action="@{/changeMdp}" th:object="${passwords}"
+		method="post">
+		<table>
+			<tbody>
+				<tr>
+					<td>Mot de passe actuel:</td>
+					<td><input type="text" th:field="*{oldpass}" /></td>
+				</tr>
+				<tr>
+					<td>Nouveau mot de passe:</td>
+					<td><input type="text" th:field="*{newPass}" /></td>
+				</tr>
+				<tr>
+					<td><input name="submit" type="submit" value="submit"></td>
+				</tr>
+			</tbody>
+		</table>
+	</form>
+</body>
+
+</html>

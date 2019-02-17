@@ -27,4 +27,14 @@ public class AppUserService implements InterfaceAppUserService {
 		repository.deleteAppUser(uid);
 	}
 
+	@Override
+	public AppUser findByUid(long uid) {
+		return repository.findByUid(uid);
+	}
+
+	@Override
+	public void updatePassword(long uid, String encrPassword) {
+		repository.updatePassword(uid, encrPassword);
+	}
+
 }

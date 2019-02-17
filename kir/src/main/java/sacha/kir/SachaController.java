@@ -32,6 +32,7 @@ import sacha.kir.bdd.userrole.UserRole;
 import sacha.kir.bdd.utilisateur.InterfaceUtilisateurService;
 import sacha.kir.bdd.utilisateur.Utilisateur;
 import sacha.kir.form.CongesV2;
+import sacha.kir.form.Passwords;
 import sacha.kir.form.RemboursementV2;
 import sacha.kir.form.UserForm;
 import sacha.kir.form.UserList;
@@ -365,9 +366,35 @@ public class SachaController
 		return "parametres";
     }
 	
-	@RequestMapping("/changeMdp")
-    public String changeMdp()
+	@GetMapping("/changeMdp")
+    public String changeMdp(Passwords passwords)
     {
-		return "parametres";
+		return "changeMdp";
+    }
+	
+	@PostMapping("/changeMdp")
+    public String checkMdp(Passwords passwords,Principal principal)
+    {
+		String prenomnom = principal.getName();
+    	String[] names = prenomnom.split("\\.");
+    	Utilisateur ut = UtilisateurService.findPrenomNom(names[1], names[0]);
+    	sacha.kir.bdd.appuser.AppUser au = AppUserService.findByUid(ut.getUID());
+    	
+    	if (!EncrytedPasswordUtils.comparePass(passwords.getOldpass(), au.getEncrypted_password()))
+    	{
+    		System.out.println("Mot de passe different!");
+    		return "changeMdp";
+    	}
+    	if (passwords.getNewPass().length() == 0)
+    	{
+    		System.out.println("Mot de passe null");
+    		return "changeMdp";
+    	}
+    	else
+    	{
+    		String newPass = EncrytedPasswordUtils.encryptePassword(passwords.getNewPass());
+    		AppUserService.updatePassword(ut.getUID(), newPass);
+    	}
+		return "redirect:/parametres";
     }
 }
