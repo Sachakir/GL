@@ -138,7 +138,7 @@
 							<tbody>
 								<tr th:each="demandeR : ${recentDemandesRemboursement}">
 									<td><a href="#" th:text="${demandeR.titre}"></a></td>
-									<td th:text="${demandeR.montant} + ' €'"></td>
+									<td th:text="${#numbers.formatDecimal(demandeR.montant, 0, 'COMMA', 2, 'POINT')} + ' €'"></td>
 									<td th:text="${missionNames[demandeR.mission_id]}"></td>
 									<td th:text="${demandeR.date}"></td>
 									<td th:text="${demandeR.validationrh}"></td>

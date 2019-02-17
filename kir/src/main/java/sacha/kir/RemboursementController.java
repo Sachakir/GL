@@ -1,6 +1,7 @@
 package sacha.kir;
 
 import java.security.Principal;
+import java.text.DateFormatSymbols;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -115,6 +116,13 @@ public class RemboursementController {
         
         String moisStr = (moisInt < 10 ? "0" + moisInt : moisInt) + "/" + yearInt;
         
+        String monthToDisplay = (moisInt == 4 || moisInt == 8 || moisInt == 10 ? "d'" : "de ");
+        String moisNote = new DateFormatSymbols().getMonths()[moisInt-1];
+        moisNote = moisNote.substring(0, 1).toUpperCase() + moisNote.substring(1);
+        monthToDisplay += moisNote + " " + yearInt;
+        
+        model.addAttribute("monthToDisplay", monthToDisplay);
+        
         // Verification de l'existence d'une note de frais
         Note n = NoteService.findNoteByMonthAndUID(moisStr, userId);
         if(n == null) //Creer une note de frais
@@ -181,6 +189,13 @@ public class RemboursementController {
         	
             model.addAttribute("missions", userMissions);
             model.addAttribute("monthRequested", monthRequested);
+            
+            String monthToDisplay = (moisNow == 4 || moisNow == 8 || moisNow == 10 ? "d'" : "de ");
+            String moisNote = new DateFormatSymbols().getMonths()[moisNow-1];
+            moisNote = moisNote.substring(0, 1).toUpperCase() + moisNote.substring(1);
+            monthToDisplay += moisNote + " " + yearNow;
+            
+            model.addAttribute("monthToDisplay", monthToDisplay);
         	
         	return "remboursementForm";
     	}
