@@ -1,9 +1,14 @@
 package sacha.kir;
 
 import java.security.Principal;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -40,6 +45,7 @@ import sacha.kir.bdd.userrole.UserRole;
 import sacha.kir.bdd.utilisateur.InterfaceUtilisateurService;
 import sacha.kir.bdd.utilisateur.Utilisateur;
 import sacha.kir.form.CongeForm;
+import sacha.kir.form.CongesV2;
 import sacha.kir.form.UserForm;
  
 @Controller
@@ -276,7 +282,71 @@ public class MainController {
     
 
     @GetMapping("/Calendrier")
-    public String getCalendrier(Model model) {
+    public String getCalendrier(Model model,Principal principal) {
+    	// On selectionne tout les uid
+    	List<Utilisateur> cs = UtilisateurService.findAll();
+    	for (int i =0;i < cs.size();i++)
+    	{
+    		System.out.println(cs.get(i).toString());
+    	}
+    	model.addAttribute("listUsers", cs);
+    	String prenomnom = principal.getName();
+    	String[] names = prenomnom.split("\\.");
+    	
+    	List<Conges> conges = CongesService.findAll();
+    	List<CongesV2> aujourdhuiConges = new ArrayList<CongesV2>();
+    	List<CongesV2> c2 = new ArrayList<CongesV2>();
+    	List<Utilisateur> aujourdhuiU = new ArrayList<Utilisateur>();
+    	model.addAttribute("notAdmin",UtilisateurService.findPrenomNom(names[1], names[0]).getUID());
+    	SimpleDateFormat formatter= new SimpleDateFormat("dd-MM-yyyy 'at' HH:mm:ss z");  
+    	Date d = new Date();
+    	String today = formatter.format(d);
+    	for(int i=0;i<conges.size();i++) {
+    		int jourDebut = Integer.parseInt(conges.get(i).getDatedebut().substring(0,2));
+    		int jourFin = Integer.parseInt(conges.get(i).getDatefin().substring(0,2));
+    		int moisDebut = Integer.parseInt(conges.get(i).getDatedebut().substring(3,5));
+    		int moisFin = Integer.parseInt(conges.get(i).getDatefin().substring(3,5));
+    		int anneeDebut = Integer.parseInt(conges.get(i).getDatedebut().substring(6,10));
+    		int anneeFin = Integer.parseInt(conges.get(i).getDatefin().substring(6,10));
+    		int jour = Integer.parseInt(today.substring(0,2));
+    		int mois = Integer.parseInt(today.substring(3,5));
+    		int annee = Integer.parseInt(today.substring(6,10));
+    		if(anneeDebut<=annee && anneeFin>=annee) {
+    			if(moisDebut <=mois && moisFin>=mois) {
+    				if(jourDebut <=jour && jourFin >=jour) {
+    					CongesV2 c = new CongesV2();
+    					Conges conge = conges.get(i);
+    					c.setCongesid(conge.getCongesid());
+    					c.setDatedebut(conge.getDatedebut());
+    					c.setDatefin(conge.getDatefin());
+    					c.setUid(conge.getUid());
+    					aujourdhuiConges.add(c);
+    					for (Utilisateur utilisateur : cs) {
+							if(utilisateur.getUID()==c.getUid()) {
+								aujourdhuiU.add(utilisateur);
+							}
+						}
+    				}
+    			}
+    		}
+    		
+    		
+    		
+    	}
+    	for(int j=0;j<conges.size();j++) {
+			CongesV2 x = new CongesV2();
+			Conges conge = conges.get(j);
+			x.setCongesid(conge.getCongesid());
+			x.setDatedebut(conge.getDatedebut());
+			x.setDatefin(conge.getDatefin());
+			x.setUid(conge.getUid());
+			c2.add(x);
+		}
+    	model.addAttribute("toutConges",c2);
+    	model.addAttribute("listConges",aujourdhuiConges);
+    	model.addAttribute("utilisateurs",aujourdhuiU);
+    	
+		
         return "calendrier";
     }
     
@@ -389,8 +459,19 @@ public class MainController {
         /**** NOTIFICATION ***********/
         
         /**** DERNIERES DEMANDES DE CONGES ****/
-        //List<Remboursement>
+        List<Remboursement> recentDemandesRemboursement = RemboursementService.getAllByIdDesc(userId, 10);
+        Map<Long, String> missionNames = new HashMap<Long, String>();
         
+        for(Remboursement r : recentDemandesRemboursement) {
+        	Long mission_id = r.getMission_id();
+        	if(!missionNames.containsKey(mission_id)) {
+        		Mission m = MissionService.findMissionById(mission_id);
+        		missionNames.put(mission_id, m.getTitre());
+        	}
+        }
+        
+        model.addAttribute("recentDemandesRemboursement", recentDemandesRemboursement);
+        model.addAttribute("missionNames", missionNames);
         /**** DERNIERES DEMANDES DE CONGES ****/
 
         return "welcomePage-Thibaut";
