@@ -47,9 +47,20 @@ $(document).ready(function () {
         $("#employe").text("Nom de l'employé: "+$(this).find("td:nth-child(1)").text());
         $("#date").text("Date: "+$(this).find("td:nth-child(3)").text());
         $("#montant").text("Montant  total: "+$(this).find("td:nth-child(4)").text()+"€");
+        $("#validationrh").text($(this).find("td:nth-child(5)").text());
+        $("#validationcds").text($(this).find("td:nth-child(6)").text());
+        $("#validationf").text($(this).find("td:nth-child(7)").text());
+        $("#demandeid").text($(this).find("td:nth-child(8)").text());
+        
+        //var fic=$(this).find("td:nth-child(8)").text();
+        var fic=$(this).find("td:nth-child(8)").text();
+        //alert();
+		document.getElementById('linko').href = fic;
         
       });
     document.getElementById("editer").onclick = function() {bouttonDeRow()};
+    
+
 });
 
 
