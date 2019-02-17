@@ -40,9 +40,9 @@
 							</td>
 							<td>
 								<div th:unless="${user.UID} eq ${notAdmin}">
-									<a id="suppr" data-href="${user.UID}" data-toggle="modal" data-target="#warning_msg" type="button" class="btn btn-danger" >
+									<button th:id="${user.UID}" data-toggle="modal" data-target="#warning_msg" value="suppr" type="button" class="btn btn-danger" >
 										<span class="glyphicon glyphicon-ban-circle"></span>
-									</a>
+									</button>
 								</div>
 							</td>				
 						</tr>
@@ -62,8 +62,7 @@
 				<p>Voulez-vous vraiment supprimer cet utilisateur?</p>
 			</div>
 			<div class="modal-footer">
-				<input type="hidden" id="deleteVersionHiddenId" name="deleteVersionHiddenId" value="0" />
-				<a class="btn btn-danger btn-ok" id="deleteVersionHiddenbtn">Delete</a>
+				<a class="btn btn-danger" id="deleteButton" onclick="deleteUser()">Delete</a>
 				<button type="button" class="btn btn-primary" data-dismiss="modal">Annuler</button>
 			</div>
 		</div>

@@ -55,22 +55,33 @@ function sendData()
 		}
 	});
 }
-/*
-function successShow()
-{
+
+var idSuppr = "31";
+
+$("button[value='suppr']").click(function() {
+	idSuppr = this.id;
+});
+
+function deleteUser() {
 	$.ajax(
 	{
-		cache: false,
-		url: "/roleChanged",
+		url: "/deleteUser/"+idSuppr,
 		success: function() 
 		{ 
-			alert("Error - Data not saved");
+			$("#formulaire").modal("hide");
+			location.reload();
 		},
 		error: function()
 		{
-			alert("Error - Data not saved");
+			alert("Echec de la suppression");
 		}
 	});
+}
+
+/*
+function successShow()
+{
+	
 }
 
 $('#warning_msg').on('show.bs.modal', function (e) {
