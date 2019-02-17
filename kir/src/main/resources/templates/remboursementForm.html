@@ -25,28 +25,29 @@
                             <option value=""> -- </option>
                             <option th:each="mission : ${missions}" th:value="${mission.mission_id}" th:text="${mission.mission_id} + ' : ' + ${mission.titre}"></option>
                         </select>
-                        <label th:if="${#fields.hasErrors('mission')}" th:errors="*{mission}">Mission incorrecte</label>
+                        <br/>
+                        <label class="bg-warning text-danger" th:if="${#fields.hasErrors('mission')}" th:errors="*{mission}"></label>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="titreDemande">Titre de la demande</label>  
                     <div>
                         <input id="titreDemande" name="titreDemande" type="text" placeholder="ex : Billets avion" class="form-control input-md" th:field="*{titre}">
-                        <label th:if="${#fields.hasErrors('titre')}" th:errors="*{titre}">Titre incorrect</label>
+                        <label class="bg-warning text-danger" th:if="${#fields.hasErrors('titre')}" th:errors="*{titre}"></label>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="montant">Montant (€)</label>  
                     <div>
                         <input id="montant" name="montant" type="text" placeholder="ex : 42.00" class="form-control input-md" th:field="*{montant}">
-                        <label th:if="${#fields.hasErrors('montant')}" th:errors="*{montant}">Montant incorrect</label>
+                        <label class="bg-warning text-danger" th:if="${#fields.hasErrors('montant')}" th:errors="*{montant}"></label>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="date">Date (format dd/mm/yyyy)</label>  
                     <div>
                         <input id="date" name="date" type="text" placeholder="ex : 31/12/2019" class="form-control input-md" th:field="*{date}">
-                        <label th:if="${#fields.hasErrors('date')}" th:errors="*{date}">Erreur dans la date</label>
+                        <label class="bg-warning text-danger" th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></label>
                     </div>
                 </div>
                 <div class="form-group">

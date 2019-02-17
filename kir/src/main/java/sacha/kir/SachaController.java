@@ -25,6 +25,8 @@ import sacha.kir.bdd.membresmission.InterfaceMembresMissionService;
 import sacha.kir.bdd.membresmission.MembresMission;
 import sacha.kir.bdd.mission.InterfaceMissionService;
 import sacha.kir.bdd.mission.Mission;
+import sacha.kir.bdd.remboursement.InterfaceRemboursementService;
+import sacha.kir.bdd.remboursement.Remboursement;
 import sacha.kir.bdd.userrole.InterfaceUserRoleService;
 import sacha.kir.bdd.userrole.UserRole;
 import sacha.kir.bdd.utilisateur.InterfaceUtilisateurService;
@@ -50,6 +52,8 @@ public class SachaController
     InterfaceMembresMissionService MembresMissionService;
 	@Autowired
     InterfaceMissionService MissionService;
+	@Autowired
+    InterfaceRemboursementService RemboursementService;
 	
 	@GetMapping("/validationConges")
     public String addConges(Principal principal,Model model) 
@@ -264,10 +268,16 @@ public class SachaController
         return "redirect:/Accueil";
     }
 	
-	@RequestMapping(path="/lists")
-    public String lists()
+	@RequestMapping("/validationNDF")
+    public String validationNDF(Model model)
     {
-		return "ListToList";
+		List<Remboursement> rembs = RemboursementService.findAll();
+		for (int i =0;i<rembs.size();i++)
+		{
+			System.out.println(rembs.get(i).getValidationchefservice());
+		}
+		model.addAttribute("remboursements", rembs);
+		return "validerndf";
     }
 	
 }

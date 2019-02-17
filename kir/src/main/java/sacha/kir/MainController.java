@@ -353,7 +353,8 @@ public class MainController {
     	String prenomnom = principal.getName();
     	String[] names = prenomnom.split("\\.");
     	model.addAttribute("WelcomeMsg", "Bienvenue " + names[0]);
-    	UserRole ur = UserRoleService.findById(UtilisateurService.findPrenomNom(names[1], names[0]).getUID());
+    	Long userId = UtilisateurService.findPrenomNom(names[1], names[0]).getUID();
+    	UserRole ur = UserRoleService.findById(userId);
     	String role = AppRoleService.findById(ur.getRole_id()).getRole_name();
     	if (role.equals("Admin"))
     	{
@@ -361,9 +362,6 @@ public class MainController {
     	}
     	/**** NOTIFICATION ***********/
         LocalDate localDate = LocalDate.now();
-    	System.out.println(localDate.getDayOfMonth());
-    	System.out.println("Mois : " + localDate.getMonthValue());
-        System.out.println(DateTimeFormatter.ofPattern("dd/MM/yyyy").format(localDate));
         if (localDate.getDayOfMonth() >= 14)
         {   
 	        Utilisateur ut = UtilisateurService.findPrenomNom(names[1], names[0]);
@@ -381,19 +379,19 @@ public class MainController {
 	        	moisInt--;
 	        }
 	        moisPrecedent = (moisInt < 10 ? "0" + moisInt : moisInt) + "/" + yearInt;
-	        System.out.println("Mois précedent :  " + moisPrecedent);
 	        Note notePrecedente = NoteService.findNoteByMonthAndUID(moisPrecedent, uid);
+	        
 	        if (notePrecedente == null)
 	        {
-	        	System.out.println("Pas de note pour le mois davant !");
 	        	model.addAttribute("NotifNote", "Vous n\'avez pas de note de frais pour le mois precedent !");
-	        }
-	        else
-	        {
-	        	System.out.println("Une note pour le mois d'avant !");
 	        }
         }
         /**** NOTIFICATION ***********/
+        
+        /**** DERNIERES DEMANDES DE CONGES ****/
+        //List<Remboursement>
+        
+        /**** DERNIERES DEMANDES DE CONGES ****/
 
         return "welcomePage-Thibaut";
     }

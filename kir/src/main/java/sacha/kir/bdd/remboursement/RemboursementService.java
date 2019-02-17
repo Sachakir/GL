@@ -45,4 +45,24 @@ public class RemboursementService implements InterfaceRemboursementService {
 		
 		return r;
 	}
+	
+	@Override
+	public List<Remboursement> getAllByIdAsc(long uid) {
+		return repository.getAllByIdAsc(uid);
+	}
+	
+	@Override
+	public List<Remboursement> getAllByIdDesc(long uid) {
+		return repository.getAllByIdDesc(uid);
+	}
+	
+	@Override
+	public List<Remboursement> getAllByIdAsc(long uid, int limit) {
+		return repository.getAllByIdAsc(uid).subList(0, limit);
+	}
+	
+	@Override
+	public List<Remboursement> getAllByIdDesc(long uid, int limit) {
+		return repository.getAllByIdDesc(uid).subList(0, limit);
+	}
 }
