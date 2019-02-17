@@ -8,5 +8,5 @@ public interface InterfaceJustificatifService {
 	public List<Justificatif> findAll();
 	public void addJustificatif();
 	public Justificatif storeJustificatif (MultipartFile file);
-	public Justificatif getFile(Long justificatif_id);
+	public Justificatif getFile(long justificatif_id);
 }

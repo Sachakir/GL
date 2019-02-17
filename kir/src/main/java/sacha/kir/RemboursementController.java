@@ -11,6 +11,10 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -73,7 +77,7 @@ public class RemboursementController {
 		for(Remboursement r : remboursements) {
 			System.out.println("Remboursement n" + r.getDemande_id() + ", timestamp = " + r.getTimestamp());
 		}
-		return "redirect:/";
+		return "remboursements";
 	}
 	
 	@GetMapping("/demande-remboursement")
@@ -270,6 +274,49 @@ public class RemboursementController {
     			
     		System.out.println(referer);
     		return "redirect:" + referer;
+    	}
+    }
+    
+    @GetMapping("/files")
+    public ResponseEntity<byte[]> getPDF(@RequestParam(value = "file_id", required = true) int file_id) {
+        HttpHeaders headers = new HttpHeaders();
+        Justificatif j = JustificatifService.getFile(file_id);
+    	if(j != null)
+    	{
+    		String filename = j.getFilename();
+    		System.out.println(filename);
+    		if(filename.endsWith(".pdf")) {
+    			headers.setContentType(MediaType.parseMediaType("application/pdf"));
+    		}
+    		else if (filename.endsWith(".html"))  {
+    			headers.setContentType(MediaType.parseMediaType("text/html"));
+    		}
+    		else if (filename.endsWith(".txt"))  {
+    			headers.setContentType(MediaType.parseMediaType("text/plain"));
+    		}
+    		else if (filename.endsWith(".gif"))  {
+    			headers.setContentType(MediaType.parseMediaType("image/gif"));
+    		}
+    		else if (filename.endsWith(".jpeg"))  {
+    			headers.setContentType(MediaType.parseMediaType("image/jpeg"));
+    		}
+    		else if (filename.endsWith(".png"))  {
+    			headers.setContentType(MediaType.parseMediaType("image/png"));
+    		}
+    		else {
+    			headers.setContentType(MediaType.parseMediaType("application/octet-stream"));
+    		}
+    		
+    		headers.add("content-disposition", "inline;filename=" + filename);
+    		headers.setContentDispositionFormData(filename, filename);
+    		headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+            ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(j.getPdf(), headers, HttpStatus.OK);
+            return response;
+    	}
+    	
+    	else {
+    		ResponseEntity<byte[]> response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    		return response;
     	}
     }
 }

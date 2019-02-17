@@ -33,21 +33,22 @@ public class JustificatifService implements InterfaceJustificatifService {
 		
 	}
 	
+	@Override
 	public Justificatif storeJustificatif (MultipartFile file) {
 		String filepath = StringUtils.cleanPath(file.getOriginalFilename());
-		
 		try {
 			if(filepath.contains("..")) {
                 System.err.println("Sorry! Filename contains invalid path sequence " + filepath);
             }
 			
-			Justificatif j;
-			if(repository.count() == 0)
-				j = new Justificatif((long)1, file.getBytes());
-			else
-				j = new Justificatif((long)repository.getMaxId() + 1, file.getBytes());
-
+			int justificatif_id = 1;
+			if(repository.count() > 0) {
+				justificatif_id += repository.getMaxId();
+			}
+				
+			Justificatif j = new Justificatif(justificatif_id, file.getBytes(), file.getOriginalFilename());
             return repository.save(j);
+            
         } catch (IOException e) {
             System.err.println("Could not store file " + filepath + ". Please try again!");
             e.printStackTrace();
@@ -55,7 +56,8 @@ public class JustificatifService implements InterfaceJustificatifService {
         }
 	}
 	
-	public Justificatif getFile(Long justificatif_id) {
+	@Override
+	public Justificatif getFile (long justificatif_id) {
 		return repository.findById(justificatif_id).orElse(null);
 	}
 }

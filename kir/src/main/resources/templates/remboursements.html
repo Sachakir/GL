@@ -1,0 +1,173 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title th:utext="${title}"></title>
+	<meta charset="utf-8">
+	<link href="/assets/css/bootstrap.css" rel="stylesheet">
+	<link rel="stylesheet" href="/assets/css/style.css" />
+	<link href='/assets/css/calendrier.css' rel='stylesheet' />
+	<link href='/assets/css/calendrier.print.css' rel='stylesheet' />    
+</head>
+
+<body>
+
+	<div id='calendar'></div>
+	<div class="container">
+		
+		<div th:replace="~{navBar :: #navBar}"></div>
+
+		<br>
+
+		
+
+	<br>
+	<section class="row">
+		<div class="col-md-6">
+			<section class="row">
+				<div class="col-md-10">
+					<div class="panel panel-primary">
+						<div class="panel-heading">
+							<h3 class="panel-title">Dernières notifications</h3>
+						</div>
+						<div class="list-group">
+							<a href="#" class="list-group-item" data-toggle="modal">
+								Demande de remboursement
+								<span class="badge">12 Janvier 2019</span>
+							</a>
+							<a href="#" class="list-group-item" data-toggle="modal">
+								Demande de congés - 10 jour(s)
+								<span class="badge">12 Janvier 2019</span>
+							</a>
+							<a href="#" class="list-group-item" data-toggle="modal">
+								Demande de remboursement
+								<span class="badge">12 Janvier 2019</span>
+							</a>
+							<a href="#" class="list-group-item" data-toggle="modal">
+								Demande de remboursement
+								<span class="badge">12 Janvier 2019</span>
+							</a>
+							<a href="#" class="list-group-item" data-toggle="modal">
+								Demande de remboursement
+								<span class="badge">12 Janvier 2019</span>
+							</a>
+							<a href="#" class="list-group-item" data-toggle="modal">
+								Demande de congés - 21 jour(s)
+								<span class="badge">12 Janvier 2019</span>
+							</a>
+							<a href="#" class="list-group-item" data-toggle="modal">
+								Demande de congés - 1 jour(s)
+								<span class="badge">12 Janvier 2019</span>
+							</a>
+							<a href="#" class="list-group-item" data-toggle="modal">
+								Demande de congés - 0.5 jour(s)
+								<span class="badge">12 Janvier 2019</span>
+							</a>
+							<a href="#" class="list-group-item" data-toggle="modal">
+								Demande de congés - 14 jour(s)
+								<span class="badge">12 Janvier 2019</span>
+							</a>
+							<a href="#" class="list-group-item" data-toggle="modal">
+								Demande de congés - 14 jour(s)
+								<span class="badge">12 Janvier 2019</span>
+							</a>
+							<a href="#" class="list-group-item" data-toggle="modal">
+								Demande de congés - 14 jour(s)
+								<span class="badge">12 Janvier 2019</span>
+							</a>
+							<a href="#" class="list-group-item" data-toggle="modal">
+								Demande de congés - 14 jour(s)
+								<span class="badge">12 Janvier 2019</span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+		<div class="col-md-6">
+			<section class="row">
+				<div class="col-md-12">
+					<h2>Mes congés</h2>
+					<h4>Jour(s) de congé(s) payé(s) restant(s) : 4.5</h4>
+					<h4>RTT(s) restant(s) : 0.0</h4>
+				</div>
+			</section>
+			<section class="row">
+				<div class="col-md-offset-4 col-md-4">
+					<a href="/Calendrier" class="btn btn-primary" type="button">
+						Voir calendrier
+					</a>
+				</div>
+			</section>
+			<br>
+			<section class="row">
+				<div class="col-md-12 col-xs-12">
+					<div class="panel panel-primary table-responsive">
+						<table class="table table-striped w-auto">
+							<div class="panel-heading"> 
+								<h3 class="panel-title">Mes dernières demandes de remboursement</h3>
+							</div>
+							<thead>
+								<tr>
+									<th>Nom</th>
+									<th>Prix</th>
+									<th>Mission</th>
+									<th>Date</th>
+									<th>Etat</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="demandeR : ${recentDemandesRemboursement}">
+									<td><a href="#" th:text="${demandeR.titre}"></a></td>
+									<td th:text="${#numbers.formatDecimal(demandeR.montant, 0, 'COMMA', 2, 'POINT')} + ' €'"></td>
+									<td th:text="${missionNames[demandeR.mission_id]}"></td>
+									<td th:text="${demandeR.date}"></td>
+									<td th:text="${demandeR.validationrh}"></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</section>
+		</div>
+	</section>
+	<section class="row">
+		<div th:if="${isAdmin}">
+			<div id="html" class="col-sm-offset-3 col-sm-3">
+				<button data-toggle="modal" data-target="#formulaire" class="btn btn-primary" type="button">
+					Ajouter un utilisateur
+				</button>
+			</div>
+			<div class="col-sm-3">
+				<a href="/adminShow" class="btn btn-primary" role="button">
+					Gérer les utilisateurs
+				</a>
+			</div>
+		</div>
+	</section>
+
+	<div th:replace="~{addUserForm :: #formulaire}"></div>
+
+	<div class="modal fade" id="success_msg" role="dialog">
+		<div class="modal-dialog modal-sm"> 
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">x</button>
+					<h4 class="modal-title">Réussite</h4>
+				</div>
+				<div class="modal-body">
+					<p>Utilisateur ajouté</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript" src="/assets/js/jquery.js"></script>
+<script type="text/javascript" src="/assets/js/bootstrap.js"></script>
+<script type="text/javascript" src="/assets/js/scripts.js"></script>  
+</body>
+</html>

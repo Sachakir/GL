@@ -55,7 +55,7 @@
                 <div class="form-group">
                     <label class="control-label" for="motif">Motif</label>  
                     <div>
-                        <textarea id="motif" name="motif" type="text" class="form-control" th:field="*{motif}"></textarea>
+                        <textarea id="motif" name="motif" class="form-control" th:field="*{motif}"></textarea>
                     </div>
                 </div>
                 <div class="form-group">
@@ -66,12 +66,13 @@
                                 Choisir un fichier <input type="file" name="file" hidden multiple>
                             </span>
                         </label>
-                        <input type="text" class="form-control" readonly>
+                        <input type="text" class="form-control col" readonly>
                     </div>
                 </div>
             <button id="post" name="" type="submit" class="btn btn-primary">Soumettre</button>
             </form>
         </div>
+    </div>
 	
 	<script th:if="${noNoteFrais} != null" th:inline="javascript">
 		confirmCreationNote(/*[[${urlNote}]]*/null, /*[[${urlRedirect}]]*/null, /*[[${messageConfirmation}]]*/null);
