@@ -63,6 +63,18 @@ public class RemboursementController {
 	@Autowired
 	InterfaceUserRoleService UserRoleService;
 	
+	@GetMapping(value = {"/", ""})
+	public String displayNotesFrais(Model model, Principal principal) {
+		String[] names = principal.getName().split("\\.");
+    	Long userId = UtilisateurService.findPrenomNom(names[1], names[0]).getUID();
+    	
+		List<Remboursement> remboursements = RemboursementService.getAllByIdAsc(userId, 2);
+		for(Remboursement r : remboursements) {
+			System.out.println("Remboursement n" + r.getDemande_id() + ", timestamp = " + r.getTimestamp());
+		}
+		return "redirect:/";
+	}
+	
 	@GetMapping("/demande-remboursement")
     public String remboursementForm(@RequestParam(value = "mois", required = false) String monthRequested, Model model, Principal principal) {
 		if(monthRequested == null) {

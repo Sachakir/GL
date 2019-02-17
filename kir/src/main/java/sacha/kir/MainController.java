@@ -362,9 +362,6 @@ public class MainController {
     	}
     	/**** NOTIFICATION ***********/
         LocalDate localDate = LocalDate.now();
-    	System.out.println(localDate.getDayOfMonth());
-    	System.out.println("Mois : " + localDate.getMonthValue());
-        System.out.println(DateTimeFormatter.ofPattern("dd/MM/yyyy").format(localDate));
         if (localDate.getDayOfMonth() >= 14)
         {   
 	        Utilisateur ut = UtilisateurService.findPrenomNom(names[1], names[0]);
@@ -382,16 +379,11 @@ public class MainController {
 	        	moisInt--;
 	        }
 	        moisPrecedent = (moisInt < 10 ? "0" + moisInt : moisInt) + "/" + yearInt;
-	        System.out.println("Mois précedent :  " + moisPrecedent);
 	        Note notePrecedente = NoteService.findNoteByMonthAndUID(moisPrecedent, uid);
+	        
 	        if (notePrecedente == null)
 	        {
-	        	System.out.println("Pas de note pour le mois davant !");
 	        	model.addAttribute("NotifNote", "Vous n\'avez pas de note de frais pour le mois precedent !");
-	        }
-	        else
-	        {
-	        	System.out.println("Une note pour le mois d'avant !");
 	        }
         }
         /**** NOTIFICATION ***********/
