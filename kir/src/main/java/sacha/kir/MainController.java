@@ -281,7 +281,7 @@ public class MainController {
     }
     
     @GetMapping("/AjouterConge")
-    public String ajouterc(Model model, Principal principal) {
+    public String ajouterc(Model model, Principal principal, CongeForm congeForm) {
     	
     	return "ajouterConge";
     }
@@ -290,11 +290,13 @@ public class MainController {
     	
         System.out.println(congeForm.getDateDebut());
         System.out.println(congeForm.getDateFin());
-
+        String[] dateD = congeForm.getDateDebut().split("-");
+        String[] dateF = congeForm.getDateFin().split("-");
     	String[] names = principal.getName().split("\\.");
     	Long uID = UtilisateurService.findPrenomNom(names[1], names[0]).getUID();
-    	
-    	CongesService.addConges(congeForm.getDateDebut(), congeForm.getDateFin(), uID);
+    	String dateDebut = dateD[2]+"/"+dateD[1]+"/"+dateD[0];
+    	String dateFin = dateF[2]+"/"+dateF[1]+"/"+dateF[0];
+    	CongesService.addConges(dateDebut, dateFin, uID);
         
         return "redirect:/Accueil";
     }
@@ -340,7 +342,14 @@ public class MainController {
     					c.setUid(conge.getUid());
     					c.setValidationrh(conge.getValidationrh());
     					c.setValidationchefservice(conge.getValidationchefdeservice());
-    					
+    					for(int k=0;k<cs.size();k++) {
+    						
+    						if(cs.get(k).getUID()==c.getUid()) {
+    							
+    							c.setPrenomNom(cs.get(k).getPrenom()+" "+cs.get(k).getNom());
+    							System.out.println(c.getPrenomNom());
+    						}
+    					}
     					aujourdhuiConges.add(c);
     					for (Utilisateur utilisateur : cs) {
 							if(utilisateur.getUID()==c.getUid()) {
@@ -365,7 +374,7 @@ public class MainController {
 				if(cs.get(k).getUID()==x.getUid()) {
 					
 					x.setPrenomNom(cs.get(k).getPrenom()+" "+cs.get(k).getNom());
-					System.out.println(x.getPrenomNom());
+					System.out.println("AHHHHHHHH " + x.getPrenomNom());
 				}
 			}
 			c2.add(x);

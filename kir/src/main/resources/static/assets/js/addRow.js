@@ -90,6 +90,14 @@ $(document).ready(function () {
 		document.getElementById('refuse').href = fic2;
         
       });
+	  $("#dateD").change=function(){
+		  $('#calendarC').fullCalendar('removeEvents');
+			$('#calendarC').fullCalendar('renderEvent', {
+				title: 'congé',
+				start: $("#dateD").val(),
+				end: $("#dateF").val()
+			});
+	  }
     document.getElementById("editer").onclick = function() {bouttonDeRow()};
     
 

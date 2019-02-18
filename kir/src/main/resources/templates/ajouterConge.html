@@ -25,15 +25,19 @@
 					</div>
 					<div class = "panel-body details">
 						
-						<h4 id="jourRestant">Nombre de jours restants: </h4>
-						<h4 >Date de début: <input id="dateD" type="date"></h4>
-						<h4 >Date de fin: <input id="dateF" type="date"></h4>
-						<div centered class="row">
-							<a href=""  class="btn btn-success btn-lg">
-								<span class="glyphicon glyphicon-ok"></span> 
-							</a>
+						
+						<form action="#" th:action="@{/AjouterConge}" th:object="${congeForm}" method="post">
 							
-						</div>
+							<h4 id="jourRestant">Nombre de jours restants: </h4>
+							<h4 >Date de début: <input id="dateD" type="date" th:field="*{dateDebut}" ></h4>
+							<h4 >Date de fin: <input id="dateF" type="date" th:field="*{dateFin}"></h4>
+							<div centered class="row">
+								<input name="submit" type="submit" value="Valider">
+								
+							</div>
+								
+							
+						</form>
 					</div>
 					<br>
 				</div>

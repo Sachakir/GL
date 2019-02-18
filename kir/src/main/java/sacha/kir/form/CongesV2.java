@@ -8,13 +8,13 @@ public class CongesV2
 	 private long uid;
 	 private String datefin;
 	 private String datedebut;
-	 private String PrenomNom;
+	 private String prenomNom;
 	 
 		public String getPrenomNom() {
-		return PrenomNom;
+		return prenomNom;
 		}
-		public void setPrenomNom(String prenomNom) {
-			PrenomNom = prenomNom;
+		public void setPrenomNom(String prenomN) {
+			prenomNom = prenomN;
 		}
 		public Long getCongesid() {
 			return congesid;
