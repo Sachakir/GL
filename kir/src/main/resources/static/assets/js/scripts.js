@@ -25,9 +25,19 @@ $(document).ready(function()
 	});
 });
 
-function myFunction()
+function showMDP()
 {
 	var x = document.getElementById("mdp");
+	if (x.type === "password") {
+		x.type = "text";
+	} else {
+		x.type = "password";
+	}
+}
+
+function showMDP2()
+{
+	var x = document.getElementById("mdp2");
 	if (x.type === "password") {
 		x.type = "text";
 	} else {

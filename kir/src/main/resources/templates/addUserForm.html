@@ -57,7 +57,7 @@
 								<label class="control-label" for="mdp">Mot de passe</label>  
 								<div>
 									<input id="mdp" name="mdp" type="password" placeholder="ex : *********" class="form-control input-md" th:field="*{mdp}">
-									<input type="checkbox" onclick="myFunction()"> Voir Mot de passe
+									<input type="checkbox" onclick="showMDP()"> Voir Mot de passe
 									<label th:if="${#fields.hasErrors('mdp')}" th:errors="*{mdp}">erreur mdp</label>
 								</div>
 							</div>

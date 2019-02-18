@@ -1,11 +1,36 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Changement de mot de passe</title>
+	<title th:utext="${title}"></title>
+	<meta charset="utf-8">
+	<link href="/assets/css/bootstrap.css" rel="stylesheet">
+	<link rel="stylesheet" href="/assets/css/style.css" />    
 </head>
-<body>
-	<form action="#" th:action="@{/changeMdp}" th:object="${passwords}"
-		method="post">
+
+	<div class="container">
+		<div th:replace="~{navBar :: #navBar}"></div>
+
+		<form action="#" th:action="@{/changeMdp}" th:object="${passwords}" method="post" centered>
+			<div class="form-group">
+                <label class="control-label" for="titreMission">Mot de passe actuel</label>  
+                <div>
+					<input id="mdp" type="password" th:field="*{oldpass}" />
+                </div>
+				<input type="checkbox" onclick="showMDP()"> Voir Mot de passe
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="titreMission">Nouveau mot de passe</label>  
+                <div>
+					<input id="mdp2" type="password" th:field="*{newPass}" />
+                </div>
+				<input type="checkbox" onclick="showMDP2()"> Voir Mot de passe
+            </div>
+            <input name="submit" class="btn btn-primary" type="submit" value="Soumettre">	
+		</form>
+	</div>
+	
+<!--
+	<form action="#" th:action="@{/changeMdp}" th:object="${passwords}" method="post">
 		<table>
 			<tbody>
 				<tr>
@@ -22,6 +47,10 @@
 			</tbody>
 		</table>
 	</form>
-</body>
+-->
 
+	<script src="assets/js/jquery.js"></script>
+	<script src="assets/js/bootstrap.js"></script>
+	<script src="assets/js/scripts.js"></script>
+</body>
 </html>
