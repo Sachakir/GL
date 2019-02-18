@@ -4,6 +4,7 @@ import java.util.List;
 
 public interface InterfaceRemboursementService {
 	public List<Remboursement> findAll();
+	public Remboursement findById(long demande_id);
 	public void addRemboursement();
 	public Remboursement addNewRemboursement(Remboursement r);
 	public List<Remboursement> getAllByIdAsc(long uid);

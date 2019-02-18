@@ -30,5 +30,14 @@ public class RemboursementsNoteService implements InterfaceRemboursementsNoteSer
 	public List<Long> findAllByNoteId(long note_id){
 		return repository.findAllByNoteId(note_id);
 	}
-
+	
+	@Override
+	public RemboursementsNote findByNoteIdAndDemandeId(long note_id, long demande_id) {
+		return repository.findByNoteIdAndDemandeId(note_id, demande_id);
+	}
+	
+	@Override
+	public Long findNoteIdByDemandeId(long demande_id) {
+		return repository.findNoteIdByDemandeId(demande_id);
+	}
 }

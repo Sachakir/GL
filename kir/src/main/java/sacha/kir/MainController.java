@@ -540,6 +540,7 @@ public class MainController {
         /**** DERNIERES DEMANDES DE CONGES ****/
         List<Remboursement> recentDemandesRemboursement = RemboursementService.getAllByIdDesc(userId, 10);
         Map<Long, String> missionNames = new HashMap<Long, String>();
+        Map<Long, String> notesAssociees = new HashMap<Long, String>();
         
         for(Remboursement r : recentDemandesRemboursement) {
         	Long mission_id = r.getMission_id();
@@ -547,10 +548,16 @@ public class MainController {
         		Mission m = MissionService.findMissionById(mission_id);
         		missionNames.put(mission_id, m.getTitre());
         	}
+        	
+        	Long note_id = RemboursementsNoteService.findNoteIdByDemandeId(r.getDemande_id());
+        	String mois = NoteService.findById(note_id).getMois();
+        	mois = mois.substring(0, 2) + "-" + mois.substring(3);
+        	notesAssociees.put(r.getDemande_id(), mois);
         }
         
         model.addAttribute("recentDemandesRemboursement", recentDemandesRemboursement);
         model.addAttribute("missionNames", missionNames);
+        model.addAttribute("notesAssociees", notesAssociees);
         /**** DERNIERES DEMANDES DE CONGES ****/
 
         return "welcomePage-Thibaut";

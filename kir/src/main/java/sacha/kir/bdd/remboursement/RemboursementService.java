@@ -16,6 +16,11 @@ public class RemboursementService implements InterfaceRemboursementService {
 		List<Remboursement> users = (List<Remboursement>) repository.findAll();
 		return users;
 	}
+	
+	@Override
+	public Remboursement findById(long demande_id) {
+		return repository.findById(demande_id).orElse(null);
+	}
 
 	@Override
 	public void addRemboursement() {

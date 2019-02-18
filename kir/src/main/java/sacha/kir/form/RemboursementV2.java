@@ -14,7 +14,7 @@ public class RemboursementV2 {
 
 	private String motif;
 
-	private String validationrh;
+	private String validationfinances;
 
 	private String validationchefservice;
 
@@ -55,11 +55,11 @@ public class RemboursementV2 {
 	public void setMotif(String motif) {
 		this.motif = motif;
 	}
-	public String getValidationrh() {
-		return validationrh;
+	public String getValidationfinances() {
+		return validationfinances;
 	}
-	public void setValidationrh(String validationrh) {
-		this.validationrh = validationrh;
+	public void setValidationfinances(String validationfinances) {
+		this.validationfinances = validationfinances;
 	}
 	public String getValidationchefservice() {
 		return validationchefservice;
