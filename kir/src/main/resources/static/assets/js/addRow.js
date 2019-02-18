@@ -94,6 +94,38 @@ $(document).ready(function () {
 		document.getElementById('refuse').href = fic2;
         
       });
+	  $('#demandesGestion').on('click', 'tbody tr', function(event) {
+        
+        $(this).addClass('highlight').siblings().removeClass('highlight');
+		var debut = $(this).find("td:nth-child(2)").text().trim("/");
+		var d = debut[1]+"/"+debut[0]+"/"+debut[2];
+		$("#dateD").val(d);
+		
+		$("#dateF").val($(this).find("td:nth-child(3)").text());
+		var res = $(this).find("td:nth-child(1)").text().split(" ");
+        $("#nom").text("Nom : "+ res[0]);
+		$("#prenom").text("Prénom : "+ res[1]);
+		
+        $("#vRH").text("Validation RH: "+$(this).find("td:nth-child(4)").text());
+        $("#vC").text("Validation Chef de Service: "+$(this).find("td:nth-child(5)").text());
+        if($(this).find("td:nth-child(5)").text()=="EnAttente" || $(this).find("td:nth-child(4)").text()=="EnAttente"){
+			$("#vF").text("Validation Finale: En Attente");
+		}
+		else if($(this).find("td:nth-child(5)").text()=="Refusé" || $(this).find("td:nth-child(4)").text()=="Refusé"){
+			$("#vF").text("Validation Finale: Refusé");
+		}
+		else{
+			$("#vF").text("Validation Finale: Validé");
+		}
+		var fic = "/ValidationC/";
+        fic=fic+$(this).find("td:nth-child(7)").text();
+		document.getElementById('accept').href = fic;
+		
+		var fic2 = "/RefusC/";
+        fic2=fic2+$(this).find("td:nth-child(7)").text();
+		document.getElementById('refuse').href = fic2;
+        
+      });
 	  $("#dateD").change=function(){
 		  $('#calendarC').fullCalendar('removeEvents');
 			$('#calendarC').fullCalendar('renderEvent', {
