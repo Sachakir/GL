@@ -333,9 +333,6 @@ public class MainController {
     				}
     			}
     		}
-    		
-    		
-    		
     	}
     	for(int j=0;j<conges.size();j++) {
 			CongesV2 x = new CongesV2();
@@ -369,7 +366,52 @@ public class MainController {
 		
         return "calendrier";
     }
-    
+    @RequestMapping(path="/ValidationC/{id}")
+    public String ValidationRemb(@PathVariable("id") long demandeId,Principal principal)
+    {
+		String prenomnom = principal.getName();
+    	String[] names = prenomnom.split("\\.");
+    	Utilisateur ut = UtilisateurService.findPrenomNom(names[1], names[0]);
+    	UserRole ur = UserRoleService.findById(ut.getUID());
+    	String role = AppRoleService.findById(ur.getRole_id()).getRole_name();
+    	System.out.println(role);
+    	if (role.contains("RH"))
+    	{
+    		CongesService.updateRHState(demandeId, "Valide");
+    	}
+    	else if (role.contains("Chef"))
+    	{
+    		CongesService.updateChefState(demandeId, "Valide");
+    	}
+    	else
+    	{
+    		System.out.println("Vous ne pouvez pas valider de demandes de congés votre role est : " + role);
+    	}
+		return "redirect:/Calendrier";
+    }
+    @RequestMapping(path="/RefusC/{id}")
+    public String RefusRemb(@PathVariable("id") long demandeId,Principal principal)
+    {
+		String prenomnom = principal.getName();
+    	String[] names = prenomnom.split("\\.");
+    	Utilisateur ut = UtilisateurService.findPrenomNom(names[1], names[0]);
+    	UserRole ur = UserRoleService.findById(ut.getUID());
+    	String role = AppRoleService.findById(ur.getRole_id()).getRole_name();
+    	System.out.println(role);
+    	if (role.contains("RH"))
+    	{
+    		CongesService.updateRHState(demandeId, "Refuse");
+    	}
+    	else if (role.contains("Chef"))
+    	{
+    		CongesService.updateChefState(demandeId, "Refuse");
+    	}
+    	else
+    	{
+    		System.out.println("Vous ne pouvez pas refuser de demandes de congés votre role est : " + role);
+    	}
+		return "redirect:/Calendrier";
+    }
     @GetMapping("/addConges")
     public String addConges(CongeForm congeForm) {
         return "addCongesPage";

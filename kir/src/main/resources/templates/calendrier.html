@@ -44,7 +44,9 @@
 								<td><span th:text="${conges.datedebut}"> Date de début </span></td>
 								<td><span th:text="${conges.datefin}"> Date de fin </span></td>
 								<td style="display: none;"><span th:text="${conges.validationrh}">EnAttente</span></td>
-								<td style="display: none;"><span th:text="${conges.validationchefservice}">EnAttente</span></td>			
+								<td style="display: none;"><span th:text="${conges.validationchefservice}">EnAttente</span></td>
+								<td style="display: none;"><span th:text="${conges.uid}">UID</span></td>
+								<td style="display: none;"><span th:text="${conges.congesid}">ID congé</span></td>
 							</tr>
 						</tbody>
 					</table>
@@ -86,9 +88,10 @@
 			</div>
 		</section>
 		<br>
-		<section class="row">
-			<div class="panel panel-primary " >
-				<div class = "panel-body">
+		
+		<div class="panel panel-primary " >
+			<div class = "panel-body">
+				<div class="row">
 					<div class = "col-md-6">
 						<h4 id="nom">Nom: xxx</h4>
 						<h4 id="dateD">Date de début: xxx </h4>
@@ -100,16 +103,22 @@
 						<h4 id ="dateF">Date de fin: xxx </h4>
 						<h4 id="vF">Validation Finale: xxx </h4>
 						
-						<h4 class="btn btn-success" href="#" role="button">✔</h4>
-						<h4 class="btn btn-danger" href="#" role="button">X</h4>
 						
 						
 					</div>
 				</div>
+				<div centered class="row">
+					<a href="" id='accept' class="btn btn-primary btn-lg">
+						<span class="glyphicon glyphicon-ok"></span> 
+					</a> 
+					<a href="" id='refuse' class="btn btn-danger btn-lg">
+						<span class="glyphicon glyphicon-ban-circle"></span> 
+					</a>
+				</div>
 				<br>
 			</div>
 		
-		</section>
+		</div>
 
 		
 	</div>
