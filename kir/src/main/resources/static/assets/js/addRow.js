@@ -97,11 +97,13 @@ $(document).ready(function () {
 	  $('#demandesGestion').on('click', 'tbody tr', function(event) {
         
         $(this).addClass('highlight').siblings().removeClass('highlight');
-		var debut = $(this).find("td:nth-child(2)").text().trim("/");
-		var d = debut[1]+"/"+debut[0]+"/"+debut[2];
+		var debut = $(this).find("td:nth-child(2)").text();
+		var d = debut.substring(6,10)+"-"+debut.substring(3,5)+"-"+debut.substring(0,2);
 		$("#dateD").val(d);
+		var fin = $(this).find("td:nth-child(3)").text();
+		var f = fin.substring(6,10)+"-"+fin.substring(3,5)+"-"+fin.substring(0,2);
 		
-		$("#dateF").val($(this).find("td:nth-child(3)").text());
+		$("#dateF").val(f);
 		
 		
         $("#vRH").text("Validation RH: "+$(this).find("td:nth-child(4)").text());
@@ -115,13 +117,7 @@ $(document).ready(function () {
 		else{
 			$("#vF").text("Validation Finale: Validé");
 		}
-		var fic = "/ValidationC/";
-        fic=fic+$(this).find("td:nth-child(7)").text();
-		document.getElementById('accept').href = fic;
 		
-		var fic2 = "/RefusC/";
-        fic2=fic2+$(this).find("td:nth-child(7)").text();
-		document.getElementById('refuse').href = fic2;
         
       });
 	  $("#dateD").change=function(){
@@ -131,8 +127,9 @@ $(document).ready(function () {
 				start: $("#dateD").val(),
 				end: $("#dateF").val()
 			});
-	  }
+	  };
     document.getElementById("editer").onclick = function() {bouttonDeRow()};
+	document.getElementById("edit").onclick = function() {editer()};
     
 
 });
@@ -172,6 +169,16 @@ function bouttonDeRow()
         document.getElementById("ndf").value="locked";
         document.getElementById("editer").textContent="Editer";
     }
-    
-    
+}
+function editer(){
+	if(document.getElementById("detailsConge").value=="locked"){
+		document.getElementById("dateD").disabled=true;
+		document.getElementById("dateF").disabled=true;
+	}
+	else{
+		document.getElementById("dateD").disabled=false;
+		document.getElementById("dateF").disabled=false;
+	}
+	
+	
 }
