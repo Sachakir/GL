@@ -296,6 +296,7 @@ public class MainController {
     	List<Conges> conges = CongesService.findAll();
     	List<CongesV2> aujourdhuiConges = new ArrayList<CongesV2>();
     	List<CongesV2> c2 = new ArrayList<CongesV2>();
+    	List<CongesV2> demandesConges = new ArrayList<CongesV2>();
     	List<Utilisateur> aujourdhuiU = new ArrayList<Utilisateur>();
     	model.addAttribute("notAdmin",UtilisateurService.findPrenomNom(names[1], names[0]).getUID());
     	SimpleDateFormat formatter= new SimpleDateFormat("dd-MM-yyyy 'at' HH:mm:ss z");  
@@ -320,6 +321,9 @@ public class MainController {
     					c.setDatedebut(conge.getDatedebut());
     					c.setDatefin(conge.getDatefin());
     					c.setUid(conge.getUid());
+    					c.setValidationrh(conge.getValidationrh());
+    					c.setValidationchefservice(conge.getValidationchefdeservice());
+    					
     					aujourdhuiConges.add(c);
     					for (Utilisateur utilisateur : cs) {
 							if(utilisateur.getUID()==c.getUid()) {
@@ -340,8 +344,24 @@ public class MainController {
 			x.setDatedebut(conge.getDatedebut());
 			x.setDatefin(conge.getDatefin());
 			x.setUid(conge.getUid());
+			x.setValidationrh(conge.getValidationrh());
+			x.setValidationchefservice(conge.getValidationchefdeservice());
+			for(int k=0;k<cs.size();k++) {
+				
+				if(cs.get(k).getUID()==x.getUid()) {
+					
+					x.setPrenomNom(cs.get(k).getPrenom()+" "+cs.get(k).getNom());
+					System.out.println(x.getPrenomNom());
+				}
+			}
 			c2.add(x);
+			if(x.getValidationchefservice().equals("EnAttente") || x.getValidationrh().contentEquals("EnAttente")) {
+				demandesConges.add(x);
+			}
+			
 		}
+    	System.out.println(demandesConges.get(0).getValidationchefservice());
+    	model.addAttribute("demandesConges",demandesConges);
     	model.addAttribute("toutConges",c2);
     	model.addAttribute("listConges",aujourdhuiConges);
     	model.addAttribute("utilisateurs",aujourdhuiU);

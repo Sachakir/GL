@@ -1,3 +1,4 @@
+
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -18,13 +19,13 @@
 		<div th:replace="~{navBar :: #navBar}"></div>
 		<section class="row">
 			
-			<div id='calendar' class="col-md-5 " ></div>
-			<div class = " col-md-4 col-md-offset-6">
-
+			
+			<div class = " col-sm-4">
+				
 				<div class="panel panel-primary table-responsive" value="17/02/2019" >
-					<table class="table table-striped table-condensed w-auto" id="listConge">
+					<table class="table table-condensed w-auto" id="demandes" >
 						<div class="panel-heading"> 
-							<h3 class="panel-title">Liste des utilisateurs</h3>
+							<h3 class="panel-title">Demandes de congés :</h3>
 						</div>
 						<thead>
 							<tr>
@@ -35,11 +36,44 @@
 							</tr>
 						</thead>
 						<tbody>
+							<tr th:if="${demandesConges.empty}">
+								<td colspan="3">Personne n'est en congé!</td>
+							</tr>
+							<tr th:each="conges : ${demandesConges}">
+								<td><span th:text="${conges.PrenomNom}"> prenom et nom </span></td>	
+								<td><span th:text="${conges.datedebut}"> Date de début </span></td>
+								<td><span th:text="${conges.datefin}"> Date de fin </span></td>
+								<td style="display: none;"><span th:text="${conges.validationrh}">EnAttente</span></td>
+								<td style="display: none;"><span th:text="${conges.validationchefservice}">EnAttente</span></td>			
+							</tr>
+						</tbody>
+					</table>
+					
+				</div>
+				
+			</div>
+			<div id='calendar' class="col-sm-4" ></div>
+			<div class ="col-sm-4">
+				<div class="panel panel-primary table-responsive" value="17/02/2019" >
+					<table class="table table-striped table-condensed w-auto" id="listConge">
+						<div class="panel-heading"> 
+							<h3 class="panel-title">Liste des utilisateurs en congé :</h3>
+						</div>
+						<thead>
+							<tr>
+								<th>Utilisateur</th>
+								<th>Date de début</th>
+								<th>Date de fin</th>
+								
+								
+							</tr>
+						</thead>
+						<tbody>
 							<tr th:if="${listConges.empty}">
 								<td colspan="2">Personne n'est en congé!</td>
 							</tr>
 							<tr th:each="conges : ${listConges}">
-								<td><span th:text="${conges.uid}"> uid </span></td>	
+								<td><span th:each="u : ${utilisateurs}" th:if="${u.UID}==${conges.uid}" th:text="${u.Nom}"> uid </span></td>	
 								<td><span th:text="${conges.datedebut}"> Date de début </span></td>
 								<td><span th:text="${conges.datefin}"> Date de fin </span></td>
 								
@@ -49,13 +83,33 @@
 					</table>
 					
 				</div>
-				<h4>Mes congés</h4>
-				<h6>Jour(s) de congé(s) payé(s) restant(s) :xx</h6>
-				<h6>RTT(s) restant(s) : 0.0</h6>
 			</div>
-			
 		</section>
+		<br>
+		<section class="row">
+			<div class="panel panel-primary " >
+				<div class = "panel-body">
+					<div class = "col-md-6">
+						<h4 id="nom">Nom: xxx</h4>
+						<h4 id="dateD">Date de début: xxx </h4>
+						<h4 id="vRH">Validation RH: xxx </h4>
+						<h4 id="vC">Validation Chef de Service: xxx</h4>
+					</div>
+					<div class="col-md-6">
+						<h4 id="prenom">Prénom: xxx</h4>
+						<h4 id ="dateF">Date de fin: xxx </h4>
+						<h4 id="vF">Validation Finale: xxx </h4>
+						
+						<h4 class="btn btn-success" href="#" role="button">✔</h4>
+						<h4 class="btn btn-danger" href="#" role="button">X</h4>
+						
+						
+					</div>
+				</div>
+				<br>
+			</div>
 		
+		</section>
 
 		
 	</div>
@@ -64,7 +118,7 @@
 	<script src="assets/js/jquery.js"></script>
 	<script src="assets/js/bootstrap.js"></script>
 	<script src="assets/js/scripts.js"></script>
-
+	<script src="assets/js/addRow.js"></script>
 	<script src='assets/js/moment.min.js'></script>
 	<script src='assets/js/calendrier.js'></script>
 
@@ -144,7 +198,7 @@
 						if(annee>=anneeDebut && annee<=anneeFin){
 							if(mois>=moisDebut && mois<=moisFin){
 								if(jour>=jourDebut && jour<=jourFin){
-									cols+='<td> month: '+ mois + ' annee: '+annee+' jour: ' + jour+'</td>	';
+									cols+='<td>'+ element.uid+'</td>	';
 									cols+='<td>'+ element.datedebut + '</td>	';
 									cols += '<td>' + element.datefin + '</td>';
 									newRow.append(cols);
@@ -168,8 +222,3 @@
 </html>
 		
 		
-	
-	
-	
-	
-	

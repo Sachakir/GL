@@ -61,6 +61,28 @@ $(document).ready(function () {
 		document.getElementById('refuse').href = fic2;
         
       });
+	  $('#demandes').on('click', 'tbody tr', function(event) {
+        
+        $(this).addClass('highlight').siblings().removeClass('highlight');
+        $("#dateD").text("Date de début: "+$(this).find("td:nth-child(2)").text());
+		var res = $(this).find("td:nth-child(1)").text().split(" ");
+        $("#nom").text("Nom : "+ res[0]);
+		$("#prenom").text("Prénom : "+ res[1]);
+		
+        $("#dateF").text("Date de fin: "+$(this).find("td:nth-child(3)").text());
+        $("#vRH").text("Validation RH: "+$(this).find("td:nth-child(4)").text());
+        $("#vC").text("Validation Chef de Service: "+$(this).find("td:nth-child(5)").text());
+        if($(this).find("td:nth-child(5)").text()=="EnAttente" || $(this).find("td:nth-child(4)").text()=="EnAttente"){
+			$("#vF").text("Validation Finale: En Attente");
+		}
+		else if($(this).find("td:nth-child(5)").text()=="Refusé" || $(this).find("td:nth-child(4)").text()=="Refusé"){
+			$("#vF").text("Validation Finale: Refusé");
+		}
+		else{
+			$("#vF").text("Validation Finale: Validé");
+		}
+        
+      });
     document.getElementById("editer").onclick = function() {bouttonDeRow()};
     
 
