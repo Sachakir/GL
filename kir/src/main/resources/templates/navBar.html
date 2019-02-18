@@ -38,6 +38,13 @@
 							<li><a href="/validationNDF">Valider des demandes de remboursement <span class="label label-warning label-pill">4</span></a></li>
 						</ul>
 					</li> 
+					<li class="dropdown">
+						<a data-toggle="dropdown" href="#"> <span class="glyphicon glyphicon-list-alt"></span> Missions <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="/newMission">Créer nouvelle mission</a></li>
+							<li><a href="/listMissions">Gérer les missions</a></li>
+						</ul>
+					</li> 
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li id="notification_li">
@@ -94,7 +101,7 @@
 						<li class="dropdown"> 
 							<a data-toggle="dropdown" href="#"> <span class="glyphicon glyphicon-user"></span> <span th:text="${username}"></span> <b class="caret"></b></a>
 							<ul class="dropdown-menu">
-								<li><a href="#">Paramètres</a></li>
+								<li><a href="/parametres">Paramètres</a></li>
 								<li><a th:if="${#request.userPrincipal != null}" th:href="@{/logout}">Deconnexion</a></li>
 							</ul>
 						</li> 
