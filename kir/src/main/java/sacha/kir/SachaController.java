@@ -60,6 +60,16 @@ public class SachaController
     @Autowired
     InterfaceNoteService NoteService;
     
+    @ModelAttribute("username")
+    public String getUsername(Principal principal) {
+    	if(principal != null)
+    	{
+    		String[] name = principal.getName().split("\\.");
+    		return name[0] + " " + name[1];
+    	}
+    	else return "";
+    }
+    
 	@GetMapping("/validationConges")
     public String addConges(Principal principal,Model model) 
 	{
@@ -430,20 +440,100 @@ public class SachaController
 		return "redirect:/parametres";
     }
 	
-	@RequestMapping("/listMissions")
-    public String listMissions(Principal principal)
+	@GetMapping("/listMissions")
+    public String listMissions(Principal principal,Mission mission,Model model)
     {
 		String prenomnom = principal.getName();
     	String[] names = prenomnom.split("\\.");
     	long uid = UtilisateurService.findPrenomNom(names[1], names[0]).getUID();
     	List<Mission> missions = MissionService.findAll();
+    	List<Mission> mesMissions = new ArrayList<Mission>();
     	for (int i = 0;i < missions.size();i++)
     	{
     		if (missions.get(i).getResponsable_id() == uid)
     		{
     			System.out.println(missions.get(i).getTitre());
+    			mesMissions.add(missions.get(i));
     		}
     	}
-		return "Login";
+    	
+    	AppRole chefsInfos = AppRoleService.findByRole("ChefInfo");
+		AppRole chefsFinances = AppRoleService.findByRole("ChefFinances");
+		
+		List<UserRole> userroles = UserRoleService.findAll();
+    	List<Utilisateur> utilisateurs = new ArrayList<Utilisateur>();
+    	List<Utilisateur> usersMembres = UtilisateurService.findAll();
+    	
+    	for (int i = 0;i < userroles.size();i++)
+    	{
+    		if (userroles.get(i).getRole_id() == chefsInfos.getRole_id() || userroles.get(i).getRole_id() == chefsFinances.getRole_id())
+    		{
+    			Utilisateur utilisateur = UtilisateurService.findById(userroles.get(i).getUser_id());
+    			Utilisateur u = new Utilisateur();
+    			u.setPrenom(utilisateur.getPrenom());
+    			u.setNom(utilisateur.getNom());
+    			u.setUID(utilisateur.getUID());
+    			utilisateurs.add(u);
+    		}
+    	}
+    	
+    	UserList ul = new UserList(); 	
+    	model.addAttribute("users",utilisateurs);
+    	model.addAttribute("userlist",ul);
+    	model.addAttribute("membres",usersMembres);
+    		
+    	model.addAttribute("mesmissions",mesMissions);
+
+		return "choixMission";
     }
+	
+	@PostMapping("/listMissions")
+    public String checkListMissions(Principal principal,Mission mission,Model model,@ModelAttribute("userlist") UserList userlist)
+    {
+		System.out.println("Mission id = " + mission.getResponsable_id());
+    	List<Utilisateur> allMembres = UtilisateurService.findAll();
+    	List<Utilisateur> usersMembres = new ArrayList<Utilisateur>();
+
+    	boolean danslaliste = false;
+    	List<MembresMission> mm = MembresMissionService.findAll();
+    	for (int i = 0;i < allMembres.size();i++)
+    	{
+    		danslaliste = false;
+    		for (int j = 0;j < mm.size();j++)
+    		{
+    			if (allMembres.get(i).getUID() == mm.get(j).getMembre_uid() && mm.get(j).getMission_id() == mission.getResponsable_id())
+    			{
+    				danslaliste = true;
+    				break;
+    			}
+    		}
+    		if (!danslaliste)
+    		{
+    			usersMembres.add(allMembres.get(i));
+    		}
+    	}
+    	
+    	UserList ul = new UserList();
+    	mission.setMission_id(mission.getResponsable_id());
+		model.addAttribute("membres",usersMembres);
+		model.addAttribute("userlist",ul);
+
+		return "modifyMission";
+    }
+	
+	@PostMapping("/addMembresMission")
+	public String addMembresMission(@ModelAttribute("userlist") UserList userlist,Mission mission)
+	{
+		System.out.println("MISSION ID " +  mission.getMission_id());
+		MembresMission membresMission = new MembresMission();
+		
+		for (int i = 0;i < userlist.getUserList().size();i++)
+		{
+			membresMission.setMission_id((mission.getMission_id()));
+			membresMission.setMembre_uid(userlist.getUserList().get(i).getUID());
+			MembresMissionService.addMembresMission(membresMission);
+		}
+		return "redirect:/parametres";
+	}
+	
 }

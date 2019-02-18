@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title th:utext="${title}"></title>
+	<meta charset="utf-8">
+	<link href="/assets/css/bootstrap.css" rel="stylesheet">
+	<link rel="stylesheet" href="/assets/css/style.css" />
+</head>
+
+<body>
+	<div class="container">
+		<div th:replace="~{navBar :: #navBar}"></div>
+
+		<br>
+		<div class="col-md-offset-3 col-md-6">
+			<form class="form-horizontal" action="#" th:action="@{/addMembresMission}"	th:object="${mission}" method="post" centered>
+
+				<div class="form-group">
+					<label class="control-label" for="userList">Ajoutez les membres</label>
+					<div th:object="${userlist}" >
+						<div id="userList" th:each="person : ${membres}">
+							<div style="text-align: left;">
+								<input type="checkbox" th:field="*{userList}" th:value="${person.UID}">
+								<label th:text="${person.Nom} + ' ' + ${person.Prenom}"></label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<input type="hidden" th:field="${mission.mission_id}" />
+				<div>
+					<button id="postMission" name="" class="btn btn-primary" type="submit">Soumettre</button>
+				</div>
+			</form>
+			<br>
+		</div>
+	</div>
+
+
+	<script src="assets/js/jquery.js"></script>
+	<script src="assets/js/bootstrap.js"></script>
+
+	<script src="assets/js/scripts.js"></script>
+
+</body>
+</html>

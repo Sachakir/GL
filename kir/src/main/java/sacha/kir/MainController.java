@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -73,6 +74,16 @@ public class MainController {
     InterfaceAppRoleService AppRoleService;
 	@Autowired
 	InterfaceUserRoleService UserRoleService;
+	
+	@ModelAttribute("username")
+	public String getUsername(Principal principal) {
+		if(principal != null)
+		{
+			String[] name = principal.getName().split("\\.");
+			return name[0] + " " + name[1];
+		}
+		else return "";
+	}
 	
     @RequestMapping(value = {"/", "/login"} , method = RequestMethod.GET)
     public String welcomePage(Model model, Principal principal) {
