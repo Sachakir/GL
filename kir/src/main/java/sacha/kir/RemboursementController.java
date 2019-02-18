@@ -128,22 +128,25 @@ public class RemboursementController {
 		// Recuperation des missions associees a la note de frais de ce mois et leurs remboursements
 		if(noteMoisActuel != null)
 		{
-			List<Long> remboursementsNoteIds = RemboursementsNoteService.findAllByNoteId(noteMoisActuel.getNote_id());
-			List<Remboursement> remboursementsNote = RemboursementService.getAllByIdListAsc(remboursementsNoteIds);
 			List<Mission> missions = new ArrayList<Mission>();
 			Map<Long, List<Remboursement>> remboursementsMissions = new HashMap<Long, List<Remboursement>>();
-	        
-	        for(Remboursement r : remboursementsNote) {
-	        	long missionId = r.getMission_id();
-	        	 
-	        	// Ajout d'une nouvelle mission si non existante
-	        	if(!remboursementsMissions.containsKey(missionId)) {
-	        		missions.add(MissionService.findMissionById(missionId));
-	        		remboursementsMissions.put(missionId, new ArrayList<Remboursement>());
-	        	}
-	        	
-	        	// Ajout de la demande de remboursement a la mission
-	        	remboursementsMissions.get(missionId).add(r);
+			
+			List<Long> remboursementsNoteIds = RemboursementsNoteService.findAllByNoteId(noteMoisActuel.getNote_id());
+			if(!remboursementsNoteIds.isEmpty()) {
+				List<Remboursement> remboursementsNote = RemboursementService.getAllByIdListAsc(remboursementsNoteIds);
+		        
+		        for(Remboursement r : remboursementsNote) {
+		        	long missionId = r.getMission_id();
+		        	 
+		        	// Ajout d'une nouvelle mission si non existante
+		        	if(!remboursementsMissions.containsKey(missionId)) {
+		        		missions.add(MissionService.findMissionById(missionId));
+		        		remboursementsMissions.put(missionId, new ArrayList<Remboursement>());
+		        	}
+		        	
+		        	// Ajout de la demande de remboursement a la mission
+		        	remboursementsMissions.get(missionId).add(r);
+		        }
 	        }
 	        
 	        model.addAttribute("missions", missions);

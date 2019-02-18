@@ -126,27 +126,32 @@
 							<div class="panel-heading"> 
 								<h3 class="panel-title">Mes dernières demandes de remboursement</h3>
 							</div>
-							<thead>
-								<tr>
-									<th>Nom</th>
-									<th>Prix</th>
-									<th>Mission</th>
-									<th>Date</th>
-									<th>Etat (Chef de service)</th>
-									<th>Etat (Finances)</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr th:each="demandeR : ${recentDemandesRemboursement}">
-									<td><a href="#" th:text="${demandeR.titre}"></a></td>
-									<td th:text="${#numbers.formatDecimal(demandeR.montant, 0, 'COMMA', 2, 'POINT')} + ' €'"></td>
-									<td th:text="${missionNames[demandeR.mission_id]}"></td>
-									<td th:text="${demandeR.date}"></td>
-									<td th:text="${demandeR.validationchefservice}"></td>
-									<td th:text="${demandeR.validationfinances}"></td>
-								</tr>
-							</tbody>
+							<div th:if="${not #lists.isEmpty(recentDemandesRemboursement)}">
+								<thead>
+									<tr>
+										<th>Nom</th>
+										<th>Prix</th>
+										<th>Mission</th>
+										<th>Date</th>
+										<th>Etat (Chef de service)</th>
+										<th>Etat (Finances)</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="demandeR : ${recentDemandesRemboursement}">
+										<td><a href="#" th:text="${demandeR.titre}"></a></td>
+										<td th:text="${#numbers.formatDecimal(demandeR.montant, 0, 'COMMA', 2, 'POINT')} + ' €'"></td>
+										<td th:text="${missionNames[demandeR.mission_id]}"></td>
+										<td th:text="${demandeR.date}"></td>
+										<td th:text="${demandeR.validationchefservice}"></td>
+										<td th:text="${demandeR.validationfinances}"></td>
+									</tr>
+								</tbody>
+							</div>
 						</table>
+						<div th:if="${#lists.isEmpty(recentDemandesRemboursement)}" class="panel-heading" style="color:black; background:white;"> 
+							<h3 class="panel-title">Aucune demande de remboursement n'a été réalisé</h3>
+						</div>
 					</div>
 				</div>
 			</section>

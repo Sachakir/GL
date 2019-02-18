@@ -43,7 +43,7 @@
 				<div class="panel panel-primary table-responsive">
 					<table class="table table-striped w-auto">
 						<div class="panel-heading"> 
-							<h3 class="panel-title">Demandes de remboursement</h3>
+							<h3 class="panel-title">Demandes de remboursement de la note de ce mois</h3>
 						</div>
 						<div th:if="${missions != null}">
 							<div th:each="mission : ${missions}">
@@ -77,6 +77,12 @@
 							</div>
 						</div>
 					</table>
+					<div th:if="${missions == null}" class="panel-heading" style="color:black; background:white;">
+						<h3 class="panel-title">Vous n'avez pas crée de note de frais pour ce mois</h3>
+					</div>
+					<div th:if="${#lists.isEmpty(missions)}" class="panel-heading" style="color:black; background:white;">
+						<h3 class="panel-title">Votre note de frais est vide</h3>
+					</div>
 				</div>
 			</div>
 		</section>
