@@ -55,5 +55,10 @@ public class CongesService implements InterfaceCongesService
 	public void updateConges(long congesid, String newdebut, String newfin) {
 		repository.updateConges(congesid, newdebut, newfin);
 	}
+	
+	@Override
+	public String getChefState(long congesid) {
+		return repository.getChefState(congesid);
+	}
 
 }
