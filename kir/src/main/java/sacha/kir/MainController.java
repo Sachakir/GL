@@ -280,7 +280,24 @@ public class MainController {
         return "welcomePage-Thibaut";
     }
     
+    @GetMapping("/AjouterConge")
+    public String ajouterc(Model model, Principal principal) {
+    	
+    	return "ajouterConge";
+    }
+    @PostMapping("/AjouterConge")
+    public String submitC(@Valid CongeForm congeForm, BindingResult bindingResult, Model model, Principal principal) {
+    	
+        System.out.println(congeForm.getDateDebut());
+        System.out.println(congeForm.getDateFin());
 
+    	String[] names = principal.getName().split("\\.");
+    	Long uID = UtilisateurService.findPrenomNom(names[1], names[0]).getUID();
+    	
+    	CongesService.addConges(congeForm.getDateDebut(), congeForm.getDateFin(), uID);
+        
+        return "redirect:/Accueil";
+    }
     @GetMapping("/Calendrier")
     public String getCalendrier(Model model,Principal principal) {
     	// On selectionne tout les uid

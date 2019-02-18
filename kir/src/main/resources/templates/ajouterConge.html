@@ -1,0 +1,86 @@
+
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title th:utext="${title}"></title>
+	<meta charset="utf-8">
+	<link href="assets/css/bootstrap.css" rel="stylesheet">
+	<link rel="stylesheet" href="/assets/css/style.css" />
+	<link href='assets/css/calendrier.css' rel='stylesheet' />
+	<link href='assets/css/calendrier.print.css' rel='stylesheet' media='print' />
+
+
+
+</head>
+
+<body>
+	
+	<div class="container">
+		<div th:replace="~{navBar :: #navBar}"></div>
+		<section class="row ">
+			<div class="col-sm-4 ">
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h2 class="panel-title text-center">Nouvelle demande de congé :</h2>
+					</div>
+					<div class = "panel-body details">
+						
+						<h4 id="jourRestant">Nombre de jours restants: </h4>
+						<h4 >Date de début: <input id="dateD" type="date"></h4>
+						<h4 >Date de fin: <input id="dateF" type="date"></h4>
+						<div centered class="row">
+							<a href=""  class="btn btn-success btn-lg">
+								<span class="glyphicon glyphicon-ok"></span> 
+							</a>
+							
+						</div>
+					</div>
+					<br>
+				</div>
+				
+			</div>
+			<div id='calendarC' class="col-sm-7 ol-sm-offset-5" ></div>
+		</section>
+		
+		
+	</div>
+
+
+	<script src="assets/js/jquery.js"></script>
+	<script src="assets/js/bootstrap.js"></script>
+	<script src="assets/js/scripts.js"></script>
+	<script src="assets/js/addRow.js"></script>
+	<script src='assets/js/moment.min.js'></script>
+	<script src='assets/js/calendrier.js'></script>
+
+	<script type="text/javascript" th:inline="javascript">
+		$(document).ready(function() {
+
+			$('#calendarC').fullCalendar({
+				defaultDate: '2019-01-12',
+				editable: true,
+				  eventLimit: true,
+				  selectable: true,
+				  
+				
+				select: function(startDate, endDate) {
+					$("#dateD").val(startDate.format());
+					$("#dateF").val(endDate.format());
+					$('#calendarC').fullCalendar('removeEvents');
+					$('#calendarC').fullCalendar('renderEvent', {
+						title: 'congé',
+						start: startDate,
+						end: endDate
+					});
+				}
+			  }
+			  
+			  );
+			
+		});
+	</script>
+
+</body>
+</html>
+		
+		
