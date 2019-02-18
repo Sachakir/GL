@@ -15,15 +15,43 @@
         
         <h2 class="text-center" th:text="'Détail de demande de remboursement'"></h2>
         
-        <div class="col-md-offset-3 col-md-6">  
-            <p>dfege</p>
-            <p>pdzkoeg</p>
+        <div class="col-md-offset-1 col-md-6">  
+            <div>Titre de la demande : </div>  
+            <div th:text="${remboursement.titre}"></div>
+            <br/>
+            
+            <div>Montant : </div>  
+            <div th:text="${#numbers.formatDecimal(remboursement.montant, 0, 'COMMA', 2, 'POINT')}  + ' €'"></div>
+            <br/>
+            
+            <div>Mission : </div>  
+            <div th:text="${mission.titre}"></div>
+            <br/>
+            
+            <div>Date : </div>  
+            <div th:text="${remboursement.date}"></div>
+            <br/>
+            
+            <div>Motif : </div>  
+            <div th:text="${remboursement.motif}"></div>
+            <br/>
+            
+            <div>Justificatif : </div>
+            <a th:if="${remboursement.justificatifid != null}" th:href="'/remboursements/files?file_id=' + ${remboursement.justificatifid}" th:text="'lien vers le justificatif'"></a>
+            <div th:if="${remboursement.justificatifid == null}">Pas de justificatif</div>
+            <br/>
+            
+            <div>Etat (Chef de service) : </div>  
+            <div th:text="${remboursement.validationchefservice}"></div>
+            <br/>
+            
+            <div>Etat (Finances) :</div>  
+            <div th:text="${remboursement.validationfinances}"></div>
+            <br/>
+            
         </div>
     </div>
-	
-	<script th:if="${noNoteFrais} != null" th:inline="javascript">
-		confirmCreationNote(/*[[${urlNote}]]*/null, /*[[${urlRedirect}]]*/null, /*[[${messageConfirmation}]]*/null);
-	</script>
+    
     <script type="text/javascript" src="/assets/js/jquery.js"></script>
     <script type="text/javascript" src="/assets/js/bootstrap.js"></script>
     <script type="text/javascript" src="/assets/js/scripts.js"></script>  
