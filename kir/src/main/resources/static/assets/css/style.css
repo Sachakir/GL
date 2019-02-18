@@ -81,18 +81,6 @@ a:active, a:focus { outline:none; }
 .navbar-default .navbar-toggle .icon-bar {
   background-color: #FFF;
 }
-/*
-@media (max-width: 990px) {
-  .navbar-default .navbar-nav .open .dropdown-menu > li > a {
-    color: #FFF;
-  }
-  .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover {
-    color: #132f5d;
-  }
-  .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
-    color: #132f5d;
-  }
-}*/
 
 @media (max-width: 992px) {
     .navbar-header {
@@ -175,7 +163,7 @@ a:active, a:focus { outline:none; }
   top: 45px;
   margin-left: -170px;
   width: 400px;
-  z-index: 1;
+  z-index: 2;
   display: none; // Enable this after jquery implementation 
 }
 // Popup Arrow
