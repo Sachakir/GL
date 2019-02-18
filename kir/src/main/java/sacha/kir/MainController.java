@@ -392,6 +392,31 @@ public class MainController {
 		
         return "calendrier";
     }
+    @GetMapping("/GererConges")
+    public String gererc(Model model, Principal principal) {
+    	String prenomnom = principal.getName();
+    	String[] names = prenomnom.split("\\.");
+    	long uid = UtilisateurService.findPrenomNom(names[1], names[0]).getUID();
+    	model.addAttribute("notAdmin",uid);
+    	List<Conges> conges = CongesService.findAll();
+    	List<CongesV2> mesConges = new ArrayList<CongesV2>();
+    	for(int i=0;i<conges.size();i++) {
+    		if(conges.get(i).getUid()==uid) {
+    			CongesV2 c = new CongesV2();
+				Conges conge = conges.get(i);
+				c.setCongesid(conge.getCongesid());
+				c.setDatedebut(conge.getDatedebut());
+				c.setDatefin(conge.getDatefin());
+				c.setUid(conge.getUid());
+				c.setValidationrh(conge.getValidationrh());
+				c.setValidationchefservice(conge.getValidationchefdeservice());
+				c.setPrenomNom(prenomnom);
+				mesConges.add(c);
+    		}
+    	}
+    	model.addAttribute("demandesConges",mesConges);
+    	return "gererConges";
+    }
     @RequestMapping(path="/ValidationC/{id}")
     public String ValidationRemb(@PathVariable("id") long demandeId,Principal principal)
     {
