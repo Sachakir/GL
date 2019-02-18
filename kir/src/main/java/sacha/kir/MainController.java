@@ -510,10 +510,8 @@ public class MainController {
     }
     
     @RequestMapping(path="/showUserDetails/{id}")
-    public String getMessage(@PathVariable("id") long id,Model model,UserForm userForm) 
+    public String getMessage(@PathVariable("id") long id, Model model, UserForm userForm) 
     {
-        System.out.println("ID : " + id);
-        
         Utilisateur u = UtilisateurService.findById(id);
         UserRole ur = UserRoleService.findById(id);
         long roleId = ur.getRole_id();
