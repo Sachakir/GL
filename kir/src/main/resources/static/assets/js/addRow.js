@@ -102,9 +102,7 @@ $(document).ready(function () {
 		$("#dateD").val(d);
 		
 		$("#dateF").val($(this).find("td:nth-child(3)").text());
-		var res = $(this).find("td:nth-child(1)").text().split(" ");
-        $("#nom").text("Nom : "+ res[0]);
-		$("#prenom").text("Prénom : "+ res[1]);
+		
 		
         $("#vRH").text("Validation RH: "+$(this).find("td:nth-child(4)").text());
         $("#vC").text("Validation Chef de Service: "+$(this).find("td:nth-child(5)").text());
