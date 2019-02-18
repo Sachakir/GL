@@ -1,0 +1,126 @@
+
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title th:utext="${title}"></title>
+	<meta charset="utf-8">
+	<link href="assets/css/bootstrap.css" rel="stylesheet">
+	<link rel="stylesheet" href="/assets/css/style.css" />
+	<link href='assets/css/calendrier.css' rel='stylesheet' />
+	<link href='assets/css/calendrier.print.css' rel='stylesheet' media='print' />
+
+
+
+</head>
+
+<body>
+	
+	<div class="container">
+		<div th:replace="~{navBar :: #navBar}"></div>
+		<section class="row ">
+			<div class="col-sm-4 ">
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h2 class="panel-title text-center">Nouvelle demande de congé :</h2>
+					</div>
+					<div class = "panel-body details">
+						<table class="table table-condensed w-auto" id="demandes" >
+						<div class="panel-heading"> 
+							<h3 class="panel-title">Demandes de congés :</h3>
+						</div>
+						<thead>
+							<tr>
+								<th>Utilisateur</th>
+								<th>Date de début</th>
+								<th>Date de fin</th>
+								
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:if="${demandesConges.empty}">
+								<td colspan="3">Personne n'est en congé!</td>
+							</tr>
+							<tr th:each="conges : ${demandesConges}">
+								<td><span th:text="${conges.prenomNom}"> prenom et nom </span></td>	
+								<td><span th:text="${conges.datedebut}"> Date de début </span></td>
+								<td><span th:text="${conges.datefin}"> Date de fin </span></td>
+								<td style="display: none;"><span th:text="${conges.validationrh}">EnAttente</span></td>
+								<td style="display: none;"><span th:text="${conges.validationchefservice}">EnAttente</span></td>
+								<td style="display: none;"><span th:text="${conges.uid}">UID</span></td>
+								<td style="display: none;"><span th:text="${conges.congesid}">ID congé</span></td>
+							</tr>
+						</tbody>
+					</table>
+						
+					</div>
+					<br>
+				</div>
+				
+			</div>
+			<div id='calendarC' class="col-sm-7 ol-sm-offset-5" ></div>
+		</section>
+		<section class="row">
+			<div class="panel panel-primary " >
+				<div class="panel-heading"> 
+					<h3 class="panel-title">Détails de la demande de congé sélectionnée :</h3>
+				</div>
+				<div class = "panel-body details">
+					<div class="row">
+						<div class = "col-md-6">
+							<h4 id="nom">Nom: xxx</h4>
+							<h4 id="dateD">Date de début: xxx </h4>
+							<h4 id="vRH">Validation RH: xxx </h4>
+							<h4 id="vC">Validation Chef de Service: xxx</h4>
+						</div>
+						<div class="col-md-6">
+							<h4 id="prenom">Prénom: xxx</h4>
+							<h4 id ="dateF">Date de fin: xxx </h4>
+							<h4 id="vF">Validation Finale: xxx </h4>
+						
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		
+	</div>
+
+
+	<script src="assets/js/jquery.js"></script>
+	<script src="assets/js/bootstrap.js"></script>
+	<script src="assets/js/scripts.js"></script>
+	<script src="assets/js/addRow.js"></script>
+	<script src='assets/js/moment.min.js'></script>
+	<script src='assets/js/calendrier.js'></script>
+
+	<script type="text/javascript" th:inline="javascript">
+		$(document).ready(function() {
+
+			$('#calendarC').fullCalendar({
+				defaultDate: '2019-01-12',
+				editable: true,
+				  eventLimit: true,
+				  selectable: true,
+				  
+				
+				select: function(startDate, endDate) {
+					$("#dateD").val(startDate.format());
+					$("#dateF").val(endDate.format());
+					$('#calendarC').fullCalendar('removeEvents');
+					$('#calendarC').fullCalendar('renderEvent', {
+						title: 'congé',
+						start: startDate,
+						end: endDate
+					});
+				}
+			  }
+			  
+			  );
+			
+		});
+	</script>
+
+</body>
+</html>
+		
+		

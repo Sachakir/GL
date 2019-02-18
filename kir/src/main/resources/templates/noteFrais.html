@@ -16,34 +16,11 @@
 		<br>
 		<br>
 		<section class="row">
-			<div class="col-md-6">
-				<section class="row">
-					<div class="col-md-10">
-						<div class="panel panel-primary">
-							<div class="panel-heading">
-								<h3 class="panel-title">Notes de frais</h3>
-							</div>
-							<div class="list-group">
-								<a th:if="${noteMoisActuel == null}" th:href="@{'/remboursements/creer-note-frais?mois=actuel'}" th:text="'Créer une note de frais pour le ' + ${moisActuel} + ' (mois actuel)'" class="list-group-item" data-toggle="modal"></a>
-								<a th:if="${noteMoisActuel != null}" th:href="@{'/remboursements/note=' + ${noteMoisActuel.mois}}" th:text="${moisNotes[noteMoisActuel.note_id]} + ' (mois actuel)'" class="list-group-item" data-toggle="modal"></a>
-								<a th:if="${noteMoisPrecedent == null}" th:href="@{'/remboursements/creer-note-frais?mois=precedent'}" th:text="'Créer une note de frais pour le ' + ${moisPrecedent} + ' (mois précédent)'" class="list-group-item" data-toggle="modal"></a>
-								<a th:if="${noteMoisPrecedent != null}" th:href="@{'/remboursements/note=' + ${noteMoisPrecedent.mois}}" th:text="${moisNotes[noteMoisPrecedent.note_id]} + ' (mois précédent)'" class="list-group-item" data-toggle="modal"></a>
-								<div th:if="${not #lists.isEmpty(listeNotes)}">
-									<div class="panel-heading" style="background:#337ab7;">
-										<h3 class="panel-title" style="color:white;">Autres notes de frais</h3>
-									</div>
-									<a th:each="note : ${listeNotes}" th:href="@{'/remboursements/note=' + ${note.mois}}" th:text="${moisNotes[note.note_id]}" class="list-group-item" data-toggle="modal"></a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</section>
-			</div>
-			<div class="col-md-6">
+			<div class="" th:classappend="${isModifiable} ? col-md-9 : col-md-12">
 				<div class="panel panel-primary table-responsive">
 					<table class="table table-striped w-auto">
 						<div class="panel-heading"> 
-							<h3 class="panel-title">Demandes de remboursement de la note de ce mois</h3>
+							<h3 class="panel-title" th:text="'Demandes de remboursement de la note pour ' + ${moisNote}"></h3>
 						</div>
 						<div th:if="${missions != null}">
 							<div th:each="mission : ${missions}">
@@ -66,7 +43,7 @@
 								</thead>
 								<tbody>
 									<tr th:each="demandeR : ${remboursementsMissions[mission.mission_id]}">
-										<td><a th:href="'/remboursements/note=' + ${noteMoisActuel.mois} + '/remboursement_id=' + ${demandeR.demande_id}" th:text="${demandeR.titre}"></a></td>
+										<td><a th:href="'/remboursements/note=' + ${moisUrl} + '/remboursement_id=' + ${demandeR.demande_id}" th:text="${demandeR.titre}"></a></td>
 										<td th:text="${#numbers.formatDecimal(demandeR.montant, 0, 'COMMA', 2, 'POINT')} + ' €'"></td>
 										<td th:text="${mission.titre}"></td>
 										<td th:text="${demandeR.date}"></td>
@@ -84,6 +61,11 @@
 						<h3 class="panel-title">Votre note de frais est vide</h3>
 					</div>
 				</div>
+			</div>
+			<div th:if="${isModifiable}" class="col-md-3">
+				<a th:href="@{'/remboursements/demande-remboursement?mois=' + ${actuel ? 'actuel' : 'precedent'}}" class="btn btn-primary" role="button">
+					Ajouter une demande de remboursement
+				</a>
 			</div>
 		</section>
 	</div>

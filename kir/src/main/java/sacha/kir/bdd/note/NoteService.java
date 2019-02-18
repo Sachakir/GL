@@ -63,5 +63,10 @@ public class NoteService implements InterfaceNoteService {
 	public List<Note> findAllById(long uid){
 		return repository.findAllById(uid);
 	}
+	
+	@Override
+	public Note findById(long note_id) {
+		return repository.findById(note_id).orElse(null);
+	}
 
 }

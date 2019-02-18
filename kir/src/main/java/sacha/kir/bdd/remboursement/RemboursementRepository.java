@@ -30,7 +30,7 @@ public interface RemboursementRepository extends CrudRepository<Remboursement, L
 	
 	@Transactional
 	@Modifying
-	@Query("UPDATE Remboursement SET validationrh = :newstate WHERE demande_id = :demandeid")
+	@Query("UPDATE Remboursement SET validationfinances = :newstate WHERE demande_id = :demandeid")
 	public void updateRHState(@Param("demandeid") long demandeid,@Param("newstate") String newstate);
 	
 	@Transactional

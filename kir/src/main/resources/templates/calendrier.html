@@ -29,7 +29,7 @@
 						</div>
 						<thead>
 							<tr>
-								<th>uid</th>
+								<th>Utilisateur</th>
 								<th>Date de début</th>
 								<th>Date de fin</th>
 								
@@ -40,7 +40,7 @@
 								<td colspan="3">Personne n'est en congé!</td>
 							</tr>
 							<tr th:each="conges : ${demandesConges}">
-								<td><span th:text="${conges.PrenomNom}"> prenom et nom </span></td>	
+								<td><span th:text="${conges.prenomNom}"> prenom et nom </span></td>	
 								<td><span th:text="${conges.datedebut}"> Date de début </span></td>
 								<td><span th:text="${conges.datefin}"> Date de fin </span></td>
 								<td style="display: none;"><span th:text="${conges.validationrh}">EnAttente</span></td>
@@ -75,7 +75,7 @@
 								<td colspan="2">Personne n'est en congé!</td>
 							</tr>
 							<tr th:each="conges : ${listConges}">
-								<td><span th:each="u : ${utilisateurs}" th:if="${u.UID}==${conges.uid}" th:text="${u.Nom}"> uid </span></td>	
+								<td><span th:text="${conges.prenomNom}"> Nom et prénom </span></td>	
 								<td><span th:text="${conges.datedebut}"> Date de début </span></td>
 								<td><span th:text="${conges.datefin}"> Date de fin </span></td>
 								
@@ -210,7 +210,7 @@
 						if(annee>=anneeDebut && annee<=anneeFin){
 							if(mois>=moisDebut && mois<=moisFin){
 								if(jour>=jourDebut && jour<=jourFin){
-									cols+='<td>'+ element.uid+'</td>	';
+									cols+='<td>'+ element.prenomNom+'</td>	';
 									cols+='<td>'+ element.datedebut + '</td>	';
 									cols += '<td>' + element.datefin + '</td>';
 									newRow.append(cols);

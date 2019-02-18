@@ -29,7 +29,7 @@
 				</div>
 			</div>
 		<div class="col-md-4">
-			<a href="/addConges" class="btn btn-primary" role="button">
+			<a href="/AjouterConge" class="btn btn-primary" role="button">
 				Nouvelle demande de congés
 			</a>
 		</div>
@@ -139,7 +139,7 @@
 								</thead>
 								<tbody>
 									<tr th:each="demandeR : ${recentDemandesRemboursement}">
-										<td><a href="#" th:text="${demandeR.titre}"></a></td>
+										<td><a th:href="'/remboursements/note=' + ${notesAssociees[demandeR.demande_id]} + '/remboursement_id=' + ${demandeR.demande_id}" th:text="${demandeR.titre}"></a></td>
 										<td th:text="${#numbers.formatDecimal(demandeR.montant, 0, 'COMMA', 2, 'POINT')} + ' €'"></td>
 										<td th:text="${missionNames[demandeR.mission_id]}"></td>
 										<td th:text="${demandeR.date}"></td>

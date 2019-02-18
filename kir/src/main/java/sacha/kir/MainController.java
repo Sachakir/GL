@@ -281,7 +281,7 @@ public class MainController {
     }
     
     @GetMapping("/AjouterConge")
-    public String ajouterc(Model model, Principal principal) {
+    public String ajouterc(Model model, Principal principal, CongeForm congeForm) {
     	
     	return "ajouterConge";
     }
@@ -290,11 +290,13 @@ public class MainController {
     	
         System.out.println(congeForm.getDateDebut());
         System.out.println(congeForm.getDateFin());
-
+        String[] dateD = congeForm.getDateDebut().split("-");
+        String[] dateF = congeForm.getDateFin().split("-");
     	String[] names = principal.getName().split("\\.");
     	Long uID = UtilisateurService.findPrenomNom(names[1], names[0]).getUID();
-    	
-    	CongesService.addConges(congeForm.getDateDebut(), congeForm.getDateFin(), uID);
+    	String dateDebut = dateD[2]+"/"+dateD[1]+"/"+dateD[0];
+    	String dateFin = dateF[2]+"/"+dateF[1]+"/"+dateF[0];
+    	CongesService.addConges(dateDebut, dateFin, uID);
         
         return "redirect:/Accueil";
     }
@@ -340,7 +342,14 @@ public class MainController {
     					c.setUid(conge.getUid());
     					c.setValidationrh(conge.getValidationrh());
     					c.setValidationchefservice(conge.getValidationchefdeservice());
-    					
+    					for(int k=0;k<cs.size();k++) {
+    						
+    						if(cs.get(k).getUID()==c.getUid()) {
+    							
+    							c.setPrenomNom(cs.get(k).getPrenom()+" "+cs.get(k).getNom());
+    							System.out.println(c.getPrenomNom());
+    						}
+    					}
     					aujourdhuiConges.add(c);
     					for (Utilisateur utilisateur : cs) {
 							if(utilisateur.getUID()==c.getUid()) {
@@ -365,7 +374,7 @@ public class MainController {
 				if(cs.get(k).getUID()==x.getUid()) {
 					
 					x.setPrenomNom(cs.get(k).getPrenom()+" "+cs.get(k).getNom());
-					System.out.println(x.getPrenomNom());
+					System.out.println("AHHHHHHHH " + x.getPrenomNom());
 				}
 			}
 			c2.add(x);
@@ -382,6 +391,31 @@ public class MainController {
     	
 		
         return "calendrier";
+    }
+    @GetMapping("/GererConges")
+    public String gererc(Model model, Principal principal) {
+    	String prenomnom = principal.getName();
+    	String[] names = prenomnom.split("\\.");
+    	long uid = UtilisateurService.findPrenomNom(names[1], names[0]).getUID();
+    	model.addAttribute("notAdmin",uid);
+    	List<Conges> conges = CongesService.findAll();
+    	List<CongesV2> mesConges = new ArrayList<CongesV2>();
+    	for(int i=0;i<conges.size();i++) {
+    		if(conges.get(i).getUid()==uid) {
+    			CongesV2 c = new CongesV2();
+				Conges conge = conges.get(i);
+				c.setCongesid(conge.getCongesid());
+				c.setDatedebut(conge.getDatedebut());
+				c.setDatefin(conge.getDatefin());
+				c.setUid(conge.getUid());
+				c.setValidationrh(conge.getValidationrh());
+				c.setValidationchefservice(conge.getValidationchefdeservice());
+				c.setPrenomNom(prenomnom);
+				mesConges.add(c);
+    		}
+    	}
+    	model.addAttribute("demandesConges",mesConges);
+    	return "gererConges";
     }
     @RequestMapping(path="/ValidationC/{id}")
     public String ValidationRemb(@PathVariable("id") long demandeId,Principal principal)
@@ -531,6 +565,7 @@ public class MainController {
         /**** DERNIERES DEMANDES DE CONGES ****/
         List<Remboursement> recentDemandesRemboursement = RemboursementService.getAllByIdDesc(userId, 10);
         Map<Long, String> missionNames = new HashMap<Long, String>();
+        Map<Long, String> notesAssociees = new HashMap<Long, String>();
         
         for(Remboursement r : recentDemandesRemboursement) {
         	Long mission_id = r.getMission_id();
@@ -538,10 +573,16 @@ public class MainController {
         		Mission m = MissionService.findMissionById(mission_id);
         		missionNames.put(mission_id, m.getTitre());
         	}
+        	
+        	Long note_id = RemboursementsNoteService.findNoteIdByDemandeId(r.getDemande_id());
+        	String mois = NoteService.findById(note_id).getMois();
+        	mois = mois.substring(0, 2) + "-" + mois.substring(3);
+        	notesAssociees.put(r.getDemande_id(), mois);
         }
         
         model.addAttribute("recentDemandesRemboursement", recentDemandesRemboursement);
         model.addAttribute("missionNames", missionNames);
+        model.addAttribute("notesAssociees", notesAssociees);
         /**** DERNIERES DEMANDES DE CONGES ****/
 
         return "welcomePage-Thibaut";

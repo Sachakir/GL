@@ -31,4 +31,9 @@ public interface CongesRepository extends CrudRepository<Conges, Long>{
 	@Modifying
 	@Query("DELETE FROM Conges WHERE UID = :userid")
 	public void deleteConges(@Param("userid") long uid);
+	
+	@Transactional
+	@Modifying
+	@Query("UPDATE Conges SET date_debut = :newdebut, date_fin = :newfin WHERE conges_id = :congesid")
+	public void updateConges(@Param("congesid") long id, @Param("newdebut") String newdebut, @Param("newfin") String newfin);
 }

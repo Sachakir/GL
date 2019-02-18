@@ -47,7 +47,7 @@ $(document).ready(function () {
         $("#employe").text("Nom de l'employé: "+$(this).find("td:nth-child(1)").text());
         $("#date").text("Date: "+$(this).find("td:nth-child(3)").text());
         $("#montant").text("Montant  total: "+$(this).find("td:nth-child(4)").text()+"€");
-        $("#validationrh").text($(this).find("td:nth-child(5)").text());
+        $("#validationfinances").text($(this).find("td:nth-child(5)").text());
         $("#validationcds").text($(this).find("td:nth-child(6)").text());
         $("#validationf").text($(this).find("td:nth-child(7)").text());
         $("#demandeid").text($(this).find("td:nth-child(8)").text());
@@ -59,6 +59,10 @@ $(document).ready(function () {
 		var fic2 = "/RefusRemb/";
         fic2=fic2+$(this).find("td:nth-child(8)").text();
 		document.getElementById('refuse').href = fic2;
+		
+		var fic3 = "/remboursements/files?file_id=";
+        fic3=fic3+$(this).find("td:nth-child(9)").text();
+		document.getElementById('download').href = fic3;
         
       });
 	  $('#demandes').on('click', 'tbody tr', function(event) {
@@ -90,6 +94,14 @@ $(document).ready(function () {
 		document.getElementById('refuse').href = fic2;
         
       });
+	  $("#dateD").change=function(){
+		  $('#calendarC').fullCalendar('removeEvents');
+			$('#calendarC').fullCalendar('renderEvent', {
+				title: 'congé',
+				start: $("#dateD").val(),
+				end: $("#dateF").val()
+			});
+	  }
     document.getElementById("editer").onclick = function() {bouttonDeRow()};
     
 

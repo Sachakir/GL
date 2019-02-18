@@ -8,10 +8,8 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -80,6 +78,7 @@ public class RemboursementController {
     	Long userId = UtilisateurService.findPrenomNom(names[1], names[0]).getUID();
     	
 		List<Note> listeNotes = NoteService.findAllById(userId);
+		Map<Long, String> moisNotes = new HashMap<Long, String>();
 		
 		// Recuperation des mois pour les notes de frais modifiables
 		LocalDate localDate = LocalDate.now();
@@ -112,10 +111,8 @@ public class RemboursementController {
             moisNote = moisNote.substring(0, 1).toUpperCase() + moisNote.substring(1);
             moisNote += " " + yearNoteInt;
             
-            n.setMois(moisNote);
-			
-			if(noteMoisActuel != null && noteMoisPrecedent != null)
-				break;
+            moisNotes.put(n.getNote_id(), moisNote);
+            n.setMois(n.getMois().substring(0, 2) + "-" + n.getMois().substring(3));
 		}
 		
 		if(noteMoisActuel != null) {
@@ -154,6 +151,7 @@ public class RemboursementController {
 		}
 		
 		model.addAttribute("listeNotes", listeNotes);
+		model.addAttribute("moisNotes", moisNotes);
 		model.addAttribute("noteMoisActuel", noteMoisActuel);
 		model.addAttribute("noteMoisPrecedent", noteMoisPrecedent);
 		model.addAttribute("moisActuel", moisNowStr);
@@ -162,10 +160,115 @@ public class RemboursementController {
 		return "remboursements";
 	}
 	
-	/*@GetMapping(value = "/note={mois:.+}")
-	public String displayRemboursementsNote(@PathVariable String filename) {
+	//^(0[1-9]|1[0-2])-[0-9]{4}$
+	
+	@GetMapping(value = "/note={mois:.+}")
+	public String displayRemboursementsNote(@PathVariable String mois, Model model, Principal principal) {
+		if(mois.length() > 2) {
+			String moisStr = mois.substring(0, 2) + '/' + mois.substring(3);
+			
+			String[] names = principal.getName().split("\\.");
+	    	Long userId = UtilisateurService.findPrenomNom(names[1], names[0]).getUID();
+	    	Note note = NoteService.findNoteByMonthAndUID(moisStr, userId);
+	    	
+			// Recuperation des missions associees a la note de frais de ce mois et leurs remboursements
+			if(note != null)
+			{
+				// Peut-on ajouter des demandes de remboursement à cette note de frais ?
+				boolean isModifiable = false;
+				boolean actuel = false;
+				LocalDate localDate = LocalDate.now();
+		    	int moisNow = localDate.getMonthValue();
+				int yearNow = localDate.getYear();
+				int moisPrecedent = moisNow-1;
+				int yearPrecedent = yearNow;
+				if(moisPrecedent == 0) {
+					moisPrecedent = 12;
+					yearPrecedent--;
+				}
+				
+				int moisNoteInt = Integer.parseInt(note.getMois().substring(0, 2));
+	            int yearNoteInt = Integer.parseInt(note.getMois().substring(3, 7));
+	            
+	            if(moisNow == moisNoteInt && yearNow == yearNoteInt) {
+	            	isModifiable = true;
+	            	actuel = true;
+	            }	
+	            else if(moisPrecedent == moisNoteInt && yearPrecedent == yearNoteInt) {
+	            	isModifiable = true;
+	            	actuel = false;
+	            }
+	            
+	            // Listage des missions
+				String moisNote = new DateFormatSymbols().getMonths()[moisNoteInt-1];
+	            moisNote = moisNote.substring(0, 1).toUpperCase() + moisNote.substring(1);
+	            moisNote += " " + yearNoteInt;
+	            
+				List<Mission> missions = new ArrayList<Mission>();
+				Map<Long, List<Remboursement>> remboursementsMissions = new HashMap<Long, List<Remboursement>>();
+				
+				List<Long> remboursementsNoteIds = RemboursementsNoteService.findAllByNoteId(note.getNote_id());
+				if(!remboursementsNoteIds.isEmpty()) {
+					List<Remboursement> remboursementsNote = RemboursementService.getAllByIdListAsc(remboursementsNoteIds);
+			        
+			        for(Remboursement r : remboursementsNote) {
+			        	long missionId = r.getMission_id();
+			        	 
+			        	// Ajout d'une nouvelle mission si non existante
+			        	if(!remboursementsMissions.containsKey(missionId)) {
+			        		missions.add(MissionService.findMissionById(missionId));
+			        		remboursementsMissions.put(missionId, new ArrayList<Remboursement>());
+			        	}
+			        	
+			        	// Ajout de la demande de remboursement a la mission
+			        	remboursementsMissions.get(missionId).add(r);
+			        }
+		        }
+		        
+		        model.addAttribute("missions", missions);
+		        model.addAttribute("remboursementsMissions", remboursementsMissions);
+		        model.addAttribute("moisNote", moisNote);
+		        model.addAttribute("isModifiable", isModifiable);
+		        model.addAttribute("moisUrl", mois);
+		        model.addAttribute("actuel", actuel);
+		        
+		        return "noteFrais";
+			}
+		}
 		
-	}*/
+		return "forward:/notFound";
+	}
+	
+	@GetMapping(value = "/note={mois:.+}/remboursement_id={remboursement_id:.+}")
+	public String displayRemboursement(@PathVariable String mois, @PathVariable String remboursement_id, Model model, Principal principal)
+	{
+		try {
+			long remboursement_id_long = Long.parseLong(remboursement_id);
+			String[] names = principal.getName().split("\\.");
+	    	Long userId = UtilisateurService.findPrenomNom(names[1], names[0]).getUID();
+	    	
+			if(mois.length() > 2) {
+				String moisDiff = mois.substring(0, 2) + '/' + mois.substring(3);
+				Note note = NoteService.findNoteByMonthAndUID(moisDiff, userId);
+				
+				// On peut afficher la demande dans ce cas là
+				if(RemboursementsNoteService.findByNoteIdAndDemandeId(note.getNote_id(), remboursement_id_long) != null) {
+					Remboursement r = RemboursementService.findById(remboursement_id_long);
+					Mission m = MissionService.findMissionById(r.getMission_id());
+					
+					model.addAttribute("remboursement", r);
+					model.addAttribute("mission", m);
+					
+					return "remboursementDetail";
+				}
+			}
+		}
+		catch(NumberFormatException e) {
+			e.printStackTrace();
+		}
+		
+		return "forward:/notFound";
+	}
 	
 	@GetMapping("/demande-remboursement")
     public String remboursementForm(@RequestParam(value = "mois", required = false) String monthRequested, Model model, Principal principal) {
