@@ -8,10 +8,8 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -115,9 +113,6 @@ public class RemboursementController {
             
             moisNotes.put(n.getNote_id(), moisNote);
             n.setMois(n.getMois().substring(0, 2) + "-" + n.getMois().substring(3));
-			
-			if(noteMoisActuel != null && noteMoisPrecedent != null)
-				break;
 		}
 		
 		if(noteMoisActuel != null) {
@@ -170,17 +165,41 @@ public class RemboursementController {
 	@GetMapping(value = "/note={mois:.+}")
 	public String displayRemboursementsNote(@PathVariable String mois, Model model, Principal principal) {
 		if(mois.length() > 2) {
-			mois = mois.substring(0, 2) + '/' + mois.substring(3);
+			String moisStr = mois.substring(0, 2) + '/' + mois.substring(3);
 			
 			String[] names = principal.getName().split("\\.");
 	    	Long userId = UtilisateurService.findPrenomNom(names[1], names[0]).getUID();
-	    	Note note = NoteService.findNoteByMonthAndUID(mois, userId);
+	    	Note note = NoteService.findNoteByMonthAndUID(moisStr, userId);
 	    	
 			// Recuperation des missions associees a la note de frais de ce mois et leurs remboursements
 			if(note != null)
 			{
+				// Peut-on ajouter des demandes de remboursement à cette note de frais ?
+				boolean isModifiable = false;
+				boolean actuel = false;
+				LocalDate localDate = LocalDate.now();
+		    	int moisNow = localDate.getMonthValue();
+				int yearNow = localDate.getYear();
+				int moisPrecedent = moisNow-1;
+				int yearPrecedent = yearNow;
+				if(moisPrecedent == 0) {
+					moisPrecedent = 12;
+					yearPrecedent--;
+				}
+				
 				int moisNoteInt = Integer.parseInt(note.getMois().substring(0, 2));
 	            int yearNoteInt = Integer.parseInt(note.getMois().substring(3, 7));
+	            
+	            if(moisNow == moisNoteInt && yearNow == yearNoteInt) {
+	            	isModifiable = true;
+	            	actuel = true;
+	            }	
+	            else if(moisPrecedent == moisNoteInt && yearPrecedent == yearNoteInt) {
+	            	isModifiable = true;
+	            	actuel = false;
+	            }
+	            
+	            // Listage des missions
 				String moisNote = new DateFormatSymbols().getMonths()[moisNoteInt-1];
 	            moisNote = moisNote.substring(0, 1).toUpperCase() + moisNote.substring(1);
 	            moisNote += " " + yearNoteInt;
@@ -209,6 +228,9 @@ public class RemboursementController {
 		        model.addAttribute("missions", missions);
 		        model.addAttribute("remboursementsMissions", remboursementsMissions);
 		        model.addAttribute("moisNote", moisNote);
+		        model.addAttribute("isModifiable", isModifiable);
+		        model.addAttribute("moisUrl", mois);
+		        model.addAttribute("actuel", actuel);
 		        
 		        return "noteFrais";
 			}

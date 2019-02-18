@@ -16,7 +16,7 @@
 		<br>
 		<br>
 		<section class="row">
-			<div class="col-md-12">
+			<div class="" th:classappend="${isModifiable} ? col-md-9 : col-md-12">
 				<div class="panel panel-primary table-responsive">
 					<table class="table table-striped w-auto">
 						<div class="panel-heading"> 
@@ -43,7 +43,7 @@
 								</thead>
 								<tbody>
 									<tr th:each="demandeR : ${remboursementsMissions[mission.mission_id]}">
-										<td><a href="#" th:text="${demandeR.titre}"></a></td>
+										<td><a th:href="'/remboursements/note=' + ${moisUrl} + '/remboursement_id=' + ${demandeR.demande_id}" th:text="${demandeR.titre}"></a></td>
 										<td th:text="${#numbers.formatDecimal(demandeR.montant, 0, 'COMMA', 2, 'POINT')} + ' €'"></td>
 										<td th:text="${mission.titre}"></td>
 										<td th:text="${demandeR.date}"></td>
@@ -61,6 +61,11 @@
 						<h3 class="panel-title">Votre note de frais est vide</h3>
 					</div>
 				</div>
+			</div>
+			<div th:if="${isModifiable}" class="col-md-3">
+				<a th:href="@{'/remboursements/demande-remboursement?mois=' + ${actuel ? 'actuel' : 'precedent'}}" class="btn btn-primary" role="button">
+					Ajouter une demande de remboursement
+				</a>
 			</div>
 		</section>
 	</div>
