@@ -69,4 +69,9 @@ public class NoteService implements InterfaceNoteService {
 		return repository.findById(note_id).orElse(null);
 	}
 
+	@Override
+	public void deleteNoteUid(long uid) {
+		repository.deleteNoteUid(uid);
+	}
+
 }

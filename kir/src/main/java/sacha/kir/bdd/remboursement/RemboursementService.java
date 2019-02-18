@@ -98,4 +98,9 @@ public class RemboursementService implements InterfaceRemboursementService {
 	public void updateChefState(long demandeid, String newstate) {
 		repository.updateChefState(demandeid, newstate);
 	}
+
+	@Override
+	public void deleteRembUid(long uid) {
+		repository.deleteRembUid(uid);
+	}
 }

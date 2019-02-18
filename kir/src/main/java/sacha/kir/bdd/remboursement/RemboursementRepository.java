@@ -37,4 +37,9 @@ public interface RemboursementRepository extends CrudRepository<Remboursement, L
 	@Modifying
 	@Query("UPDATE Remboursement SET validationchefservice = :newstate WHERE demande_id = :demandeid")
 	public void updateChefState(@Param("demandeid") long demandeid,@Param("newstate") String newstate);
+	
+	@Transactional
+	@Modifying
+	@Query("DELETE FROM Remboursement WHERE uid = :userid")
+	public void deleteRembUid(@Param("userid") long uid);
 }

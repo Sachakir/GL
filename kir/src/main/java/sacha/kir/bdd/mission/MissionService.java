@@ -45,7 +45,14 @@ public class MissionService implements InterfaceMissionService{
 
 	@Override
 	public int getMaxMissionId() {
-		return repository.getMaxMissionId();
+		if (repository.count() == 0)
+		{
+			return 0;
+		}
+		else
+		{
+			return repository.getMaxMissionId();
+		}
 	}
 
 }

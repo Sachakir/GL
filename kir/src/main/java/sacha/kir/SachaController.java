@@ -25,6 +25,7 @@ import sacha.kir.bdd.membresmission.InterfaceMembresMissionService;
 import sacha.kir.bdd.membresmission.MembresMission;
 import sacha.kir.bdd.mission.InterfaceMissionService;
 import sacha.kir.bdd.mission.Mission;
+import sacha.kir.bdd.note.InterfaceNoteService;
 import sacha.kir.bdd.remboursement.InterfaceRemboursementService;
 import sacha.kir.bdd.remboursement.Remboursement;
 import sacha.kir.bdd.userrole.InterfaceUserRoleService;
@@ -56,7 +57,9 @@ public class SachaController
     InterfaceMissionService MissionService;
 	@Autowired
     InterfaceRemboursementService RemboursementService;
-	
+    @Autowired
+    InterfaceNoteService NoteService;
+    
 	@GetMapping("/validationConges")
     public String addConges(Principal principal,Model model) 
 	{
@@ -187,7 +190,7 @@ public class SachaController
 	
 	@RequestMapping(path="/deleteUser/{id}")
     public String getMessage(@PathVariable("id") long id,Model model,UserForm userForm,Principal principal) 
-    {	
+    {
 		UserRole ur = UserRoleService.findById(id);
 		if (ur != null)
 		{
@@ -195,12 +198,41 @@ public class SachaController
 			System.out.println(ur.getRole_id());
 			System.out.println(ur.getUser_id());
 		}
-		MembresMissionService.deleteMembresMission(id);
-		CongesService.deleteConges(id);
+		List<Mission> missions = MissionService.findAll();
+		boolean estRespoMission = false;
+		for (int i = 0;i< missions.size();i++)
+		{
+			if (missions.get(i).getResponsable_id() == id)
+			{
+				estRespoMission = true;
+				break;
+			}
+		}
+		if (estRespoMission)
+		{
+			return "redirect:/adminShow";
+		}
 		
+		MembresMissionService.deleteMembresMission(id);
+		System.out.println("Delete de membresMission");
+		CongesService.deleteConges(id);
+		System.out.println("Delete de conges");
+
 		UserRoleService.deleteUserRole(id);
+		System.out.println("Delete de UserRole");
+
 		AppUserService.deleteAppUser(id);
+		System.out.println("Delete de AppUser");
+
+		RemboursementService.deleteRembUid(id);
+		System.out.println("Delete de Remboursement");
+
+		NoteService.deleteNoteUid(id);
+		System.out.println("Delete de Note");
+
 		UtilisateurService.deleteUser(id);
+		System.out.println("Delete de Utilisateur");
+		
 		
 		System.out.println("DELETED " + id);
 		
@@ -396,5 +428,22 @@ public class SachaController
     		AppUserService.updatePassword(ut.getUID(), newPass);
     	}
 		return "redirect:/parametres";
+    }
+	
+	@RequestMapping("/listMissions")
+    public String listMissions(Principal principal)
+    {
+		String prenomnom = principal.getName();
+    	String[] names = prenomnom.split("\\.");
+    	long uid = UtilisateurService.findPrenomNom(names[1], names[0]).getUID();
+    	List<Mission> missions = MissionService.findAll();
+    	for (int i = 0;i < missions.size();i++)
+    	{
+    		if (missions.get(i).getResponsable_id() == uid)
+    		{
+    			System.out.println(missions.get(i).getTitre());
+    		}
+    	}
+		return "Login";
     }
 }

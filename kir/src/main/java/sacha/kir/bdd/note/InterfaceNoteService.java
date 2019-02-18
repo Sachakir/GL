@@ -9,4 +9,6 @@ public interface InterfaceNoteService {
 	public Note findNoteByMonthAndUID(String mois, long uid);
 	public List<Note> findAllById(long uid);
 	public Note findById(long note_id);
+	public void deleteNoteUid(long uid);
+
 }
