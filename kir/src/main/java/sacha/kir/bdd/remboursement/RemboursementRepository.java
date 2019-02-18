@@ -22,6 +22,12 @@ public interface RemboursementRepository extends CrudRepository<Remboursement, L
 	@Query("SELECT r FROM Remboursement r WHERE uid = :uid ORDER BY timestamp DESC")
 	public List<Remboursement> getAllByIdDesc(long uid);
 	
+	@Query("SELECT r FROM Remboursement r WHERE demande_id IN :demande_ids ORDER BY timestamp ASC")
+	public List<Remboursement> getAllByIdListAsc(List<Long> demande_ids);
+	
+	@Query("SELECT r FROM Remboursement r WHERE demande_id IN :demande_ids ORDER BY timestamp DESC")
+	public List<Remboursement> getAllByIdListDesc(List<Long> demande_ids);
+	
 	@Transactional
 	@Modifying
 	@Query("UPDATE Remboursement SET validationrh = :newstate WHERE demande_id = :demandeid")

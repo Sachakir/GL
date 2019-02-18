@@ -5,8 +5,13 @@ import java.text.DateFormatSymbols;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -19,6 +24,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -73,12 +79,90 @@ public class RemboursementController {
 		String[] names = principal.getName().split("\\.");
     	Long userId = UtilisateurService.findPrenomNom(names[1], names[0]).getUID();
     	
-		List<Remboursement> remboursements = RemboursementService.getAllByIdAsc(userId, 2);
-		for(Remboursement r : remboursements) {
-			System.out.println("Remboursement n" + r.getDemande_id() + ", timestamp = " + r.getTimestamp());
+		List<Note> listeNotes = NoteService.findAllById(userId);
+		
+		// Recuperation des mois pour les notes de frais modifiables
+		LocalDate localDate = LocalDate.now();
+    	int moisNow = localDate.getMonthValue();
+		int yearNow = localDate.getYear();
+		int moisPrecedent = moisNow-1;
+		int yearPrecedent = yearNow;
+		if(moisPrecedent == 0) {
+			moisPrecedent = 12;
+			yearPrecedent--;
 		}
+		String moisNowStr = (moisNow < 10 ? "0" + moisNow : moisNow) + "/" + yearNow;
+		String moisPrecedentStr = (moisPrecedent < 10 ? "0" + moisPrecedent : moisPrecedent) + "/" + yearPrecedent;
+		
+		Note noteMoisActuel = null;
+		Note noteMoisPrecedent = null;
+		
+		// Recherche des notes modifiables et remplacement des intitules des mois
+		for(Note n : listeNotes) {
+			if(moisNowStr.equals(n.getMois())) {
+				noteMoisActuel = n;
+			}
+			else if(moisPrecedentStr.equals(n.getMois())) {
+				noteMoisPrecedent = n;
+			}
+			
+            int moisNoteInt = Integer.parseInt(n.getMois().substring(0, 2));
+            int yearNoteInt = Integer.parseInt(n.getMois().substring(3, 7));
+			String moisNote = new DateFormatSymbols().getMonths()[moisNoteInt-1];
+            moisNote = moisNote.substring(0, 1).toUpperCase() + moisNote.substring(1);
+            moisNote += " " + yearNoteInt;
+            
+            n.setMois(moisNote);
+			
+			if(noteMoisActuel != null && noteMoisPrecedent != null)
+				break;
+		}
+		
+		if(noteMoisActuel != null) {
+			listeNotes.remove(noteMoisActuel);
+		}
+		if(noteMoisPrecedent != null) {
+			listeNotes.remove(noteMoisPrecedent);
+		}
+		
+		// Recuperation des missions associees a la note de frais de ce mois et leurs remboursements
+		if(noteMoisActuel != null)
+		{
+			List<Long> remboursementsNoteIds = RemboursementsNoteService.findAllByNoteId(noteMoisActuel.getNote_id());
+			List<Remboursement> remboursementsNote = RemboursementService.getAllByIdListAsc(remboursementsNoteIds);
+			List<Mission> missions = new ArrayList<Mission>();
+			Map<Long, List<Remboursement>> remboursementsMissions = new HashMap<Long, List<Remboursement>>();
+	        
+	        for(Remboursement r : remboursementsNote) {
+	        	long missionId = r.getMission_id();
+	        	 
+	        	// Ajout d'une nouvelle mission si non existante
+	        	if(!remboursementsMissions.containsKey(missionId)) {
+	        		missions.add(MissionService.findMissionById(missionId));
+	        		remboursementsMissions.put(missionId, new ArrayList<Remboursement>());
+	        	}
+	        	
+	        	// Ajout de la demande de remboursement a la mission
+	        	remboursementsMissions.get(missionId).add(r);
+	        }
+	        
+	        model.addAttribute("missions", missions);
+	        model.addAttribute("remboursementsMissions", remboursementsMissions);
+		}
+		
+		model.addAttribute("listeNotes", listeNotes);
+		model.addAttribute("noteMoisActuel", noteMoisActuel);
+		model.addAttribute("noteMoisPrecedent", noteMoisPrecedent);
+		model.addAttribute("moisActuel", moisNowStr);
+		model.addAttribute("moisPrecedent", moisPrecedentStr);
+		
 		return "remboursements";
 	}
+	
+	/*@GetMapping(value = "/note={mois:.+}")
+	public String displayRemboursementsNote(@PathVariable String filename) {
+		
+	}*/
 	
 	@GetMapping("/demande-remboursement")
     public String remboursementForm(@RequestParam(value = "mois", required = false) String monthRequested, Model model, Principal principal) {
@@ -120,7 +204,7 @@ public class RemboursementController {
         
         String moisStr = (moisInt < 10 ? "0" + moisInt : moisInt) + "/" + yearInt;
         
-        String monthToDisplay = (moisInt == 4 || moisInt == 8 || moisInt == 10 ? "d'" : "de ");
+        String monthToDisplay = "pour ";
         String moisNote = new DateFormatSymbols().getMonths()[moisInt-1];
         moisNote = moisNote.substring(0, 1).toUpperCase() + moisNote.substring(1);
         monthToDisplay += moisNote + " " + yearInt;
@@ -194,7 +278,7 @@ public class RemboursementController {
             model.addAttribute("missions", userMissions);
             model.addAttribute("monthRequested", monthRequested);
             
-            String monthToDisplay = (moisNow == 4 || moisNow == 8 || moisNow == 10 ? "d'" : "de ");
+            String monthToDisplay = "pour ";
             String moisNote = new DateFormatSymbols().getMonths()[moisNow-1];
             moisNote = moisNote.substring(0, 1).toUpperCase() + moisNote.substring(1);
             monthToDisplay += moisNote + " " + yearNow;
@@ -214,7 +298,7 @@ public class RemboursementController {
     		r.setMontant(Float.parseFloat(remboursementForm.getMontant()));
     		r.setMotif(remboursementForm.getMotif());
     		r.setValidationchefservice("En attente");
-    		r.setValidationrh("En attente");
+    		r.setValidationfinances("En attente");
     		
     		// Stockage du fichier dans la BD
     		if(!file.isEmpty())

@@ -10,6 +10,8 @@ public interface InterfaceRemboursementService {
 	public List<Remboursement> getAllByIdDesc(long uid);
 	public List<Remboursement> getAllByIdAsc(long uid, int limit);
 	public List<Remboursement> getAllByIdDesc(long uid, int limit);
+	public List<Remboursement> getAllByIdListAsc(List<Long> demande_ids);
+	public List<Remboursement> getAllByIdListDesc(List<Long> demande_ids);
 	public void updateRHState(long demandeid,String newstate);
 	public void updateChefState(long demandeid,String newstate);
 

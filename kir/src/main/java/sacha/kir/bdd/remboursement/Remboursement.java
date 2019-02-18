@@ -29,8 +29,8 @@ public class Remboursement {
 	@Column(name="Motif")
 	private String motif;
 	
-	@Column(name="validation_rh")
-	private String validationrh;
+	@Column(name="validation_finances")
+	private String validationfinances;
 	
 	@Column(name="validation_chef_service")
 	private String validationchefservice;
@@ -52,7 +52,7 @@ public class Remboursement {
 		this.timestamp = new Date();
 	}
 
-	public Remboursement(Long demande_id, String titre, float montant, String date, String motif, String validationrh,
+	public Remboursement(Long demande_id, String titre, float montant, String date, String motif, String validationfinances,
 			String validationchefservice, Long justificatifid, Long uid, Long mission_id) {
 		this();
 		this.demande_id = demande_id;
@@ -60,7 +60,7 @@ public class Remboursement {
 		this.montant = montant;
 		this.date = date;
 		this.motif = motif;
-		this.validationrh = validationrh;
+		this.validationfinances = validationfinances;
 		this.validationchefservice = validationchefservice;
 		this.justificatifid = justificatifid;
 		this.uid = uid;
@@ -107,12 +107,12 @@ public class Remboursement {
 		this.motif = motif;
 	}
 
-	public String getValidationrh() {
-		return validationrh;
+	public String getValidationfinances() {
+		return validationfinances;
 	}
 
-	public void setValidationrh(String validationrh) {
-		this.validationrh = validationrh;
+	public void setValidationfinances(String validationfinances) {
+		this.validationfinances = validationfinances;
 	}
 
 	public String getValidationchefservice() {

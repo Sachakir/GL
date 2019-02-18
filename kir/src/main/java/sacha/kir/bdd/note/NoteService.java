@@ -31,7 +31,8 @@ public class NoteService implements InterfaceNoteService {
 		repository.save(n);
 	}
 	
-	public Note addNote(String mois, Long uid) {
+	@Override
+	public Note addNote(String mois, long uid) {
 		DateFormat df = new SimpleDateFormat("MM/yyyy");
 		try {
 			df.parse(mois);
@@ -53,8 +54,14 @@ public class NoteService implements InterfaceNoteService {
 		}
 	}
 	
-	public Note findNoteByMonthAndUID(String mois, Long uid) {
+	@Override
+	public Note findNoteByMonthAndUID(String mois, long uid) {
 		return repository.findNoteByMonthAndUID(mois, uid);
+	}
+	
+	@Override
+	public List<Note> findAllById(long uid){
+		return repository.findAllById(uid);
 	}
 
 }

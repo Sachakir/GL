@@ -132,7 +132,8 @@
 									<th>Prix</th>
 									<th>Mission</th>
 									<th>Date</th>
-									<th>Etat</th>
+									<th>Etat (Chef de service)</th>
+									<th>Etat (Finances)</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -141,7 +142,8 @@
 									<td th:text="${#numbers.formatDecimal(demandeR.montant, 0, 'COMMA', 2, 'POINT')} + ' €'"></td>
 									<td th:text="${missionNames[demandeR.mission_id]}"></td>
 									<td th:text="${demandeR.date}"></td>
-									<td th:text="${demandeR.validationrh}"></td>
+									<td th:text="${demandeR.validationchefservice}"></td>
+									<td th:text="${demandeR.validationfinances}"></td>
 								</tr>
 							</tbody>
 						</table>

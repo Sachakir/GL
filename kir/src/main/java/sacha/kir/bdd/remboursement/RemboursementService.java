@@ -28,7 +28,7 @@ public class RemboursementService implements InterfaceRemboursementService {
 		r.setMotif("Parce que, oui");
 		r.setUid((long)1);
 		r.setValidationchefservice("enAttente");
-		r.setValidationrh("Valide");
+		r.setValidationfinances("Valide");
 		
 		repository.save(r);
 	}
@@ -72,6 +72,16 @@ public class RemboursementService implements InterfaceRemboursementService {
 			return l;
 		else
 			return l.subList(0, limit);
+	}
+	
+	@Override
+	public List<Remboursement> getAllByIdListAsc(List<Long> demande_ids) {
+		return repository.getAllByIdListAsc(demande_ids);
+	}
+	
+	@Override
+	public List<Remboursement> getAllByIdListDesc(List<Long> demande_ids) {
+		return repository.getAllByIdListDesc(demande_ids);
 	}
 
 	@Override

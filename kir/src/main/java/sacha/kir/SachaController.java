@@ -290,12 +290,12 @@ public class SachaController
 			tmpRem.setPrenomnom(tmpUs.getPrenom() + " " + tmpUs.getNom());
 			tmpRem.setTitre(rembs.get(i).getTitre());
 			tmpRem.setValidationchefservice(rembs.get(i).getValidationchefservice());
-			tmpRem.setValidationrh(rembs.get(i).getValidationrh());
-			if (rembs.get(i).getValidationchefservice().contains("Valide") && rembs.get(i).getValidationrh().contains("Valide"))
+			tmpRem.setValidationrh(rembs.get(i).getValidationfinances());
+			if (rembs.get(i).getValidationchefservice().contains("Valide") && rembs.get(i).getValidationfinances().contains("Valide"))
 			{
 				tmpRem.setEtatFinal("Valide");
 			}
-			else if (rembs.get(i).getValidationchefservice().contains("Refuse") && rembs.get(i).getValidationrh().contains("Refuse"))
+			else if (rembs.get(i).getValidationchefservice().contains("Refuse") && rembs.get(i).getValidationfinances().contains("Refuse"))
 			{
 				tmpRem.setEtatFinal("Refuse");
 			}
