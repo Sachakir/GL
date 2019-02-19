@@ -42,6 +42,7 @@
                     <label class="control-label" for="joursCongesRest">Jours de congés restants</label>  
                     <div>
                         <span th:text="${user.joursCongesRest}"> joursCongesRest </span>
+         				<input type="hidden" th:field="${user.uid}" />
                     </div>
                 </div>
                 <div class="form-group">
@@ -53,16 +54,28 @@
                         <label> Changer pour :</label>
                         <select th:field="${user.role}">
                           	<option value="NoChanges"> -- </option>
-                          	<option value="Admin">Admin</option>
-                         	<option value="UserInfo">UserInfo</option>
-                         	<option value="ChefInfo">ChefInfo</option>
-                          	<option value="UserFinances">UserFinances</option>
-                          	<option value="ChefFinances">ChefFinances</option>
-                          	<option value="RH">RH</option>   
+                         	<option value="User">User</option>
+                         	<option value="Chef">Chef</option>
                         </select>  
-                        <input type="hidden" th:field="${user.uid}" />
                   </div>
               </div>
+              
+              <div class="form-group">
+                    <label class="control-label" for="role">Service</label>
+                    <div>
+                        <span th:text="${user.service}"> Service </span>
+                  	</div>
+                  	<div>
+                        <label> Changer pour :</label>
+                        <select th:field="${user.service}">
+                          	<option value="NoChanges"> -- </option>
+                         	<option value="Info">Info</option>
+                          	<option value="Finances">Finances</option>
+                          	<option value="RH">RH</option>   
+                        </select>  
+                  </div>
+              </div>
+              
               <button id="post" name="" type="submit" class="btn btn-primary">Confirmer</button>
           </form>
 		</div>

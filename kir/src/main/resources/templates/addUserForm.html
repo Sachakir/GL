@@ -66,11 +66,19 @@
 								<div>
 									<select id="role" name="role" class="form-control" th:field="*{role}">
 										<option value=""> - </option>
-										<option value="Admin">Admin</option>
-										<option value="UserInfo">UserInfo</option>
-										<option value="ChefInfo">ChefInfo</option>
-										<option value="UserFinances">UserFinances</option>
-										<option value="ChefFinances">UserFinances</option>
+										<option value="User">User</option>
+										<option value="Chef">Chef</option>
+									</select>
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label class="control-label" for="role">Service</label>
+								<div>
+									<select id="role" name="role" class="form-control" th:field="*{service}">
+										<option value=""> - </option>
+										<option value="Info">Info</option>
+										<option value="Finances">Finances</option>
 										<option value="RH">RH</option>
 									</select>
 								</div>

@@ -184,7 +184,7 @@ public class MainController {
         
         UserRole userRole = new UserRole();
         userRole.setUser_id((long) (maxId + 1));
-        AppRole aptmp = AppRoleService.findByRole(userForm.getRole());
+        AppRole aptmp = AppRoleService.findByRole(userForm.getRole()+userForm.getService());
         userRole.setRole_id(aptmp.getRole_id());
         userRole.setId((long) UserRoleService.getMaxId() + 1);
 
@@ -533,9 +533,11 @@ public class MainController {
         userForm.setNom(u.getNom());
         userForm.setNumTel(u.getNumeroTel());
         userForm.setPrenom(u.getPrenom());
-        userForm.setRole(ar.getRole_name());
+        userForm.setRole(ar.getRole_name().substring(0,4));
   		userForm.setUid(id);
-
+  		userForm.setService(ar.getRole_name().substring(4));
+  		
+  		
         model.addAttribute("user", userForm);
         return "showUserDetails";
     }
@@ -547,7 +549,7 @@ public class MainController {
     		model.addAttribute("change", "non change");
     		return "roleChanged";
     	}
-    	AppRole ar = AppRoleService.findByRole(userForm.getRole());
+    	AppRole ar = AppRoleService.findByRole(userForm.getRole()+userForm.getService());
     	System.out.println(ar.getRole_id());
     	System.out.println("userForm.getUid() " + userForm.getUid() + userForm.getRole());
     	UserRoleService.updateRole(userForm.getUid(), ar.getRole_id());

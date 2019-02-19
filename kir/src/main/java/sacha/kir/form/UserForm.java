@@ -26,7 +26,14 @@ public class UserForm {
 	@NotNull
 	@Size(min=1, max=42)
 	private String role;
+	private String service;
 	
+	public String getService() {
+		return service;
+	}
+	public void setService(String service) {
+		this.service = service;
+	}
 	private long uid;
 	
 	public long getUid() {
