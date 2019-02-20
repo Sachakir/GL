@@ -90,7 +90,7 @@ public class RemboursementService implements InterfaceRemboursementService {
 	}
 
 	@Override
-	public void updateRHState(long demandeid, String newstate) {
+	public void updateFinancesState(long demandeid, String newstate) {
 		repository.updateRHState(demandeid, newstate);
 	}
 

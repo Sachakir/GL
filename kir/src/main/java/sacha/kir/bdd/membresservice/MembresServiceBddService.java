@@ -63,4 +63,14 @@ public class MembresServiceBddService implements InterfaceMembresServiceBddServi
 	public void updateAdminStatusById(long uid, boolean isAdmin) {
 		repository.updateAdminStatusById(uid, isAdmin);
 	}
+	
+	@Override
+	public List<Long> getAllUidByServiceId(long service_id) {
+		return repository.getAllUidByServiceId(service_id);
+	}
+	
+	@Override
+	public MembresServiceBdd getChefByServiceId(long service_id) {
+		return repository.getByServiceIdAndRoleId(service_id, Role.chefDeService.getRoleId());
+	}
 }

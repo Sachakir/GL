@@ -1,5 +1,7 @@
 package sacha.kir.bdd.conges;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.Modifying;
@@ -10,9 +12,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CongesRepository extends CrudRepository<Conges, Long>{
-	
-	@Query("SELECT p FROM Conges p WHERE p.conges_id = :congesid")
-	public Conges findByCongesId(@Param("congesid") long congesid);
 	
 	@Transactional
 	@Modifying
@@ -39,4 +38,7 @@ public interface CongesRepository extends CrudRepository<Conges, Long>{
 	
 	@Query("SELECT validation_chef_service FROM Conges WHERE conges_id = :congesid")
 	public String getChefState(@Param("congesid") long id);
+	
+	@Query("SELECT p FROM Conges p WHERE UID = :uid")
+	public List<Conges> getAllCongesByUid(long uid);
 }

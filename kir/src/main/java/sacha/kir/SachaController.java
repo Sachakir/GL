@@ -2,7 +2,9 @@ package sacha.kir;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -15,21 +17,23 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import sacha.kir.bdd.approle.AppRole;
 import sacha.kir.bdd.approle.InterfaceAppRoleService;
-import sacha.kir.bdd.appuser.AppUserService;
 import sacha.kir.bdd.appuser.InterfaceAppUserService;
 import sacha.kir.bdd.conges.Conges;
 import sacha.kir.bdd.conges.InterfaceCongesService;
 import sacha.kir.bdd.membresmission.InterfaceMembresMissionService;
 import sacha.kir.bdd.membresmission.MembresMission;
+import sacha.kir.bdd.membresservice.InterfaceMembresServiceBddService;
+import sacha.kir.bdd.membresservice.MembresServiceBdd;
+import sacha.kir.bdd.membresservice.Role;
 import sacha.kir.bdd.mission.InterfaceMissionService;
 import sacha.kir.bdd.mission.Mission;
 import sacha.kir.bdd.note.InterfaceNoteService;
 import sacha.kir.bdd.remboursement.InterfaceRemboursementService;
 import sacha.kir.bdd.remboursement.Remboursement;
+import sacha.kir.bdd.services.InterfaceServiceBddService;
+import sacha.kir.bdd.services.ServicesFixes;
 import sacha.kir.bdd.userrole.InterfaceUserRoleService;
-import sacha.kir.bdd.userrole.UserRole;
 import sacha.kir.bdd.utilisateur.InterfaceUtilisateurService;
 import sacha.kir.bdd.utilisateur.Utilisateur;
 import sacha.kir.form.CongesV2;
@@ -59,6 +63,10 @@ public class SachaController
     InterfaceRemboursementService RemboursementService;
     @Autowired
     InterfaceNoteService NoteService;
+    @Autowired
+	InterfaceServiceBddService ServiceBddService;
+	@Autowired
+	InterfaceMembresServiceBddService MembresServiceBddService;
     
     @ModelAttribute("username")
     public String getUsername(Principal principal) {
@@ -76,10 +84,12 @@ public class SachaController
 		String prenomnom = principal.getName();
     	String[] names = prenomnom.split("\\.");
     	Utilisateur ut = UtilisateurService.findPrenomNom(names[1], names[0]);
-    	UserRole ur = UserRoleService.findById(ut.getUID());
-    	AppRole ar = AppRoleService.findById(ur.getRole_id());
-    	System.out.println("Le role est : " + ar.getRole_name());
-    	if (ar.getRole_name().contains("RH")) 
+    	MembresServiceBdd membre = MembresServiceBddService.findById(ut.getUID());
+    	
+    	System.out.println("Le role est : " + ServiceBddService.findById(membre.getServiceId()).getNom());
+    	
+    	// Si l'utilisateur est membre du service RH, alors ce morceau de code est executé
+    	if (membre.getServiceId() == ServicesFixes.ressourcesHumaines.getServiceId()) 
     	{
         	model.addAttribute("pageValidation","RH");
         	List<CongesV2> conges = new ArrayList<CongesV2>();
@@ -102,43 +112,33 @@ public class SachaController
         	model.addAttribute("listConges",conges);//Envoie de toutes les demandes au RH
             return "showConges";
     	}
-    	else
-    	{
+    	
+    	// Si l'utilisateur est chef de service, ce code est executé
+    	else if(membre.getRoleId() == Role.chefDeService.getRoleId()){
     		model.addAttribute("pageValidation","Chef");
+    		long service_id = membre.getServiceId();
+    		
+    		List<Long> membres_service_ids = MembresServiceBddService.getAllUidByServiceId(service_id);
+    		membres_service_ids.remove(membre.getUid());
+    		List<Conges> cs = CongesService.findAllByIds(membres_service_ids);
+        	List<CongesV2> conges = new ArrayList<CongesV2>();
+        	
+        	for (Conges c : cs)
+        	{
+        		Utilisateur tmpu = UtilisateurService.findById(c.getUid());
+        			
+        		CongesV2 c2 = new CongesV2();
+        		c2.setCongesid(c.getCongesid());
+        		c2.setDatedebut(c.getDatedebut());
+        		c2.setDatefin(c.getDatefin());
+        		c2.setUid(c.getUid());
+        		c2.setValidationchefservice(c.getValidationchefdeservice());
+        		c2.setValidationrh(c.getValidationrh());
+        		c2.setPrenomNom(tmpu.getPrenom() + " " + tmpu.getNom());
+        		conges.add(c2);
+        	}
+        	model.addAttribute("listConges",conges);
     	}
-    	long roleId = -1;//Le id du role a selectionner pour les demandes de conges
-    	if (ar.getRole_name().contains("ChefInfo"))//TODO pour autres chefs de services, rh
-    	{
-    		ar = AppRoleService.findByRole("UserInfo");
-    		roleId = ar.getRole_id();
-    	}
-    	else if (ar.getRole_name().contains("ChefFinances"))
-    	{
-    		ar = AppRoleService.findByRole("UserFinances");
-    		roleId = ar.getRole_id();
-    	}
-    	
-    	List<Conges> cs = CongesService.findAll();
-    	List<CongesV2> conges = new ArrayList<CongesV2>();
-    	
-    	for (int i =0; i<cs.size(); i++)
-    	{
-    		if (UserRoleService.findById(cs.get(i).getUid()).getRole_id() == roleId)
-    		{
-    			Utilisateur tmpu = UtilisateurService.findById(cs.get(i).getUid());
-    			
-    			CongesV2 c2 = new CongesV2();
-    			c2.setCongesid(cs.get(i).getCongesid());
-    			c2.setDatedebut(cs.get(i).getDatedebut());
-    			c2.setDatefin(cs.get(i).getDatefin());
-    			c2.setUid(cs.get(i).getUid());
-    			c2.setValidationchefservice(cs.get(i).getValidationchefdeservice());
-    			c2.setValidationrh(cs.get(i).getValidationrh());
-    			c2.setPrenomNom(tmpu.getPrenom() + " " + tmpu.getNom());
-    			conges.add(c2);
-    		}
-    	}
-    	model.addAttribute("listConges",conges);
         return "showConges";
     }
 	
@@ -201,13 +201,17 @@ public class SachaController
 	@RequestMapping(path="/deleteUser/{id}")
     public String getMessage(@PathVariable("id") long id,Model model,UserForm userForm,Principal principal) 
     {
-		UserRole ur = UserRoleService.findById(id);
-		if (ur != null)
+		// Morceau test pour l'affichage d'un user
+		MembresServiceBdd membre = MembresServiceBddService.findById(id);
+		if (membre != null)
 		{
-			System.out.println(ur.getId());
-			System.out.println(ur.getRole_id());
-			System.out.println(ur.getUser_id());
+			Map<Long, String> listeServices = ServiceBddService.getAllServiceNames();
+			System.out.println(membre.getUid());
+			System.out.println(listeServices.get(membre.getServiceId()));
+			System.out.println(Role.getRoleNameById(membre.getRoleId()));
 		}
+		//////////////////////////////////////
+		
 		List<Mission> missions = MissionService.findAll();
 		boolean estRespoMission = false;
 		for (int i = 0;i< missions.size();i++)
@@ -227,12 +231,14 @@ public class SachaController
 		System.out.println("Delete de membresMission");
 		CongesService.deleteConges(id);
 		System.out.println("Delete de conges");
-
+		
+		// Lignes pas ok
 		UserRoleService.deleteUserRole(id);
 		System.out.println("Delete de UserRole");
 
 		AppUserService.deleteAppUser(id);
 		System.out.println("Delete de AppUser");
+		////////////////////////////////////////////
 
 		RemboursementService.deleteRembUid(id);
 		System.out.println("Delete de Remboursement");
@@ -257,23 +263,27 @@ public class SachaController
 	@GetMapping("/newMission")
     public String addMission(Mission mission,Model model)
     {
-		AppRole chefsInfos = AppRoleService.findByRole("ChefInfo");
-		AppRole chefsFinances = AppRoleService.findByRole("ChefFinances");
+		//TODO Voir si on a un ou plusieurs chefs de service
 		
-		List<UserRole> userroles = UserRoleService.findAll();
+		List<Long> services_ids = ServiceBddService.getServiceIdList();
+		Map<Long, MembresServiceBdd> chefs_services = new HashMap<Long, MembresServiceBdd>();
+		
+		for(long service_id : services_ids) {
+			chefs_services.put(service_id, MembresServiceBddService.getChefByServiceId(service_id));
+		}
+		
     	List<Utilisateur> utilisateurs = new ArrayList<Utilisateur>();
     	List<Utilisateur> usersMembres = UtilisateurService.findAll();
     	
-    	for (int i = 0;i < userroles.size();i++)
+    	for (long service_id : services_ids)
     	{
-    		if (userroles.get(i).getRole_id() == chefsInfos.getRole_id() || userroles.get(i).getRole_id() == chefsFinances.getRole_id())
-    		{
-    			Utilisateur utilisateur = UtilisateurService.findById(userroles.get(i).getUser_id());
-    			Utilisateur u = new Utilisateur();
-    			u.setPrenom(utilisateur.getPrenom());
-    			u.setNom(utilisateur.getNom());
-    			u.setUID(utilisateur.getUID());
-    			utilisateurs.add(u);
+    		if(chefs_services.get(service_id) != null) {
+	    		Utilisateur utilisateur = UtilisateurService.findById(chefs_services.get(service_id).getUid());
+	    		Utilisateur u = new Utilisateur();
+	    		u.setPrenom(utilisateur.getPrenom());
+	    		u.setNom(utilisateur.getNom());
+	    		u.setUID(utilisateur.getUID());
+	    		utilisateurs.add(u);
     		}
     	}
     	
@@ -359,21 +369,21 @@ public class SachaController
 		String prenomnom = principal.getName();
     	String[] names = prenomnom.split("\\.");
     	Utilisateur ut = UtilisateurService.findPrenomNom(names[1], names[0]);
-    	UserRole ur = UserRoleService.findById(ut.getUID());
-    	String role = AppRoleService.findById(ur.getRole_id()).getRole_name();
-    	System.out.println(role);
-    	if (role.contains("RH"))
+    	
+    	MembresServiceBdd membre = MembresServiceBddService.findById(ut.getUID());
+    	if (membre.getServiceId() == ServicesFixes.finances.getServiceId())
     	{
-    		RemboursementService.updateRHState(demandeId, "Valide");
+    		RemboursementService.updateFinancesState(demandeId, "Validé");
     	}
-    	else if (role.contains("Chef"))
+    	else if (membre.getServiceId() == Role.chefDeService.getRoleId())
     	{
-    		RemboursementService.updateChefState(demandeId, "Valide");
+    		RemboursementService.updateChefState(demandeId, "Validé");
     	}
     	else
     	{
-    		System.out.println("Vous ne pouvez pas valider de demandes de remboursement votre role est : " + role);
+    		System.out.println("Vous ne pouvez pas valider de demandes de remboursement");
     	}
+    	
 		return "redirect:/validationNDF";
     }
 	
@@ -384,21 +394,21 @@ public class SachaController
 		String prenomnom = principal.getName();
     	String[] names = prenomnom.split("\\.");
     	Utilisateur ut = UtilisateurService.findPrenomNom(names[1], names[0]);
-    	UserRole ur = UserRoleService.findById(ut.getUID());
-    	String role = AppRoleService.findById(ur.getRole_id()).getRole_name();
-    	System.out.println(role);
-    	if (role.contains("RH"))
+    	
+    	MembresServiceBdd membre = MembresServiceBddService.findById(ut.getUID());
+    	if (membre.getServiceId() == ServicesFixes.finances.getServiceId())
     	{
-    		RemboursementService.updateRHState(demandeId, "Refuse");
+    		RemboursementService.updateFinancesState(demandeId, "Refusé");
     	}
-    	else if (role.contains("Chef"))
+    	else if (membre.getServiceId() == Role.chefDeService.getRoleId())
     	{
-    		RemboursementService.updateChefState(demandeId, "Refuse");
+    		RemboursementService.updateChefState(demandeId, "Refusé");
     	}
     	else
     	{
-    		System.out.println("Vous ne pouvez pas refuser de demandes de remboursement votre role est : " + role);
+    		System.out.println("Vous ne pouvez pas valider de demandes de remboursement");
     	}
+    	
 		return "redirect:/validationNDF";
     }
 	
@@ -457,23 +467,27 @@ public class SachaController
     		}
     	}
     	
-    	AppRole chefsInfos = AppRoleService.findByRole("ChefInfo");
-		AppRole chefsFinances = AppRoleService.findByRole("ChefFinances");
+    	List<Long> services_ids = ServiceBddService.getServiceIdList();
+		Map<Long, MembresServiceBdd> chefs_services = new HashMap<Long, MembresServiceBdd>();
+		System.out.println("Liste des services ids : " + services_ids.toString());
 		
-		List<UserRole> userroles = UserRoleService.findAll();
+		for(long service_id : services_ids) {
+			chefs_services.put(service_id, MembresServiceBddService.getChefByServiceId(service_id));
+			System.out.println(chefs_services.get(service_id));
+		}
+		
     	List<Utilisateur> utilisateurs = new ArrayList<Utilisateur>();
     	List<Utilisateur> usersMembres = UtilisateurService.findAll();
     	
-    	for (int i = 0;i < userroles.size();i++)
+    	for (long service_id : services_ids)
     	{
-    		if (userroles.get(i).getRole_id() == chefsInfos.getRole_id() || userroles.get(i).getRole_id() == chefsFinances.getRole_id())
-    		{
-    			Utilisateur utilisateur = UtilisateurService.findById(userroles.get(i).getUser_id());
-    			Utilisateur u = new Utilisateur();
-    			u.setPrenom(utilisateur.getPrenom());
-    			u.setNom(utilisateur.getNom());
-    			u.setUID(utilisateur.getUID());
-    			utilisateurs.add(u);
+    		if(chefs_services.get(service_id) != null) {
+	    		Utilisateur utilisateur = UtilisateurService.findById(chefs_services.get(service_id).getUid());
+	    		Utilisateur u = new Utilisateur();
+	    		u.setPrenom(utilisateur.getPrenom());
+	    		u.setNom(utilisateur.getNom());
+	    		u.setUID(utilisateur.getUID());
+	    		utilisateurs.add(u);
     		}
     	}
     	

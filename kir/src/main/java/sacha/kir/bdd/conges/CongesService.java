@@ -1,5 +1,6 @@
 package sacha.kir.bdd.conges;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,17 @@ public class CongesService implements InterfaceCongesService
 
 	@Override
 	public Conges findByCongesId(long congesid) {
-		return repository.findByCongesId(congesid);
+		return repository.findById(congesid).orElse(null);
+	}
+	
+	@Override
+	public List<Conges> findAllByIds(List<Long> uids){
+		List<Conges> listeConges = new ArrayList<Conges>();
+		for(long uid : uids) {
+			listeConges.addAll(repository.getAllCongesByUid(uid));
+		}
+		
+		return listeConges;
 	}
 
 	@Override
