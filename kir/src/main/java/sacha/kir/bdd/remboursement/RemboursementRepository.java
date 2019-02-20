@@ -31,7 +31,7 @@ public interface RemboursementRepository extends CrudRepository<Remboursement, L
 	@Transactional
 	@Modifying
 	@Query("UPDATE Remboursement SET validationfinances = :newstate WHERE demande_id = :demandeid")
-	public void updateRHState(@Param("demandeid") long demandeid,@Param("newstate") String newstate);
+	public void updateFinancesState(@Param("demandeid") long demandeid,@Param("newstate") String newstate);
 	
 	@Transactional
 	@Modifying
@@ -42,4 +42,10 @@ public interface RemboursementRepository extends CrudRepository<Remboursement, L
 	@Modifying
 	@Query("DELETE FROM Remboursement WHERE uid = :userid")
 	public void deleteRembUid(@Param("userid") long uid);
+
+	@Query("SELECT validationchefservice FROM Remboursement WHERE demande_id = :demandeid")
+	public String getChefState(@Param("demandeid") long id);
+	
+	@Query("SELECT validationfinances FROM Remboursement WHERE demande_id = :demandeid")
+	public String getFinancesState(@Param("demandeid") long id);
 }

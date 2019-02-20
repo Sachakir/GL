@@ -15,6 +15,8 @@ public interface InterfaceRemboursementService {
 	public List<Remboursement> getAllByIdListDesc(List<Long> demande_ids);
 	public void updateFinancesState(long demandeid, String newstate);
 	public void updateChefState(long demandeid,String newstate);
+	public String getFinancesState(long demandeid);
+	public String getChefState(long demandeid);
 	public void deleteRembUid(long uid);
 
 }
