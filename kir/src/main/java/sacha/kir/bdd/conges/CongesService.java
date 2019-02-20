@@ -71,5 +71,10 @@ public class CongesService implements InterfaceCongesService
 	public String getChefState(long congesid) {
 		return repository.getChefState(congesid);
 	}
+	
+	@Override
+	public String getRHState(long congesid) {
+		return repository.getRHState(congesid);
+	}
 
 }
