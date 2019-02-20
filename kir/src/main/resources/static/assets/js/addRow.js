@@ -63,6 +63,11 @@ $(document).ready(function () {
 		var fic3 = "/remboursements/files?file_id=";
         fic3=fic3+$(this).find("td:nth-child(9)").text();
 		document.getElementById('download').href = fic3;
+		if ($(this).find("td:nth-child(9)").text() === "")
+		{
+			document.getElementById('download').style.display = "none";
+		}
+
         
       });
 	  $('#demandes').on('click', 'tbody tr', function(event) {

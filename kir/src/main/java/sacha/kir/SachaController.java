@@ -362,7 +362,7 @@ public class SachaController
 	    				}
     				}
     			}
-    			else if (myServiceId == ServicesFixes.finances.getServiceId() && allRemboursements.get(i).getValidationchefservice().equals("Validé"))
+    			else if (myServiceId == ServicesFixes.finances.getServiceId() && allRemboursements.get(i).getValidationchefservice().equals("Validé") && allRemboursements.get(i).getValidationfinances().equals("En attente") )
     			//Service different, mais la demande est validé par leur chef de service
     			{
     				if (allRemboursements.get(i).getUid() != ut.getUID())//Check si pas autovalidation
@@ -404,9 +404,9 @@ public class SachaController
     		long serviceIdDemande = MembresServiceBddService.findById(uidDemande).getServiceId();
     		if (serviceIdDemande == ServicesFixes.finances.getServiceId())
     		{
-        		RemboursementService.updateFinancesState(demandeId, "Validé");
+        		RemboursementService.updateChefState(demandeId, "Validé");
     		}
-    		RemboursementService.updateChefState(demandeId, "Validé");
+    		RemboursementService.updateFinancesState(demandeId, "Validé");
     	}
     	else if (membre.getRoleId() == Role.chefDeService.getRoleId())
     	{
@@ -435,9 +435,9 @@ public class SachaController
     		long serviceIdDemande = MembresServiceBddService.findById(uidDemande).getServiceId();
     		if (serviceIdDemande == ServicesFixes.finances.getServiceId())
     		{
-        		RemboursementService.updateChefState(demandeId, "Refusé");
+        		RemboursementService.updateFinancesState(demandeId, "Refusé");
     		}
-    		RemboursementService.updateFinancesState(demandeId, "Refusé");
+    		RemboursementService.updateChefState(demandeId, "Refusé");
     	}
     	else if (membre.getRoleId() == Role.chefDeService.getRoleId())
     	{
