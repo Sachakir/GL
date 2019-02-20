@@ -42,6 +42,7 @@ import sacha.kir.bdd.remboursement.InterfaceRemboursementService;
 import sacha.kir.bdd.remboursement.Remboursement;
 import sacha.kir.bdd.remboursementsnote.InterfaceRemboursementsNoteService;
 import sacha.kir.bdd.services.InterfaceServiceBddService;
+import sacha.kir.bdd.services.ServicesFixes;
 import sacha.kir.bdd.userrole.InterfaceUserRoleService;
 import sacha.kir.bdd.userrole.UserRole;
 import sacha.kir.bdd.utilisateur.InterfaceUtilisateurService;
@@ -168,6 +169,7 @@ public class MainController {
         return "403Page";
     }
     
+    // TODO UPDATE FORM PAGE TO NEW SYSTEM
     @GetMapping("/adminAdd")
     public String showForm(UserForm userForm, Model model) {
     	model = addServiceListIntoModel(model);
@@ -362,49 +364,43 @@ public class MainController {
     	return "gererConges";
     }
     @RequestMapping(path="/ValidationC/{id}")
-    public String ValidationRemb(@PathVariable("id") long demandeId,Principal principal)
+    public String ValidationConges(@PathVariable("id") long demandeId,Principal principal)
     {
 		String prenomnom = principal.getName();
     	String[] names = prenomnom.split("\\.");
     	Utilisateur ut = UtilisateurService.findPrenomNom(names[1], names[0]);
-    	UserRole ur = UserRoleService.findById(ut.getUID());
-    	String role = AppRoleService.findById(ur.getRole_id()).getRole_name();
-    	System.out.println(role);
-    	if (role.contains("RH"))
-    	{
-    		CongesService.updateRHState(demandeId, "Valide");
+    	
+    	MembresServiceBdd membre = MembresServiceBddService.findById(ut.getUID());
+    	if(membre.getRoleId() == Role.chefDeService.getRoleId()) {
+    		CongesService.updateChefState(demandeId, "Validé");
     	}
-    	else if (role.contains("Chef"))
-    	{
-    		CongesService.updateChefState(demandeId, "Valide");
+    	else if (membre.getServiceId() == ServicesFixes.ressourcesHumaines.getServiceId()) {
+    		CongesService.updateRHState(demandeId, "Validé");
     	}
-    	else
-    	{
-    		System.out.println("Vous ne pouvez pas valider de demandes de congés votre role est : " + role);
+    	else {
+    		System.out.println("Vous ne pouvez pas valider de demandes de congés (Mauvais service ou role) ");
     	}
+    	
 		return "redirect:/Calendrier";
     }
     @RequestMapping(path="/RefusC/{id}")
-    public String RefusRemb(@PathVariable("id") long demandeId,Principal principal)
+    public String RefusConges(@PathVariable("id") long demandeId,Principal principal)
     {
 		String prenomnom = principal.getName();
     	String[] names = prenomnom.split("\\.");
     	Utilisateur ut = UtilisateurService.findPrenomNom(names[1], names[0]);
-    	UserRole ur = UserRoleService.findById(ut.getUID());
-    	String role = AppRoleService.findById(ur.getRole_id()).getRole_name();
-    	System.out.println(role);
-    	if (role.contains("RH"))
-    	{
-    		CongesService.updateRHState(demandeId, "Refuse");
+    	
+    	MembresServiceBdd membre = MembresServiceBddService.findById(ut.getUID());
+    	if(membre.getRoleId() == Role.chefDeService.getRoleId()) {
+    		CongesService.updateChefState(demandeId, "Refusé");
     	}
-    	else if (role.contains("Chef"))
-    	{
-    		CongesService.updateChefState(demandeId, "Refuse");
+    	else if (membre.getServiceId() == ServicesFixes.ressourcesHumaines.getServiceId()) {
+    		CongesService.updateRHState(demandeId, "Refusé");
     	}
-    	else
-    	{
-    		System.out.println("Vous ne pouvez pas refuser de demandes de congés votre role est : " + role);
+    	else {
+    		System.out.println("Vous ne pouvez pas valider de demandes de congés (Mauvais service ou role) ");
     	}
+    	
 		return "redirect:/Calendrier";
     }
     @GetMapping("/addConges")
