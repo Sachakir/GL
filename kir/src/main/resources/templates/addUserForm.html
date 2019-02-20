@@ -64,23 +64,27 @@
 							<div class="form-group">
 								<label class="control-label" for="role">Rôle</label>
 								<div>
-									<select id="role" name="role" class="form-control" th:field="*{role}">
-										<option value=""> - </option>
-										<option value="User">User</option>
-										<option value="Chef">Chef</option>
+									<select id="role_id" name="role_id" class="form-control" th:field="*{role_id}">
+										<option value="0"> - </option>
+										<option th:each="role_id : ${roles_ids}" th:value="${role_id}" th:text="${roles.get(role_id)}"></option>
 									</select>
 								</div>
 							</div>
 							
 							<div class="form-group">
-								<label class="control-label" for="role">Service</label>
+								<label class="control-label" for="service">Service</label>
 								<div>
-									<select id="role" name="role" class="form-control" th:field="*{service}">
-										<option value=""> - </option>
-										<option value="Info">Info</option>
-										<option value="Finances">Finances</option>
-										<option value="RH">RH</option>
+									<select id="service" name="service" class="form-control" th:field="*{service_id}">
+										<option value="0"> - </option>
+										<option th:each="service_id : ${services_ids}" th:value="${service_id}" th:text="${services.get(service_id)}"></option>
 									</select>
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label class="control-label" for="isAdmin">Donner le statut admin</label>
+								<div>
+									<input type="checkbox" id="isAdmin" name="isAdmin" class="form-control" th:field="*{isAdmin}">
 								</div>
 							</div>
 

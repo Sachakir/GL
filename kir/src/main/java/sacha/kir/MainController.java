@@ -3,7 +3,6 @@ package sacha.kir;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -31,9 +30,10 @@ import sacha.kir.bdd.appuser.InterfaceAppUserService;
 import sacha.kir.bdd.conges.Conges;
 import sacha.kir.bdd.conges.InterfaceCongesService;
 import sacha.kir.bdd.justificatif.InterfaceJustificatifService;
-import sacha.kir.bdd.justificatif.Justificatif;
 import sacha.kir.bdd.membresmission.InterfaceMembresMissionService;
-import sacha.kir.bdd.membresmission.MembresMission;
+import sacha.kir.bdd.membresservice.InterfaceMembresServiceBddService;
+import sacha.kir.bdd.membresservice.MembresServiceBdd;
+import sacha.kir.bdd.membresservice.Role;
 import sacha.kir.bdd.mission.InterfaceMissionService;
 import sacha.kir.bdd.mission.Mission;
 import sacha.kir.bdd.note.InterfaceNoteService;
@@ -41,6 +41,7 @@ import sacha.kir.bdd.note.Note;
 import sacha.kir.bdd.remboursement.InterfaceRemboursementService;
 import sacha.kir.bdd.remboursement.Remboursement;
 import sacha.kir.bdd.remboursementsnote.InterfaceRemboursementsNoteService;
+import sacha.kir.bdd.services.InterfaceServiceBddService;
 import sacha.kir.bdd.userrole.InterfaceUserRoleService;
 import sacha.kir.bdd.userrole.UserRole;
 import sacha.kir.bdd.utilisateur.InterfaceUtilisateurService;
@@ -74,6 +75,12 @@ public class MainController {
     InterfaceAppRoleService AppRoleService;
 	@Autowired
 	InterfaceUserRoleService UserRoleService;
+	@Autowired
+	InterfaceServiceBddService ServiceBddService;
+	@Autowired
+	InterfaceMembresServiceBddService MembresServiceBddService;
+	
+	// Methodes communes aux pages
 	
 	@ModelAttribute("username")
 	public String getUsername(Principal principal) {
@@ -84,6 +91,27 @@ public class MainController {
 		}
 		else return "";
 	}
+	
+	public Model addServiceListIntoModel(Model model) {
+		List<Long> services_ids = ServiceBddService.getServiceIdList();
+		List<Long> roles_ids = new ArrayList<Long>();
+		Map<Long, String> services = ServiceBddService.getAllServiceNames();
+		Map<Long, String> roles = new HashMap<Long, String>();
+		
+		for(Role r : Role.values()) {
+			roles.put(r.getRoleId(), r.getRoleName());
+			roles_ids.add(r.getRoleId());
+		}
+		
+		model.addAttribute("services_ids", services_ids);
+		model.addAttribute("services", services);
+		model.addAttribute("roles_ids", roles_ids);
+		model.addAttribute("roles", roles);
+		
+		return model;
+	}
+	
+	//////////////////////////////
 	
     @RequestMapping(value = {"/", "/login"} , method = RequestMethod.GET)
     public String welcomePage(Model model, Principal principal) {
@@ -108,10 +136,7 @@ public class MainController {
     @RequestMapping(value = "/userInfo", method = RequestMethod.GET)
     public String userInfo(Model model, Principal principal) {
  
-        // (1) (en)
         // After user login successfully.
-        // (vi)
-        // Sau khi user login thanh cong se co principal
         String userName = principal.getName();
  
         System.out.println("User Name: " + userName);
@@ -144,7 +169,8 @@ public class MainController {
     }
     
     @GetMapping("/adminAdd")
-    public String showForm(UserForm userForm) {
+    public String showForm(UserForm userForm, Model model) {
+    	model = addServiceListIntoModel(model);
         return "form";
     }
 
@@ -152,18 +178,20 @@ public class MainController {
     public String checkPersonInfo(@Valid UserForm userForm, BindingResult bindingResult,Model model) {
     	
         if (bindingResult.hasErrors()) {
-            return "welcomePage-Thibaut";
+            return "redirect:/Accueil";
         }
         
-        System.out.println(userForm.getRole());
+        System.out.println(Role.getRoleNameById(userForm.getRole_id()));
         
         Utilisateur u = UtilisateurService.findPrenomNom(userForm.getNom(),userForm.getPrenom());
         if (u != null)//Utilisateur avec ce nom et prenom existe deja
         {
         	model.addAttribute("userExists", "Cet utilisateur existe deja");
-        	return "welcomePage-Thibaut";
+        	return "redirect:/Accueil";
         }
-        //Sinon on met le user dans la bd.
+        
+        // Sinon on met le user dans la bd.
+        // Utilisateur
         Utilisateur user = new Utilisateur();
         user.setDateNaissance(userForm.getDateNaissance());
         user.setJoursCongesRestants(userForm.getJoursCongesRest());
@@ -171,24 +199,27 @@ public class MainController {
         user.setNumeroTel(userForm.getNumTel());
         user.setPrenom(userForm.getPrenom());
         
-        int maxId = UtilisateurService.getMaxId();//On recupere ID le plus haut de la table.
-        user.setUID((long) (maxId + 1));        
+        Long maxId = UtilisateurService.getMaxId();//On recupere ID le plus haut de la table.
+        if(maxId != null)
+        	user.setUID((long) (maxId + 1));
+        else
+        	user.setUID((long) 1);
         UtilisateurService.addUser(user);
         
+        // Indentifiant / Mot de passe
         sacha.kir.bdd.appuser.AppUser appUser = new sacha.kir.bdd.appuser.AppUser();
         appUser.setUser_id((long) (maxId + 1));
 		appUser.setEncrypted_password(EncrytedPasswordUtils.encryptePassword(userForm.getMdp()));
 		appUser.setUser_name(userForm.getPrenom() + "." + userForm.getNom());
-		
 		AppUserService.addAppUser(appUser);
         
-        UserRole userRole = new UserRole();
-        userRole.setUser_id((long) (maxId + 1));
-        AppRole aptmp = AppRoleService.findByRole(userForm.getRole()+userForm.getService());
-        userRole.setRole_id(aptmp.getRole_id());
-        userRole.setId((long) UserRoleService.getMaxId() + 1);
-
-        UserRoleService.addUserRole(userRole);
+		// Etablissement du role
+		MembresServiceBdd membre = new MembresServiceBdd();
+		membre.setUid(user.getUID());
+		membre.setRoleId(userForm.getRole_id());
+		membre.setServiceId(userForm.getService_id());
+		membre.setIsAdmin(userForm.getIsAdmin());
+        MembresServiceBddService.addMembreService(membre);
 
         return "welcomePage-Thibaut";
     }
@@ -435,18 +466,18 @@ public class MainController {
     }
     
     @RequestMapping("/Accueil")
-    public String accueil(Model model,Principal principal,UserForm userForm)
+    public String accueil(Model model,Principal principal, UserForm userForm)
     {
+    	// Informations pour les services disponibles (liste des services)
+    	model = addServiceListIntoModel(model);
+    	
     	String prenomnom = principal.getName();
     	String[] names = prenomnom.split("\\.");
     	model.addAttribute("WelcomeMsg", "Bienvenue " + names[0]);
     	Long userId = UtilisateurService.findPrenomNom(names[1], names[0]).getUID();
-    	UserRole ur = UserRoleService.findById(userId);
-    	String role = AppRoleService.findById(ur.getRole_id()).getRole_name();
-    	if (role.equals("Admin"))
-    	{
-    		model.addAttribute("isAdmin","true");
-    	}
+    	MembresServiceBdd membre = MembresServiceBddService.findById(userId);
+    	model.addAttribute("isAdmin", membre.getIsAdmin());
+    	
     	/**** NOTIFICATION ***********/
         LocalDate localDate = LocalDate.now();
         if (localDate.getDayOfMonth() >= 14)
@@ -523,40 +554,43 @@ public class MainController {
     @RequestMapping(path="/showUserDetails/{id}")
     public String getMessage(@PathVariable("id") long id, Model model, UserForm userForm) 
     {
-        Utilisateur u = UtilisateurService.findById(id);
-        UserRole ur = UserRoleService.findById(id);
-        long roleId = ur.getRole_id();
-        AppRole ar = AppRoleService.findById(roleId);
+    	model = addServiceListIntoModel(model);
+    	
+    	Utilisateur user = UtilisateurService.findById(id);
+    	MembresServiceBdd membreService = MembresServiceBddService.findById(id);
         
-        userForm.setDateNaissance(u.getDateNaissance());
-        userForm.setJoursCongesRest((int) u.getJoursCongesRestants());
-        userForm.setNom(u.getNom());
-        userForm.setNumTel(u.getNumeroTel());
-        userForm.setPrenom(u.getPrenom());
-        userForm.setRole(ar.getRole_name().substring(0,4));
-  		userForm.setUid(id);
-  		userForm.setService(ar.getRole_name().substring(4));
-  		
-  		
+        if(user != null)
+        {
+        	userForm.setDateNaissance(user.getDateNaissance());
+        	userForm.setJoursCongesRest((int) user.getJoursCongesRestants());
+        	userForm.setNom(user.getNom());
+        	userForm.setNumTel(user.getNumeroTel());
+        	userForm.setPrenom(user.getPrenom());
+        	userForm.setRole_id(membreService.getRoleId());
+        	userForm.setService_id(membreService.getServiceId());
+        	userForm.setIsAdmin(membreService.getIsAdmin());
+        	userForm.setUid(id);
+        }
+        
         model.addAttribute("user", userForm);
         return "showUserDetails";
     }
     
     @GetMapping("/roleChanged")
     public String roleChanged(UserForm userForm,Model model) {
-    	if (userForm.getRole().contains("NoChanges"))
+    	if (userForm.getRole_id() == 0 || userForm.getService_id() == 0)
     	{
     		model.addAttribute("change", "non change");
     		return "roleChanged";
     	}
-    	AppRole ar = AppRoleService.findByRole(userForm.getRole()+userForm.getService());
-    	System.out.println(ar.getRole_id());
-    	System.out.println("userForm.getUid() " + userForm.getUid() + userForm.getRole());
-    	UserRoleService.updateRole(userForm.getUid(), ar.getRole_id());
-    	System.out.println("APRES updateRole");
+    	
+    	long uid = userForm.getUid();
+    	MembresServiceBddService.updateServiceById(uid, userForm.getService_id());
+    	MembresServiceBddService.updateRoleById(uid, userForm.getRole_id());
+    	MembresServiceBddService.updateAdminStatusById(uid, userForm.getIsAdmin());
     	
     	model.addAttribute("change", "change");
     	
-        return "roleChanged";
+        return "redirect:/showUserDetails/" + userForm.getUid();
     }
 }

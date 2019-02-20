@@ -7,7 +7,7 @@ public interface InterfaceUtilisateurService
 	public void addUser(Utilisateur u);
 	public String findbyname(String name);
 	public Utilisateur findPrenomNom(String nom,String Prenom);
-	public int getMaxId();
+	public Long getMaxId();
 	public Utilisateur findById(long id);
 	public void deleteUser(long uid);
 }

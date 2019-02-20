@@ -48,14 +48,13 @@
                 <div class="form-group">
                     <label class="control-label" for="role">Rôle</label>
                     <div>
-                        <span th:text="${user.role}"> role </span>
+                        <span th:text="${roles.get(user.role_id)}"> role </span>
                   	</div>
                   	<div>
                         <label> Changer pour :</label>
-                        <select th:field="${user.role}">
-                          	<option value="NoChanges"> -- </option>
-                         	<option value="User">User</option>
-                         	<option value="Chef">Chef</option>
+                        <select th:field="${user.role_id}">
+                          	<option value="0"> -- </option>
+                         	<option th:each="role_id : ${roles_ids}" th:value="${role_id}" th:text="${roles.get(role_id)}"></option>
                         </select>  
                   </div>
               </div>
@@ -63,18 +62,27 @@
               <div class="form-group">
                     <label class="control-label" for="role">Service</label>
                     <div>
-                        <span th:text="${user.service}"> Service </span>
+                        <span th:text="${services.get(user.service_id)}"> Service </span>
                   	</div>
                   	<div>
-                        <label> Changer pour :</label>
-                        <select th:field="${user.service}">
-                          	<option value="NoChanges"> -- </option>
-                         	<option value="Info">Info</option>
-                          	<option value="Finances">Finances</option>
-                          	<option value="RH">RH</option>   
+                        <label> Changer pour : </label>
+                        <select th:field="${user.service_id}">
+                          	<option value="0"> -- </option>
+                         	<option th:each="service_id : ${services_ids}" th:value="${service_id}" th:text="${services.get(service_id)}"></option> 
                         </select>  
                   </div>
               </div>
+              
+              <div class="form-group">
+              	<label class="control-label" for="isAdmin">Statut administrateur : </label>
+              	<div>
+              		<span th:text="'Statut administrateur : ' + ${user.isAdmin == true ? 'oui' : 'non'}"> Admin </span>
+              	</div>
+				<div>
+					<label>Donner le statut admin : </label>
+					<input type="checkbox" id="isAdmin" name="isAdmin" class="form-control" th:field="*{isAdmin}" th:value="true">
+				</div>
+			 </div>
               
               <button id="post" name="" type="submit" class="btn btn-primary">Confirmer</button>
           </form>

@@ -21,7 +21,7 @@ public interface UtilisateurRepository extends CrudRepository<Utilisateur, Long>
 	public Utilisateur trouverParPrenomNom(@Param("nom") String nom,@Param("prenom") String prenom);
 	
 	@Query("SELECT MAX(UID) FROM Utilisateur")
-	public int getMaxId();
+	public Long getMaxId();
 	
 	@Query("SELECT p FROM Utilisateur p WHERE p.UID = :id")
 	public Utilisateur findById(@Param("id") long id);
