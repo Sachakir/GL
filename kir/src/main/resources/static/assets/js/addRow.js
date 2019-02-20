@@ -105,18 +105,10 @@ $(document).ready(function () {
 		
 		$("#dateF").val(f);
 		
-		
+		$("#cid").val( $(this).find("td:nth-child(7)").text());
         $("#vRH").text("Validation RH: "+$(this).find("td:nth-child(4)").text());
         $("#vC").text("Validation Chef de Service: "+$(this).find("td:nth-child(5)").text());
-        if($(this).find("td:nth-child(5)").text()=="EnAttente" || $(this).find("td:nth-child(4)").text()=="EnAttente"){
-			$("#vF").text("Validation Finale: En Attente");
-		}
-		else if($(this).find("td:nth-child(5)").text()=="Refusé" || $(this).find("td:nth-child(4)").text()=="Refusé"){
-			$("#vF").text("Validation Finale: Refusé");
-		}
-		else{
-			$("#vF").text("Validation Finale: Validé");
-		}
+        
 		
         
       });
@@ -174,10 +166,14 @@ function editer(){
 	if(document.getElementById("detailsConge").value=="locked"){
 		document.getElementById("dateD").disabled=true;
 		document.getElementById("dateF").disabled=true;
+		document.getElementById("detailsConge").value="unlocked";
+		document.getElementById("submit").hidden=true;
 	}
 	else{
 		document.getElementById("dateD").disabled=false;
 		document.getElementById("dateF").disabled=false;
+		document.getElementById("detailsConge").value="locked";
+		document.getElementById("submit").hidden=false;
 	}
 	
 	

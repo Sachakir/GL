@@ -4,8 +4,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class CongeForm {
-	@NotNull
-	@Size(min=1, max=42)
+	
 	private String username;
 	@NotNull
 	@Size(min=1, max=42)
@@ -14,6 +13,7 @@ public class CongeForm {
 	@Size(min=1, max=42)
 	private String dateFin;
 	
+	private long congesid;
 	
 	public String getUsername() {
 		return username;
@@ -32,5 +32,11 @@ public class CongeForm {
 	}
 	public void setDateFin(String dateFin) {
 		this.dateFin = dateFin;
+	}
+	public long getCongesid() {
+		return congesid;
+	}
+	public void setCongesid(long c) {
+		this.congesid = c;
 	}
 }

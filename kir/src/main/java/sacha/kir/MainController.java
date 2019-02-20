@@ -339,7 +339,7 @@ public class MainController {
         return "calendrier";
     }
     @GetMapping("/GererConges")
-    public String gererc(Model model, Principal principal) {
+    public String gererc(CongeForm congeForm, BindingResult bindingResult,Model model, Principal principal) {
     	String prenomnom = principal.getName();
     	String[] names = prenomnom.split("\\.");
     	long uid = UtilisateurService.findPrenomNom(names[1], names[0]).getUID();
@@ -362,6 +362,40 @@ public class MainController {
     	}
     	model.addAttribute("demandesConges",mesConges);
     	return "gererConges";
+    }
+    @PostMapping("/GererConges")
+    public String editconge(@Valid CongeForm congeForm,BindingResult bindingResult,Model model, Principal principal) {
+    	
+    	String[] dateD = congeForm.getDateDebut().split("-");
+        String[] dateF = congeForm.getDateFin().split("-");
+        String dateDebut = dateD[2]+"/"+dateD[1]+"/"+dateD[0];
+    	String dateFin = dateF[2]+"/"+dateF[1]+"/"+dateF[0];
+    	long congeID = congeForm.getCongesid();
+    	System.out.println("\nDate de début: "+dateDebut + "\n Date de fin: "+dateFin+"\nCongeID: "+congeID);
+    	CongesService.updateConges(congeID, dateDebut, dateFin);
+    	
+    	String prenomnom = principal.getName();
+    	String[] names = prenomnom.split("\\.");
+    	long uid = UtilisateurService.findPrenomNom(names[1], names[0]).getUID();
+    	model.addAttribute("notAdmin",uid);
+    	List<Conges> conges = CongesService.findAll();
+    	List<CongesV2> mesConges = new ArrayList<CongesV2>();
+    	for(int i=0;i<conges.size();i++) {
+    		if(conges.get(i).getUid()==uid) {
+    			CongesV2 c = new CongesV2();
+				Conges conge = conges.get(i);
+				c.setCongesid(conge.getCongesid());
+				c.setDatedebut(conge.getDatedebut());
+				c.setDatefin(conge.getDatefin());
+				c.setUid(conge.getUid());
+				c.setValidationrh(conge.getValidationrh());
+				c.setValidationchefservice(conge.getValidationchefdeservice());
+				c.setPrenomNom(prenomnom);
+				mesConges.add(c);
+    		}
+    	}
+    	model.addAttribute("demandesConges",mesConges);
+    	return "redirect:/GererConges";
     }
     @RequestMapping(path="/ValidationC/{id}")
     public String ValidationConges(@PathVariable("id") long demandeId,Principal principal)
