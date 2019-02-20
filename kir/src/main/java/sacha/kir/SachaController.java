@@ -34,6 +34,7 @@ import sacha.kir.bdd.remboursement.Remboursement;
 import sacha.kir.bdd.services.InterfaceServiceBddService;
 import sacha.kir.bdd.services.ServicesFixes;
 import sacha.kir.bdd.userrole.InterfaceUserRoleService;
+import sacha.kir.bdd.userrole.UserRole;
 import sacha.kir.bdd.utilisateur.InterfaceUtilisateurService;
 import sacha.kir.bdd.utilisateur.Utilisateur;
 import sacha.kir.form.CongesV2;
@@ -323,42 +324,68 @@ public class SachaController
     }
 	
 	@RequestMapping("/validationNDF")
-    public String validationNDF(Model model)
+    public String validationNDF(Model model,Principal principal)
     {
-		List<Remboursement> rembs = RemboursementService.findAll();
-		List<RemboursementV2> rv2 = new ArrayList<RemboursementV2>();
-		for (int i =0;i<rembs.size();i++)
-		{
-			Utilisateur tmpUs = UtilisateurService.findById(rembs.get(i).getUid());
-			
-			
-			RemboursementV2 tmpRem = new RemboursementV2();
-			tmpRem.setDate(rembs.get(i).getDate());
-			tmpRem.setDemande_id(rembs.get(i).getDemande_id());
-			tmpRem.setJustificatifid(rembs.get(i).getJustificatifid());
-			tmpRem.setMission_id(rembs.get(i).getMission_id());
-			tmpRem.setMontant(rembs.get(i).getMontant());
-			tmpRem.setMotif(rembs.get(i).getMotif());
-			tmpRem.setPrenomnom(tmpUs.getPrenom() + " " + tmpUs.getNom());
-			tmpRem.setTitre(rembs.get(i).getTitre());
-			tmpRem.setValidationchefservice(rembs.get(i).getValidationchefservice());
-			tmpRem.setValidationfinances(rembs.get(i).getValidationfinances());
-			if (rembs.get(i).getValidationchefservice().contains("Valide") && rembs.get(i).getValidationfinances().contains("Valide"))
-			{
-				tmpRem.setEtatFinal("Valide");
-			}
-			else if (rembs.get(i).getValidationchefservice().contains("Refuse") && rembs.get(i).getValidationfinances().contains("Refuse"))
-			{
-				tmpRem.setEtatFinal("Refuse");
-			}
-			else 
-			{
-				tmpRem.setEtatFinal("EnAttente");
-			}
-			rv2.add(tmpRem);
-			
-		}
-		model.addAttribute("remboursements", rv2);
+		String prenomnom = principal.getName();
+    	String[] names = prenomnom.split("\\.");
+    	Utilisateur ut = UtilisateurService.findPrenomNom(names[1], names[0]);
+    	MembresServiceBdd ms = MembresServiceBddService.findById(ut.getUID());
+		List<RemboursementV2> remboursementAssocies = new ArrayList<RemboursementV2>();
+		List<Remboursement> allRemboursements = RemboursementService.findAll();
+    	if (ms.getRoleId() == Role.chefDeService.getRoleId())//Seulement pour un chef de service
+    	{
+    		long myServiceId = ms.getServiceId();
+    		long uidConges;
+    		for (int i = 0;i < allRemboursements.size();i++)
+    		{
+    			uidConges = allRemboursements.get(i).getUid();
+    			if (MembresServiceBddService.findById(uidConges).getServiceId() == myServiceId)//Du meme service
+    			{
+    				if (allRemboursements.get(i).getValidationchefservice().equals("En attente"))//Demandes en attente
+    				{
+	    				if (allRemboursements.get(i).getUid() != ut.getUID())//Check si pas autovalidation
+	    				{
+	    					Utilisateur tmpUs = UtilisateurService.findById(allRemboursements.get(i).getUid());
+	        				RemboursementV2 tmpRem = new RemboursementV2();
+	        				tmpRem.setDate(allRemboursements.get(i).getDate());
+	        				tmpRem.setDemande_id(allRemboursements.get(i).getDemande_id());
+	        				tmpRem.setJustificatifid(allRemboursements.get(i).getJustificatifid());
+	        				tmpRem.setMission_id(allRemboursements.get(i).getMission_id());
+	        				tmpRem.setMontant(allRemboursements.get(i).getMontant());
+	        				tmpRem.setMotif(allRemboursements.get(i).getMotif());
+	        				tmpRem.setPrenomnom(tmpUs.getPrenom() + " " + tmpUs.getNom());
+	        				tmpRem.setTitre(allRemboursements.get(i).getTitre());
+	        				tmpRem.setValidationchefservice(allRemboursements.get(i).getValidationchefservice());
+	        				tmpRem.setValidationfinances(allRemboursements.get(i).getValidationfinances());
+	        				
+	        				remboursementAssocies.add(tmpRem);
+	    				}
+    				}
+    			}
+    			else if (myServiceId == ServicesFixes.finances.getServiceId() && allRemboursements.get(i).getValidationchefservice().equals("Validé"))
+    			//Service different, mais la demande est validé par leur chef de service
+    			{
+    				if (allRemboursements.get(i).getUid() != ut.getUID())//Check si pas autovalidation
+    				{
+    					Utilisateur tmpUs = UtilisateurService.findById(allRemboursements.get(i).getUid());
+        				RemboursementV2 tmpRem = new RemboursementV2();
+        				tmpRem.setDate(allRemboursements.get(i).getDate());
+        				tmpRem.setDemande_id(allRemboursements.get(i).getDemande_id());
+        				tmpRem.setJustificatifid(allRemboursements.get(i).getJustificatifid());
+        				tmpRem.setMission_id(allRemboursements.get(i).getMission_id());
+        				tmpRem.setMontant(allRemboursements.get(i).getMontant());
+        				tmpRem.setMotif(allRemboursements.get(i).getMotif());
+        				tmpRem.setPrenomnom(tmpUs.getPrenom() + " " + tmpUs.getNom());
+        				tmpRem.setTitre(allRemboursements.get(i).getTitre());
+        				tmpRem.setValidationchefservice(allRemboursements.get(i).getValidationchefservice());
+        				tmpRem.setValidationfinances(allRemboursements.get(i).getValidationfinances());
+        				
+        				remboursementAssocies.add(tmpRem);
+    				}
+    			}
+    		}
+    	}
+		model.addAttribute("remboursements", remboursementAssocies);
 		return "validerndf";
     }
 	
@@ -373,15 +400,21 @@ public class SachaController
     	MembresServiceBdd membre = MembresServiceBddService.findById(ut.getUID());
     	if (membre.getServiceId() == ServicesFixes.finances.getServiceId())
     	{
-    		RemboursementService.updateFinancesState(demandeId, "Validé");
+    		long uidDemande = RemboursementService.findById(demandeId).getUid();
+    		long serviceIdDemande = MembresServiceBddService.findById(uidDemande).getServiceId();
+    		if (serviceIdDemande == ServicesFixes.finances.getServiceId())
+    		{
+        		RemboursementService.updateFinancesState(demandeId, "Validé");
+    		}
+    		RemboursementService.updateChefState(demandeId, "Validé");
     	}
-    	else if (membre.getServiceId() == Role.chefDeService.getRoleId())
+    	else if (membre.getRoleId() == Role.chefDeService.getRoleId())
     	{
     		RemboursementService.updateChefState(demandeId, "Validé");
     	}
     	else
     	{
-    		System.out.println("Vous ne pouvez pas valider de demandes de remboursement");
+    		System.out.println("Vous ne pouvez pas valider de demandes de remboursement vous etes : " + membre.getRoleId());
     	}
     	
 		return "redirect:/validationNDF";
@@ -398,15 +431,21 @@ public class SachaController
     	MembresServiceBdd membre = MembresServiceBddService.findById(ut.getUID());
     	if (membre.getServiceId() == ServicesFixes.finances.getServiceId())
     	{
+    		long uidDemande = RemboursementService.findById(demandeId).getUid();
+    		long serviceIdDemande = MembresServiceBddService.findById(uidDemande).getServiceId();
+    		if (serviceIdDemande == ServicesFixes.finances.getServiceId())
+    		{
+        		RemboursementService.updateChefState(demandeId, "Refusé");
+    		}
     		RemboursementService.updateFinancesState(demandeId, "Refusé");
     	}
-    	else if (membre.getServiceId() == Role.chefDeService.getRoleId())
+    	else if (membre.getRoleId() == Role.chefDeService.getRoleId())
     	{
     		RemboursementService.updateChefState(demandeId, "Refusé");
     	}
     	else
     	{
-    		System.out.println("Vous ne pouvez pas valider de demandes de remboursement");
+    		System.out.println("Vous ne pouvez refuser de demandes de remboursement");
     	}
     	
 		return "redirect:/validationNDF";

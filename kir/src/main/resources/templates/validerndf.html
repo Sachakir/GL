@@ -30,6 +30,9 @@
 								</tr>
 							</thead>
 							<tbody>
+								<tr th:if="${remboursements.empty}">
+									<td colspan="4">Vous n'avez pas de validations de remboursement</td>
+								</tr>
 								<tr th:each="remb : ${remboursements}">
 									<td><span th:text="${remb.prenomnom}"> prenomNom </span></td>
 									<td><span th:text="${remb.titre}"> Titre </span></td>
