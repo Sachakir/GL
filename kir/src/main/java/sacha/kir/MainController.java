@@ -598,6 +598,7 @@ public class MainController {
         model.addAttribute("recentDemandesRemboursement", recentDemandesRemboursement);
         model.addAttribute("missionNames", missionNames);
         model.addAttribute("notesAssociees", notesAssociees);
+        model.addAttribute("joursConges","Jour(s) de congé(s) payé(s) restant(s) : " + UtilisateurService.findPrenomNom(names[1], names[0]).getJoursCongesRestants());
         /**** DERNIERES DEMANDES DE CONGES ****/
 
         return "welcomePage-Thibaut";
