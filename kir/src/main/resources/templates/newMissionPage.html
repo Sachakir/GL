@@ -48,9 +48,8 @@
 
 				<div class="form-group">
 					<label class="control-label" for="responsable_id">Responsable</label>
-					<div>
+					<div th:if="${not users.empty}">
 						<select id="responsable_id" class="form-control" th:field="*{responsable_id}">
-							<option value="">--</option>
 							<option th:each="mission : ${users}" th:value="${mission.UID}" th:text="${mission.Prenom} + ' ' + ${mission.Nom}"></option>
 						</select>
 					</div>
