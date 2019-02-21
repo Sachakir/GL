@@ -25,10 +25,15 @@ public class Utilisateur {
     private String datenaissance;
     //@NotNull
     private long Jourscongesrestants;
-    public Utilisateur() {}
+    
+    private float rtt;
+    private long HeuresContrat;
+   
+
+	public Utilisateur() {}
 
 	public Utilisateur(Long uID, String nom, String prenom, String numeroTel, String dateNaissance,
-			long joursCongesRestants) 
+			long joursCongesRestants,float rTT,long Heurescontrat) 
 	{
 		UID = uID;
 		Nom = nom;
@@ -36,6 +41,8 @@ public class Utilisateur {
 		Numerotel = numeroTel;
 		datenaissance = dateNaissance;
 		Jourscongesrestants = joursCongesRestants;
+		rtt = rTT;
+		HeuresContrat = Heurescontrat;
 	}
 
 	public Long getUID() {
@@ -84,6 +91,23 @@ public class Utilisateur {
 
 	public void setJoursCongesRestants(long joursCongesRestants) {
 		Jourscongesrestants = joursCongesRestants;
+	}
+	
+	 
+    public float getRtt() {
+		return rtt;
+	}
+
+	public void setRtt(float rtt) {
+		this.rtt = rtt;
+	}
+
+	public long getHeuresContrat() {
+		return HeuresContrat;
+	}
+
+	public void setHeuresContrat(long heuresContrat) {
+		HeuresContrat = heuresContrat;
 	}
 
 	@Override
