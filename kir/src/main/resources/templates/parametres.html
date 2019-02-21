@@ -16,25 +16,25 @@
             <div class="form-group">
                 <label for="nom" class="control-label">Nom</label>
 				<div>
-					<span id="nom" value="Saoulajane">Nom</span>
+					<span th:text="${userform.nom}"> Nom </span>
 				</div>
             </div>
             <div class="form-group">
                 <label for="prenom" class="control-label">Prénom</label>
 				<div class="form group">
-					<span id="prenom" value="Saad">Prénom</span>
+					<span th:text="${userform.prenom}"> Nom </span>
 				</div>
             </div>
             <div class="form-group">
                 <label for="téléphone" class="control-label">Telephone</label>
 				<div class="form group">
-					<span id="téléphone" value="0101010101">0101010101</span>
+					<span th:text="${userform.numTel}"> NumTel </span>
 				</div>
             </div>
             <div class="form-group">
                 <label for="service" class="control-label">Service</label>
 				<div class="form group">
-					<span id="service" value="Service Informatique">Service Informatique</span>
+					<span th:text="${service}"> service </span>
 				</div>
         	</div>
         	<div class="form-group">

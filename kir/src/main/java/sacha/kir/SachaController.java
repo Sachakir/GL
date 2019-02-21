@@ -32,6 +32,7 @@ import sacha.kir.bdd.note.InterfaceNoteService;
 import sacha.kir.bdd.remboursement.InterfaceRemboursementService;
 import sacha.kir.bdd.remboursement.Remboursement;
 import sacha.kir.bdd.services.InterfaceServiceBddService;
+import sacha.kir.bdd.services.ServiceBdd;
 import sacha.kir.bdd.services.ServicesFixes;
 import sacha.kir.bdd.userrole.InterfaceUserRoleService;
 import sacha.kir.bdd.userrole.UserRole;
@@ -452,8 +453,25 @@ public class SachaController
     }
 	
 	@RequestMapping("/parametres")
-    public String parametres()
+    public String parametres(Principal principal,Model model)
     {
+		String prenomnom = principal.getName();
+    	String[] names = prenomnom.split("\\.");
+    	Utilisateur ut = UtilisateurService.findPrenomNom(names[1], names[0]);
+    	
+    	UserForm userform = new UserForm();
+    	userform.setNumTel(ut.getNumeroTel());
+    	userform.setNom(ut.getNom());
+    	userform.setPrenom(ut.getPrenom());
+    	
+    	long myServiceId = MembresServiceBddService.findById(ut.getUID()).getServiceId();
+    	ServiceBdd sbdd = ServiceBddService.findById(myServiceId);
+    	sbdd.getNom();
+    	
+    	model.addAttribute("userform", userform);
+    	model.addAttribute("service", sbdd.getNom());
+    	
+    	
 		return "parametres";
     }
 	
