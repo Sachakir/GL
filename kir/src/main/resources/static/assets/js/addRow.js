@@ -104,6 +104,7 @@ $(document).ready(function () {
         $(this).addClass('highlight').siblings().removeClass('highlight');
 		var debut = $(this).find("td:nth-child(2)").text();
 		var d = debut.substring(6,10)+"-"+debut.substring(3,5)+"-"+debut.substring(0,2);
+		
 		$("#dateD").val(d);
 		var fin = $(this).find("td:nth-child(3)").text();
 		var f = fin.substring(6,10)+"-"+fin.substring(3,5)+"-"+fin.substring(0,2);
@@ -181,5 +182,22 @@ function editer(){
 		document.getElementById("submit").hidden=false;
 	}
 	
+	
+}
+
+function verifDateD(){
+	
+	var dateDebut = $("#dateD").val().split("-");
+	var today = new Date();
+	
+	var thisDay = today.getDate();
+	var thisMonth = today.getMonth()+1;
+	var thisYear = today.getFullYear();
+	
+	if(dateDebut[0]<thisYear || dateDebut[1]<thisMonth || dateDebut[2]<thisDay){
+		alert("Entrez une date ultérieure à aujourd'hui");
+		$("#dateD").val(today);
+		
+	}
 	
 }
