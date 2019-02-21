@@ -42,6 +42,7 @@ import sacha.kir.bdd.note.InterfaceNoteService;
 import sacha.kir.bdd.note.Note;
 import sacha.kir.bdd.remboursement.InterfaceRemboursementService;
 import sacha.kir.bdd.remboursement.Remboursement;
+import sacha.kir.bdd.remboursement.Statut;
 import sacha.kir.bdd.remboursementsnote.InterfaceRemboursementsNoteService;
 import sacha.kir.bdd.userrole.InterfaceUserRoleService;
 import sacha.kir.bdd.utilisateur.InterfaceUtilisateurService;
@@ -167,6 +168,7 @@ public class RemboursementController {
 		model.addAttribute("noteMoisPrecedent", noteMoisPrecedent);
 		model.addAttribute("moisActuel", moisNowStr);
 		model.addAttribute("moisPrecedent", moisPrecedentStr);
+		model.addAttribute("enAttente", Statut.enAttente.statut());
 		
 		return "remboursements";
 	}
@@ -242,6 +244,7 @@ public class RemboursementController {
 		        model.addAttribute("isModifiable", isModifiable);
 		        model.addAttribute("moisUrl", mois);
 		        model.addAttribute("actuel", actuel);
+		        model.addAttribute("enAttente", Statut.enAttente.statut());
 		        
 		        return "noteFrais";
 			}
@@ -279,6 +282,29 @@ public class RemboursementController {
 		}
 		
 		return "forward:/notFound";
+	}
+	
+	@RequestMapping("/delete")
+	public String deleteRemboursement(@RequestHeader(value = "referer", required = false) final String referer, 
+									  @RequestParam(value = "id", required = false) String id,
+									  Model model, Principal principal) 
+	{
+		System.out.println(referer);
+		if(referer != null && id != null) {
+			try {
+				long id_long = Long.parseLong(id);
+				Remboursement r = RemboursementService.findById(id_long);
+				if(r != null) {
+					RemboursementService.deleteById(id_long);
+					return "redirect:" + referer;
+				}
+			}
+			catch(NumberFormatException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return "redirect:/notFound";
 	}
 	
 	@GetMapping("/demande-remboursement")

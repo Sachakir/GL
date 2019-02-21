@@ -265,9 +265,7 @@ public class SachaController
 	
 	@GetMapping("/newMission")
     public String addMission(Mission mission,Model model)
-    {
-		//TODO Voir si on a un ou plusieurs chefs de service
-		
+    {	
 		List<Long> services_ids = ServiceBddService.getServiceIdList();
 		Map<Long, MembresServiceBdd> chefs_services = new HashMap<Long, MembresServiceBdd>();
 		

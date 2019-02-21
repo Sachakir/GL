@@ -17,6 +17,13 @@
 	font-weight: bold;
 	font-size: 1.1em;
 }
+
+a[aria-expanded=true] .glyphicon-menu-down {
+   display: none;
+}
+a[aria-expanded=false] .glyphicon-menu-up {
+   display: none;
+}
 /**************/
 
 html {

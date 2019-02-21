@@ -5,11 +5,16 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import sacha.kir.bdd.justificatif.JustificatifRepository;
+
 @Service
 public class RemboursementService implements InterfaceRemboursementService {
 
 	@Autowired
 	RemboursementRepository repository;
+	
+	@Autowired
+	JustificatifRepository justificatifRepository;
 	
 	@Override
 	public List<Remboursement> findAll() {
@@ -112,5 +117,17 @@ public class RemboursementService implements InterfaceRemboursementService {
 	@Override
 	public void deleteRembUid(long uid) {
 		repository.deleteRembUid(uid);
+	}
+	
+	@Override
+	public void deleteById(long demande_id) {
+		Remboursement r = repository.findById(demande_id).orElse(null);
+		if(r != null) {
+			if(r.getJustificatifid() != null) {
+				long justificatifId = r.getJustificatifid();
+				justificatifRepository.deleteById(justificatifId);
+			}
+			repository.deleteById(demande_id);
+		}
 	}
 }

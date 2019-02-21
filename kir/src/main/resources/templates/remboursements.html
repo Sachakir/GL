@@ -16,7 +16,7 @@
 		<br>
 		<br>
 		<section class="row">
-			<div class="col-md-6">
+			<div class="col-md-4">
 				<section class="row">
 					<div class="col-md-10">
 						<div class="panel panel-primary">
@@ -39,44 +39,63 @@
 					</div>
 				</section>
 			</div>
-			<div class="col-md-6">
-				<div class="panel panel-primary table-responsive">
-					<table class="table table-striped w-auto">
-						<div class="panel-heading"> 
-							<h3 class="panel-title">Demandes de remboursement de la note de ce mois</h3>
-						</div>
-						<div th:if="${missions != null}">
-							<div th:each="mission : ${missions}">
-								<thead>
-									<tr>
-										<th>
-											<div class="panel-heading" style="background:#337ab7;">
-												<h3 th:text="${mission.titre}" class="panel-title" style="color:white;"></h3>
-											</div>
-										</th>
-									</tr>
-									<tr>
-										<th>Nom</th>
-										<th>Prix</th>
-										<th>Mission</th>
-										<th>Date</th>
-										<th>Etat (Chef de service)</th>
-										<th>Etat (Finances)</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr th:each="demandeR : ${remboursementsMissions[mission.mission_id]}">
-										<td><a th:href="'/remboursements/note=' + ${noteMoisActuel.mois} + '/remboursement_id=' + ${demandeR.demande_id}" th:text="${demandeR.titre}"></a></td>
-										<td th:text="${#numbers.formatDecimal(demandeR.montant, 0, 'COMMA', 2, 'POINT')} + ' €'"></td>
-										<td th:text="${mission.titre}"></td>
-										<td th:text="${demandeR.date}"></td>
-										<td th:text="${demandeR.validationchefservice}"></td>
-										<td th:text="${demandeR.validationfinances}"></td>
-									</tr>
-								</tbody>
+			<div class="col-md-8">
+			<div class="panel panel-primary table-responsive">
+				<div class="panel-heading"> 
+					<h3 class="panel-title">Demandes de remboursement de la note de ce mois</h3>
+				</div>
+				<div th:if="${missions != null}">
+					<div th:each="mission : ${missions}">
+						<div class="panel" style="margin-bottom: 1px; background:">
+								<div class="panel-heading">
+									<span th:text="${mission.titre}" style="font-size: 1.2em;"></span>
+									<a data-toggle="collapse" aria-expanded="false" th:href="'#collapse-' + ${mission.mission_id}">
+										<i class="glyphicon glyphicon-menu-down pull-right"></i>
+        								<i class="glyphicon glyphicon-menu-up pull-right"></i>
+									</a>
+								</div>
+							</div>
+							<div th:id="'collapse-' + ${mission.mission_id}" class="panel-collapse collapse">
+								<table class="table table-striped w-auto" style="margin-bottom:0px;">
+									<colgroup>
+										<col style="width:12.5%" span="8" />
+									</colgroup>
+									<thead>
+										<tr>
+											<th>Nom</th>
+											<th>Montant</th>
+											<th>Mission</th>
+											<th>Date</th>
+											<th>Etat (Chef de service)</th>
+											<th>Etat (Finances)</th>
+											<th>Modifier</th>
+											<th>Supprimer</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="demandeR : ${remboursementsMissions[mission.mission_id]}">
+											<td><a th:href="'/remboursements/note=' + ${noteMoisActuel.mois} + '/remboursement_id=' + ${demandeR.demande_id}" th:text="${demandeR.titre}"></a></td>
+											<td th:text="${#numbers.formatDecimal(demandeR.montant, 0, 'COMMA', 2, 'POINT')} + ' €'"></td>
+											<td th:text="${mission.titre}"></td>
+											<td th:text="${demandeR.date}"></td>
+											<td th:text="${demandeR.validationchefservice}"></td>
+											<td th:text="${demandeR.validationfinances}"></td>
+											<td>
+												<a type="button" class="btn btn-primary" th:if="${demandeR.validationchefservice == enAttente and demandeR.validationfinances == enAttente}" th:href="'/remboursements/note=' + ${moisUrl} + '/remboursement_id=' + ${demandeR.demande_id} + '/edit'">
+													<span class="glyphicon glyphicon-search"></span>
+												</a>
+											</td>
+											<td>
+												<button th:id="${demandeR.demande_id}" data-toggle="modal" data-target="#warning_msg" value="suppr" type="button" class="btn btn-danger">
+													<span class="glyphicon glyphicon-ban-circle"></span>
+												</button>
+											</td>
+										</tr>
+									</tbody>
+								</table>
 							</div>
 						</div>
-					</table>
+					</div>
 					<div th:if="${missions == null}" class="panel-heading" style="color:black; background:white;">
 						<h3 class="panel-title">Vous n'avez pas crée de note de frais pour ce mois</h3>
 					</div>
