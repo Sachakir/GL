@@ -10,15 +10,20 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import sacha.kir.bdd.membresservice.InterfaceMembresServiceBddService;
+import sacha.kir.bdd.membresservice.MembresServiceBdd;
+import sacha.kir.bdd.membresservice.Role;
+import sacha.kir.bdd.services.ServicesFixes;
  
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
  
     @Autowired
     private AppUserDAO appUserDAO;
- 
+    
     @Autowired
-    private AppRoleDAO appRoleDAO;
+	InterfaceMembresServiceBddService MembresServiceBddService;
  
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
@@ -30,21 +35,33 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
  
         System.out.println("Found User: " + appUser);
- 
-        // [ROLE_USER, ROLE_ADMIN,..]
-        List<String> roleNames = this.appRoleDAO.getRoleNames(appUser.getUserId());
- 
+        
+        // Roles disponibles pour le filtrage des accès au pages WebSecurityConfig :
+        // VALIDATOR_RH (accès aux pages de validation : Demandes de congés UNIQUEMENT
+        // VALIDATOR_FIN (accès aux pages de validation : Notes de frais UNIQUEMENT
+        // ADMIN (accès aux pages d'administration) (peut se combiner aux autres)
+        // Note : il faut ajouter ROLE_ derrière car lors de la vérification celle-ci se fait avec ceci en préfixe
+        
+        MembresServiceBdd membre = MembresServiceBddService.findById(appUser.getUserId());
+        
         List<GrantedAuthority> grantList = new ArrayList<GrantedAuthority>();
-        if (roleNames != null) {
-            for (String role : roleNames) {
-                // ROLE_USER, ROLE_ADMIN,..
-                GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_"+role);
-                grantList.add(authority);
-            }
+        
+        // ROLE ADMIN
+        if(membre.getIsAdmin()) {
+        	grantList.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        }
+        
+        // ROLE VALIDATOR_RH
+        if(membre.getRoleId() == Role.chefDeService.getRoleId() || membre.getServiceId() == ServicesFixes.ressourcesHumaines.getServiceId()) {
+        	grantList.add(new SimpleGrantedAuthority("ROLE_VALIDATOR_RH"));
+        }
+        	
+        //ROLE VALIDATOR_FIN
+        if(membre.getRoleId() == Role.chefDeService.getRoleId() || membre.getServiceId() == ServicesFixes.finances.getServiceId()) {
+        	grantList.add(new SimpleGrantedAuthority("ROLE_VALIDATOR_FIN"));
         }
  
-        UserDetails userDetails = (UserDetails) new User(appUser.getUserName(), //
-                appUser.getEncrytedPassword(), grantList);
+        UserDetails userDetails = (UserDetails) new User(appUser.getUserName(), appUser.getEncrytedPassword(), grantList);
  
         return userDetails;
     }

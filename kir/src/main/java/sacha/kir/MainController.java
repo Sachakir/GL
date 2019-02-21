@@ -11,7 +11,6 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
-import org.apache.tomcat.util.buf.CharChunk;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -41,6 +40,7 @@ import sacha.kir.bdd.note.InterfaceNoteService;
 import sacha.kir.bdd.note.Note;
 import sacha.kir.bdd.remboursement.InterfaceRemboursementService;
 import sacha.kir.bdd.remboursement.Remboursement;
+import sacha.kir.bdd.remboursement.Statut;
 import sacha.kir.bdd.remboursementsnote.InterfaceRemboursementsNoteService;
 import sacha.kir.bdd.services.InterfaceServiceBddService;
 import sacha.kir.bdd.services.ServicesFixes;
@@ -450,10 +450,10 @@ public class MainController {
     	
     	MembresServiceBdd membre = MembresServiceBddService.findById(ut.getUID());
     	if(membre.getRoleId() == Role.chefDeService.getRoleId()) {
-    		CongesService.updateChefState(demandeId, "Validé");
+    		CongesService.updateChefState(demandeId, Statut.valide.statut());
     	}
     	else if (membre.getServiceId() == ServicesFixes.ressourcesHumaines.getServiceId()) {
-    		CongesService.updateRHState(demandeId, "Validé");
+    		CongesService.updateRHState(demandeId, Statut.valide.statut());
     	}
     	else {
     		System.out.println("Vous ne pouvez pas valider de demandes de congés (Mauvais service ou role) ");
@@ -470,10 +470,10 @@ public class MainController {
     	
     	MembresServiceBdd membre = MembresServiceBddService.findById(ut.getUID());
     	if(membre.getRoleId() == Role.chefDeService.getRoleId()) {
-    		CongesService.updateChefState(demandeId, "Refusé");
+    		CongesService.updateChefState(demandeId, Statut.refuse.statut());
     	}
     	else if (membre.getServiceId() == ServicesFixes.ressourcesHumaines.getServiceId()) {
-    		CongesService.updateRHState(demandeId, "Refusé");
+    		CongesService.updateRHState(demandeId, Statut.refuse.statut());
     	}
     	else {
     		System.out.println("Vous ne pouvez pas valider de demandes de congés (Mauvais service ou role) ");

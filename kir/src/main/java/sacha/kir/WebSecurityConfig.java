@@ -34,22 +34,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
  
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+    	// Permet de gerer les droits d'accès aux pages 
+    	// Toujours donner les droits du plus au moins restrictif
  
         http.csrf().disable();
  
         // The pages does not require login
         http.authorizeRequests().antMatchers("/", "/login", "/logout").permitAll();
- 
-        // /userInfo page requires login as ROLE_USER or ROLE_ADMIN.
-        // If no login, it will redirect to /login page.
-        http.authorizeRequests().antMatchers("/userInfo").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')");
+        
+        // For ADMIN only.
+        http.authorizeRequests().antMatchers("/admin","/adminAdd","/adminShow","/showUserDetails/**").hasRole("ADMIN");
         
         // Redirect to login page if the user is not connected
         http.authorizeRequests().antMatchers("/assets/**").permitAll();
         http.authorizeRequests().antMatchers("/**").authenticated();
-        
-        // For ADMIN only.
-        http.authorizeRequests().antMatchers("/admin","/adminAdd","/adminShow","/showUserDetails/**").access("hasRole('ROLE_Admin')");
  
         // When the user has logged in as XX.
         // But access a page that requires role YY,

@@ -99,7 +99,7 @@
 
 						</li>
 						<li class="dropdown"> 
-							<a data-toggle="dropdown" href="#"> <span class="glyphicon glyphicon-user"></span> <span th:text="${username}"></span> <b class="caret"></b></a>
+							<a data-toggle="dropdown" href="#"> <span class="glyphicon glyphicon-user"></span> <span th:text="'Mon compte'"></span> <b class="caret"></b></a>
 							<ul class="dropdown-menu">
 								<li><a href="/parametres">Paramètres</a></li>
 								<li><a th:if="${#request.userPrincipal != null}" th:href="@{/logout}">Deconnexion</a></li>
