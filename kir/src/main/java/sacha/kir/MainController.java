@@ -496,11 +496,8 @@ public class MainController {
     }
     
     @RequestMapping("/Accueil")
-    public String accueil(Model model,Principal principal, UserForm userForm)
+    public String accueil(Model model,Principal principal)
     {
-    	// Informations pour les services disponibles (liste des services)
-    	model = addServiceListIntoModel(model);
-    	
     	String prenomnom = principal.getName();
     	String[] names = prenomnom.split("\\.");
     	model.addAttribute("WelcomeMsg", "Bienvenue " + names[0]);
@@ -563,8 +560,11 @@ public class MainController {
     }
     
     @RequestMapping("/adminShow")
-    public String adminShow(Model model,Principal principal)
+    public String adminShow(Model model,Principal principal, UserForm userForm)
     {
+    	// Informations pour les services disponibles (liste des services)
+    	model = addServiceListIntoModel(model);
+    	
     	List<Utilisateur> cs = UtilisateurService.findAll();
     	for (int i =0;i < cs.size();i++)
     	{

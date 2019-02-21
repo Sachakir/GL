@@ -159,11 +159,6 @@
 	</section>
 	<section class="row">
 		<div th:if="${isAdmin}">
-			<div id="html" class="col-sm-offset-3 col-sm-3">
-				<button data-toggle="modal" data-target="#formulaire" class="btn btn-primary" type="button">
-					Ajouter un utilisateur
-				</button>
-			</div>
 			<div class="col-sm-3">
 				<a href="/adminShow" class="btn btn-primary" role="button">
 					Gérer les utilisateurs
@@ -171,25 +166,6 @@
 			</div>
 		</div>
 	</section>
-
-	<div th:replace="~{addUserForm :: #formulaire}"></div>
-
-	<div class="modal fade" id="success_msg" role="dialog">
-		<div class="modal-dialog modal-sm"> 
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">x</button>
-					<h4 class="modal-title">Réussite</h4>
-				</div>
-				<div class="modal-body">
-					<p>Utilisateur ajouté</p>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-				</div>
-			</div>
-		</div>
-	</div>
 </div>
 
 

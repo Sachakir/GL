@@ -4,6 +4,21 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
+
+/* Custom CSS */
+.scroll {
+	display: block;
+	max-height: 500px;
+	overflow-y: auto;
+	-ms-overflow-style: -ms-autohiding-scrollbar;
+}
+
+.scroll-head {
+	font-weight: bold;
+	font-size: 1.1em;
+}
+/**************/
+
 html {
   font-family: sans-serif;
   -webkit-text-size-adjust: 100%;
