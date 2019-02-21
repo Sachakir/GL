@@ -25,12 +25,13 @@
 					</div>
 					<div class = "panel-body details">
 						
-						
+						<h4 id="jourRestant" th:text= "'Nombre de jours restants: '+ ${user.joursCongesRest}+' jours'">Nombre de jours restants: </h4>
+						<h4 id="jourRestant" th:text= "'Nombre de RTT restants: '+ ${user.rtt}+' jours'">Nombre de RTT restants: </h4>
 						<form action="#" th:action="@{/AjouterConge}" th:object="${congeForm}" method="post">
 							
-							<h4 id="jourRestant">Nombre de jours restants: </h4>
+							
 							<h4 >Date de début: <input id="dateD" type="date" th:field="*{dateDebut}" ></h4>
-							<h4 >Date de fin: <input id="dateF" type="date" th:field="*{dateFin}"></h4>
+							<h4 >Date de fin:   <input id="dateF" type="date" th:field="*{dateFin}"></h4>
 							<div centered class="row">
 								<input name="submit" type="submit" class="btn btn-primary" value="Valider">
 							</div>

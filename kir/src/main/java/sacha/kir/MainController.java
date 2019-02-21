@@ -272,6 +272,18 @@ public class MainController {
     
     @GetMapping("/AjouterConge")
     public String ajouterc(Model model, Principal principal, CongeForm congeForm) {
+    	String[] names = principal.getName().split("\\.");
+    	Long uID = UtilisateurService.findPrenomNom(names[1], names[0]).getUID();
+    	List<Utilisateur> cs = UtilisateurService.findAll();
+    	for(int i=0;i<cs.size();i++) {
+    		if(cs.get(i).getUID()==uID) {
+    			UserForm u = new UserForm();
+    			u.setJoursCongesRest((int) cs.get(i).getJoursCongesRestants());
+    			u.setRtt(cs.get(i).getRtt());
+    			model.addAttribute("user",u);
+    		}
+    	}
+    	
     	
     	return "ajouterConge";
     }

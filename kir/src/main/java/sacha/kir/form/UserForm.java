@@ -41,6 +41,14 @@ public class UserForm {
 	
 	private boolean isAdmin;
 	
+	@NotNull
+	@Min(value=0)
+	private float rtt;
+	
+	@NotNull
+	@Min(value=0)
+	private int heures_travail;
+	
 	public UserForm() {
 		isAdmin = false;
 		role_id = (long)0;
@@ -87,6 +95,12 @@ public class UserForm {
 	public boolean getIsAdmin() {
 		return isAdmin;
 	}
+	public float getRtt() {
+		return rtt;
+	}
+	public int getHeuresTravail() {
+		return heures_travail;
+	}
 	
 	// Setters
 	public void setUid(long uid) {
@@ -127,5 +141,11 @@ public class UserForm {
 	
 	public void setIsAdmin(boolean isAdmin) {
 		this.isAdmin = isAdmin;
+	}
+	public void setRtt(float n) {
+		this.rtt=n;
+	}
+	public void setHeuresTravail(int n) {
+		this.heures_travail=n;
 	}
 }
