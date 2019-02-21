@@ -271,7 +271,11 @@ public class SachaController
 		Map<Long, MembresServiceBdd> chefs_services = new HashMap<Long, MembresServiceBdd>();
 		
 		for(long service_id : services_ids) {
-			chefs_services.put(service_id, MembresServiceBddService.getChefByServiceId(service_id));
+			List<MembresServiceBdd> listChefs = MembresServiceBddService.getChefByServiceId(service_id);
+			for (int k = 0; k < listChefs.size();k++)
+			{
+				chefs_services.put(service_id,listChefs.get(k));
+			}
 		}
 		
     	List<Utilisateur> utilisateurs = new ArrayList<Utilisateur>();
@@ -529,7 +533,11 @@ public class SachaController
 		System.out.println("Liste des services ids : " + services_ids.toString());
 		
 		for(long service_id : services_ids) {
-			chefs_services.put(service_id, MembresServiceBddService.getChefByServiceId(service_id));
+			List<MembresServiceBdd> listChef = MembresServiceBddService.getChefByServiceId(service_id);
+			for (int k = 0;k < listChef.size();k++)
+			{
+				chefs_services.put(service_id,listChef.get(k));
+			}
 			System.out.println(chefs_services.get(service_id));
 		}
 		
@@ -604,7 +612,7 @@ public class SachaController
 			membresMission.setMembre_uid(userlist.getUserList().get(i).getUID());
 			MembresMissionService.addMembresMission(membresMission);
 		}
-		return "redirect:/parametres";
+		return "redirect:/Accueil";
 	}
 	
 }

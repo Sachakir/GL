@@ -17,14 +17,16 @@
 
 				<div class="form-group">
 					<label class="control-label" for="responsable_id">Choisissez votre mission</label>
-					<div>
+					<div th:if="${mesmissions.empty}">
+							<td colspan="2">Vous n'etes responsable d'aucune mission</td>
+					</div>
+					<div th:if="${not mesmissions.empty}">
 						<select id="responsable_id" class="form-control" th:field="*{responsable_id}">
-							<option value="">--</option>
 							<option th:each="mission : ${mesmissions}" th:value="${mission.mission_id}" th:text="${mission.titre}"></option>
 						</select>
 					</div>
 				</div>				
-				<div>
+				<div th:if="${not mesmissions.empty}">
 					<button id="postMission" name="" class="btn btn-primary" type="submit">Soumettre</button>
 				</div>
 			</form>

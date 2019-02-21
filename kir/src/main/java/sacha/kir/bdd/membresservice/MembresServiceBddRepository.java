@@ -14,9 +14,9 @@ public interface MembresServiceBddRepository extends CrudRepository<MembresServi
 	@Query("SELECT uid FROM MembresServiceBdd WHERE service_id = :service_id")
 	public List<Long> getAllUidByServiceId(long service_id);
 	
-	//TODO Voir s'il y a un ou plusieurs chefs
+	//TODO Voir s'il y a un ou plusieurs chefs --> Plusieurs
 	@Query("SELECT m FROM MembresServiceBdd m WHERE service_id = :service_id AND role_id = :role_id")
-	public MembresServiceBdd getByServiceIdAndRoleId(long service_id, long role_id);
+	public List<MembresServiceBdd> getByServiceIdAndRoleId(long service_id, long role_id);
 	
 	@Transactional
 	@Modifying

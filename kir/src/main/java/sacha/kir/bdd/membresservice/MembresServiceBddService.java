@@ -70,7 +70,7 @@ public class MembresServiceBddService implements InterfaceMembresServiceBddServi
 	}
 	
 	@Override
-	public MembresServiceBdd getChefByServiceId(long service_id) {
+	public List<MembresServiceBdd> getChefByServiceId(long service_id) {
 		return repository.getByServiceIdAndRoleId(service_id, Role.chefDeService.getRoleId());
 	}
 }
