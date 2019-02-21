@@ -201,3 +201,19 @@ function verifDateD(){
 	}
 	
 }
+function verifDateF(){
+	
+	var dateDebut = $("#dateF").val().split("-");
+	var today = new Date();
+	
+	var thisDay = today.getDate();
+	var thisMonth = today.getMonth()+1;
+	var thisYear = today.getFullYear();
+	
+	if(dateDebut[0]<thisYear || dateDebut[1]<thisMonth || dateDebut[2]<thisDay){
+		alert("Entrez une date ultérieure à aujourd'hui");
+		$("#dateD").val(today);
+		
+	}
+	
+}
