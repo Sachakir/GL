@@ -18,27 +18,29 @@
 
 		<br>
 
-		<section class="row">
-			<div class="col-md-4">
-				<h4 th:if="${WelcomeMsg != null}" th:utext="${WelcomeMsg}"></h4>
-				<div style="text-decoration-color: red;" th:if="${NotifNote != null}">
-					<h4 th:text="${NotifNote}"></h4>
-					<a href="/remboursements/creer-note-frais?mois=precedent" class="btn btn-primary" role="button">
-						Créer une note de frais pour le mois précédent
-					</a>
-				</div>
-			</div>
-		<div class="col-md-4">
-			<a href="/AjouterConge" class="btn btn-primary" role="button">
-				Nouvelle demande de congés
-			</a>
-		</div>
-		<div class="col-md-4">
-			<a href="/remboursements/demande-remboursement" class="btn btn-primary" role="button">
-				Nouvelle demande de remboursement
-			</a>
-		</div>
-	</section>
+		<section class="boxAccueil row panel panel-primary ">
+			
+					<div class="col-md-4">
+						<h4 th:if="${WelcomeMsg != null}" th:utext="${WelcomeMsg}"></h4>
+						<div style="text-decoration-color: red;" th:if="${NotifNote != null}">
+							<h4 th:text="${NotifNote}"></h4>
+							<a href="/remboursements/creer-note-frais?mois=precedent" class="btn btn-primary" role="button">
+								Créer une note de frais pour le mois précédent
+							</a>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<a href="/AjouterConge" class="btn btn-primary" role="button">
+							Nouvelle demande de congés
+						</a>
+					</div>
+					<div class="col-md-4">
+						<a href="/remboursements/demande-remboursement" class="btn btn-primary" role="button">
+							Nouvelle demande de remboursement
+						</a>
+					</div>
+				
+		</section>
 
 	<br>
 	<section class="row">
@@ -104,21 +106,24 @@
 			</section>
 		</div>
 		<div class="col-md-6">
-			<section class="row">
-				<div class="col-md-12">
-					<h2>Mes congés</h2>
-					<h4>Jour(s) de congé(s) payé(s) restant(s) : 4.5</h4>
-					<h4>RTT(s) restant(s) : 0.0</h4>
-				</div>
-			</section>
-			<section class="row">
-				<div class="col-md-offset-4 col-md-4">
-					<a href="/Calendrier" class="btn btn-primary" type="button">
-						Voir calendrier
-					</a>
-				</div>
-			</section>
-			<br>
+			<div class="panel panel-primary boxAccueilConges">
+				<section class="row">
+					<div class="col-md-12">
+						<h2>Mes congés</h2>
+						<h4>Jour(s) de congé(s) payé(s) restant(s) : 4.5</h4>
+						<h4>RTT(s) restant(s) : 0.0</h4>
+					</div>
+				</section>
+				<section class="row">
+					<div class="col-md-offset-4 col-md-4">
+						<a href="/Calendrier" class="btn btn-primary" type="button">
+							Voir calendrier
+						</a>
+					</div>
+				</section>
+				<br>
+			</div>
+			
 			<section class="row">
 				<div class="col-md-12 col-xs-12">
 					<div class="panel panel-primary table-responsive">
