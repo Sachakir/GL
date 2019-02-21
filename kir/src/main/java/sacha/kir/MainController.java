@@ -11,6 +11,7 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.apache.tomcat.util.buf.CharChunk;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -188,6 +189,7 @@ public class MainController {
         Utilisateur u = UtilisateurService.findPrenomNom(userForm.getNom(),userForm.getPrenom());
         if (u != null)//Utilisateur avec ce nom et prenom existe deja
         {
+        	System.out.println("Cet user existe deja !");
         	model.addAttribute("userExists", "Cet utilisateur existe deja");
         	return "redirect:/Accueil";
         }
@@ -195,9 +197,51 @@ public class MainController {
         // Sinon on met le user dans la bd.
         // Utilisateur
         Utilisateur user = new Utilisateur();
-        user.setDateNaissance(userForm.getDateNaissance());
-        user.setJoursCongesRestants(userForm.getJoursCongesRest());
+        String[] datesNaissance = userForm.getDateNaissance().split("/");
+        if (datesNaissance.length == 3)
+        {
+        	try
+        	{
+             	int jour = Integer.parseInt(datesNaissance[0]);
+            	int mois = Integer.parseInt(datesNaissance[1]);
+            	int annee = Integer.parseInt(datesNaissance[2]);
+            	
+            	LocalDate localDate = LocalDate.now();
+            	
+            	if (jour > 0 && jour <= 31 && mois > 0 && mois <= 12 && annee > 0 && annee <= localDate.getYear())
+            	{
+                    user.setDateNaissance(userForm.getDateNaissance());
+            	}
+            	else
+            	{
+            		System.out.println("Dates hors bornes");
+            		return "redirect:/adminShow";
+            	}
+        	}
+        	catch (Exception e)
+        	{
+        		System.out.println("Erreur format date");
+        		return "redirect:/adminShow";
+        	}
+        }
+        else
+        {
+        	System.out.println("Erreur champ date " + datesNaissance.length);
+    		return "redirect:/adminShow";
+        }
+        
+        user.setJoursCongesRestants(35);//TODO par défaut 35 jours ?
         user.setNom(userForm.getNom());
+
+        for (int character = 0;character < userForm.getNumTel().length();character++)
+        {
+        	char chiffre = userForm.getNumTel().charAt(character);
+        	if (!Character.toString(chiffre).matches("[0-9?]"))
+        	{
+        		System.out.println("Numero avec des lettres !");
+        		return "redirect:/adminShow";
+        	}
+        }
         user.setNumeroTel(userForm.getNumTel());
         user.setPrenom(userForm.getPrenom());
         
