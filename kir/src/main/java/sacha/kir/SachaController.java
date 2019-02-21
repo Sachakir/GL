@@ -435,9 +435,9 @@ public class SachaController
     		long serviceIdDemande = MembresServiceBddService.findById(uidDemande).getServiceId();
     		if (serviceIdDemande == ServicesFixes.finances.getServiceId())
     		{
-        		RemboursementService.updateFinancesState(demandeId, "Refusé");
+        		RemboursementService.updateChefState(demandeId, "Refusé");
     		}
-    		RemboursementService.updateChefState(demandeId, "Refusé");
+    		RemboursementService.updateFinancesState(demandeId, "Refusé");
     	}
     	else if (membre.getRoleId() == Role.chefDeService.getRoleId())
     	{
