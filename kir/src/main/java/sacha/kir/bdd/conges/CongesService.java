@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import sacha.kir.bdd.remboursement.Statut;
+
 @Service
 public class CongesService implements InterfaceCongesService
 {
@@ -27,8 +29,8 @@ public class CongesService implements InterfaceCongesService
 		c.setDatedebut(date_debut);
 		c.setDatefin(date_fin);
 		c.setUid(uID);
-		c.setValidationchefdeservice("EnAttente");
-		c.setValidationrh("EnAttente");
+		c.setValidationchefdeservice(Statut.enAttente.statut());
+		c.setValidationrh(Statut.enAttente.statut());
 		repository.save(c);
 	}
 
