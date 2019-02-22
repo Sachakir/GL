@@ -36,7 +36,6 @@ import sacha.kir.bdd.services.InterfaceServiceBddService;
 import sacha.kir.bdd.services.ServiceBdd;
 import sacha.kir.bdd.services.ServicesFixes;
 import sacha.kir.bdd.userrole.InterfaceUserRoleService;
-import sacha.kir.bdd.userrole.UserRole;
 import sacha.kir.bdd.utilisateur.InterfaceUtilisateurService;
 import sacha.kir.bdd.utilisateur.Utilisateur;
 import sacha.kir.form.CongesV2;
@@ -70,7 +69,7 @@ public class SachaController
 	InterfaceServiceBddService ServiceBddService;
 	@Autowired
 	InterfaceMembresServiceBddService MembresServiceBddService;
-    
+	
     @ModelAttribute("username")
     public String getUsername(Principal principal) {
     	if(principal != null)

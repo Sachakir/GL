@@ -251,7 +251,7 @@ public class MainController {
         else
         	user.setUID((long) 1);
         user.setRtt(0);
-        user.setHeuresContrat(userForm.getHeuresTravail());
+        user.setHeuresContrat(userForm.getHeurestravail());
         UtilisateurService.addUser(user);
         
         // Indentifiant / Mot de passe
@@ -614,7 +614,12 @@ public class MainController {
         model.addAttribute("notesAssociees", notesAssociees);
         model.addAttribute("joursConges","Jour(s) de congé(s) payé(s) restant(s) : " + UtilisateurService.findPrenomNom(names[1], names[0]).getJoursCongesRestants());
         /**** DERNIERES DEMANDES DE CONGES ****/
-
+        
+        //Nombre de demandes de remboursement
+        SachaClasse SachaEstClasse = new SachaClasse();
+        Utilisateur utilisa = UtilisateurService.findPrenomNom(names[1], names[0]);
+        int nbRemb = SachaEstClasse.getNbRemb(utilisa,MembresServiceBddService,RemboursementService);
+        model.addAttribute("nbRemb", nbRemb);
         return "welcomePage-Thibaut";
     }
     

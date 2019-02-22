@@ -47,7 +47,7 @@ public class UserForm {
 	
 	@NotNull
 	@Min(value=0)
-	private int heures_travail;
+	private int heurestravail;
 	
 	public UserForm() {
 		isAdmin = false;
@@ -98,9 +98,7 @@ public class UserForm {
 	public float getRtt() {
 		return rtt;
 	}
-	public int getHeuresTravail() {
-		return heures_travail;
-	}
+	
 	
 	// Setters
 	public void setUid(long uid) {
@@ -145,7 +143,15 @@ public class UserForm {
 	public void setRtt(float n) {
 		this.rtt=n;
 	}
-	public void setHeuresTravail(int n) {
-		this.heures_travail=n;
+
+	public int getHeurestravail() {
+		return heurestravail;
 	}
+
+	public void setHeurestravail(int heurestravail) {
+		this.heurestravail = heurestravail;
+	}
+	
+	
+	
 }
