@@ -50,6 +50,7 @@ import sacha.kir.bdd.utilisateur.InterfaceUtilisateurService;
 import sacha.kir.bdd.utilisateur.Utilisateur;
 import sacha.kir.form.CongeForm;
 import sacha.kir.form.CongesV2;
+import sacha.kir.form.Notif;
 import sacha.kir.form.UserForm;
  
 @Controller
@@ -620,6 +621,25 @@ public class MainController {
         Utilisateur utilisa = UtilisateurService.findPrenomNom(names[1], names[0]);
         int nbRemb = SachaEstClasse.getNbRemb(utilisa,MembresServiceBddService,RemboursementService);
         model.addAttribute("nbRemb", nbRemb);
+        
+
+		/*** DERNIERES NOTIFS ***/
+		List<Notif> notifs = new ArrayList<Notif>();
+		for (Remboursement r : recentDemandesRemboursement) {
+			Long note_id = RemboursementsNoteService.findNoteIdByDemandeId(r.getDemande_id());
+			String mois = NoteService.findById(note_id).getMois();
+			mois = mois.substring(0, 2) + "-" + mois.substring(3);
+			notifs.add(new Notif(r.getTitre(),
+					r.getTimestamp().toString(),
+					"/remboursements/note=" + mois + "/remboursement_id=" + r.getDemande_id()));
+		}
+		notifs.add(new Notif("la description 1", "la date 1", "https://google.com"));
+		notifs.add(new Notif("la description 2", "la date 2", "https://google.com"));
+		notifs.add(new Notif("la description 3", "la date 3", "https://google.com"));
+		model.addAttribute("notifs", notifs);
+		/*** DERNIERES NOTIFS ***/
+        
+        
         return "welcomePage-Thibaut";
     }
     

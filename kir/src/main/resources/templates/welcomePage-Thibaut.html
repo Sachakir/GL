@@ -51,54 +51,10 @@
 						<div class="panel-heading">
 							<h3 class="panel-title">Dernières notifications</h3>
 						</div>
-						<div class="list-group">
-							<a href="#" class="list-group-item" data-toggle="modal">
-								Demande de remboursement
-								<span class="badge">12 Janvier 2019</span>
-							</a>
-							<a href="#" class="list-group-item" data-toggle="modal">
-								Demande de congés - 10 jour(s)
-								<span class="badge">12 Janvier 2019</span>
-							</a>
-							<a href="#" class="list-group-item" data-toggle="modal">
-								Demande de remboursement
-								<span class="badge">12 Janvier 2019</span>
-							</a>
-							<a href="#" class="list-group-item" data-toggle="modal">
-								Demande de remboursement
-								<span class="badge">12 Janvier 2019</span>
-							</a>
-							<a href="#" class="list-group-item" data-toggle="modal">
-								Demande de remboursement
-								<span class="badge">12 Janvier 2019</span>
-							</a>
-							<a href="#" class="list-group-item" data-toggle="modal">
-								Demande de congés - 21 jour(s)
-								<span class="badge">12 Janvier 2019</span>
-							</a>
-							<a href="#" class="list-group-item" data-toggle="modal">
-								Demande de congés - 1 jour(s)
-								<span class="badge">12 Janvier 2019</span>
-							</a>
-							<a href="#" class="list-group-item" data-toggle="modal">
-								Demande de congés - 0.5 jour(s)
-								<span class="badge">12 Janvier 2019</span>
-							</a>
-							<a href="#" class="list-group-item" data-toggle="modal">
-								Demande de congés - 14 jour(s)
-								<span class="badge">12 Janvier 2019</span>
-							</a>
-							<a href="#" class="list-group-item" data-toggle="modal">
-								Demande de congés - 14 jour(s)
-								<span class="badge">12 Janvier 2019</span>
-							</a>
-							<a href="#" class="list-group-item" data-toggle="modal">
-								Demande de congés - 14 jour(s)
-								<span class="badge">12 Janvier 2019</span>
-							</a>
-							<a href="#" class="list-group-item" data-toggle="modal">
-								Demande de congés - 14 jour(s)
-								<span class="badge">12 Janvier 2019</span>
+						<div class="list-group" th:each="notif : ${notifs}">
+							<a th:href="${notif.lien}" class="list-group-item" data-toggle="modal">
+								<span th:text="${notif.description}"></span>
+								<span class="badge" th:text="${notif.date}"></span>
 							</a>
 						</div>
 					</div>
