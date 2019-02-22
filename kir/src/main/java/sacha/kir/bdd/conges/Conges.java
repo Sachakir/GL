@@ -28,8 +28,18 @@ public class Conges {
 	@Column(name="date_debut")
 	private String date_debut;
 	
+	@Column(name="rtt")
+	private boolean rtt;
 	
 	
+	public boolean isRtt() {
+		return rtt;
+	}
+
+	public void setRtt(boolean rtt) {
+		this.rtt = rtt;
+	}
+
 	public Conges() {}
  
 	public Conges(Long congesid, String datedebut, String datefin, String validationrh, String validationchefdeservice,
