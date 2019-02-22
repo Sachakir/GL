@@ -188,8 +188,10 @@ function editer(){
 function verifDateD(){
 	
 	var dateDebut = $("#dateD").val().split("-");
+	var dateFin = $("#dateF").val().split("-");
 	var now = new Date();
 	var debut = new Date(dateDebut[0],dateDebut[1]-1,dateDebut[2]);
+	var fin = new Date(dateFin[0],dateFin[1]-1,dateFin[2]);
     var day = ("0" + now.getDate()).slice(-2);
     var month = ("0" + (now.getMonth() + 1)).slice(-2);
     var dateString = now.getFullYear()+"-"+(month)+"-"+(day) ;
@@ -201,6 +203,10 @@ function verifDateD(){
 		if(!$("#dateF").val()){
 			$("#dateF").val(dateString);
 		}
+	}
+	else if(fin.getTime()<debut.getTime()){
+		alert("Entrez une date de début antérieure à la date de fin de votre congé.");
+		$("#dateF").val($("#dateD").val());
 	}
 	
 }
