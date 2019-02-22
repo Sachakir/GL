@@ -188,18 +188,14 @@ function editer(){
 function verifDateD(){
 	
 	var dateDebut = $("#dateD").val().split("-");
-	
 	var now = new Date();
- 
+	var debut = new Date(dateDebut[0],dateDebut[1],dateDebut[2]);
     var day = ("0" + now.getDate()).slice(-2);
     var month = ("0" + (now.getMonth() + 1)).slice(-2);
-
     var dateString = now.getFullYear()+"-"+(month)+"-"+(day) ;
-	var thisDay = now.getDate();
-	var thisMonth = now.getMonth()+1;
-	var thisYear = now.getFullYear();
+
 	
-	if(dateDebut[0]<thisYear || dateDebut[1]<thisMonth || dateDebut[2]<thisDay){
+	if(debut.getTime()<now.getTime()){
 		alert("Entrez une date de début ultérieure à aujourd'hui");
 		$("#dateD").val(dateString);
 		if(!$("#dateF").val()){
@@ -212,16 +208,12 @@ function verifDateF(){
 	
 	var dateFin = $("#dateF").val().split("-");
 	var now = new Date();
- 
+	var fin = new Date(dateFin[0],dateFin[1],dateFin[2]);
     var day = ("0" + now.getDate()).slice(-2);
     var month = ("0" + (now.getMonth() + 1)).slice(-2);
-
     var dateString = now.getFullYear()+"-"+(month)+"-"+(day) ;
-	var thisDay = now.getDate();
-	var thisMonth = now.getMonth()+1;
-	var thisYear = now.getFullYear();
 	
-	if(dateFin[0]<thisYear || dateFin[1]<thisMonth || dateFin[2]<thisDay){
+	if(fin.getTime()<now.getTime()){
 		alert("Entrez une date de fin ultérieure à aujourd'hui");
 		$("#dateF").val(dateString);
 		if(!$("#dateD").val()){
@@ -229,4 +221,34 @@ function verifDateF(){
 		}
 	}
 	
+}
+function validationAjoutUtilisateur(){
+	var x =$("#dateF").val() - $("#dateD").val();
+	var d = $("#dateD").val().split("-");
+	var f = $("#dateF").val().split("-");
+	var debut = new Date(d[0],d[1]+1,d[2]);
+	var fin = new Date(f[0],f[1]+1,f[2]);
+	var dureeConge = dayDiff(debut,fin);
+	var days = $("#days").text().split(" ");
+	
+	if(!$("#dateD").val()){
+		alert("Entrez une date de début!");
+		return false;
+	}
+	if(!$("#dateF").val()){
+		alert("Entrez une date de fin!");
+	}
+	if(dureeConge>days[4]){
+		alert("Votre solde de congés n'est pas suffisant pour prendre un aussi long congé.\nVeuillez entrer un congé plus court.");
+		return false;
+	}
+	
+	return true;
+}
+
+function dayDiff(d1, d2)
+{
+  d1 = d1.getTime() / 86400000;
+  d2 = d2.getTime() / 86400000;
+  return new Number(d2 - d1).toFixed(0);
 }

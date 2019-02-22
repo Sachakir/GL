@@ -25,9 +25,9 @@
 					</div>
 					<div class = "panel-body details">
 						
-						<h4  th:text= "'Nombre de jours restants: '+ ${user.joursCongesRest}+' jours'">Nombre de jours restants: </h4>
+						<h4 id="days" th:text= "'Nombre de jours restants: '+ ${user.joursCongesRest}+' jours'">Nombre de jours restants: </h4>
 						<h4  th:text= "'Nombre de RTT restants: '+ ${user.rtt}+' jours'">Nombre de RTT restants: </h4>
-						<form action="#" th:action="@{/AjouterConge}" th:object="${congeForm}" method="post">
+						<form action="#" th:action="@{/AjouterConge}" th:object="${congeForm}" method="post" onsubmit="return validationAjoutUtilisateur();">
 							
 							
 							<h4 >Date de début: <input id="dateD" type="date" th:field="*{dateDebut}" onchange="verifDateD();"></h4>
