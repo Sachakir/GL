@@ -48,21 +48,56 @@
 
 				<div class="form-group">
 					<label class="control-label" for="responsable_id">Responsable</label>
-					<div th:if="${not users.empty}">
+					<div th:if="${not chefsServices.empty}">
 						<select id="responsable_id" class="form-control" th:field="*{responsable_id}">
-							<option th:each="mission : ${users}" th:value="${mission.UID}" th:text="${mission.Prenom} + ' ' + ${mission.Nom}"></option>
+							<option th:each="mission : ${chefsServices}" th:value="${mission.UID}" th:text="${mission.Prenom} + ' ' + ${mission.Nom}"></option>
 						</select>
 					</div>
 				</div>
 
 				<div class="form-group">
 					<label class="control-label" for="userList">Ajoutez les membres</label>
-					<div th:object="${userlist}" >
-						<div id="userList" th:each="person : ${membres}">
-							<div style="text-align: left;">
-								<input type="checkbox" th:field="*{userList}" th:value="${person.UID}">
-								<label th:text="${person.Nom} + ' ' + ${person.Prenom}"></label>
+					<div th:object="${userlist}">
+						<div class="row">						
+							<div class=col-md-5>
+								<div class="panel panel-default"> 
+									<span class="panel">Membres de la mission</span>
+								</div>
+								<select id="selectedPeople" class="form-control">
+									<option value="all" selected="selected">Tous les services</option>
+									<option th:each="service_id, id : ${services_ids}" th:value="${id.index+1}" th:text="${services.get(service_id)}"></option>
+								</select>
+	
+								<select class="service-sel form-control" id="allSelected" multiple="multiple"></select>
+								<div th:each="service_id, id : ${services_ids}">
+									<select class="service-sel form-control" th:id="'selected' + ${id.index+1}" multiple="multiple" style="display:none;"></select>
+								</div>
 							</div>
+							
+							<div class="col-md-2" align="center">
+								<button id="leftbtn" type="button" class="btn btn-primary"><<</button>
+								<button id="rightbtn" type="button" class="btn btn-primary">>></button>
+							</div>
+	
+							<div class="col-md-5">
+								<div class="panel panel-default"> 
+									<span class="panel">Membres disponibles</span>
+								</div>
+								<select id="servicesPeople" class="form-control">
+									<option value="all" selected="selected">Tous les services</option>
+									<option th:each="service_id, id : ${services_ids}" th:value="${id.index+1}" th:text="${services.get(service_id)}"></option>
+								</select>
+	
+								<select class="service-sel form-control" id="allServices" multiple="multiple">
+									<option th:each="user : ${utilisateurs}" th:value="${user.UID}" th:text="${user.UID} + ' : ' + ${user.Prenom} + ' ' + ${user.Nom}"></option>
+								</select>
+								<div th:each="service_id, id : ${services_ids}">
+									<select class="service-sel form-control" th:id="'service' + ${id.index+1}" multiple="multiple" style="display:none;">
+										<option th:each="user : ${utilisateursServices.get(service_id)}" th:value="${user.UID}" th:text="${user.UID} + ' : ' + ${user.Prenom} + ' ' + ${user.Nom}"></option>
+									</select>
+								</div>
+							</div>
+							<input type="hidden" id="missionMembers" value="" th:field="*{userList}">
 						</div>
 					</div>
 				</div>
@@ -75,10 +110,10 @@
 	</div>
 
 
-	<script src="assets/js/jquery.js"></script>
-	<script src="assets/js/bootstrap.js"></script>
-
-	<script src="assets/js/scripts.js"></script>
+	<script type="text/javascript" src="assets/js/jquery.js"></script>
+	<script type="text/javascript" src="assets/js/bootstrap.js"></script>
+	<script type="text/javascript" src="assets/js/addUserToMission.js"></script>
+	<script type="text/javascript" src="assets/js/scripts.js"></script>
 
 </body>
 </html>
