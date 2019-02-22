@@ -26,16 +26,30 @@
 					<div class = "panel-body details">
 						
 						<h4 id="days" th:text= "'Nombre de jours restants: '+ ${user.joursCongesRest}+' jours'">Nombre de jours restants: </h4>
-						<h4  th:text= "'Nombre de RTT restants: '+ ${user.rtt}+' jours'">Nombre de RTT restants: </h4>
+						<h4  id="daysrtt" th:text= "'Nombre de RTT restants: '+ ${user.rtt}+' jours'">Nombre de RTT restants: </h4>
 						<form action="#" th:action="@{/AjouterConge}" th:object="${congeForm}" method="post" onsubmit="return validationAjoutUtilisateur();">
 							
 							
 							<h4 >Date de début: <input id="dateD" type="date" th:field="*{dateDebut}" onchange="verifDateD();"></h4>
 							<h4 >Date de fin:   <input id="dateF" type="date" th:field="*{dateFin}" onchange="verifDateF();"></h4>
+							
+							<div class="row">
+								<div class="form-check col-sm-6">
+								  <input class="form-check-input" type="radio" name="exampleRadios" id="radioConge" value="option1" checked>
+								  <label class="form-check-label" for="radioConge">
+									Congés payés
+								  </label>
+								</div>
+								<div class="form-check col-sm-6">
+								  <input class="form-check-input" type="radio" name="exampleRadios" id="radioRTT" value="option2">
+								  <label class="form-check-label" for="radioRTT">
+									RTT
+								  </label>
+								</div>	
+							</div>
 							<div centered class="row">
 								<input name="submit" type="submit" class="btn btn-primary" value="Valider">
 							</div>
-								
 							
 						</form>
 					</div>
@@ -59,7 +73,7 @@
 
 	<script type="text/javascript" th:inline="javascript">
 		$(document).ready(function() {
-
+			var today = new Date();
 			$('#calendarC').fullCalendar({
 				defaultDate: '2019-01-12',
 				editable: true,
@@ -68,14 +82,25 @@
 				  
 				
 				select: function(startDate, endDate) {
-					$("#dateD").val(startDate.format());
-					$("#dateF").val(endDate.format());
-					$('#calendarC').fullCalendar('removeEvents');
-					$('#calendarC').fullCalendar('renderEvent', {
-						title: 'congé',
-						start: startDate,
-						end: endDate
-					});
+					if(startDate.getTime() > endDate.getTime()){
+						alert("Entrez une date de fin ultérieure à la date de début de votre congé.");
+					}
+					else if(startDate.getTime()<now.getTime()){
+						alert("Entrez une date de début de votre congé ultérieure à la date d'aujourd'hui.");
+					}
+					else if(endDate.getTime()<now.getTime()){
+						alert("Entrez une date de fin de votre congé ultérieure à la date d'aujourd'hui.");
+					}
+					else{
+						$("#dateD").val(startDate.format());
+						$("#dateF").val(endDate.format());
+						$('#calendarC').fullCalendar('removeEvents');
+						$('#calendarC').fullCalendar('renderEvent', {
+							title: 'congé',
+							start: startDate,
+							end: endDate
+						});
+					}
 				}
 			  }
 			  

@@ -189,7 +189,7 @@ function verifDateD(){
 	
 	var dateDebut = $("#dateD").val().split("-");
 	var now = new Date();
-	var debut = new Date(dateDebut[0],dateDebut[1],dateDebut[2]);
+	var debut = new Date(dateDebut[0],dateDebut[1]-1,dateDebut[2]);
     var day = ("0" + now.getDate()).slice(-2);
     var month = ("0" + (now.getMonth() + 1)).slice(-2);
     var dateString = now.getFullYear()+"-"+(month)+"-"+(day) ;
@@ -207,12 +207,13 @@ function verifDateD(){
 function verifDateF(){
 	
 	var dateFin = $("#dateF").val().split("-");
+	var dateDebut = $("#dateD").val().split("-");
 	var now = new Date();
-	var fin = new Date(dateFin[0],dateFin[1],dateFin[2]);
+	var fin = new Date(dateFin[0],dateFin[1]-1,dateFin[2]);
+	var debut = new Date(dateDebut[0],dateDebut[1]-1,dateDebut[2]);
     var day = ("0" + now.getDate()).slice(-2);
     var month = ("0" + (now.getMonth() + 1)).slice(-2);
     var dateString = now.getFullYear()+"-"+(month)+"-"+(day) ;
-	
 	if(fin.getTime()<now.getTime()){
 		alert("Entrez une date de fin ultérieure à aujourd'hui");
 		$("#dateF").val(dateString);
@@ -220,29 +221,45 @@ function verifDateF(){
 			$("#dateD").val(dateString);
 		}
 	}
+	else if(fin.getTime()<debut.getTime()){
+		alert("Entrez une date de fin ultérieure à la date de début de votre congé.");
+		$("#dateF").val($("#dateD").val());
+	}
 	
 }
 function validationAjoutUtilisateur(){
-	var x =$("#dateF").val() - $("#dateD").val();
-	var d = $("#dateD").val().split("-");
-	var f = $("#dateF").val().split("-");
-	var debut = new Date(d[0],d[1]+1,d[2]);
-	var fin = new Date(f[0],f[1]+1,f[2]);
-	var dureeConge = dayDiff(debut,fin);
+	var deb = new Date($("#dateD").val() + ' 00:00');
+	var fi = new Date($("#dateF").val() + ' 00:00');
+	var dureeConge = dayDiff(deb,fi);
 	var days = $("#days").text().split(" ");
-	
+	var rtt = $("#daysrtt").text().split(" ");
+	var msgBool =0;
+	var msg="";
+	alert("nb Jours:"+days[4]+"\nDuree congé:"+dureeConge);
 	if(!$("#dateD").val()){
-		alert("Entrez une date de début!");
-		return false;
+		msg+="Entrez une date de début!\n";
+		msgBool=1;
 	}
 	if(!$("#dateF").val()){
-		alert("Entrez une date de fin!");
+		msg+="Entrez une date de fin!\n";
+		msgBool=1;
 	}
-	if(dureeConge>days[4]){
-		alert("Votre solde de congés n'est pas suffisant pour prendre un aussi long congé.\nVeuillez entrer un congé plus court.");
+	if(dureeConge>parseInt(days[4])&&$('#radioConge').prop('checked')){
+		msg+="Votre solde de congés n'est pas suffisant pour prendre un aussi long congé.\nVeuillez entrer un congé plus court.\n";
+		msgBool=1;
+	}
+	if(dureeConge>parseInt(rtt[4])&&$('#radioRTT').prop('checked')){
+		msg+="Votre solde de RTT n'est pas suffisant pour prendre un aussi long congé.\nVeuillez entrer un congé plus court.\n";
+		msgBool=1;
+	}
+	if(!$('#radioConge').prop('checked') && !$('#radioRTT').prop('checked')){
+		msg+="Veuillez sélectionner le type de congé que vous voulez prendre.\n";
+		msgBool=1;
+	}
+	if(msgBool){
+		alert(msg);
 		return false;
 	}
-	
 	return true;
 }
 
