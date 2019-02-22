@@ -126,6 +126,28 @@ $(document).ready(function () {
 				end: $("#dateF").val()
 			});
 	  };
+	var today = new Date();
+	var d = $.fullCalendar.moment(today);
+	$('#calendarC').fullCalendar({
+		defaultDate: d,
+		editable: true,
+		eventLimit: true,
+		selectable: true,
+		
+		
+		select: function(startDate, endDate) {
+			if(today.getTime()<startDate && today.getTime()<endDate){
+				$("#dateD").val(startDate.format());
+				$("#dateF").val(endDate.format());
+				$('#calendarC').fullCalendar('removeEvents');
+				$('#calendarC').fullCalendar('renderEvent', {
+					title: 'Congé',
+					start: startDate,
+					end: endDate
+				});
+			}
+		}
+	});
     document.getElementById("editer").onclick = function() {bouttonDeRow()};
 	document.getElementById("edit").onclick = function() {editer()};
     

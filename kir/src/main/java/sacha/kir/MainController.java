@@ -684,6 +684,8 @@ public class MainController {
         	userForm.setService_id(membreService.getServiceId());
         	userForm.setIsAdmin(membreService.getIsAdmin());
         	userForm.setUid(id);
+        	userForm.setHeurestravail((int) user.getHeuresContrat());
+        	userForm.setRtt(user.getRtt());
         }
         
         model.addAttribute("user", userForm);

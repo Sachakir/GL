@@ -11,82 +11,99 @@
     <div class="container">
 
         <div th:replace="~{navBar :: #navBar}"></div>
-
-        <div class="col-md-offset-3 col-md-6">
-            <form class="form-horizontal" action="#" th:action="@{/roleChanged}" th:object="${userForm}" centered>
-                <div class="form-group">
-                    <label class="control-label" for="nom">Nom</label>  
-                    <div>
-                        <span th:text="${user.nom}"> Nom </span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="prenom">Prénom</label>  
-                    <div>
-                        <span th:text="${user.prenom}"> Prenom </span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="numTel">Téléphone</label>  
-                    <div>
-                        <span th:text="${user.numTel}"> numTel </span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="dateNaissance">Date de naissance</label>  
-                    <div>
-                        <span th:text="${user.dateNaissance}"> dateNaissance </span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="joursCongesRest">Jours de congés restants</label>  
-                    <div>
-                        <span th:text="${user.joursCongesRest}"> joursCongesRest </span>
-         				<input type="hidden" th:field="${user.uid}" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="role">Rôle</label>
-                    <div>
-                        <span th:text="${roles.get(user.role_id)}"> role </span>
-                  	</div>
-                  	<div>
-                        <label> Changer pour :</label>
-                        <select th:field="${user.role_id}">
-                          	<option value="0"> -- </option>
-                         	<option th:each="role_id : ${roles_ids}" th:value="${role_id}" th:text="${roles.get(role_id)}"></option>
-                        </select>  
-                  </div>
-              </div>
-              
-              <div class="form-group">
-                    <label class="control-label" for="role">Service</label>
-                    <div>
-                        <span th:text="${services.get(user.service_id)}"> Service </span>
-                  	</div>
-                  	<div>
-                        <label> Changer pour : </label>
-                        <select th:field="${user.service_id}">
-                          	<option value="0"> -- </option>
-                         	<option th:each="service_id : ${services_ids}" th:value="${service_id}" th:text="${services.get(service_id)}"></option> 
-                        </select>  
-                  </div>
-              </div>
-              
-              <div class="form-group">
-              	<label class="control-label" for="isAdmin">Statut administrateur : </label>
-              	<div>
-              		<span th:text="'Statut administrateur : ' + ${user.isAdmin == true ? 'oui' : 'non'}"> Admin </span>
-              	</div>
-				<div>
-					<label>Donner le statut admin : </label>
-					<input type="checkbox" id="isAdmin" name="isAdmin" class="form-control" th:field="*{isAdmin}" th:value="true">
-				</div>
-			 </div>
-              
-              <button id="post" name="" type="submit" class="btn btn-primary">Confirmer</button>
-          </form>
-		</div>
+		
+			<div class="col-md-offset-3 col-md-6 panel panel-primary">
+				<form class="form-horizontal" action="#" th:action="@{/roleChanged}" th:object="${userForm}" >
+					<br>
+					<div class="form-group">
+						<label class="control-label col-sm-6" for="nom">Nom:</label>  
+						<div>
+							<input class ="col-sm-4" th:field="${user.nom}" readonly>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-6" for="prenom">Prénom:</label>  
+						<div>
+							<input class ="col-sm-4" th:field="${user.prenom}" readonly>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-6" for="numTel">Téléphone:</label>  
+						<div>
+							<input class ="col-sm-4" th:field="${user.numTel}" readonly>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-6" for="heurestravail">Heures de travail par semaine:</label>  
+						<div>
+							<input class ="col-sm-4" th:field="${user.heurestravail}" readonly>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-6" for="dateNaissance">Date de naissance:</label>  
+						<div>
+							<input class ="col-sm-4" th:field="${user.dateNaissance}" readonly>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-6" for="joursCongesRest">Jours de congés restants:</label>  
+						<div>
+							<input class ="col-sm-4" th:field="${user.joursCongesRest}" readonly>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-6" for="rtt">RTT:</label>  
+						<div>
+							<input class ="col-sm-4" th:field="${user.rtt}" readonly>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="control-label col-sm-6" for="role">Rôle</label>
+						<div>
+							<span class ="col-sm-4" th:text="${roles.get(user.role_id)}">role</span>
+						</div>
+						
+				    </div>
+				    <div class="col-sm-6 col-md-offset-3">
+						<label> Changer pour :</label>
+						<select th:field="${user.role_id}">
+							<option value="0"> -- </option>
+							<option th:each="role_id : ${roles_ids}" th:value="${role_id}" th:text="${roles.get(role_id)}"></option>
+						</select>  
+					</div>
+				    <div class="form-group">
+						<label class="control-label col-sm-6" for="role">Service</label>
+						<div>
+							<span class ="col-sm-4" th:text="${services.get(user.service_id)}"> Service </span>
+						</div>
+				    </div>
+				    <div class="col-sm-7 col-md-offset-3">
+						<label> Changer pour : </label>
+						<select th:field="${user.service_id}">
+							<option value="0"> -- </option>
+							<option th:each="service_id : ${services_ids}" th:value="${service_id}" th:text="${services.get(service_id)}"></option> 
+						</select>  
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-6" for="isAdmin">Statut administrateur : </label>
+						<div>
+							<span class ="col-sm-4" th:text=" ${user.isAdmin == true ? 'oui' : 'non'}"> Admin </span>
+						</div>
+				    </div>
+				    <div class="col-sm-6 col-md-offset-3">
+						<label>Donner le statut admin : </label>
+						<input type="checkbox" id="isAdmin" name="isAdmin" class="form-control" th:field="*{isAdmin}" th:value="true">
+					</div>
+					
+					<div class="col-sm-6 col-sm-offset-5">
+						<button id="post" name="" type="submit" class="btn btn-primary ">Confirmer</button>
+					</div>
+					<br>
+			  </form>
+			  
+			</div>
+		
 	</div>
 	<script type="text/javascript" src="/assets/js/jquery.js"></script>
 	<script type="text/javascript" src="/assets/js/bootstrap.js"></script>

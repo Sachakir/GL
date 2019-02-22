@@ -71,43 +71,7 @@
 	<script src='assets/js/moment.min.js'></script>
 	<script src='assets/js/calendrier.js'></script>
 
-	<script type="text/javascript" th:inline="javascript">
-		$(document).ready(function() {
-			var today = new Date();
-			$('#calendarC').fullCalendar({
-				defaultDate: '2019-01-12',
-				editable: true,
-				  eventLimit: true,
-				  selectable: true,
-				  
-				
-				select: function(startDate, endDate) {
-					if(startDate.getTime() > endDate.getTime()){
-						alert("Entrez une date de fin ultérieure à la date de début de votre congé.");
-					}
-					else if(startDate.getTime()<now.getTime()){
-						alert("Entrez une date de début de votre congé ultérieure à la date d'aujourd'hui.");
-					}
-					else if(endDate.getTime()<now.getTime()){
-						alert("Entrez une date de fin de votre congé ultérieure à la date d'aujourd'hui.");
-					}
-					else{
-						$("#dateD").val(startDate.format());
-						$("#dateF").val(endDate.format());
-						$('#calendarC').fullCalendar('removeEvents');
-						$('#calendarC').fullCalendar('renderEvent', {
-							title: 'congé',
-							start: startDate,
-							end: endDate
-						});
-					}
-				}
-			  }
-			  
-			  );
-			
-		});
-	</script>
+	
 
 </body>
 </html>
