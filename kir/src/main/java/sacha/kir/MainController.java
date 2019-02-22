@@ -250,6 +250,8 @@ public class MainController {
         	user.setUID((long) (maxId + 1));
         else
         	user.setUID((long) 1);
+        user.setRtt(0);
+        user.setHeuresContrat(userForm.getHeuresTravail());
         UtilisateurService.addUser(user);
         
         // Indentifiant / Mot de passe

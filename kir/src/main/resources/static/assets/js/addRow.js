@@ -188,32 +188,45 @@ function editer(){
 function verifDateD(){
 	
 	var dateDebut = $("#dateD").val().split("-");
-	var today = new Date();
 	
-	var thisDay = today.getDate();
-	var thisMonth = today.getMonth()+1;
-	var thisYear = today.getFullYear();
+	var now = new Date();
+ 
+    var day = ("0" + now.getDate()).slice(-2);
+    var month = ("0" + (now.getMonth() + 1)).slice(-2);
+
+    var dateString = now.getFullYear()+"-"+(month)+"-"+(day) ;
+	var thisDay = now.getDate();
+	var thisMonth = now.getMonth()+1;
+	var thisYear = now.getFullYear();
 	
 	if(dateDebut[0]<thisYear || dateDebut[1]<thisMonth || dateDebut[2]<thisDay){
-		alert("Entrez une date ultérieure à aujourd'hui");
-		$("#dateD").val(today);
-		
+		alert("Entrez une date de début ultérieure à aujourd'hui");
+		$("#dateD").val(dateString);
+		if(!$("#dateF").val()){
+			$("#dateF").val(dateString);
+		}
 	}
 	
 }
 function verifDateF(){
 	
-	var dateDebut = $("#dateF").val().split("-");
-	var today = new Date();
+	var dateFin = $("#dateF").val().split("-");
+	var now = new Date();
+ 
+    var day = ("0" + now.getDate()).slice(-2);
+    var month = ("0" + (now.getMonth() + 1)).slice(-2);
+
+    var dateString = now.getFullYear()+"-"+(month)+"-"+(day) ;
+	var thisDay = now.getDate();
+	var thisMonth = now.getMonth()+1;
+	var thisYear = now.getFullYear();
 	
-	var thisDay = today.getDate();
-	var thisMonth = today.getMonth()+1;
-	var thisYear = today.getFullYear();
-	
-	if(dateDebut[0]<thisYear || dateDebut[1]<thisMonth || dateDebut[2]<thisDay){
-		alert("Entrez une date ultérieure à aujourd'hui");
-		$("#dateD").val(today);
-		
+	if(dateFin[0]<thisYear || dateFin[1]<thisMonth || dateFin[2]<thisDay){
+		alert("Entrez une date de fin ultérieure à aujourd'hui");
+		$("#dateF").val(dateString);
+		if(!$("#dateD").val()){
+			$("#dateD").val(dateString);
+		}
 	}
 	
 }
