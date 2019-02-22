@@ -6,6 +6,8 @@
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 
 /* Custom CSS */
+
+/* Pour les tables */
 .scroll {
 	display: block;
 	max-height: 500px;
@@ -24,6 +26,15 @@ a[aria-expanded=true] .glyphicon-menu-down {
 a[aria-expanded=false] .glyphicon-menu-up {
    display: none;
 }
+/**************/
+
+/* Selection des membres de mission */
+.service-sel {
+	min-height : 200px;
+	width : 100%;
+	margin-bottom : 10px;
+}
+
 /**************/
 
 html {

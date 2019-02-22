@@ -18,7 +18,7 @@
         <div class="col-md-offset-3 col-md-6">  
             <form th:if="${not #lists.isEmpty(missions)}" id="addNDF" class="form-horizontal" action="#" enctype="multipart/form-data" th:action="@{/remboursements/demande-remboursement}" th:object="${remboursementForm}" method="post" centered>
                 
-                <input class="form-control" type="text" th:value="${monthRequested}" id="moisNote" name="moisNote" hidden>
+                <input class="form-control" type="text" th:value="${monthRequested}" id="moisNote" name="moisNote" hidden="hidden">
                 
                 <div class="form-group">
                     <label class="control-label" for="titreMission">Mission associée</label>  

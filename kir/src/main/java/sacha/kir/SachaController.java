@@ -270,36 +270,40 @@ public class SachaController
 	@GetMapping("/newMission")
     public String addMission(Mission mission,Model model)
     {	
+		// Services et id respectifs
 		List<Long> services_ids = ServiceBddService.getServiceIdList();
-		Map<Long, MembresServiceBdd> chefs_services = new HashMap<Long, MembresServiceBdd>();
+		Map<Long, String> services = ServiceBddService.getAllServiceNames();
+		
+		// Stockage des chefs de services et utilisateurs
+		List<Utilisateur> chefsServices = new ArrayList<Utilisateur>();
+		List<Utilisateur> utilisateurs = new ArrayList<Utilisateur>();
+		Map<Long, List<Utilisateur>> utilisateursServices = new HashMap<Long, List<Utilisateur>>();
 		
 		for(long service_id : services_ids) {
-			List<MembresServiceBdd> listChefs = MembresServiceBddService.getChefByServiceId(service_id);
-			for (int k = 0; k < listChefs.size();k++)
-			{
-				chefs_services.put(service_id,listChefs.get(k));
+			// Initialisation pour le service
+			utilisateursServices.put(service_id, new ArrayList<Utilisateur>());
+			
+			List<Long> membresService =  MembresServiceBddService.getAllUidByServiceId(service_id);
+			for(long uid : membresService) {
+				Utilisateur user = UtilisateurService.findById(uid);
+				MembresServiceBdd membre = MembresServiceBddService.findById(uid);
+				
+				// Ajout a la liste des membres
+				utilisateursServices.get(service_id).add(user);
+				utilisateurs.add(user);
+				if(membre.getRoleId() == Role.chefDeService.getRoleId()) {
+					chefsServices.add(user);
+				}
 			}
 		}
-		
-    	List<Utilisateur> utilisateurs = new ArrayList<Utilisateur>();
-    	List<Utilisateur> usersMembres = UtilisateurService.findAll();
-    	
-    	for (long service_id : services_ids)
-    	{
-    		if(chefs_services.get(service_id) != null) {
-	    		Utilisateur utilisateur = UtilisateurService.findById(chefs_services.get(service_id).getUid());
-	    		Utilisateur u = new Utilisateur();
-	    		u.setPrenom(utilisateur.getPrenom());
-	    		u.setNom(utilisateur.getNom());
-	    		u.setUID(utilisateur.getUID());
-	    		utilisateurs.add(u);
-    		}
-    	}
     	
     	UserList ul = new UserList(); 	
-    	model.addAttribute("users",utilisateurs);
     	model.addAttribute("userlist",ul);
-    	model.addAttribute("membres",usersMembres);
+    	model.addAttribute("services", services);
+    	model.addAttribute("services_ids", services_ids);
+    	model.addAttribute("chefsServices", chefsServices);
+    	model.addAttribute("utilisateurs", utilisateurs);
+    	model.addAttribute("utilisateursServices", utilisateursServices);
         return "newMissionPage";
     }
 	
