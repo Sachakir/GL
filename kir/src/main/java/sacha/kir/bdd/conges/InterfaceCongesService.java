@@ -13,4 +13,5 @@ public interface InterfaceCongesService
 	public void updateConges(long congesid, String newdebut, String newfin);
 	public String getChefState(long congesid);
 	public String getRHState(long congesid);
+	public Conges getCongesbyId(long congesid);
 }

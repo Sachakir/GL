@@ -77,4 +77,10 @@ public class CongesService implements InterfaceCongesService
 		return repository.getRHState(congesid);
 	}
 
+
+	@Override
+	public Conges getCongesbyId(long congesid) {
+		return repository.getCongesbyId(congesid);
+	}
+
 }

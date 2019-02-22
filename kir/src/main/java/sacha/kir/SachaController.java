@@ -1,6 +1,11 @@
 package sacha.kir;
 
 import java.security.Principal;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -613,4 +618,121 @@ public class SachaController
 		return "redirect:/Accueil";
 	}
 	
+	@RequestMapping(path="/ValidationConges/{id}")
+    public String ValidationConges(@PathVariable("id") long congesId,Principal principal) throws Exception
+    {
+		Conges congesAValider = CongesService.findByCongesId(congesId);
+		
+		DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy"); // format jour / mois / année
+		LocalDate date1 = LocalDate.parse(congesAValider.getDatedebut(), format);
+		LocalDate date2 = LocalDate.parse(congesAValider.getDatefin(), format);
+				
+		long joursDemandes = ChronoUnit.DAYS.between(date1, date2);
+		if (joursDemandes == 0)
+		{
+			throw new Exception("AH ! 0 jours de conges demandés. Corrigez la damande de conges SVP !");
+		}
+		else if (joursDemandes < 0)
+		{
+			throw new Exception("Oula ! Les dates de debut et de fin doivent etre inversés...");
+		}
+		else
+		{
+			long uidDuDemandeur = CongesService.getCongesbyId(congesId).getUid();
+			Utilisateur demandeur = UtilisateurService.findById(uidDuDemandeur);
+			Conges congesDemande = CongesService.findByCongesId(congesId);
+			if (congesDemande.isRtt())
+			{
+				if (demandeur.getRtt() < joursDemandes)
+				{
+					throw new Exception(demandeur.getPrenom() + " " + demandeur.getNom() + " a " + demandeur.getRtt() + " jours de RTT et demande " + joursDemandes + " jours de conges RTT");
+				}
+			}
+			else if (!congesDemande.isRtt())
+			{
+				if (demandeur.getJoursCongesRestants() < joursDemandes)
+				{
+					throw new Exception(demandeur.getPrenom() + " " + demandeur.getNom() + " a " + demandeur.getJoursCongesRestants() + " jours de conges et demande " + joursDemandes + " jours de conges");
+				}
+			}
+		}
+		
+		String prenomnom = principal.getName();
+    	String[] names = prenomnom.split("\\.");
+    	Utilisateur ut = UtilisateurService.findPrenomNom(names[1], names[0]);
+    	
+    	MembresServiceBdd validateur = MembresServiceBddService.findById(ut.getUID());
+    	if (validateur.getRoleId() == (Role.chefDeService.getRoleId()))
+    	{
+    		if (validateur.getServiceId() == ServicesFixes.ressourcesHumaines.getServiceId())
+    		{
+    			long demandeUID = CongesService.getCongesbyId(congesId).getUid();
+    			long serviceId = MembresServiceBddService.findById(demandeUID).getServiceId();
+    			if (serviceId == ServicesFixes.ressourcesHumaines.getServiceId())
+    			{
+    				CongesService.updateChefState(congesId, Statut.valide.statut());
+    			}
+    			CongesService.updateRHState(congesId, Statut.valide.statut());
+    		}
+    		else//Validateur n'est pas chef du service RH, mais chef d'un autre service
+    		{
+    			CongesService.updateChefState(congesId, Statut.valide.statut());
+    		}
+    	}
+    	else//Le validateur n'est pas chef de service
+    	{
+    		throw new Exception("La personne connectée n'a pas le droit de valider de conges !");
+    	}  	
+		return "redirect:/Accueil";
+		
+    }
+	
+	@RequestMapping(path="/RefusConges/{id}")
+    public String RefusConges(@PathVariable("id") long congesId,Principal principal) throws Exception
+    {
+		
+Conges congesAValider = CongesService.findByCongesId(congesId);
+		
+		DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy"); // format jour / mois / année
+		LocalDate date1 = LocalDate.parse(congesAValider.getDatedebut(), format);
+		LocalDate date2 = LocalDate.parse(congesAValider.getDatefin(), format);
+				
+		long joursDemandes = ChronoUnit.DAYS.between(date1, date2);
+		if (joursDemandes == 0)
+		{
+			throw new Exception("AH ! 0 jours de conges demandés. Corrigez la damande de conges SVP !");
+		}
+		else if (joursDemandes < 0)
+		{
+			throw new Exception("Oula ! Les dates de debut et de fin doivent etre inversés...");
+		}
+		
+		String prenomnom = principal.getName();
+    	String[] names = prenomnom.split("\\.");
+    	Utilisateur ut = UtilisateurService.findPrenomNom(names[1], names[0]);
+    	
+    	MembresServiceBdd validateur = MembresServiceBddService.findById(ut.getUID());
+    	if (validateur.getRoleId() == (Role.chefDeService.getRoleId()))
+    	{
+    		if (validateur.getServiceId() == ServicesFixes.ressourcesHumaines.getServiceId())
+    		{
+    			long demandeUID = CongesService.getCongesbyId(congesId).getUid();
+    			long serviceId = MembresServiceBddService.findById(demandeUID).getServiceId();
+    			if (serviceId == ServicesFixes.ressourcesHumaines.getServiceId())
+    			{
+    				CongesService.updateChefState(congesId, Statut.refuse.statut());
+    			}
+    			CongesService.updateRHState(congesId, Statut.refuse.statut());
+    		}
+    		else//Validateur n'est pas chef du service RH, mais chef d'un autre service
+    		{
+    			CongesService.updateChefState(congesId, Statut.refuse.statut());
+    		}
+    	}
+    	else//Le validateur n'est pas chef de service
+    	{
+    		throw new Exception("La personne connectée n'a pas le droit de refuser de conges !");
+    	}  	
+		return "redirect:/Accueil";
+    }
 }

@@ -44,4 +44,7 @@ public interface CongesRepository extends CrudRepository<Conges, Long>{
 	
 	@Query("SELECT p FROM Conges p WHERE UID = :uid")
 	public List<Conges> getAllCongesByUid(long uid);
+	
+	@Query("SELECT p FROM Conges p WHERE p.conges_id = :congesid")
+	public Conges getCongesbyId(@Param("congesid") long congesid);
 }
