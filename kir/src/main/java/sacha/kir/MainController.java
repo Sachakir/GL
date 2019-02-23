@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import sacha.kir.bdd.approle.AppRole;
 import sacha.kir.bdd.approle.InterfaceAppRoleService;
@@ -33,6 +34,7 @@ import sacha.kir.bdd.justificatif.InterfaceJustificatifService;
 import sacha.kir.bdd.membresmission.InterfaceMembresMissionService;
 import sacha.kir.bdd.membresservice.InterfaceMembresServiceBddService;
 import sacha.kir.bdd.membresservice.MembresServiceBdd;
+import sacha.kir.bdd.membresservice.MembresServiceBddRepository;
 import sacha.kir.bdd.membresservice.Role;
 import sacha.kir.bdd.mission.InterfaceMissionService;
 import sacha.kir.bdd.mission.Mission;
@@ -48,6 +50,7 @@ import sacha.kir.bdd.userrole.InterfaceUserRoleService;
 import sacha.kir.bdd.userrole.UserRole;
 import sacha.kir.bdd.utilisateur.InterfaceUtilisateurService;
 import sacha.kir.bdd.utilisateur.Utilisateur;
+import sacha.kir.bdd.utilisateur.UtilisateurRepository;
 import sacha.kir.form.CongeForm;
 import sacha.kir.form.CongesV2;
 import sacha.kir.form.Notif;
@@ -82,6 +85,13 @@ public class MainController {
 	InterfaceServiceBddService ServiceBddService;
 	@Autowired
 	InterfaceMembresServiceBddService MembresServiceBddService;
+	
+	/** Repositories **/
+	@Autowired
+	UtilisateurRepository utilisateurRepository;
+	@Autowired
+	MembresServiceBddRepository membresServiceBddRepository;
+	/******************/
 	
 	// Methodes communes aux pages
 	
@@ -644,69 +654,84 @@ public class MainController {
     }
     
     @RequestMapping("/adminShow")
-    public String adminShow(Model model,Principal principal, UserForm userForm)
+    public String adminShow(@RequestParam(value = "user_id", required = false) String user_id, Model model, Principal principal, UserForm userForm, UserForm editForm)
     {
     	// Informations pour les services disponibles (liste des services)
     	model = addServiceListIntoModel(model);
     	
-    	List<Utilisateur> cs = UtilisateurService.findAll();
-    	for (int i =0;i < cs.size();i++)
-    	{
-    		System.out.println(cs.get(i).toString());
-    	}
+    	// Listage de tous les utilisateurs
+    	List<Utilisateur> cs = (List<Utilisateur>) utilisateurRepository.findAll();
+    	String[] names = principal.getName().split("\\.");
     	model.addAttribute("listUsers", cs);
-    	String prenomnom = principal.getName();
-    	String[] names = prenomnom.split("\\.");
-    	model.addAttribute("WelcomeMsg", "Bienvenue " + names[0]);
-    	
     	model.addAttribute("notAdmin",UtilisateurService.findPrenomNom(names[1], names[0]).getUID());
     	
+    	// Affichage du form d'affichage (afficher/modifier un compte user)
+    	if(user_id != null) {
+    		try {
+    			long uid = Long.parseLong(user_id);
+    			Utilisateur user = UtilisateurService.findById(uid);
+    	    	MembresServiceBdd membreService = MembresServiceBddService.findById(uid);
+    	        
+    	        if(user != null)
+    	        {
+    	        	editForm.setDateNaissance(user.getDateNaissance());
+    	        	editForm.setJoursCongesRest((int) user.getJoursCongesRestants());
+    	        	editForm.setNom(user.getNom());
+    	        	editForm.setNumTel(user.getNumeroTel());
+    	        	editForm.setPrenom(user.getPrenom());
+    	        	editForm.setRole_id(membreService.getRoleId());
+    	        	editForm.setService_id(membreService.getServiceId());
+    	        	editForm.setIsAdmin(membreService.getIsAdmin());
+    	        	editForm.setUid(uid);
+    	        	editForm.setHeurestravail((int) user.getHeuresContrat());
+    	        	editForm.setRtt(user.getRtt());
+    	        	editForm.setMdp("---");
+    	        	model.addAttribute("editForm", editForm);
+    	        }		
+    		} catch (NumberFormatException e) {
+    			e.printStackTrace();
+    		}
+    	}
+    	
+    	// Ajout du form pour l'ajout de personne
+    	model.addAttribute("userForm", userForm);
     	
         return "showUsers";
     }
     
-    @RequestMapping(path="/showUserDetails/{id}")
-    public String getMessage(@PathVariable("id") long id, Model model, UserForm userForm) 
-    {
-    	model = addServiceListIntoModel(model);
-    	
-    	Utilisateur user = UtilisateurService.findById(id);
-    	MembresServiceBdd membreService = MembresServiceBddService.findById(id);
-        
-        if(user != null)
-        {
-        	userForm.setDateNaissance(user.getDateNaissance());
-        	userForm.setJoursCongesRest((int) user.getJoursCongesRestants());
-        	userForm.setNom(user.getNom());
-        	userForm.setNumTel(user.getNumeroTel());
-        	userForm.setPrenom(user.getPrenom());
-        	userForm.setRole_id(membreService.getRoleId());
-        	userForm.setService_id(membreService.getServiceId());
-        	userForm.setIsAdmin(membreService.getIsAdmin());
-        	userForm.setUid(id);
-        	userForm.setHeurestravail((int) user.getHeuresContrat());
-        	userForm.setRtt(user.getRtt());
-        }
-        
-        model.addAttribute("user", userForm);
-        return "showUserDetails";
+    @GetMapping("/roleChanged") 
+    public String roleChanged() {
+    	return "forward:/notFound";
     }
     
-    @GetMapping("/roleChanged")
-    public String roleChanged(UserForm userForm,Model model) {
-    	if (userForm.getRole_id() == 0 || userForm.getService_id() == 0)
+    @PostMapping("/roleChanged")
+    public String roleChanged(@Valid UserForm editForm, Model model) {
+    	if (editForm.getRole_id() == 0 || editForm.getService_id() == 0)
     	{
     		model.addAttribute("change", "non change");
     		return "roleChanged";
     	}
     	
-    	long uid = userForm.getUid();
-    	MembresServiceBddService.updateServiceById(uid, userForm.getService_id());
-    	MembresServiceBddService.updateRoleById(uid, userForm.getRole_id());
-    	MembresServiceBddService.updateAdminStatusById(uid, userForm.getIsAdmin());
+    	Utilisateur user = new Utilisateur();
+    	user.setUID(editForm.getUid());
+    	user.setPrenom(editForm.getPrenom());
+    	user.setNom(editForm.getNom());
+    	user.setNumeroTel(editForm.getNumTel());
+    	user.setDateNaissance(editForm.getDateNaissance());
+    	user.setHeuresContrat(editForm.getHeurestravail());
+    	user.setJoursCongesRestants(editForm.getJoursCongesRest());
+    	user.setRtt(editForm.getRtt());
     	
-    	model.addAttribute("change", "change");
+    	MembresServiceBdd membre = new MembresServiceBdd();
+    	membre.setUid(editForm.getUid());
+    	membre.setRoleId(editForm.getRole_id());
+    	membre.setServiceId(editForm.getService_id());
+    	membre.setIsAdmin(editForm.getIsAdmin());
     	
-        return "redirect:/showUserDetails/" + userForm.getUid();
+    	// Met a jour l'utilisateur
+    	utilisateurRepository.save(user);
+    	membresServiceBddRepository.save(membre);
+    	
+        return "redirect:/adminShow?user_id=" + user.getUID();
     }
 }
