@@ -55,7 +55,7 @@
 				</div>
 				
 			</div>
-			<div id='calendarC' class="col-sm-5 ol-sm-offset-5" ></div>
+			<div id='calendarCGestion' class="col-sm-5 ol-sm-offset-5" ></div>
 		</section>
 		<br>
 		<section class="row" value="locked" id="detailsConge">
@@ -102,32 +102,7 @@
 	<script src='assets/js/moment.min.js'></script>
 	<script src='assets/js/calendrier.js'></script>
 
-	<script type="text/javascript" th:inline="javascript">
-		$(document).ready(function() {
-
-			$('#calendarC').fullCalendar({
-				defaultDate: '2019-01-12',
-				editable: true,
-				  eventLimit: true,
-				  selectable: true,
-				  
-				
-				select: function(startDate, endDate) {
-					$("#dateD").val(startDate.format());
-					$("#dateF").val(endDate.format());
-					$('#calendarC').fullCalendar('removeEvents');
-					$('#calendarC').fullCalendar('renderEvent', {
-						title: 'congé',
-						start: startDate,
-						end: endDate
-					});
-				}
-			  }
-			  
-			  );
-			
-		});
-	</script>
+	
 
 </body>
 </html>

@@ -148,6 +148,27 @@ $(document).ready(function () {
 			}
 		}
 	});
+	$('#calendarCGestion').fullCalendar({
+		defaultDate: d,
+		editable: true,
+		eventLimit: true,
+		selectable: true,
+		
+		
+		
+	});
+	$("#demandesGestion tbody").find('tr').each(function(i,el){
+		var $tds = $(this).find('td');
+		var d = $tds.eq(1).text().split("/");
+		var f = $tds.eq(2).text().split("/");
+		var debut =  moment(d[2]+"-"+d[1]+"-"+d[0]);
+		var fin = moment(f[2]+"-"+f[1]+"-"+f[0]);
+		$('#calendarCGestion').fullCalendar('renderEvent', {
+              title: 'Congé',
+              start: debut,
+              end: fin
+            },true);
+	});
     document.getElementById("editer").onclick = function() {bouttonDeRow()};
 	document.getElementById("edit").onclick = function() {editer()};
     
@@ -263,7 +284,6 @@ function validationAjoutUtilisateur(){
 	var rtt = $("#daysrtt").text().split(" ");
 	var msgBool =0;
 	var msg="";
-	alert("nb Jours:"+days[4]+"\nDuree congé:"+dureeConge);
 	if(!$("#dateD").val()){
 		msg+="Entrez une date de début!\n";
 		msgBool=1;
