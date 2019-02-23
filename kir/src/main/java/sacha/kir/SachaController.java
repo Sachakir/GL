@@ -677,6 +677,16 @@ public class SachaController
     				CongesService.updateChefState(congesId, Statut.valide.statut());
     			}
     			CongesService.updateRHState(congesId, Statut.valide.statut());
+    			Conges congesDemande = CongesService.findByCongesId(congesId);
+				Utilisateur demandeur = UtilisateurService.findById(demandeUID);
+    			if (congesDemande.isRtt())
+    			{
+    				UtilisateurService.updateJoursRtt(demandeUID, (long) (demandeur.getRtt() - joursDemandes));
+    			}
+    			else if (!congesDemande.isRtt())
+    			{
+    				UtilisateurService.updateJoursConges(demandeUID, demandeur.getJoursCongesRestants() - joursDemandes);
+    			}
     		}
     		else//Validateur n'est pas chef du service RH, mais chef d'un autre service
     		{

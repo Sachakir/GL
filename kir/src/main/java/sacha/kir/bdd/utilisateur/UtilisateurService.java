@@ -50,4 +50,14 @@ public class UtilisateurService implements InterfaceUtilisateurService
 	public void deleteUser(long uid) {
 		repository.deleteUser(uid);
 	}
+
+	@Override
+	public void updateJoursConges(long uid, long joursRestantsConges) {
+		repository.updateJoursConges(uid, joursRestantsConges);
+	}
+
+	@Override
+	public void updateJoursRtt(long uid, long joursRestantsRtt) {
+		repository.updateJoursRtt(uid, joursRestantsRtt);
+	}
 }

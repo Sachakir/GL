@@ -30,4 +30,14 @@ public interface UtilisateurRepository extends CrudRepository<Utilisateur, Long>
 	@Modifying
 	@Query("DELETE FROM Utilisateur WHERE UID = :userid")
 	public void deleteUser(@Param("userid") long uid);
+	
+	@Transactional
+	@Modifying
+	@Query("UPDATE Utilisateur SET Jourscongesrestants = :newstate WHERE UID = :congesid")
+	public void updateJoursConges(@Param("congesid") long uid,@Param("newstate") long joursRestantsConges);
+	
+	@Transactional
+	@Modifying
+	@Query("UPDATE Utilisateur SET rtt = :newstate WHERE UID = :congesid")
+	public void updateJoursRtt(@Param("congesid") long uid,@Param("newstate") long joursRestantsRtt);
 }	
