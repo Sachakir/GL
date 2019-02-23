@@ -163,10 +163,20 @@ $(document).ready(function () {
 		var f = $tds.eq(2).text().split("/");
 		var debut =  moment(d[2]+"-"+d[1]+"-"+d[0]);
 		var fin = moment(f[2]+"-"+f[1]+"-"+f[0]);
+		if($tds.eq(3).text()=="EnAttente" || $tds.eq(4).text()=="EnAttente"){
+			var c = '#595959';
+		}
+		else if($tds.eq(3).text()=="Refusé" || $tds.eq(4).text()=="Refusé"){
+			var c = '#ff0000';
+		}
+		else{
+			var c = '#11af00';
+		}
 		$('#calendarCGestion').fullCalendar('renderEvent', {
               title: 'Congé',
               start: debut,
-              end: fin
+              end: fin,
+			  color: c
             },true);
 	});
     document.getElementById("editer").onclick = function() {bouttonDeRow()};
