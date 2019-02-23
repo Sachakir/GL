@@ -114,8 +114,12 @@ $(document).ready(function () {
 		$("#cid").val( $(this).find("td:nth-child(7)").text());
         $("#vRH").text("Validation RH: "+$(this).find("td:nth-child(4)").text());
         $("#vC").text("Validation Chef de Service: "+$(this).find("td:nth-child(5)").text());
-        
-		
+        if($(this).find("td:nth-child(4)").text() == "EnAttente" && $(this).find("td:nth-child(5)").text() == "EnAttente"){
+			$("#edit").show();
+		}
+		else{
+			$("#edit").hide();
+		}
         
       });
 	  $("#dateD").change=function(){
