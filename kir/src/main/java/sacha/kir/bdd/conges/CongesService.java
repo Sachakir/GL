@@ -22,7 +22,7 @@ public class CongesService implements InterfaceCongesService
 
 
 	@Override
-	public void addConges(String date_debut, String date_fin, long uID) {
+	public void addConges(String date_debut, String date_fin, long uID, boolean rtt) {
 		
 		Conges c = new Conges();
 		c.setCongesid(repository.count()==0 ? 1 : (long) repository.getMaxId()+1);
@@ -31,6 +31,8 @@ public class CongesService implements InterfaceCongesService
 		c.setUid(uID);
 		c.setValidationchefdeservice(Statut.enAttente.statut());
 		c.setValidationrh(Statut.enAttente.statut());
+		c.setRtt(rtt);
+		System.out.println("rtt en entree: "+ rtt+ " rtt en sortie: "+c.isRtt());
 		repository.save(c);
 	}
 

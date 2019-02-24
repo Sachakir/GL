@@ -72,7 +72,7 @@
 						</thead>
 						<tbody>
 							<tr th:if="${listConges.empty}">
-								<td colspan="2">Personne n'est en congé!</td>
+								<td colspan="3">Personne n'est en congé!</td>
 							</tr>
 							<tr th:each="conges : ${listConges}">
 								<td><span th:text="${conges.prenomNom}"> Nom et prénom </span></td>	
@@ -98,14 +98,12 @@
 					<div class = "col-md-6">
 						<h4 id="nom">Nom: xxx</h4>
 						<h4 id="dateD">Date de début: xxx </h4>
-						<h4 id="vRH">Validation RH: xxx </h4>
 						<h4 id="vC">Validation Chef de Service: xxx</h4>
 					</div>
 					<div class="col-md-6">
 						<h4 id="prenom">Prénom: xxx</h4>
 						<h4 id ="dateF">Date de fin: xxx </h4>
-						<h4 id="vF">Validation Finale: xxx </h4>
-						
+						<h4 id="vRH">Validation RH: xxx </h4>
 						
 						
 					</div>
@@ -142,33 +140,7 @@
 				editable: true,
 				  eventLimit: true,
 				  selectable: true,
-				  events: [
-				  {
-					title: 'All Day Event',
-					start: '2019-01-01'
-				  },
-				  {
-					title: 'Long Event',
-					start: '2019-01-07',
-					end: '2019-01-10'
-				  },
-				  {
-					id: 999,
-					title: 'Repeating Event',
-					start: '2019-01-09T16:00:00'
-				  },
-				  {
-					id: 999,
-					title: 'Repeating Event',
-					start: '2019-01-16T16:00:00'
-				  },
-				  {
-					title: 'Conference',
-					start: '2019-01-11',
-					end: '2019-01-13'
-				  },
 				  
-				  ],
 				dayClick: function(date, jsEvent, view) {
 					
 					$("#listConge tr>td").remove();
@@ -207,9 +179,11 @@
 						var jour = date.toString().substring(8,10);
 						var annee = date.toString().substring(11,15);
 						var mois = _months[date.toString().substring(4,7)];
+						var vRH = element.validationrh;
+						var vC = element.validationchefservice;
 						if(annee>=anneeDebut && annee<=anneeFin){
 							if(mois>=moisDebut && mois<=moisFin){
-								if(jour>=jourDebut && jour<=jourFin){
+								if(jour>=jourDebut && jour<=jourFin && vRH=="Validé" && vC=="Validé"){
 									cols+='<td>'+ element.prenomNom+'</td>	';
 									cols+='<td>'+ element.datedebut + '</td>	';
 									cols += '<td>' + element.datefin + '</td>';

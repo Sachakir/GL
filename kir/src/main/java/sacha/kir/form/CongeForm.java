@@ -15,6 +15,9 @@ public class CongeForm {
 	
 	private long congesid;
 	
+	@NotNull
+	private String type;
+	
 	public String getUsername() {
 		return username;
 	}
@@ -39,4 +42,11 @@ public class CongeForm {
 	public void setCongesid(long c) {
 		this.congesid = c;
 	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	
 }

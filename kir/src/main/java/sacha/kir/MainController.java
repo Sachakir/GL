@@ -92,7 +92,18 @@ public class MainController {
 	@Autowired
 	MembresServiceBddRepository membresServiceBddRepository;
 	/******************/
-	
+	enum TypesConges {
+		CongePaye(0, "Congé payé"),
+	    RTT(1,"RTT");
+
+		public int id;
+		public String name;
+
+	    private TypesConges (int id, String name){
+		    	this.id = id;    
+		    	this.name = name;
+	    }
+	};
 	// Methodes communes aux pages
 	
 	@ModelAttribute("username")
@@ -296,7 +307,8 @@ public class MainController {
     			model.addAttribute("user",u);
     		}
     	}
-    	
+    	model.addAttribute("types", TypesConges.values());
+
     	
     	return "ajouterConge";
     }
@@ -311,7 +323,14 @@ public class MainController {
     	Long uID = UtilisateurService.findPrenomNom(names[1], names[0]).getUID();
     	String dateDebut = dateD[2]+"/"+dateD[1]+"/"+dateD[0];
     	String dateFin = dateF[2]+"/"+dateF[1]+"/"+dateF[0];
-    	CongesService.addConges(dateDebut, dateFin, uID);
+    	System.out.println("Type: "+congeForm.getType());
+    	boolean rtt;
+    	if(congeForm.getType().equals("0"))
+    		rtt=false;
+    	else
+    		rtt=true;
+    	System.out.println("Type en entrée: "+congeForm.getType()+" type en sortie: "+rtt);
+    	CongesService.addConges(dateDebut, dateFin, uID,rtt);
         
         return "redirect:/Accueil";
     }
@@ -398,7 +417,7 @@ public class MainController {
 			}
 			
 		}
-    	System.out.println(demandesConges.get(0).getValidationchefservice());
+    	
     	model.addAttribute("demandesConges",demandesConges);
     	model.addAttribute("toutConges",c2);
     	model.addAttribute("listConges",aujourdhuiConges);
@@ -520,7 +539,7 @@ public class MainController {
     	String[] names = principal.getName().split("\\.");
     	Long uID = UtilisateurService.findPrenomNom(names[1], names[0]).getUID();
     	
-    	CongesService.addConges(congeForm.getDateDebut(), congeForm.getDateFin(), uID);
+    	CongesService.addConges(congeForm.getDateDebut(), congeForm.getDateFin(), uID, false);
         
         return "redirect:/Accueil";
     }
@@ -624,6 +643,7 @@ public class MainController {
         model.addAttribute("missionNames", missionNames);
         model.addAttribute("notesAssociees", notesAssociees);
         model.addAttribute("joursConges","Jour(s) de congé(s) payé(s) restant(s) : " + UtilisateurService.findPrenomNom(names[1], names[0]).getJoursCongesRestants());
+        model.addAttribute("rtt","Jour(s) de RTT(s) restant(s) : " + UtilisateurService.findPrenomNom(names[1], names[0]).getRtt());
         /**** DERNIERES DEMANDES DE CONGES ****/
         
         //Nombre de demandes de remboursement

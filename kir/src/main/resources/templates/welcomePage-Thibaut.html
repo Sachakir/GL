@@ -65,8 +65,9 @@
 			<div class="panel panel-primary boxAccueilConges">
 				<section class="row">
 					<div class="col-md-12">
-						<h2>Mes congés</h2>
-						<h4 th:text="${joursConges}"></h4>
+						<h2>Mes congés:</h2>
+						<h4 th:text="${joursConges} + ' jours'"></h4>
+						<h4 th:text="${rtt} + ' jours'"></h4>
 						<!-- <h4>RTT(s) restant(s) : 0.0</h4> -->
 					</div>
 				</section>

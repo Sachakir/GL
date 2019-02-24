@@ -29,16 +29,7 @@ $(document).ready(function () {
       $(this).addClass('highlight').siblings().removeClass('highlight');
       $("#nom").val($(this).find("td:nth-child(1)").text());
       $("#date").text("Date: "+$(this).find("td:nth-child(3)").text());
-      $("#vf").text($(this).find("td:nth-child(3)").text());
-      if($(this).find("td:nth-child(3)").text()=="Validé"){
-          $("#vf").css("color","green");
-      }
-      else if($(this).find("td:nth-child(3)").text()=="Refusé"){
-        $("#vf").css("color","red");
-      }
-      else{
-        $("#vf").css("color","gray");
-      }
+      
     });
     $('#ListNDFValidation').on('click', 'tbody tr', function(event) {
         
@@ -81,15 +72,7 @@ $(document).ready(function () {
         $("#dateF").text("Date de fin: "+$(this).find("td:nth-child(3)").text());
         $("#vRH").text("Validation RH: "+$(this).find("td:nth-child(4)").text());
         $("#vC").text("Validation Chef de Service: "+$(this).find("td:nth-child(5)").text());
-        if($(this).find("td:nth-child(5)").text()=="EnAttente" || $(this).find("td:nth-child(4)").text()=="EnAttente"){
-			$("#vF").text("Validation Finale: En Attente");
-		}
-		else if($(this).find("td:nth-child(5)").text()=="Refusé" || $(this).find("td:nth-child(4)").text()=="Refusé"){
-			$("#vF").text("Validation Finale: Refusé");
-		}
-		else{
-			$("#vF").text("Validation Finale: Validé");
-		}
+        
 		var fic = "/ValidationC/";
         fic=fic+$(this).find("td:nth-child(7)").text();
 		document.getElementById('accept').href = fic;
@@ -312,10 +295,6 @@ function validationAjoutUtilisateur(){
 	}
 	if(dureeConge>parseInt(rtt[4])&&$('#radioRTT').prop('checked')){
 		msg+="Votre solde de RTT n'est pas suffisant pour prendre un aussi long congé.\nVeuillez entrer un congé plus court.\n";
-		msgBool=1;
-	}
-	if(!$('#radioConge').prop('checked') && !$('#radioRTT').prop('checked')){
-		msg+="Veuillez sélectionner le type de congé que vous voulez prendre.\n";
 		msgBool=1;
 	}
 	if(msgBool){
