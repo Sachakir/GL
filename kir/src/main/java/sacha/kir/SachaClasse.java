@@ -1,9 +1,6 @@
 package sacha.kir;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
 
 import sacha.kir.bdd.membresservice.InterfaceMembresServiceBddService;
 import sacha.kir.bdd.membresservice.MembresServiceBdd;
@@ -19,7 +16,7 @@ public class SachaClasse {
 	public int getNbRemb(Utilisateur ut,InterfaceMembresServiceBddService MembresServiceBddService,InterfaceRemboursementService RemboursementService)
 	{
 		int nbRemb = 0;
-    	MembresServiceBdd ms = MembresServiceBddService.findById(46);
+    	MembresServiceBdd ms = MembresServiceBddService.findById(ut.getUID());
 		List<Remboursement> allRemboursements = RemboursementService.findAll();
     	if (ms.getRoleId() == Role.chefDeService.getRoleId())//Seulement pour un chef de service
     	{
