@@ -34,7 +34,7 @@ public class NotifService implements InterfaceNotifService {
 		if(repository.count() != 0) {
 			notif_id += repository.getMaxId();
 		}
-		Notif n = new Notif(notif_id, uid, false, new Date(), titre, "https://google.fr");
+		Notif n = new Notif(notif_id, uid, false, new Date(), titre, lien);
 		repository.save(n);
 		
 	}

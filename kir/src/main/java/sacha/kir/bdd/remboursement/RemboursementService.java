@@ -6,9 +6,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import sacha.kir.bdd.justificatif.JustificatifRepository;
+import sacha.kir.bdd.note.InterfaceNoteService;
+import sacha.kir.bdd.note.NoteService;
+import sacha.kir.bdd.notif.InterfaceNotifService;
+import sacha.kir.bdd.remboursementsnote.InterfaceRemboursementsNoteService;
+import sacha.kir.bdd.remboursementsnote.RemboursementsNoteService;
 
 @Service
 public class RemboursementService implements InterfaceRemboursementService {
+	
+	@Autowired
+	InterfaceNotifService NotifService;
+    @Autowired
+    InterfaceNoteService NoteService;
+    @Autowired
+    InterfaceRemboursementsNoteService RemboursementsNoteService;
 
 	@Autowired
 	RemboursementRepository repository;
@@ -26,22 +38,6 @@ public class RemboursementService implements InterfaceRemboursementService {
 	public Remboursement findById(long demande_id) {
 		return repository.findById(demande_id).orElse(null);
 	}
-
-	@Override
-	public void addRemboursement() {
-		Remboursement r = new Remboursement();
-		r.setDate("01/23/2019");
-		r.setDemande_id((long) 1);
-		r.setTitre("Demande type");
-		r.setJustificatifid((long)1);
-		r.setMontant((float) 1.5);
-		r.setMotif("Parce que, oui");
-		r.setUid((long)1);
-		r.setValidationchefservice("enAttente");
-		r.setValidationfinances("Valide");
-		
-		repository.save(r);
-	}
 	
 	@Override
 	public Remboursement addNewRemboursement(Remboursement r) {
@@ -52,6 +48,11 @@ public class RemboursementService implements InterfaceRemboursementService {
 		
 		r.setDemande_id(demande_id);
 		repository.save(r);
+		
+		String mois = NoteService.findById(r.getMission_id()).getMois();
+		mois = mois.substring(0, 2) + "-" + mois.substring(3);
+		NotifService.addNotif(30, "Demande : " + r.getTitre(),
+				"/remboursements/note=" + mois + "/remboursement_id=" + demande_id);
 		
 		return r;
 	}
