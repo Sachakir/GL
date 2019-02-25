@@ -687,6 +687,33 @@ public class SachaController
     			{
     				UtilisateurService.updateJoursConges(demandeUID, demandeur.getJoursCongesRestants() - joursDemandes);
     			}
+    			//Refus automatique de tous les autres conges du demandeur
+    			//qui sont devenus impossibles à valider
+    			ArrayList<Long> demandeurUID = new ArrayList<Long>();
+    			demandeurUID.add(demandeur.getUID());
+    			Utilisateur demandeurRefresh = UtilisateurService.findById(demandeur.getUID());
+    			List<Conges> congesDuDemandeur = CongesService.findAllByIds(demandeurUID);
+    			for (int cong = 0;cong < congesDuDemandeur.size();cong++)
+    			{
+    				LocalDate datedebut = LocalDate.parse(congesDuDemandeur.get(cong).getDatedebut(), format);
+    				LocalDate datefin = LocalDate.parse(congesDuDemandeur.get(cong).getDatefin(), format);		
+    				long joursCongesDemandes = ChronoUnit.DAYS.between(datedebut, datefin);
+    				boolean isRTT = CongesService.findByCongesId(congesDuDemandeur.get(cong).getCongesid()).isRtt();
+    				if (isRTT)
+    				{
+    					if (demandeurRefresh.getRtt() < joursCongesDemandes)
+    					{
+    	    				CongesService.updateRHState(congesDuDemandeur.get(cong).getCongesid(), Statut.refuse.statut());
+    					}
+    				}
+    				else//Conges non RTT
+    				{
+    					if (demandeurRefresh.getJoursCongesRestants() < joursCongesDemandes)
+    					{
+    	    				CongesService.updateRHState(congesDuDemandeur.get(cong).getCongesid(), Statut.refuse.statut());
+    					}
+    				} 				
+    			}
     		}
     		else//Validateur n'est pas chef du service RH, mais chef d'un autre service
     		{
