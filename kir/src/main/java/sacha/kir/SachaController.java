@@ -776,4 +776,12 @@ Conges congesAValider = CongesService.findByCongesId(congesId);
     	}  	
 		return "redirect:/Accueil";
     }
+	
+	@RequestMapping(path="/DeleteConges/{id}")
+    public String DeleteConges(@PathVariable("id") long congesId,Principal principal) throws Exception
+    {
+		CongesService.deleteCongesbyCongesID(congesId);
+		System.out.println("Conges avec l'id : " + congesId + " a été supprimé");
+		return "redirect:/GererConges";
+    }
 }

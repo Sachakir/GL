@@ -87,4 +87,10 @@ public class CongesService implements InterfaceCongesService
 		return repository.getCongesbyId(congesid);
 	}
 
+
+	@Override
+	public void deleteCongesbyCongesID(long congesId) {
+		repository.deleteCongesbyCongesID(congesId);
+	}
+
 }
