@@ -92,7 +92,7 @@ $(document).ready(function () {
 		$("#cid").val( $(this).find("td:nth-child(7)").text());
         $("#vRH").text("Validation RH: "+$(this).find("td:nth-child(4)").text());
         $("#vC").text("Validation Chef de Service: "+$(this).find("td:nth-child(5)").text());
-        if($(this).find("td:nth-child(4)").text() == "EnAttente" && $(this).find("td:nth-child(5)").text() == "EnAttente"){
+        if($(this).find("td:nth-child(4)").text() == "En attente" && $(this).find("td:nth-child(5)").text() == "En attente"){
 			$("#edit").show();
 		}
 		else{
@@ -143,11 +143,13 @@ $(document).ready(function () {
 	});
 	$("#demandesGestion tbody").find('tr').each(function(i,el){
 		var $tds = $(this).find('td');
+		
 		var d = $tds.eq(1).text().split("/");
 		var f = $tds.eq(2).text().split("/");
+		var titre = d[0]+'/'+d[1]+ ' --> ' + +f[0]+'/'+f[1];
 		var debut =  moment(d[2]+"-"+d[1]+"-"+d[0]);
 		var fin = moment(f[2]+"-"+f[1]+"-"+f[0]);
-		if($tds.eq(3).text()=="EnAttente" || $tds.eq(4).text()=="EnAttente"){
+		if($tds.eq(3).text()=="En attente" || $tds.eq(4).text()=="En attente"){
 			var c = '#595959';
 		}
 		else if($tds.eq(3).text()=="Refusé" || $tds.eq(4).text()=="Refusé"){
@@ -157,7 +159,7 @@ $(document).ready(function () {
 			var c = '#11af00';
 		}
 		$('#calendarCGestion').fullCalendar('renderEvent', {
-              title: 'Congé',
+              title: titre,
               start: debut,
               end: fin,
 			  color: c
