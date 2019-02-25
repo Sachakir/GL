@@ -4,8 +4,9 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-
+@Service
 public class NotifService implements InterfaceNotifService {
 
 	@Autowired
@@ -33,7 +34,7 @@ public class NotifService implements InterfaceNotifService {
 		if(repository.count() != 0) {
 			notif_id += repository.getMaxId();
 		}
-		Notif n = new Notif(notif_id, uid, false, new Date(), "la description 1", "https://google.fr");
+		Notif n = new Notif(notif_id, uid, false, new Date(), titre, "https://google.fr");
 		repository.save(n);
 		
 	}

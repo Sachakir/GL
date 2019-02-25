@@ -40,7 +40,9 @@ import sacha.kir.bdd.mission.InterfaceMissionService;
 import sacha.kir.bdd.mission.Mission;
 import sacha.kir.bdd.note.InterfaceNoteService;
 import sacha.kir.bdd.note.Note;
+import sacha.kir.bdd.notif.InterfaceNotifService;
 import sacha.kir.bdd.notif.Notif;
+import sacha.kir.bdd.notif.NotifService;
 import sacha.kir.bdd.remboursement.InterfaceRemboursementService;
 import sacha.kir.bdd.remboursement.Remboursement;
 import sacha.kir.bdd.remboursement.Statut;
@@ -85,6 +87,8 @@ public class MainController {
 	InterfaceServiceBddService ServiceBddService;
 	@Autowired
 	InterfaceMembresServiceBddService MembresServiceBddService;
+	@Autowired
+	InterfaceNotifService NotifService;
 	
 	/** Repositories **/
 	@Autowired
@@ -689,7 +693,7 @@ public class MainController {
         
 
 		/*** DERNIERES NOTIFS ***/
-		List<Notif> notifs = new ArrayList<Notif>();
+		List<Notif> notifs = NotifService.getAllByIdDesc(userId);
 		/*for (Remboursement r : recentDemandesRemboursement) {
 			Long note_id = RemboursementsNoteService.findNoteIdByDemandeId(r.getDemande_id());
 			String mois = NoteService.findById(note_id).getMois();

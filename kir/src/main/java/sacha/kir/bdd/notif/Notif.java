@@ -29,6 +29,10 @@ public class Notif {
 
 	@Column(name="Lien")
 	private String lien;
+	
+	public Notif() {
+		this.date = new Date();
+	}
 
 	public Notif(Long notif_id, Long uid, Boolean vue, Date date, String titre, String lien) {
 		super();
