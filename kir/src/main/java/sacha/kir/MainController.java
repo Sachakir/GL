@@ -335,7 +335,7 @@ public class MainController {
         return "redirect:/Accueil";
     }
     @GetMapping("/Calendrier")
-    public String getCalendrier(Model model,Principal principal) {
+    public String getCalendrier(Model model,Principal principal) throws Exception {
     	// On selectionne tout les uid
     	List<Utilisateur> cs = UtilisateurService.findAll();
     	for (int i =0;i < cs.size();i++)
@@ -384,7 +384,10 @@ public class MainController {
     							System.out.println(c.getPrenomNom());
     						}
     					}
-    					aujourdhuiConges.add(c);
+    					if (c.getValidationchefservice().equals(Statut.valide.statut()) && c.getValidationrh().equals(Statut.valide.statut()))
+    					{
+        					aujourdhuiConges.add(c);
+    					}
     					for (Utilisateur utilisateur : cs) {
 							if(utilisateur.getUID()==c.getUid()) {
 								aujourdhuiU.add(utilisateur);
@@ -394,6 +397,12 @@ public class MainController {
     			}
     		}
     	}
+    	
+    	Utilisateur validateur = UtilisateurService.findPrenomNom(names[1], names[0]);
+		MembresServiceBdd validateurRoles = MembresServiceBddService.findById(validateur.getUID());
+		long myServiceId = validateurRoles.getServiceId();
+		long uidConges;
+		
     	for(int j=0;j<conges.size();j++) {
 			CongesV2 x = new CongesV2();
 			Conges conge = conges.get(j);
@@ -412,9 +421,35 @@ public class MainController {
 				}
 			}
 			c2.add(x);
-			if(x.getValidationchefservice().equals("EnAttente") || x.getValidationrh().contentEquals("EnAttente")) {
-				demandesConges.add(x);
+			
+			
+			if (validateurRoles.getRoleId() == Role.chefDeService.getRoleId())
+			{
+				uidConges = conges.get(j).getUid();
+				if (MembresServiceBddService.findById(uidConges).getServiceId() == myServiceId)//Du meme service
+				{
+					if (conges.get(j).getValidationchefdeservice().equals(Statut.enAttente.statut()))//Demandes en attente
+					{
+						if (conges.get(j).getUid() != validateur.getUID())//Check si pas autovalidation
+						{
+							demandesConges.add(x);
+						}
+					}
+				}
+				else if (myServiceId == ServicesFixes.ressourcesHumaines.getServiceId() && conges.get(j).getValidationchefdeservice().equals(Statut.valide.statut()) && conges.get(j).getValidationrh().equals(Statut.enAttente.statut()))
+	    		//Service different, mais la demande est validé par leur chef de service
+				{
+					if (conges.get(j).getUid() != validateur.getUID())//Check si pas autovalidation
+					{
+						demandesConges.add(x);
+					}
+				}
 			}
+			else
+			{
+				throw new Exception("Le validateur de conges est n'est pas un chef de service !");
+			}
+			
 			
 		}
     	
@@ -655,17 +690,17 @@ public class MainController {
 
 		/*** DERNIERES NOTIFS ***/
 		List<Notif> notifs = new ArrayList<Notif>();
-		for (Remboursement r : recentDemandesRemboursement) {
+		/*for (Remboursement r : recentDemandesRemboursement) {
 			Long note_id = RemboursementsNoteService.findNoteIdByDemandeId(r.getDemande_id());
 			String mois = NoteService.findById(note_id).getMois();
 			mois = mois.substring(0, 2) + "-" + mois.substring(3);
 			notifs.add(new Notif(r.getTitre(),
 					r.getTimestamp().toString(),
 					"/remboursements/note=" + mois + "/remboursement_id=" + r.getDemande_id()));
-		}
-		notifs.add(new Notif("la description 1", "la date 1", "https://google.com"));
-		notifs.add(new Notif("la description 2", "la date 2", "https://google.com"));
-		notifs.add(new Notif("la description 3", "la date 3", "https://google.com"));
+		}*/
+		notifs.add(new Notif((long) 4, (long) 30, false, new Date(), "la description 1", "https://google.fr"));
+		notifs.add(new Notif((long) 5, (long) 30, false, new Date(), "la description 2", "https://google.fr"));
+		notifs.add(new Notif((long) 6, (long) 30, false, new Date(), "la description 3", "https://google.fr"));
 		model.addAttribute("notifs", notifs);
 		/*** DERNIERES NOTIFS ***/
         
