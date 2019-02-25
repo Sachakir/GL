@@ -18,108 +18,109 @@
 	<div class="container">
 		<div th:replace="~{navBar :: #navBar}"></div>
 		<section class="row">
-			
-			
-			<div class = " col-sm-4">
-				
-				<div class="panel panel-primary table-responsive" value="17/02/2019" >
-					<table class="table table-condensed w-auto" id="demandes" >
-						<div class="panel-heading"> 
-							<h3 class="panel-title">Demandes de congés :</h3>
-						</div>
-						<thead>
-							<tr>
-								<th>Utilisateur</th>
-								<th>Date de début</th>
-								<th>Date de fin</th>
-								
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:if="${demandesConges.empty}">
-								<td colspan="3">Personne n'est en congé!</td>
-							</tr>
-							<tr th:each="conges : ${demandesConges}">
-								<td><span th:text="${conges.prenomNom}"> prenom et nom </span></td>	
-								<td><span th:text="${conges.datedebut}"> Date de début </span></td>
-								<td><span th:text="${conges.datefin}"> Date de fin </span></td>
-								<td style="display: none;"><span th:text="${conges.validationrh}">EnAttente</span></td>
-								<td style="display: none;"><span th:text="${conges.validationchefservice}">EnAttente</span></td>
-								<td style="display: none;"><span th:text="${conges.uid}">UID</span></td>
-								<td style="display: none;"><span th:text="${conges.congesid}">ID congé</span></td>
-							</tr>
-						</tbody>
-					</table>
+			<div class="col-md-12 panel panel-primary hidden-xs hidden-sm">
+				<br>
+				<div class = " col-sm-4">
+					<div id="panelConges" class="panel panel-primary table-responsive" value="17/02/2019">
+						<table class="table table-condensed w-auto" id="demandes" >
+							<div class="panel-heading"> 
+								<h3 class="panel-title">Demandes de congés :</h3>
+							</div>
+							<thead>
+								<tr>
+									<th>Utilisateur</th>
+									<th>Date de début</th>
+									<th>Date de fin</th>
+									
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:if="${demandesConges.empty}">
+									<td colspan="3">Personne n'est en congé!</td>
+								</tr>
+								<tr th:each="conges : ${demandesConges}">
+									<td><span th:text="${conges.prenomNom}"> prenom et nom </span></td>	
+									<td><span th:text="${conges.datedebut}"> Date de début </span></td>
+									<td><span th:text="${conges.datefin}"> Date de fin </span></td>
+									<td style="display: none;"><span th:text="${conges.validationrh}">EnAttente</span></td>
+									<td style="display: none;"><span th:text="${conges.validationchefservice}">EnAttente</span></td>
+									<td style="display: none;"><span th:text="${conges.uid}">UID</span></td>
+									<td style="display: none;"><span th:text="${conges.congesid}">ID congé</span></td>
+								</tr>
+							</tbody>
+						</table>
+						
+					</div>
 					
 				</div>
-				
-			</div>
-			<div id='calendar' class="col-sm-4" ></div>
-			<div class ="col-sm-4">
-				<div class="panel panel-primary table-responsive" value="17/02/2019" >
-					<table class="table table-striped table-condensed w-auto" id="listConge">
-						<div class="panel-heading"> 
-							<h3 class="panel-title">Liste des utilisateurs en congé :</h3>
-						</div>
-						<thead>
-							<tr>
-								<th>Utilisateur</th>
-								<th>Date de début</th>
-								<th>Date de fin</th>
-								
-								
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:if="${listConges.empty}">
-								<td colspan="3">Personne n'est en congé!</td>
-							</tr>
-							<tr th:each="conges : ${listConges}">
-								<td><span th:text="${conges.prenomNom}"> Nom et prénom </span></td>	
-								<td><span th:text="${conges.datedebut}"> Date de début </span></td>
-								<td><span th:text="${conges.datefin}"> Date de fin </span></td>
-								
-											
-							</tr>
-						</tbody>
-					</table>
-					
+				<div id='calendar' class="col-sm-4" ><br></div>
+				<br>
+				<div class ="col-sm-4">
+					<div id="panelConges" class="panel panel-primary table-responsive" value="17/02/2019" >
+						<table class="table table-striped table-condensed w-auto" id="listConge">
+							<div class="panel-heading"> 
+								<h3 class="panel-title">Liste des utilisateurs en congé :</h3>
+							</div>
+							<thead>
+								<tr>
+									<th>Utilisateur</th>
+									<th>Date de début</th>
+									<th>Date de fin</th>
+									
+									
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:if="${listConges.empty}">
+									<td colspan="3">Personne n'est en congé!</td>
+								</tr>
+								<tr th:each="conges : ${listConges}">
+									<td><span th:text="${conges.prenomNom}"> Nom et prénom </span></td>	
+									<td><span th:text="${conges.datedebut}"> Date de début </span></td>
+									<td><span th:text="${conges.datefin}"> Date de fin </span></td>
+									
+												
+								</tr>
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</div>
 		</section>
 		<br>
-		
-		<div class="panel panel-primary " >
-			<div class="panel-heading"> 
-				<h3 class="panel-title">Détails de la demande de congé sélectionnée :</h3>
-			</div>
-			<div class = "panel-body details">
-				<div class="row">
-					<div class = "col-md-6">
-						<h4 id="nom">Nom: xxx</h4>
-						<h4 id="dateD">Date de début: xxx </h4>
-						<h4 id="vC">Validation Chef de Service: xxx</h4>
-					</div>
-					<div class="col-md-6">
-						<h4 id="prenom">Prénom: xxx</h4>
-						<h4 id ="dateF">Date de fin: xxx </h4>
-						<h4 id="vRH">Validation RH: xxx </h4>
-						
-						
-					</div>
+		<section class="row">
+			<div id="panelConges" class="panel panel-primary " >
+				<div class="panel-heading"> 
+					<h3 class="panel-title">Détails de la demande de congé sélectionnée :</h3>
 				</div>
-				<div centered class="row">
-					<a href="" id='accept' class="btn btn-primary btn-lg">
-						<span class="glyphicon glyphicon-ok"></span> 
-					</a> 
-					<a href="" id='refuse' class="btn btn-danger btn-lg">
-						<span class="glyphicon glyphicon-ban-circle"></span> 
-					</a>
+				<div class = "panel-body details">
+					<div class="row">
+						<div class = "col-md-6">
+							<h4 id="nom">Nom: xxx</h4>
+							<h4 id="dateD">Date de début: xxx </h4>
+							<h4 id="vC">Validation Chef de Service: xxx</h4>
+						</div>
+						<div class="col-md-6">
+							<h4 id="prenom">Prénom: xxx</h4>
+							<h4 id ="dateF">Date de fin: xxx </h4>
+							<h4 id="vRH">Validation RH: xxx </h4>
+							
+							
+						</div>
+					</div>
+					<div centered class="row">
+						<a href="" id='accept' class="btn btn-primary btn-lg">
+							<span class="glyphicon glyphicon-ok"></span> 
+						</a> 
+						<a href="" id='refuse' class="btn btn-danger btn-lg">
+							<span class="glyphicon glyphicon-ban-circle"></span> 
+						</a>
+					</div>
+					<br>
 				</div>
-				<br>
+			
 			</div>
-		
-		</div>
+		</section>
 
 		
 	</div>
