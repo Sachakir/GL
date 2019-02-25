@@ -81,11 +81,11 @@ $(document).ready(function () {
         
         $(this).addClass('highlight').siblings().removeClass('highlight');
 		var debut = $(this).find("td:nth-child(2)").text();
-		var d = debut.substring(6,10)+"-"+debut.substring(3,5)+"-"+debut.substring(0,2);
+		var d = debut.substring(6,10)+"-"+debut.substring(3,5)+"-"+debut.substring(0,2)+"T"+debut.substring(11,16);
 		
 		$("#dateD").val(d);
 		var fin = $(this).find("td:nth-child(3)").text();
-		var f = fin.substring(6,10)+"-"+fin.substring(3,5)+"-"+fin.substring(0,2);
+		var f = fin.substring(6,10)+"-"+fin.substring(3,5)+"-"+fin.substring(0,2)+"T"+fin.substring(11,16);
 		
 		$("#dateF").val(f);
 		
@@ -94,9 +94,11 @@ $(document).ready(function () {
         $("#vC").text("Validation Chef de Service: "+$(this).find("td:nth-child(5)").text());
         if($(this).find("td:nth-child(4)").text() == "En attente" && $(this).find("td:nth-child(5)").text() == "En attente"){
 			$("#edit").show();
+			$("#delete").show();
 		}
 		else{
 			$("#edit").hide();
+			$("#delete").hide();
 		}
         
       });
