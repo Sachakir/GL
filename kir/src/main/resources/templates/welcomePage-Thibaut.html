@@ -53,7 +53,7 @@
 						</div>
 						<div class="list-group" th:each="notif : ${notifs}">
 							<a th:href="${notif.lien}" class="list-group-item" data-toggle="modal">
-								<span th:text="${notif.description}"></span>
+								<span th:text="${notif.titre}"></span>
 								<span class="badge" th:text="${notif.date}"></span>
 							</a>
 						</div>

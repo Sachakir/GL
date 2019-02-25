@@ -690,17 +690,17 @@ public class MainController {
 
 		/*** DERNIERES NOTIFS ***/
 		List<Notif> notifs = new ArrayList<Notif>();
-		for (Remboursement r : recentDemandesRemboursement) {
+		/*for (Remboursement r : recentDemandesRemboursement) {
 			Long note_id = RemboursementsNoteService.findNoteIdByDemandeId(r.getDemande_id());
 			String mois = NoteService.findById(note_id).getMois();
 			mois = mois.substring(0, 2) + "-" + mois.substring(3);
 			notifs.add(new Notif(r.getTitre(),
 					r.getTimestamp().toString(),
 					"/remboursements/note=" + mois + "/remboursement_id=" + r.getDemande_id()));
-		}
-		notifs.add(new Notif("la description 1", "la date 1", "https://google.com"));
-		notifs.add(new Notif("la description 2", "la date 2", "https://google.com"));
-		notifs.add(new Notif("la description 3", "la date 3", "https://google.com"));
+		}*/
+		notifs.add(new Notif((long) 4, (long) 30, false, new Date(), "la description 1", "https://google.fr"));
+		notifs.add(new Notif((long) 5, (long) 30, false, new Date(), "la description 2", "https://google.fr"));
+		notifs.add(new Notif((long) 6, (long) 30, false, new Date(), "la description 3", "https://google.fr"));
 		model.addAttribute("notifs", notifs);
 		/*** DERNIERES NOTIFS ***/
         
