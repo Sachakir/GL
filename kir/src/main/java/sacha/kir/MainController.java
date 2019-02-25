@@ -335,7 +335,7 @@ public class MainController {
         return "redirect:/Accueil";
     }
     @GetMapping("/Calendrier")
-    public String getCalendrier(Model model,Principal principal) {
+    public String getCalendrier(Model model,Principal principal) throws Exception {
     	// On selectionne tout les uid
     	List<Utilisateur> cs = UtilisateurService.findAll();
     	for (int i =0;i < cs.size();i++)
@@ -384,7 +384,10 @@ public class MainController {
     							System.out.println(c.getPrenomNom());
     						}
     					}
-    					aujourdhuiConges.add(c);
+    					if (c.getValidationchefservice().equals(Statut.valide.statut()) && c.getValidationrh().equals(Statut.valide.statut()))
+    					{
+        					aujourdhuiConges.add(c);
+    					}
     					for (Utilisateur utilisateur : cs) {
 							if(utilisateur.getUID()==c.getUid()) {
 								aujourdhuiU.add(utilisateur);
@@ -394,6 +397,12 @@ public class MainController {
     			}
     		}
     	}
+    	
+    	Utilisateur validateur = UtilisateurService.findPrenomNom(names[1], names[0]);
+		MembresServiceBdd validateurRoles = MembresServiceBddService.findById(validateur.getUID());
+		long myServiceId = validateurRoles.getServiceId();
+		long uidConges;
+		
     	for(int j=0;j<conges.size();j++) {
 			CongesV2 x = new CongesV2();
 			Conges conge = conges.get(j);
@@ -412,9 +421,35 @@ public class MainController {
 				}
 			}
 			c2.add(x);
-			if(x.getValidationchefservice().equals("EnAttente") || x.getValidationrh().contentEquals("EnAttente")) {
-				demandesConges.add(x);
+			
+			
+			if (validateurRoles.getRoleId() == Role.chefDeService.getRoleId())
+			{
+				uidConges = conges.get(j).getUid();
+				if (MembresServiceBddService.findById(uidConges).getServiceId() == myServiceId)//Du meme service
+				{
+					if (conges.get(j).getValidationchefdeservice().equals(Statut.enAttente.statut()))//Demandes en attente
+					{
+						if (conges.get(j).getUid() != validateur.getUID())//Check si pas autovalidation
+						{
+							demandesConges.add(x);
+						}
+					}
+				}
+				else if (myServiceId == ServicesFixes.ressourcesHumaines.getServiceId() && conges.get(j).getValidationchefdeservice().equals(Statut.valide.statut()) && conges.get(j).getValidationrh().equals(Statut.enAttente.statut()))
+	    		//Service different, mais la demande est validé par leur chef de service
+				{
+					if (conges.get(j).getUid() != validateur.getUID())//Check si pas autovalidation
+					{
+						demandesConges.add(x);
+					}
+				}
 			}
+			else
+			{
+				throw new Exception("Le validateur de conges est n'est pas un chef de service !");
+			}
+			
 			
 		}
     	
