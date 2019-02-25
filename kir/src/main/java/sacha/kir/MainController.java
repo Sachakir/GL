@@ -321,19 +321,21 @@ public class MainController {
     	
         System.out.println(congeForm.getDateDebut());
         System.out.println(congeForm.getDateFin());
-        String[] dateD = congeForm.getDateDebut().split("-");
-        String[] dateF = congeForm.getDateFin().split("-");
+        String[] dateDavecTime = congeForm.getDateDebut().split("T");
+        String[] dateFavecTime = congeForm.getDateFin().split("T");
+        String[] dateD = dateDavecTime[0].split("-");
+        String[] dateF = dateFavecTime[0].split("-");
     	String[] names = principal.getName().split("\\.");
     	Long uID = UtilisateurService.findPrenomNom(names[1], names[0]).getUID();
-    	String dateDebut = dateD[2]+"/"+dateD[1]+"/"+dateD[0];
-    	String dateFin = dateF[2]+"/"+dateF[1]+"/"+dateF[0];
+    	String dateDebut = dateD[2]+"/"+dateD[1]+"/"+dateD[0]+" "+dateDavecTime[1];
+    	String dateFin = dateF[2]+"/"+dateF[1]+"/"+dateF[0]+" "+dateFavecTime[1];
     	System.out.println("Type: "+congeForm.getType());
     	boolean rtt;
     	if(congeForm.getType().equals("0"))
     		rtt=false;
     	else
     		rtt=true;
-    	System.out.println("Type en entrée: "+congeForm.getType()+" type en sortie: "+rtt);
+    	
     	CongesService.addConges(dateDebut, dateFin, uID,rtt);
         
         return "redirect:/Accueil";

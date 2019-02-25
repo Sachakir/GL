@@ -226,15 +226,20 @@ function editer(){
 
 function verifDateD(){
 	
-	var dateDebut = $("#dateD").val().split("-");
-	var dateFin = $("#dateF").val().split("-");
+	var dateFinWtime = $("#dateF").val().split("T");
+	var dateDebutWtime = $("#dateD").val().split("T");
+	var dateFin = dateFinWtime[0].split("-");
+	var dateDebut = dateDebutWtime[0].split("-");
 	var now = new Date();
-	var debut = new Date(dateDebut[0],dateDebut[1]-1,dateDebut[2]);
-	var fin = new Date(dateFin[0],dateFin[1]-1,dateFin[2]);
-    var day = ("0" + now.getDate()).slice(-2);
-    var month = ("0" + (now.getMonth() + 1)).slice(-2);
-    var dateString = now.getFullYear()+"-"+(month)+"-"+(day) ;
-
+	var tomorrow = new Date(now.getTime() + 86400000);
+	/*var fin = new Date(dateFin[0],dateFin[1]-1,dateFin[2]);
+	var debut = new Date(dateDebut[0],dateDebut[1]-1,dateDebut[2]);*/
+	var fin = new Date($("#dateF").val());
+	var debut = new Date($("#dateD").val());
+    var day = ("0" + tomorrow.getDate()).slice(-2);
+    var month = ("0" + (tomorrow.getMonth() + 1)).slice(-2);
+    var dateString = tomorrow.getFullYear()+"-"+(month)+"-"+(day)+"T"+dateDebutWtime[1] ;
+	
 	
 	if(debut.getTime()<now.getTime()){
 		alert("Entrez une date de début ultérieure à aujourd'hui");
@@ -256,15 +261,19 @@ function verifDateD(){
 	
 }
 function verifDateF(){
-	
-	var dateFin = $("#dateF").val().split("-");
-	var dateDebut = $("#dateD").val().split("-");
+	var dateFinWtime = $("#dateF").val().split("T");
+	var dateDebutWtime = $("#dateD").val().split("T");
+	var dateFin = dateFinWtime[0].split("-");
+	var dateDebut = dateDebutWtime[0].split("-");
 	var now = new Date();
-	var fin = new Date(dateFin[0],dateFin[1]-1,dateFin[2]);
-	var debut = new Date(dateDebut[0],dateDebut[1]-1,dateDebut[2]);
-    var day = ("0" + now.getDate()).slice(-2);
-    var month = ("0" + (now.getMonth() + 1)).slice(-2);
-    var dateString = now.getFullYear()+"-"+(month)+"-"+(day) ;
+	var tomorrow = new Date(now.getTime() + 86400000);
+	/*var fin = new Date(dateFin[0],dateFin[1]-1,dateFin[2]);
+	var debut = new Date(dateDebut[0],dateDebut[1]-1,dateDebut[2]);*/
+	var fin = new Date($("#dateF").val());
+	var debut = new Date($("#dateD").val());
+    var day = ("0" + tomorrow.getDate()).slice(-2);
+    var month = ("0" + (tomorrow.getMonth() + 1)).slice(-2);
+    var dateString = tomorrow.getFullYear()+"-"+(month)+"-"+(day)+"T"+dateFinWtime[1] ;
 	if(fin.getTime()<now.getTime()){
 		alert("Entrez une date de fin ultérieure à aujourd'hui");
 		
@@ -289,9 +298,10 @@ function verifDateF(){
 	
 }
 function validationAjoutUtilisateur(){
-	var deb = new Date($("#dateD").val() + ' 00:00');
-	var fi = new Date($("#dateF").val() + ' 00:00');
-	var dureeConge = dayDiff(deb,fi);
+	
+	var deb = new Date($("#dateD").val());
+	var fi = new Date($("#dateF").val());
+	var dureeConge = heureDiff(deb,fi);
 	var days = $("#days").text().split(" ");
 	var rtt = $("#daysrtt").text().split(" ");
 	var msgBool =0;
@@ -325,4 +335,20 @@ function dayDiff(d1, d2)
   d1 = d1.getTime() / 86400000;
   d2 = d2.getTime() / 86400000;
   return new Number(d2 - d1).toFixed(0);
+}
+function heureDiff(d1, d2)
+{
+  
+  var x1 = d1.getTime() / 86400000;
+  var x2 = d2.getTime() / 86400000;
+  var jours = new Number(x2 - x1).toFixed(0);
+  d1 = d1.getTime() / 3600000;
+  d2 = d2.getTime() / 3600000;
+  var heures =d2-d1;
+  alert("heure: "+ heures + " jours: " + jours);
+  if(heures%24>4)
+	  jours+=1.0;
+  else if(heures%24>0 && heures%24<=4)
+	  jours+=0.5;
+  return jours;
 }

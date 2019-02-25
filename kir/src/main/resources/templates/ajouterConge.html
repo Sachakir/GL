@@ -30,8 +30,8 @@
 						<form action="#" th:action="@{/AjouterConge}" th:object="${congeForm}" method="post" onsubmit="return validationAjoutUtilisateur();">
 							
 							
-							<h4 >Date de début: <input id="dateD" type="date" th:field="*{dateDebut}" onchange="verifDateD();"></h4>
-							<h4 >Date de fin:   <input id="dateF" type="date" th:field="*{dateFin}" onchange="verifDateF();"></h4>
+							<h4 >Date de début: <input id="dateD" type="datetime-local" th:field="*{dateDebut}" onchange="verifDateD();"></h4>
+							<h4 >Date de fin:   <input id="dateF" type="datetime-local" th:field="*{dateFin}" onchange="verifDateF();"></h4>
 							
 							<div class="row">
 								<div class ="mLeft" th:each="typ : ${types}">
