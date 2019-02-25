@@ -11,38 +11,47 @@
 		<!--Barre de navigation-->
 		<div th:replace="~{navBar :: #navBar}"></div>
 
+		<br>
+		<br>
+
 		<!--Affichage infos utilisateur-->
-        <form class="form-horizontal" centered>
-            <div class="form-group">
-                <label for="nom" class="control-label">Nom</label>
-				<div>
-					<span th:text="${userform.nom}"> Nom </span>
-				</div>
-            </div>
-            <div class="form-group">
-                <label for="prenom" class="control-label">Prénom</label>
-				<div class="form group">
-					<span th:text="${userform.prenom}"> Nom </span>
-				</div>
-            </div>
-            <div class="form-group">
-                <label for="téléphone" class="control-label">Telephone</label>
-				<div class="form group">
-					<span th:text="${userform.numTel}"> NumTel </span>
-				</div>
-            </div>
-            <div class="form-group">
-                <label for="service" class="control-label">Service</label>
-				<div class="form group">
-					<span th:text="${service}"> service </span>
-				</div>
-        	</div>
-        	<div class="form-group">
-				<div>
-					<a href="/changeMdp">Modifier le mot de passe?</a>
-				</div>
-        	</div>
-    	</form>
+		<section class="row">
+			<div class=" col-md-offset-4 col-md-4 panel panel-primary">
+				<br>
+		        <form class="form-horizontal" centered>
+		            <div class="form-group">
+		                <label for="nom" class="control-label">Nom</label>
+						<div>
+							<span th:text="${userform.nom}"> Nom </span>
+						</div>
+		            </div>
+		            <div class="form-group">
+		                <label for="prenom" class="control-label">Prénom</label>
+						<div class="form group">
+							<span th:text="${userform.prenom}"> Nom </span>
+						</div>
+		            </div>
+		            <div class="form-group">
+		                <label for="téléphone" class="control-label">Telephone</label>
+						<div class="form group">
+							<span th:text="${userform.numTel}"> NumTel </span>
+						</div>
+		            </div>
+		            <div class="form-group">
+		                <label for="service" class="control-label">Service</label>
+						<div class="form group">
+							<span th:text="${service}"> service </span>
+						</div>
+		        	</div>
+		        	<div class="form-group">
+						<div>
+							<a href="/changeMdp" class="btn btn-primary">Modifier le mot de passe</a>
+						</div>
+		        	</div>
+		    	</form>
+		    	<br>
+		    </div>
+	    </section>
 
 
 

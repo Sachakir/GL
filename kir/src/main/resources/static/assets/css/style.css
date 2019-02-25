@@ -116,7 +116,7 @@ a:active, a:focus { outline:none; }
     }
 
     .navbar-default .navbar-nav .open .dropdown-menu > li > a {
-    color: #FFF;
+    color: #132f5d;
   }
   .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover {
     color: #132f5d;
@@ -163,7 +163,7 @@ a:active, a:focus { outline:none; }
   z-index: 2;
   display: none; // Enable this after jquery implementation 
 }
-// Popup Arrow
+
 #notificationContainer:before {
   content: '';
   display: block;
@@ -256,6 +256,7 @@ a:active, a:focus { outline:none; }
 #calendar{
 /* 		float: right; */
 margin: 0 auto;
+margin-bottom: 20px;
 background-color: #FFFFFF;
   border-radius: 6px;
 box-shadow: 0 1px 2px #C3C3C3;
@@ -276,6 +277,9 @@ box-shadow: 0px 0px 21px 2px rgba(0,0,0,0.18);
 #calendarCGestion{
 /* 		float: right; */
 margin: 0 auto;
+margin-right: 30px;
+margin-bottom: 20px;
+float :right;
 background-color: #FFFFFF;
   border-radius: 6px;
 box-shadow: 0 1px 2px #C3C3C3;
