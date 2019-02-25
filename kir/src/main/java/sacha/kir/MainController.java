@@ -40,6 +40,7 @@ import sacha.kir.bdd.mission.InterfaceMissionService;
 import sacha.kir.bdd.mission.Mission;
 import sacha.kir.bdd.note.InterfaceNoteService;
 import sacha.kir.bdd.note.Note;
+import sacha.kir.bdd.notif.Notif;
 import sacha.kir.bdd.remboursement.InterfaceRemboursementService;
 import sacha.kir.bdd.remboursement.Remboursement;
 import sacha.kir.bdd.remboursement.Statut;
@@ -53,7 +54,6 @@ import sacha.kir.bdd.utilisateur.Utilisateur;
 import sacha.kir.bdd.utilisateur.UtilisateurRepository;
 import sacha.kir.form.CongeForm;
 import sacha.kir.form.CongesV2;
-import sacha.kir.form.Notif;
 import sacha.kir.form.UserForm;
  
 @Controller

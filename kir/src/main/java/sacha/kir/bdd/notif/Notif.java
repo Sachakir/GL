@@ -1,4 +1,4 @@
-package sacha.kir.form;
+package sacha.kir.bdd.notif;
 
 public class Notif {
 
