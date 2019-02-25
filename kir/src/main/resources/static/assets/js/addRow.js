@@ -74,13 +74,7 @@ $(document).ready(function () {
         
         $("#accept").attr("href","/ValidationConges/"+$(this).find("td:nth-child(7)").text());
 	    $("#refus").attr("href","/RefusConges/"+$(this).find("td:nth-child(7)").text());
-		var fic = "/ValidationC/";
-        fic=fic+$(this).find("td:nth-child(7)").text();
-		document.getElementById('accept').href = fic;
 		
-		var fic2 = "/RefusC/";
-        fic2=fic2+$(this).find("td:nth-child(7)").text();
-		document.getElementById('refuse').href = fic2;
         
       });
 	  $('#demandesGestion').on('click', 'tbody tr', function(event) {
@@ -137,6 +131,7 @@ $(document).ready(function () {
 			}
 		}
 	});
+	
 	$('#calendarCGestion').fullCalendar({
 		defaultDate: d,
 		editable: true,
