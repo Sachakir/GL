@@ -495,10 +495,12 @@ public class MainController {
     @PostMapping("/GererConges")
     public String editconge(@Valid CongeForm congeForm,BindingResult bindingResult,Model model, Principal principal) {
     	
-    	String[] dateD = congeForm.getDateDebut().split("-");
-        String[] dateF = congeForm.getDateFin().split("-");
-        String dateDebut = dateD[2]+"/"+dateD[1]+"/"+dateD[0];
-    	String dateFin = dateF[2]+"/"+dateF[1]+"/"+dateF[0];
+    	String[] dateDavecTime = congeForm.getDateDebut().split("T");
+        String[] dateFavecTime = congeForm.getDateFin().split("T");
+    	String[] dateD = dateDavecTime[0].split("-");
+        String[] dateF = dateFavecTime[0].split("-");
+        String dateDebut = dateD[2]+"/"+dateD[1]+"/"+dateD[0]+" "+dateDavecTime[1];
+    	String dateFin = dateF[2]+"/"+dateF[1]+"/"+dateF[0]+" "+dateFavecTime[1];
     	long congeID = congeForm.getCongesid();
     	System.out.println("\nDate de début: "+dateDebut + "\n Date de fin: "+dateFin+"\nCongeID: "+congeID);
     	CongesService.updateConges(congeID, dateDebut, dateFin);
