@@ -29,7 +29,7 @@
             <br/>
             
             <div>Date : </div>  
-            <div th:text="${remboursement.date}"></div>
+            <div th:text="${#temporals.format(remboursement.date, 'dd/MM/yyyy')}"></div>
             <br/>
             
             <div>Motif : </div>  

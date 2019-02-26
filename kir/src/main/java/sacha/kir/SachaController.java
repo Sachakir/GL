@@ -292,7 +292,7 @@ public class SachaController
 	    				{
 	    					Utilisateur tmpUs = UtilisateurService.findById(allRemboursements.get(i).getUid());
 	        				RemboursementV2 tmpRem = new RemboursementV2();
-	        				tmpRem.setDate(allRemboursements.get(i).getDate());
+	        				tmpRem.setDate(allRemboursements.get(i).getDate().toString());
 	        				tmpRem.setDemande_id(allRemboursements.get(i).getDemande_id());
 	        				tmpRem.setJustificatifid(allRemboursements.get(i).getJustificatifid());
 	        				tmpRem.setMission_id(allRemboursements.get(i).getMission_id());
@@ -311,10 +311,10 @@ public class SachaController
     			//Service different, mais la demande est validé par leur chef de service
     			{
     				if (allRemboursements.get(i).getUid() != ut.getUID())//Check si pas autovalidation
-    				{
+    				{					
     					Utilisateur tmpUs = UtilisateurService.findById(allRemboursements.get(i).getUid());
         				RemboursementV2 tmpRem = new RemboursementV2();
-        				tmpRem.setDate(allRemboursements.get(i).getDate());
+        				tmpRem.setDate(allRemboursements.get(i).getDate().toString());
         				tmpRem.setDemande_id(allRemboursements.get(i).getDemande_id());
         				tmpRem.setJustificatifid(allRemboursements.get(i).getJustificatifid());
         				tmpRem.setMission_id(allRemboursements.get(i).getMission_id());

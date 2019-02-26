@@ -23,11 +23,10 @@
                 <div class="form-group">
                     <label class="control-label" for="titreMission">Mission associée</label>  
                     <div>
-                        <select id="titreMission" name="titreMission" th:field="*{mission}">
+                        <select id="titreMission" class="form-control" name="titreMission" th:field="*{mission}">
                             <option value=""> -- </option>
                             <option th:each="mission : ${missions}" th:value="${mission.mission_id}" th:text="${mission.mission_id} + ' : ' + ${mission.titre}"></option>
                         </select>
-                        <br/>
                         <label class="bg-warning text-danger" th:if="${#fields.hasErrors('mission')}" th:errors="*{mission}"></label>
                     </div>
                 </div>
@@ -46,9 +45,9 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label" for="date">Date (format dd/mm/yyyy)</label>  
+                    <label class="control-label" for="date">Date (antérieure à la date d'aujourd'hui, dans le mois de la note)</label>  
                     <div>
-                        <input id="date" name="date" type="text" placeholder="ex : 31/12/2019" class="form-control input-md" th:field="*{date}">
+                        <input id="date" name="date" type="date" class="form-control" th:field="*{date}" style="height:100%;">
                         <label class="bg-warning text-danger" th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></label>
                     </div>
                 </div>

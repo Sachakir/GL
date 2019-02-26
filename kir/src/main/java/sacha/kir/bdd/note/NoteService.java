@@ -19,21 +19,10 @@ public class NoteService implements InterfaceNoteService {
 		List<Note> users = (List<Note>) repository.findAll();
 		return users;
 	}
-
-	@Override
-	public void addNote()
-	{
-		Note n = new Note();
-		n.setMois("01/2019");
-		n.setNote_id((long) 4);
-		n.setUid((long) 30);
-		
-		repository.save(n);
-	}
 	
 	@Override
 	public Note addNote(String mois, long uid) {
-		DateFormat df = new SimpleDateFormat("MM/yyyy");
+		DateFormat df = new SimpleDateFormat("MM-yyyy");
 		try {
 			df.parse(mois);
 			System.out.println("Parsing succes");

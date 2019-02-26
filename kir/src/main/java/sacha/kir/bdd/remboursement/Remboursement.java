@@ -1,13 +1,12 @@
 package sacha.kir.bdd.remboursement;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "remboursement")
@@ -24,7 +23,7 @@ public class Remboursement {
 	private float montant;
 	
 	@Column(name="Date")
-	private String date;
+	private LocalDate date;
 	
 	@Column(name="Motif")
 	private String motif;
@@ -44,15 +43,14 @@ public class Remboursement {
 	@Column(name="MissionID")
 	private Long mission_id;
 	
-	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="Timestamp")
-	private final Date timestamp;
+	private final LocalDateTime timestamp;
 	
 	public Remboursement() {
-		this.timestamp = new Date();
+		this.timestamp = LocalDateTime.now();
 	}
 
-	public Remboursement(Long demande_id, String titre, float montant, String date, String motif, String validationfinances,
+	public Remboursement(Long demande_id, String titre, float montant, LocalDate date, String motif, String validationfinances,
 			String validationchefservice, Long justificatifid, Long uid, Long mission_id) {
 		this();
 		this.demande_id = demande_id;
@@ -91,11 +89,11 @@ public class Remboursement {
 		this.montant = montant;
 	}
 
-	public String getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
 
-	public void setDate(String date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 
@@ -147,7 +145,7 @@ public class Remboursement {
 		this.mission_id = mission_id;
 	}
 	
-	public Date getTimestamp() {
+	public LocalDateTime getTimestamp() {
 		return timestamp;
 	}
 

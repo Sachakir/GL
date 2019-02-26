@@ -42,7 +42,7 @@
 							<div class="form-group">
 								<label class="control-label" for="dateNaissance">Date de naissance</label>  
 								<div>
-									<input id="dateNaissance" name="dateNaissance" type="text" placeholder="ex : 31/12/2019" class="form-control input-md" th:field="*{dateNaissance}">
+									<input id="dateNaissance" name="dateNaissance" type="date" class="form-control input-md" th:field="*{dateNaissance}" style="height:100%;">
 									<label th:if="${#fields.hasErrors('dateNaissance')}" th:errors="*{dateNaissance}">erreur dateNaissance</label>
 								</div>
 							</div>

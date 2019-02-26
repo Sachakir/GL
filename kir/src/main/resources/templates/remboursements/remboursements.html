@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title th:utext="${title}"></title>
+	<meta charset="utf-8">
+	<link href="/assets/css/bootstrap.css" rel="stylesheet">
+	<link rel="stylesheet" href="/assets/css/style.css" />   
+</head>
+
+<body>
+
+	<div id='calendar'></div>
+	<div class="container">
+	
+		<div th:replace="~{navBar :: #navBar}"></div>
+		<br>
+		<br>
+		<section class="row">
+			<div class="col-md-4">
+				<section class="row">
+					<div class="col-md-10">
+						<div class="panel panel-primary">
+							<div class="panel-heading">
+								<h3 class="panel-title">Notes de frais</h3>
+							</div>
+							<div class="list-group">
+								<a th:if="${note == null}" th:href="@{'/remboursements/creer-note-frais?mois=actuel'}" th:text="'Créer une note de frais pour le ' + ${moisActuel} + ' (mois actuel)'" class="list-group-item" data-toggle="modal"></a>
+								<a th:if="${note != null}" th:href="@{'/remboursements/note=' + ${note.mois}}" th:text="${moisNotes[note.note_id]} + ' (mois actuel)'" class="list-group-item" data-toggle="modal"></a>
+								<a th:if="${noteMoisPrecedent == null}" th:href="@{'/remboursements/creer-note-frais?mois=precedent'}" th:text="'Créer une note de frais pour le ' + ${moisPrecedent} + ' (mois précédent)'" class="list-group-item" data-toggle="modal"></a>
+								<a th:if="${noteMoisPrecedent != null}" th:href="@{'/remboursements/note=' + ${noteMoisPrecedent.mois}}" th:text="${moisNotes[noteMoisPrecedent.note_id]} + ' (mois précédent)'" class="list-group-item" data-toggle="modal"></a>
+								<div th:if="${not #lists.isEmpty(listeNotes)}">
+									<div class="panel-heading" style="background:#337ab7;">
+										<h3 class="panel-title" style="color:white;">Autres notes de frais</h3>
+									</div>
+									<a th:each="note : ${listeNotes}" th:href="@{'/remboursements/note=' + ${note.mois}}" th:text="${moisNotes[note.note_id]}" class="list-group-item" data-toggle="modal"></a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
+			<div class="col-md-8">
+				<div th:if="${note != null}" th:replace="~{/remboursements/remboursementList :: #remboursementList}"></div>
+			</div>
+		</section>
+	</div>
+
+
+<script type="text/javascript" src="/assets/js/jquery.js"></script>
+<script type="text/javascript" src="/assets/js/bootstrap.js"></script>
+<script type="text/javascript" src="/assets/js/scripts.js"></script>  
+</body>
+</html>

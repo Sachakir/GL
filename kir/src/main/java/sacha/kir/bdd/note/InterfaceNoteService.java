@@ -4,7 +4,6 @@ import java.util.List;
 
 public interface InterfaceNoteService {
 	public List<Note> findAll();
-	public void addNote();
 	public Note addNote(String mois, long uid);
 	public Note findNoteByMonthAndUID(String mois, long uid);
 	public List<Note> findAllById(long uid);

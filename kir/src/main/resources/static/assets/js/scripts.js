@@ -1,5 +1,7 @@
 $(document).ready(function()
 {
+	/*$(".form_datetime").datetimepicker({format: 'dd/mm/yyyy'});*/
+	
 	$("#notificationLink").click(function()
 	{
 		$("#notificationContainer").fadeToggle(300);
