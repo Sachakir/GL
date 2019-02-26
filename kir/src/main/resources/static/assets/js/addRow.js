@@ -73,7 +73,7 @@ $(document).ready(function () {
         $("#vC").text("Validation Chef de Service: "+$(this).find("td:nth-child(5)").text());
         
         $("#accept").attr("href","/ValidationConges/"+$(this).find("td:nth-child(7)").text());
-	    $("#refus").attr("href","/RefusConges/"+$(this).find("td:nth-child(7)").text());
+	    $("#refuse").attr("href","/RefusConges/"+$(this).find("td:nth-child(7)").text());
 		
         
       });
@@ -102,15 +102,7 @@ $(document).ready(function () {
 		}
         
       });
-	  $("#dateD").onchange=function(){
-		  alert($("#dateD").val());
-		  $('#calendarC').fullCalendar('removeEvents');
-			$('#calendarC').fullCalendar('renderEvent', {
-				title: 'congé',
-				start: $("#dateD").val(),
-				end: $("#dateF").val()
-			});
-	  };
+	  
 	var today = new Date();
 	var d = $.fullCalendar.moment(today);
 	$('#calendarC').fullCalendar({
@@ -122,8 +114,9 @@ $(document).ready(function () {
 		
 		select: function(startDate, endDate) {
 			if(today.getTime()<startDate && today.getTime()<endDate){
-				$("#dateD").val(startDate.format());
-				$("#dateF").val(endDate.format());
+				
+				$("#dateD").val(startDate.format()+"T08:00");
+				$("#dateF").val(endDate.format()+"T08:00");
 				$('#calendarC').fullCalendar('removeEvents');
 				$('#calendarC').fullCalendar('renderEvent', {
 					title: 'Congé',

@@ -135,9 +135,10 @@
 
 	<script type="text/javascript" th:inline="javascript">
 		$(document).ready(function() {
-
+			var today = new Date();
+			var d = $.fullCalendar.moment(today);
 			$('#calendar').fullCalendar({
-				defaultDate: '2019-01-12',
+				defaultDate: d,
 				editable: true,
 				  eventLimit: true,
 				  selectable: true,
