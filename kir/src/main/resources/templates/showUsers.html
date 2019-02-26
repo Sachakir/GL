@@ -13,7 +13,7 @@
 		<div th:replace="~{navBar :: #navBar}"></div>
 		
 		<div th:if="${editForm != null}" class="col-md-4 text-center center-block" style="margin-bottom:20px;">
-			<div style="background:white; border: solid 1px #337ab7; border-radius: 4px;">
+			<div class="border-detail">
 				<div class="panel panel-primary" style="margin-bottom:0px;">
 					<div class="panel-heading">
 						<h3 class="panel-title">Informations sur l'utilisateur</h3>
@@ -170,7 +170,7 @@
 						<p>Voulez-vous vraiment supprimer cet utilisateur?</p>
 					</div>
 					<div class="modal-footer">
-						<a class="btn btn-danger" id="deleteButton" onclick="deleteUser()">Delete</a>
+						<a class="btn btn-danger" id="deleteButton" onclick="deleteUser()">Supprimer</a>
 						<button type="button" class="btn btn-primary" data-dismiss="modal">Annuler</button>
 					</div>
 				</div>

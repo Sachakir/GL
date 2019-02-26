@@ -1,5 +1,6 @@
 package sacha.kir.bdd.membresmission;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +35,23 @@ public class MembresMissionService implements InterfaceMembresMissionService{
 	@Override
 	public void deleteMembresMission(long uid) {
 		repository.deleteMembresMission(uid);
+	}
+	
+	@Override
+	public void deleteMembresByMissionId(long mission_id) {
+		repository.deleteMembresByMissionId(mission_id);
+	}
+	
+	@Override
+	public List<Long> findMembersByMissionId(long mission_id) {
+		List<MembresMission> users = findAll();
+		List<Long> mission_members = new ArrayList<Long>();
+		for(MembresMission m : users) {
+			if(m.getMission_id() == mission_id) {
+				mission_members.add(m.getMembre_uid());
+			}
+		}
+		
+		return mission_members;
 	}
 }

@@ -1,0 +1,165 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title th:utext="${title}"></title>
+	<meta charset="utf-8">
+	<link href="/assets/css/bootstrap.css" rel="stylesheet">
+	<link rel="stylesheet" href="/assets/css/style.css" />
+</head>
+
+<body>
+	<div class="container">
+		<div th:replace="~{navBar :: #navBar}"></div>
+
+		<br>
+		
+		<div class="col-md-offset-2 col-md-8">
+			<div class="panel panel-primary table-responsive">
+				<div class="panel-heading"> 
+					<h3 class="panel-title">Liste des utilisateurs</h3>
+				</div>
+				<table class="table table-striped table-condensed table-bordered" style="margin-bottom:0px;">
+					<colgroup>
+						<col style="width:80%" span="1" />
+						<col style="width:10%" span="2" />
+					</colgroup>
+					<tr>
+						<td class="scroll-head">Nom</td>
+						<td class="scroll-head">Détails</td>
+						<td class="scroll-head">Suppr</td>
+					</tr>
+				</table>
+				<div class="scroll">
+					<table class="table table-striped table-condensed table-bordered" style="margin-bottom:0px;">
+						<tr th:if="${mesmissions.empty}">
+							<td colspan="3">Pas de mission !</td>
+						</tr>
+						<colgroup>
+							<col style="width:80%" span="1" />
+							<col style="width:10%" span="2" />
+						</colgroup>
+						<tr th:each="missionSelected : ${mesmissions}">
+							<td><span th:text="${missionSelected.titre}"></span></td>
+							<td>
+								<a id="details" th:href="@{'/missions?mission_id='+${missionSelected.mission_id}}" type="button" class="btn btn-primary">
+									<span class="glyphicon glyphicon-search"></span>
+								</a>
+							</td>
+							<td>
+								<button th:id="${missionSelected.mission_id}" data-toggle="modal" data-target="#warning_msg" value="suppr" type="button" class="btn btn-danger" >
+										<span class="glyphicon glyphicon-ban-circle"></span>
+								</button>
+							</td>			
+						</tr>
+					</table>
+				</div>
+				<a type="button" class="btn btn-success btn-block" th:href="@{/missions/create}">
+					<h3 class="panel-title" style="font-weight:bold;">Créer une nouvelle mission</h3>
+				</a>
+			</div>
+		</div>
+		
+		<div th:if="${mission != null}" class="col-md-12 center-block text-center border-detail" style="padding:0px 0px;">
+			<div class="panel panel-primary table-responsive">
+				<div class="panel-heading" style="width:100%"> 
+					<h3 class="panel-title" th:text="'Détail de demande de remboursement : ' + ${mission.titre}"></h3>
+				</div>
+			</div>
+			<form class="form-horizontal" action="#" th:action="@{/missions/edit}" method="post">
+			<div th:object="${mission}">
+				<input type="hidden" th:field="*{mission_id}">
+				<input type="hidden" th:field="*{titre}">
+				<input type="hidden" th:field="*{description}">
+				<input type="hidden" th:field="*{date_debut}">
+				<input type="hidden" th:field="*{date_fin}">
+				<input type="hidden" th:field="*{responsable_id}">
+				<div class="col-md-offset-1 col-md-10" style="text-align: left">
+					<span th:text="'Description : ' + ${mission.description}"></span> <br>
+					<span th:text="'Date de début : ' + ${mission.date_debut}"></span> <br>
+					<span th:text="'Date de fin : ' + ${mission.date_fin}"></span> <br>
+				</div>
+			</div>
+				
+				<div class="form-group">
+					<label class="control-label" for="userList">Modifiez les membres de la mission</label>
+					<div th:object="${userList}">
+						<br>
+						<div class="row">						
+							<div class="col-md-4 col-md-offset-1">
+								<div class="panel panel-default"> 
+									<span class="panel">Membres de la mission</span>
+								</div>
+								<select id="selectedPeople" class="form-control">
+									<option value="all" selected="selected">Tous les services</option>
+									<option th:each="service_id, id : ${services_ids}" th:value="${id.index+1}" th:text="${services.get(service_id)}"></option>
+								</select>
+	
+								<select class="service-sel form-control" id="allSelected" multiple="multiple">
+									<option th:each="user : ${membres}" th:value="${user.UID}" th:text="${user.UID} + ' : ' + ${user.Prenom} + ' ' + ${user.Nom}"></option>
+								</select>
+								<div th:each="service_id, id : ${services_ids}">
+									<select class="service-sel form-control" th:id="'selected' + ${id.index+1}" multiple="multiple" style="display:none;">
+										<option th:each="user : ${membresServices.get(service_id)}" th:value="${user.UID}" th:text="${user.UID} + ' : ' + ${user.Prenom} + ' ' + ${user.Nom}">
+									</select>
+								</div>
+							</div>
+							<div class="col-md-2" align="center" style="margin-bottom:20px; margin-top:20px;">
+								<button id="leftbtn" type="button" class="btn btn-primary"><<</button>
+								<button id="rightbtn" type="button" class="btn btn-primary">>></button>
+							</div>
+							<div class="col-md-4">
+								<div class="panel panel-default"> 
+									<span class="panel">Membres disponibles</span>
+								</div>
+								<select id="servicesPeople" class="form-control">
+									<option value="all" selected="selected">Tous les services</option>
+									<option th:each="service_id, id : ${services_ids}" th:value="${id.index+1}" th:text="${services.get(service_id)}"></option>
+								</select>
+	
+								<select class="service-sel form-control" id="allServices" multiple="multiple">
+									<option th:each="user : ${nonMembres}" th:value="${user.UID}" th:text="${user.UID} + ' : ' + ${user.Prenom} + ' ' + ${user.Nom}"></option>
+								</select>
+								<div th:each="service_id, id : ${services_ids}">
+									<select class="service-sel form-control" th:id="'service' + ${id.index+1}" multiple="multiple" style="display:none;">
+										<option th:each="user : ${nonMembresServices.get(service_id)}" th:value="${user.UID}" th:text="${user.UID} + ' : ' + ${user.Prenom} + ' ' + ${user.Nom}"></option>
+									</select>
+								</div>
+							</div>
+							<input type="hidden" id="missionMembers" value="" th:field="*{userList}">
+						</div>
+					</div>
+				</div>
+				<div>
+					<button id="postMission" name="" class="btn btn-primary" type="submit">Soumettre</button>
+				</div>
+			</form>
+		</div>
+		
+		<div class="modal fade" id="warning_msg" role="dialog">
+			<div class="modal-dialog modal-sm"> 
+				<div class="modal-content panel-danger">
+					<div class="modal-header panel-heading">
+						<button type="button" class="close" data-dismiss="modal">x</button>
+						<h4 class="modal-title">Confirmation de suppression</h4>
+					</div>
+					<div class="modal-body">
+						<p>Voulez-vous vraiment supprimer cette mission ?</p>
+					</div>
+					<div class="modal-footer">
+						<a class="btn btn-danger" id="deleteButton" onclick="deleteMission()">Supprimer</a>
+						<button type="button" class="btn btn-primary" data-dismiss="modal">Annuler</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+
+
+	<script type="text/javascript" src="/assets/js/jquery.js"></script>
+	<script type="text/javascript" src="/assets/js/bootstrap.js"></script>
+	<script type="text/javascript" src="/assets/js/scripts.js"></script>
+	<script type="text/javascript" src="/assets/js/addUserToMission.js"></script>
+
+</body>
+</html>

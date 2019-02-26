@@ -10,6 +10,7 @@ $(document).ready(function() {
 	
 	$("#rightbtn").click(function() {
 		swapSelectedLine("#selectedPeople", "#allSelected", "#selected", "#allServices", "#service");
+		var arr = [];
 		$("#allSelected > option").each(function(){
 	 		arr.push(this.value);
 		});
@@ -78,6 +79,7 @@ function swapSelectedLine(startListId, startAllId, startElemId, endAllId, endEle
 }
 
 function showHide(listId, allId, elemId) {
+	console.log("Ola");
 	var id = $(listId + " option:selected").val();
 	var listLength = $(listId + " option").length;
 	for (var i = 0; i < listLength; i++) {

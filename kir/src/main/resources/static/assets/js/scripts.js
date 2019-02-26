@@ -104,6 +104,22 @@ function deleteRemboursement() {
 	});
 }
 
+function deleteMission() {
+	$.ajax(
+	{
+		url: "/missions/delete?id="+idSuppr,
+		success: function() 
+		{ 
+			$("#formulaire").modal("hide");
+			location.reload();
+		},
+		error: function()
+		{
+			alert("Echec de la suppression");
+		}
+	});
+}
+
 $(function() {
   $(document).on('change', ':file', function() {
     var input = $(this),

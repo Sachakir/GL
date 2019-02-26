@@ -7,4 +7,6 @@ public interface InterfaceMembresMissionService {
 	public void addMembresMission(MembresMission membreMission);
 	public List<Long> findMissionsByUID (Long userId);
 	public void deleteMembresMission(long uid);
+	public void deleteMembresByMissionId(long mission_id);
+	public List<Long> findMembersByMissionId(long mission_id);
 }

@@ -8,4 +8,5 @@ public interface InterfaceMissionService {
 	public Mission findMissionById(Long missionId);
 	public List<Mission> findMissionsById(List<Long> missionIds);
 	public int getMaxMissionId();
+	public void deleteMissionById(long mission_id);
 }

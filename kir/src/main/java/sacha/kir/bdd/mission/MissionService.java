@@ -25,11 +25,13 @@ public class MissionService implements InterfaceMissionService{
 		repository.save(mission);
 	}
 	
+	@Override
 	public Mission findMissionById(Long missionId)
 	{
 		return repository.findById(missionId).orElse(null);
 	}
 	
+	@Override
 	public List<Mission> findMissionsById(List<Long> missionIds)
 	{
 		List<Mission> missions = new ArrayList<Mission>();
@@ -53,6 +55,13 @@ public class MissionService implements InterfaceMissionService{
 		{
 			return repository.getMaxMissionId();
 		}
+	}
+	
+	@Override
+	public void deleteMissionById(long mission_id) {
+		Mission m = repository.findById(mission_id).orElse(null);
+		if(m != null)
+			repository.delete(m);
 	}
 
 }

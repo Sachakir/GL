@@ -1,9 +1,7 @@
 package sacha.kir;
 
 import java.security.Principal;
-import java.time.Duration;
 import java.time.LocalDate;
-import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -14,13 +12,16 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import sacha.kir.bdd.approle.InterfaceAppRoleService;
 import sacha.kir.bdd.appuser.InterfaceAppUserService;
@@ -267,74 +268,6 @@ public class SachaController
 		return "redirect:/adminShow";
     }
 	
-	@GetMapping("/newMission")
-    public String addMission(Mission mission,Model model)
-    {	
-		// Services et id respectifs
-		List<Long> services_ids = ServiceBddService.getServiceIdList();
-		Map<Long, String> services = ServiceBddService.getAllServiceNames();
-		
-		// Stockage des chefs de services et utilisateurs
-		List<Utilisateur> chefsServices = new ArrayList<Utilisateur>();
-		List<Utilisateur> utilisateurs = new ArrayList<Utilisateur>();
-		Map<Long, List<Utilisateur>> utilisateursServices = new HashMap<Long, List<Utilisateur>>();
-		
-		for(long service_id : services_ids) {
-			// Initialisation pour le service
-			utilisateursServices.put(service_id, new ArrayList<Utilisateur>());
-			
-			List<Long> membresService =  MembresServiceBddService.getAllUidByServiceId(service_id);
-			for(long uid : membresService) {
-				Utilisateur user = UtilisateurService.findById(uid);
-				MembresServiceBdd membre = MembresServiceBddService.findById(uid);
-				
-				// Ajout a la liste des membres
-				utilisateursServices.get(service_id).add(user);
-				utilisateurs.add(user);
-				if(membre.getRoleId() == Role.chefDeService.getRoleId()) {
-					chefsServices.add(user);
-				}
-			}
-		}
-    	
-    	UserList ul = new UserList(); 	
-    	model.addAttribute("userlist",ul);
-    	model.addAttribute("services", services);
-    	model.addAttribute("services_ids", services_ids);
-    	model.addAttribute("chefsServices", chefsServices);
-    	model.addAttribute("utilisateurs", utilisateurs);
-    	model.addAttribute("utilisateursServices", utilisateursServices);
-        return "newMissionPage";
-    }
-	
-	@PostMapping("/newMission")
-    public String checkMission(@Valid Mission mission,@ModelAttribute("userlist") UserList userlist)
-    {
-		//Creation de la mission
-		
-		System.out.println(mission.getResponsable_id());
-		System.out.println(mission.getDate_debut());
-		System.out.println(mission.getDate_fin());
-		System.out.println(mission.getTitre());
-		System.out.println(mission.getDescription());
-		int maxid = MissionService.getMaxMissionId();
-		mission.setMission_id((long) (maxid + 1));
-		
-		MissionService.addMission(mission);
-		//Ajout des membres
-		System.out.println(userlist.getUserList().size());
-		MembresMission membresMission = new MembresMission();
-
-		for (int i = 0;i < userlist.getUserList().size();i++)
-		{
-			membresMission.setMission_id((long) (maxid + 1));
-			membresMission.setMembre_uid(userlist.getUserList().get(i).getUID());
-			MembresMissionService.addMembresMission(membresMission);
-		}
-		
-        return "redirect:/Accueil";
-    }
-	
 	@RequestMapping("/validationNDF")
     public String validationNDF(Model model,Principal principal)
     {
@@ -518,109 +451,7 @@ public class SachaController
 		return "redirect:/parametres";
     }
 	
-	@GetMapping("/listMissions")
-    public String listMissions(Principal principal,Mission mission,Model model)
-    {
-		String prenomnom = principal.getName();
-    	String[] names = prenomnom.split("\\.");
-    	long uid = UtilisateurService.findPrenomNom(names[1], names[0]).getUID();
-    	List<Mission> missions = MissionService.findAll();
-    	List<Mission> mesMissions = new ArrayList<Mission>();
-    	for (int i = 0;i < missions.size();i++)
-    	{
-    		if (missions.get(i).getResponsable_id() == uid)
-    		{
-    			System.out.println(missions.get(i).getTitre());
-    			mesMissions.add(missions.get(i));
-    		}
-    	}
-    	
-    	List<Long> services_ids = ServiceBddService.getServiceIdList();
-		Map<Long, MembresServiceBdd> chefs_services = new HashMap<Long, MembresServiceBdd>();
-		System.out.println("Liste des services ids : " + services_ids.toString());
-		
-		for(long service_id : services_ids) {
-			List<MembresServiceBdd> listChef = MembresServiceBddService.getChefByServiceId(service_id);
-			for (int k = 0;k < listChef.size();k++)
-			{
-				chefs_services.put(service_id,listChef.get(k));
-			}
-			System.out.println(chefs_services.get(service_id));
-		}
-		
-    	List<Utilisateur> utilisateurs = new ArrayList<Utilisateur>();
-    	List<Utilisateur> usersMembres = UtilisateurService.findAll();
-    	
-    	for (long service_id : services_ids)
-    	{
-    		if(chefs_services.get(service_id) != null) {
-	    		Utilisateur utilisateur = UtilisateurService.findById(chefs_services.get(service_id).getUid());
-	    		Utilisateur u = new Utilisateur();
-	    		u.setPrenom(utilisateur.getPrenom());
-	    		u.setNom(utilisateur.getNom());
-	    		u.setUID(utilisateur.getUID());
-	    		utilisateurs.add(u);
-    		}
-    	}
-    	
-    	UserList ul = new UserList(); 	
-    	model.addAttribute("users",utilisateurs);
-    	model.addAttribute("userlist",ul);
-    	model.addAttribute("membres",usersMembres);
-    		
-    	model.addAttribute("mesmissions",mesMissions);
-
-		return "choixMission";
-    }
 	
-	@PostMapping("/listMissions")
-    public String checkListMissions(Principal principal,Mission mission,Model model,@ModelAttribute("userlist") UserList userlist)
-    {
-		System.out.println("Mission id = " + mission.getResponsable_id());
-    	List<Utilisateur> allMembres = UtilisateurService.findAll();
-    	List<Utilisateur> usersMembres = new ArrayList<Utilisateur>();
-
-    	boolean danslaliste = false;
-    	List<MembresMission> mm = MembresMissionService.findAll();
-    	for (int i = 0;i < allMembres.size();i++)
-    	{
-    		danslaliste = false;
-    		for (int j = 0;j < mm.size();j++)
-    		{
-    			if (allMembres.get(i).getUID() == mm.get(j).getMembre_uid() && mm.get(j).getMission_id() == mission.getResponsable_id())
-    			{
-    				danslaliste = true;
-    				break;
-    			}
-    		}
-    		if (!danslaliste)
-    		{
-    			usersMembres.add(allMembres.get(i));
-    		}
-    	}
-    	
-    	UserList ul = new UserList();
-    	mission.setMission_id(mission.getResponsable_id());
-		model.addAttribute("membres",usersMembres);
-		model.addAttribute("userlist",ul);
-
-		return "modifyMission";
-    }
-	
-	@PostMapping("/addMembresMission")
-	public String addMembresMission(@ModelAttribute("userlist") UserList userlist,Mission mission)
-	{
-		System.out.println("MISSION ID " +  mission.getMission_id());
-		MembresMission membresMission = new MembresMission();
-		
-		for (int i = 0;i < userlist.getUserList().size();i++)
-		{
-			membresMission.setMission_id((mission.getMission_id()));
-			membresMission.setMembre_uid(userlist.getUserList().get(i).getUID());
-			MembresMissionService.addMembresMission(membresMission);
-		}
-		return "redirect:/Accueil";
-	}
 	
 	@RequestMapping(path="/ValidationConges/{id}")
     public String ValidationConges(@PathVariable("id") long congesId,Principal principal) throws Exception

@@ -37,6 +37,12 @@ a[aria-expanded=false] .glyphicon-menu-up {
 
 /**************/
 
+.border-detail {
+	background:white; 
+	border: solid 1px #337ab7; 
+	border-radius: 4px;
+}
+
 html {
   font-family: sans-serif;
   -webkit-text-size-adjust: 100%;

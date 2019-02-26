@@ -19,4 +19,9 @@ public interface MembresMissionRepository extends CrudRepository<MembresMission,
 	@Modifying
 	@Query("DELETE FROM MembresMission WHERE membre_uid = :userid")
 	public void deleteMembresMission(@Param("userid") long uid);
+	
+	@Transactional
+	@Modifying
+	@Query("DELETE FROM MembresMission WHERE mission_id = :mission_id")
+	public void deleteMembresByMissionId(@Param("mission_id") long mission_id);
 }
