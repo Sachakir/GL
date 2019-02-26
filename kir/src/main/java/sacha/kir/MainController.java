@@ -697,7 +697,7 @@ public class MainController {
         model.addAttribute("missionNames", missionNames);
         model.addAttribute("notesAssociees", notesAssociees);
         model.addAttribute("joursConges","Jour(s) de congé(s) payé(s) restant(s) : " + UtilisateurService.findPrenomNom(names[1], names[0]).getJoursCongesRestants());
-        model.addAttribute("rtt","Jour(s) de RTT(s) restant(s) : " + UtilisateurService.findPrenomNom(names[1], names[0]).getRtt());
+        model.addAttribute("rtt","Jour(s) de RTT restant(s) : " + UtilisateurService.findPrenomNom(names[1], names[0]).getRtt());
         /**** DERNIERES DEMANDES DE CONGES ****/
         
         //Nombre de demandes de remboursement

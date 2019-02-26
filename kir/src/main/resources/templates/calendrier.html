@@ -36,7 +36,7 @@
 							</thead>
 							<tbody>
 								<tr th:if="${demandesConges.empty}">
-									<td colspan="3">Personne n'est en congé!</td>
+									<td colspan="3">Il n'y a pas de demandes de congé!</td>
 								</tr>
 								<tr th:each="conges : ${demandesConges}">
 									<td><span th:text="${conges.prenomNom}"> prenom et nom </span></td>	
@@ -108,7 +108,7 @@
 							
 						</div>
 					</div>
-					<div centered class="row">
+					<div centered class="row" hidden=true id="bouttons">
 						<a href="" id='accept' class="btn btn-primary btn-lg">
 							<span class="glyphicon glyphicon-ok"></span> 
 						</a> 
