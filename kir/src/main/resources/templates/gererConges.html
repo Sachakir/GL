@@ -36,7 +36,7 @@
 						</thead>
 						<tbody>
 							<tr th:if="${demandesConges.empty}">
-								<td colspan="3">Personne n'est en congé!</td>
+								<td colspan="3">Pas de demandes de congés effectuées!</td>
 							</tr>
 							<tr th:each="conges : ${demandesConges}">
 								<td><span th:text="${conges.prenomNom}"> prenom et nom </span></td>	

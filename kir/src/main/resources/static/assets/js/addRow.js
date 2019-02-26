@@ -31,33 +31,39 @@ $(document).ready(function () {
       $("#date").text("Date: "+$(this).find("td:nth-child(3)").text());
     });
     $('#ListNDFValidation').on('click', 'tbody tr', function(event) {
-        
-        $(this).addClass('highlight').siblings().removeClass('highlight');
-        $("#mission").text("Mission: "+$(this).find("td:nth-child(2)").text());
-        $("#employe").text("Nom de l'employé: "+$(this).find("td:nth-child(1)").text());
-        $("#date").text("Date: "+$(this).find("td:nth-child(3)").text());
-        $("#montant").text("Montant  total: "+$(this).find("td:nth-child(4)").text()+"€");
-        $("#validationfinances").text($(this).find("td:nth-child(5)").text());
-        $("#validationcds").text($(this).find("td:nth-child(6)").text());
-        $("#validationf").text($(this).find("td:nth-child(7)").text());
-        $("#demandeid").text($(this).find("td:nth-child(8)").text());
-        
-        var fic = "/ValidationRemb/";
-        fic=fic+$(this).find("td:nth-child(8)").text();
-		document.getElementById('accept').href = fic;
-		
-		var fic2 = "/RefusRemb/";
-        fic2=fic2+$(this).find("td:nth-child(8)").text();
-		document.getElementById('refuse').href = fic2;
-		
-		var fic3 = "/remboursements/files?file_id=";
-        fic3=fic3+$(this).find("td:nth-child(9)").text();
-		document.getElementById('download').href = fic3;
-		if ($(this).find("td:nth-child(9)").text() === "")
+        if($(this).find("td:nth-child(1)").text()!="Vous n'avez pas de validations de remboursement")
 		{
-			document.getElementById('download').style.display = "none";
+			$(this).addClass('highlight').siblings().removeClass('highlight');
+			$("#mission").text("Mission: "+$(this).find("td:nth-child(2)").text());
+			$("#employe").text("Nom de l'employé: "+$(this).find("td:nth-child(1)").text());
+			$("#date").text("Date: "+$(this).find("td:nth-child(3)").text());
+			$("#montant").text("Montant  total: "+$(this).find("td:nth-child(4)").text()+"€");
+			$("#validationfinances").text($(this).find("td:nth-child(5)").text());
+			$("#validationcds").text($(this).find("td:nth-child(6)").text());
+			$("#validationf").text($(this).find("td:nth-child(7)").text());
+			$("#demandeid").text($(this).find("td:nth-child(8)").text());
+			document.getElementById("bouttons").hidden=false;
+			document.getElementById("justif").hidden=false;
+			var fic = "/ValidationRemb/";
+			fic=fic+$(this).find("td:nth-child(8)").text();
+			document.getElementById('accept').href = fic;
+			
+			var fic2 = "/RefusRemb/";
+			fic2=fic2+$(this).find("td:nth-child(8)").text();
+			document.getElementById('refuse').href = fic2;
+			
+			var fic3 = "/remboursements/files?file_id=";
+			fic3=fic3+$(this).find("td:nth-child(9)").text();
+			document.getElementById('download').href = fic3;
+			/*if ($(this).find("td:nth-child(9)").text() === "")
+			{
+				document.getElementById('download').style.display = "none";
+			}*/
+			if ($(this).find("td:nth-child(9)").text() === "")
+			{
+				document.getElementById("justif").hidden= true;
+			}
 		}
-
         
       });
 	  $('#demandes').on('click', 'tbody tr', function(event) {
@@ -80,33 +86,30 @@ $(document).ready(function () {
         
       });
 	  $('#demandesGestion').on('click', 'tbody tr', function(event) {
-        
-        $(this).addClass('highlight').siblings().removeClass('highlight');
-		var debut = $(this).find("td:nth-child(2)").text();
-		var d = debut.substring(6,10)+"-"+debut.substring(3,5)+"-"+debut.substring(0,2)+"T"+debut.substring(11,16);
-		
-		$("#dateD").val(d);
-		var fin = $(this).find("td:nth-child(3)").text();
-		var f = fin.substring(6,10)+"-"+fin.substring(3,5)+"-"+fin.substring(0,2)+"T"+fin.substring(11,16);
-		
-		$("#dateF").val(f);
-		
-		$("#cid").val( $(this).find("td:nth-child(7)").text());
-        $("#vRH").text("Validation RH: "+$(this).find("td:nth-child(4)").text());
-        $("#vC").text("Validation Chef de Service: "+$(this).find("td:nth-child(5)").text());
-        if($(this).find("td:nth-child(4)").text() == "En attente" && $(this).find("td:nth-child(5)").text() == "En attente"){
-			/*$("#edit").show();
-			$("#delete").show();*/
-			document.getElementById("edit").hidden=false;
-			document.getElementById("delete").hidden=false;
-		}
-		else{
-			/*$("#edit").hide();
-			$("#delete").hide();*/
-			document.getElementById("edit").hidden=true;
-			document.getElementById("delete").hidden=true;
-		}
-        
+        if($(this).find("td:nth-child(1)").text() != "Pas de demandes de congés effectuées!")
+		{
+			$(this).addClass('highlight').siblings().removeClass('highlight');
+			var debut = $(this).find("td:nth-child(2)").text();
+			var d = debut.substring(6,10)+"-"+debut.substring(3,5)+"-"+debut.substring(0,2)+"T"+debut.substring(11,16);
+			
+			$("#dateD").val(d);
+			var fin = $(this).find("td:nth-child(3)").text();
+			var f = fin.substring(6,10)+"-"+fin.substring(3,5)+"-"+fin.substring(0,2)+"T"+fin.substring(11,16);
+			
+			$("#dateF").val(f);
+			
+			$("#cid").val( $(this).find("td:nth-child(7)").text());
+			$("#vRH").text("Validation RH: "+$(this).find("td:nth-child(4)").text());
+			$("#vC").text("Validation Chef de Service: "+$(this).find("td:nth-child(5)").text());
+			if($(this).find("td:nth-child(4)").text() == "En attente" && $(this).find("td:nth-child(5)").text() == "En attente"){
+				document.getElementById("edit").hidden=false;
+				document.getElementById("delete").hidden=false;
+			}
+			else{
+				document.getElementById("edit").hidden=true;
+				document.getElementById("delete").hidden=true;
+			}
+        }
       });
 	  
 	var today = new Date();
