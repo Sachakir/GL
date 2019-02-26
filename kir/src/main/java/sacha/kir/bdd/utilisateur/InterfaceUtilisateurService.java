@@ -10,7 +10,7 @@ public interface InterfaceUtilisateurService
 	public Long getMaxId();
 	public Utilisateur findById(long id);
 	public void deleteUser(long uid);
-	public void updateJoursConges(long uid, long joursRestantsConges);
-	public void updateJoursRtt(long uid, long joursRestantsRtt);
+	public void updateJoursConges(long uid, float joursRestantsConges);
+	public void updateJoursRtt(long uid, float joursRestantsRtt);
 
 }

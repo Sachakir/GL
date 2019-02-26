@@ -24,7 +24,7 @@ public class Utilisateur {
     //@NotNull
     private String datenaissance;
     //@NotNull
-    private long Jourscongesrestants;
+	private float Jourscongesrestants;
     
     private float rtt;
     private long HeuresContrat;
@@ -85,11 +85,11 @@ public class Utilisateur {
 		datenaissance = dateNaissance;
 	}
 
-	public long getJoursCongesRestants() {
+	public float getJoursCongesRestants() {
 		return Jourscongesrestants;
 	}
 
-	public void setJoursCongesRestants(long joursCongesRestants) {
+	public void setJoursCongesRestants(float joursCongesRestants) {
 		Jourscongesrestants = joursCongesRestants;
 	}
 	

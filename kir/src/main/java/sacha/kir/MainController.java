@@ -306,7 +306,7 @@ public class MainController {
     	for(int i=0;i<cs.size();i++) {
     		if(cs.get(i).getUID()==uID) {
     			UserForm u = new UserForm();
-    			u.setJoursCongesRest((int) cs.get(i).getJoursCongesRestants());
+    			u.setJoursCongesRest( cs.get(i).getJoursCongesRestants());
     			u.setRtt(cs.get(i).getRtt());
     			model.addAttribute("user",u);
     		}
@@ -423,7 +423,6 @@ public class MainController {
 				if(cs.get(k).getUID()==x.getUid()) {
 					
 					x.setPrenomNom(cs.get(k).getPrenom()+" "+cs.get(k).getNom());
-					System.out.println("AHHHHHHHH " + x.getPrenomNom());
 				}
 			}
 			c2.add(x);

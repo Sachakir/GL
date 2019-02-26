@@ -25,7 +25,7 @@ public class UserForm {
 	
 	@NotNull
 	@Min(value = 0, message = "0 jours de conges minimum")
-	private int joursCongesRest;
+	private float joursCongesRest;
 	
 	@NotNull
 	@Size(min=1, max=42)
@@ -76,7 +76,7 @@ public class UserForm {
 		return dateNaissance;
 	}
 	
-	public int getJoursCongesRest() {
+	public float getJoursCongesRest() {
 		return joursCongesRest;
 	}
 	
@@ -121,7 +121,7 @@ public class UserForm {
 		this.dateNaissance = dateNaissance;
 	}
 	
-	public void setJoursCongesRest(int joursCongesRest) {
+	public void setJoursCongesRest(float joursCongesRest) {
 		this.joursCongesRest = joursCongesRest;
 	}
 	

@@ -52,12 +52,12 @@ public class UtilisateurService implements InterfaceUtilisateurService
 	}
 
 	@Override
-	public void updateJoursConges(long uid, long joursRestantsConges) {
+	public void updateJoursConges(long uid, float joursRestantsConges) {
 		repository.updateJoursConges(uid, joursRestantsConges);
 	}
 
 	@Override
-	public void updateJoursRtt(long uid, long joursRestantsRtt) {
+	public void updateJoursRtt(long uid, float joursRestantsRtt) {
 		repository.updateJoursRtt(uid, joursRestantsRtt);
 	}
 }
