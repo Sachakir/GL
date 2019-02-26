@@ -7,12 +7,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>login</title>
     <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/assets/fonts/ionicons.min.css">
-    <link rel="stylesheet" href="/assets/css/Login-Form-Dark.css">
-    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/login.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 
 <body>
+
+    <div class="container">
+        <div class="login-form Absolute-Center is-Responsive">
+            <form th:action="@{/j_spring_security_check}" method="post">
+                <div centered style="color: #FFF">
+                    <h2>PoPS1819</h2>
+            </div>
+            <div class="illustration"><i class="glyphicon glyphicon-lock"></i></div>
+                <div class="form-group">
+                    <input class="form-control" type="text" name="username" placeholder="Login"/>
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="password" name="password" placeholder="Mot de passe"/>
+                </div>
+                <br>
+                <div centered>
+                    <button id="btnSubmit" class="btn" type="submit" style="background-color: #132f5d; color:  #FFF;">Se connecter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
+
+<!--
     <div class="login-dark" style="background-color: #dbedff;">
         <form th:action="@{/j_spring_security_check}" method="post">
             <h2 class="sr-only">Login Form</h2>
@@ -21,7 +46,7 @@
             <div class="form-group"><input class="form-control" type="text" name="username" placeholder="Adresse Mail"></div>
             <div class="form-group"><input class="form-control" type="password" name="password" placeholder="Mot de passe"></div>
             <div class="form-group"><button class="btn btn-primary btn-block" type="submit">Log In</button></div><a href="#" class="forgot">Forgot your email or password?</a></form>
-    </div>
+    </div>-->
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 </body>

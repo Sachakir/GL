@@ -636,10 +636,7 @@ public class SachaController
 		String[] h2= d2[1].split(":");
 		long conges = ChronoUnit.DAYS.between(date1, date2);
 		long heuresDemandes = Long.parseLong(h2[0]) - Long.parseLong(h1[0]);
-		/*if (heuresDemandes < 0)
-		{
-			heuresDemandes+=24;
-		}*/
+
 		float joursDemandes = conges;
 		if(heuresDemandes<=4 && heuresDemandes>0)
 			joursDemandes+=0.5;
@@ -750,14 +747,29 @@ public class SachaController
 	@RequestMapping(path="/RefusConges/{id}")
     public String RefusConges(@PathVariable("id") long congesId,Principal principal) throws Exception
     {
+		Conges congesAValider = CongesService.findByCongesId(congesId);
 		
-Conges congesAValider = CongesService.findByCongesId(congesId);
+		DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"); // format jour / mois / année
+		LocalDate date1 = LocalDate.parse(congesAValider.getDatedebut()+":00", format);
+		LocalDate date2 = LocalDate.parse(congesAValider.getDatefin()+":00", format);
 		
-		DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy"); // format jour / mois / année
-		LocalDate date1 = LocalDate.parse(congesAValider.getDatedebut(), format);
-		LocalDate date2 = LocalDate.parse(congesAValider.getDatefin(), format);
-				
-		long joursDemandes = ChronoUnit.DAYS.between(date1, date2);
+		String[] d1=congesAValider.getDatedebut().split(" ");
+		String[] d2=congesAValider.getDatefin().split(" ");
+		String[] h1= d1[1].split(":");
+		String[] h2= d2[1].split(":");
+		
+		long conges = ChronoUnit.DAYS.between(date1, date2);
+		long heuresDemandes = Long.parseLong(h2[0]) - Long.parseLong(h1[0]);
+		float joursDemandes = conges;
+		if(heuresDemandes<=4 && heuresDemandes>0)
+			joursDemandes+=0.5;
+		else if(heuresDemandes>4) {
+			joursDemandes+=1.0;
+		}
+		else if(heuresDemandes>-24 && heuresDemandes<20)
+		{
+			joursDemandes-=0.5;
+		}
 		if (joursDemandes == 0)
 		{
 			throw new Exception("AH ! 0 jours de conges demandés. Corrigez la damande de conges SVP !");
