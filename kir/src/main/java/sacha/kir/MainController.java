@@ -352,6 +352,7 @@ public class MainController {
     	String prenomnom = principal.getName();
     	String[] names = prenomnom.split("\\.");
     	
+    	long serviceDuValidateur = MembresServiceBddService.findById(UtilisateurService.findPrenomNom(names[1], names[0]).getUID()).getServiceId();
     	List<Conges> conges = CongesService.findAll();
     	List<CongesV2> aujourdhuiConges = new ArrayList<CongesV2>();
     	List<CongesV2> c2 = new ArrayList<CongesV2>();
@@ -392,7 +393,18 @@ public class MainController {
     					}
     					if (c.getValidationchefservice().equals(Statut.valide.statut()) && c.getValidationrh().equals(Statut.valide.statut()))
     					{
-        					aujourdhuiConges.add(c);
+    						if (serviceDuValidateur == ServicesFixes.ressourcesHumaines.getServiceId())//La RH voit les conges de tt le monde
+    						{
+            					aujourdhuiConges.add(c);
+    						}
+    						else
+    						{
+    					    	long serviceDuDemandeur = MembresServiceBddService.findById(c.getUid()).getServiceId();
+    					    	if (serviceDuValidateur == serviceDuDemandeur)
+    					    	{
+                					aujourdhuiConges.add(c);
+    					    	}
+    						}
     					}
     					for (Utilisateur utilisateur : cs) {
 							if(utilisateur.getUID()==c.getUid()) {
