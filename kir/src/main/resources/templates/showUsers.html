@@ -63,7 +63,6 @@
 								<td><span> Service </span></td>	
 								<td>
 									<select th:field="*{service_id}" class="form-control">
-										<option value="0"> -- </option>
 										<option th:each="service_id : ${services_ids}" th:value="${service_id}" th:text="${services.get(service_id)}"></option> 
 									</select>  
 								</td>			
@@ -72,7 +71,6 @@
 								<td><span> Role </span></td>	
 								<td>
 									<select th:field="*{role_id}" class="form-control">
-										<option value="0"> -- </option>
 										<option th:each="role_id : ${roles_ids}" th:value="${role_id}" th:text="${roles.get(role_id)}"></option>
 									</select>
 								</td>			
