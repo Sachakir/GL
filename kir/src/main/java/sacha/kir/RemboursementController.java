@@ -455,7 +455,9 @@ public class RemboursementController {
     		}
     		
     		// Ajout de la demande de remboursement à la BD
+    		System.out.println("BEFORE CREATION DDR");
     		r = RemboursementService.addNewRemboursement(r);
+    		System.out.println("AFTER CREATION DDR");
     		
     		// Association de la demande avec la note de frais
     		String moisStr = (moisNow < 10 ? "0" + moisNow : moisNow) + "/" + yearNow;

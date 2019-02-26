@@ -49,11 +49,12 @@ public class RemboursementService implements InterfaceRemboursementService {
 		r.setDemande_id(demande_id);
 		repository.save(r);
 		
-		String mois = NoteService.findById(r.getMission_id()).getMois();
+		/*TODO findById() prend l'id de la Note et non pas l'id de la mission c'est pour ca que ca plante
+		String mois = "02-2019";//NoteService.findById(r.getMission_id()).getMois();
 		mois = mois.substring(0, 2) + "-" + mois.substring(3);
 		NotifService.addNotif(30, "Demande : " + r.getTitre(),
 				"/remboursements/note=" + mois + "/remboursement_id=" + demande_id);
-		
+		*/
 		return r;
 	}
 	
