@@ -160,8 +160,7 @@ $(document).ready(function () {
 				var debutString = debut.getFullYear() + "-"+(month)+"-"+(day)+"T08:00";
 				day = ("0" + fin.getDate()).slice(-2);
 				month = ("0" + (fin.getMonth() + 1)).slice(-2);
-				var finString = fin.getFullYear() + "-"+(month)+"-"+(day)+"T18:00";
-				alert(debut + "    " + endDate.format()+"T08:00");
+				var finString = fin.getFullYear() + "-"+(month)+"-"+(day)+"T08:00";
 				$("#dateD").val(debutString);
 				$("#dateF").val(finString);
 				$('#calendarC').fullCalendar('removeEvents');
@@ -169,7 +168,7 @@ $(document).ready(function () {
 					title: 'Congé',
 					start: debutString,
 					end: finString
-				});
+				},true);
 			}
 		}
 	});
