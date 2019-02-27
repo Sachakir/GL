@@ -622,6 +622,12 @@ public class MainController {
         return "welcomePage-Thibaut";
     }
     
+    @RequestMapping("/Notifications")
+    public String nofitications(Model model,Principal principal)
+    {
+    	return "notifications";
+    }
+    
     @RequestMapping("/adminShow")
     public String adminShow(@RequestParam(value = "user_id", required = false) String user_id, Model model, Principal principal, UserForm userForm, UserForm editForm)
     {

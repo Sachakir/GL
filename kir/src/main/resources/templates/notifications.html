@@ -13,14 +13,16 @@
 		<div th:replace="~{navBar :: #navBar}"></div>
 
 		<!-- Notifications -->
-		<div class="panel-heading">
-			<h3 class="panel-title">Dernières notifications</h3>
-		</div>
-		<div class="list-group" th:each="notif : ${notifs}">
-			<a th:href="${notif.lien}" class="list-group-item" data-toggle="modal">
-				<span th:text="${notif.titre}"></span>
-				<span class="badge" th:text="${notif.date}"></span>
-			</a>
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">Notifications</h3>
+			</div>
+			<div class="list-group" th:each="notif : ${notifs}">
+				<a th:href="${notif.lien}" class="list-group-item" data-toggle="modal">
+					<span th:text="${notif.titre}"></span>
+					<span class="badge" th:text="${notif.date}"></span>
+				</a>
+			</div>
 		</div>
 
 	</div>
