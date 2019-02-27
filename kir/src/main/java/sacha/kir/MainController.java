@@ -149,34 +149,7 @@ public class MainController {
         }
         else return "Login";   
     }
- 
-    @RequestMapping(value = "/admin", method = RequestMethod.GET)
-    public String adminPage(Model model, Principal principal) {
-         
-        User loginedUser = (User) ((Authentication) principal).getPrincipal();
-       
-        String userInfo = WebUtils.toString(loginedUser);
-        model.addAttribute("userInfo", userInfo);
-         
-        return "adminPage";
-    }
- 
-    @RequestMapping(value = "/userInfo", method = RequestMethod.GET)
-    public String userInfo(Model model, Principal principal) {
- 
-        // After user login successfully.
-        String userName = principal.getName();
- 
-        System.out.println("User Name: " + userName);
- 
-        User loginedUser = (User) ((Authentication) principal).getPrincipal();
- 
-        String userInfo = WebUtils.toString(loginedUser);
-        model.addAttribute("userInfo", userInfo);
- 
-        return "userInfoPage";
-    }
- 
+
     @RequestMapping(value = "/403", method = RequestMethod.GET)
     public String accessDenied(Model model, Principal principal) {
  
@@ -539,46 +512,7 @@ public class MainController {
     	model.addAttribute("demandesConges",mesConges);
     	return "redirect:/GererConges";
     }
-    @RequestMapping(path="/ValidationC/{id}")
-    public String ValidationConges(@PathVariable("id") long demandeId,Principal principal)
-    {
-		String prenomnom = principal.getName();
-    	String[] names = prenomnom.split("\\.");
-    	Utilisateur ut = UtilisateurService.findPrenomNom(names[1], names[0]);
-    	
-    	MembresServiceBdd membre = MembresServiceBddService.findById(ut.getUID());
-    	if(membre.getRoleId() == Role.chefDeService.getRoleId()) {
-    		CongesService.updateChefState(demandeId, Statut.valide.statut());
-    	}
-    	else if (membre.getServiceId() == ServicesFixes.ressourcesHumaines.getServiceId()) {
-    		CongesService.updateRHState(demandeId, Statut.valide.statut());
-    	}
-    	else {
-    		System.out.println("Vous ne pouvez pas valider de demandes de congés (Mauvais service ou role) ");
-    	}
-    	
-		return "redirect:/Calendrier";
-    }
-    @RequestMapping(path="/RefusC/{id}")
-    public String RefusConges(@PathVariable("id") long demandeId,Principal principal)
-    {
-		String prenomnom = principal.getName();
-    	String[] names = prenomnom.split("\\.");
-    	Utilisateur ut = UtilisateurService.findPrenomNom(names[1], names[0]);
-    	
-    	MembresServiceBdd membre = MembresServiceBddService.findById(ut.getUID());
-    	if(membre.getRoleId() == Role.chefDeService.getRoleId()) {
-    		CongesService.updateChefState(demandeId, Statut.refuse.statut());
-    	}
-    	else if (membre.getServiceId() == ServicesFixes.ressourcesHumaines.getServiceId()) {
-    		CongesService.updateRHState(demandeId, Statut.refuse.statut());
-    	}
-    	else {
-    		System.out.println("Vous ne pouvez pas valider de demandes de congés (Mauvais service ou role) ");
-    	}
-    	
-		return "redirect:/Calendrier";
-    }
+
     @GetMapping("/addConges")
     public String addConges(CongeForm congeForm) {
         return "addCongesPage";
@@ -596,45 +530,6 @@ public class MainController {
     	CongesService.addConges(congeForm.getDateDebut(), congeForm.getDateFin(), uID, false);
         
         return "redirect:/Accueil";
-    }
-    
-    @RequestMapping("/addAppUser")
-    public String addAppUser(Model model)
-    {
-    	//AppUserService.addAppUser();
-
-    	List<sacha.kir.bdd.appuser.AppUser> cs = AppUserService.findAll();
-    	for (int i =0;i < cs.size();i++)
-    	{
-    		System.out.println(cs.get(i).toString());
-    	}
-        return "loginPage";
-    }
-    
-    @RequestMapping("/addAppRole")
-    public String addAppRole(Model model)
-    {
-    	AppRoleService.addAppRole();
-
-    	List<AppRole> cs = AppRoleService.findAll();
-    	for (int i =0;i < cs.size();i++)
-    	{
-    		System.out.println(cs.get(i).toString());
-    	}
-        return "loginPage";
-    }
-    
-    @RequestMapping("/addUserRole")
-    public String addUserRole(Model model)
-    {
-    	//UserRoleService.addUserRole();
-
-    	List<UserRole> cs = UserRoleService.findAll();
-    	for (int i =0;i < cs.size();i++)
-    	{
-    		System.out.println(cs.get(i).toString());
-    	}
-        return "loginPage";
     }
     
     @RequestMapping("/Accueil")
