@@ -7,10 +7,8 @@ import org.springframework.stereotype.Service;
 
 import sacha.kir.bdd.justificatif.JustificatifRepository;
 import sacha.kir.bdd.note.InterfaceNoteService;
-import sacha.kir.bdd.note.NoteService;
 import sacha.kir.bdd.notif.InterfaceNotifService;
 import sacha.kir.bdd.remboursementsnote.InterfaceRemboursementsNoteService;
-import sacha.kir.bdd.remboursementsnote.RemboursementsNoteService;
 
 @Service
 public class RemboursementService implements InterfaceRemboursementService {
@@ -48,13 +46,11 @@ public class RemboursementService implements InterfaceRemboursementService {
 		
 		r.setDemande_id(demande_id);
 		repository.save(r);
+		String titre = "Demande : " + r.getTitre();
+		if (titre.length() > 60)
+			titre = titre.substring(0, 56) + "...";
+		NotifService.addNotif(30, titre, r.genererLien());
 		
-		/*TODO findById() prend l'id de la Note et non pas l'id de la mission c'est pour ca que ca plante
-		String mois = "02-2019";//NoteService.findById(r.getMission_id()).getMois();
-		mois = mois.substring(0, 2) + "-" + mois.substring(3);
-		NotifService.addNotif(30, "Demande : " + r.getTitre(),
-				"/remboursements/note=" + mois + "/remboursement_id=" + demande_id);
-		*/
 		return r;
 	}
 	
@@ -95,15 +91,27 @@ public class RemboursementService implements InterfaceRemboursementService {
 	public List<Remboursement> getAllByIdListDesc(List<Long> demande_ids) {
 		return repository.getAllByIdListDesc(demande_ids);
 	}
-
+ 
 	@Override
 	public void updateFinancesState(long demandeid, String newstate) {
 		repository.updateFinancesState(demandeid, newstate);
+		
+		Remboursement r = repository.findById(demandeid).orElse(null);
+		String titre = "Validation finances : " + r.getTitre();
+		if (titre.length() > 60)
+			titre = titre.substring(0, 56) + "...";
+		NotifService.addNotif(r.getUid(), titre, r.genererLien());
 	}
 
 	@Override
 	public void updateChefState(long demandeid, String newstate) {
 		repository.updateChefState(demandeid, newstate);
+
+		Remboursement r = repository.findById(demandeid).orElse(null);
+		String titre = "Validation service : " + r.getTitre();
+		if (titre.length() > 60)
+			titre = titre.substring(0, 56) + "...";
+		NotifService.addNotif(r.getUid(), titre, r.genererLien());
 	}
 
 	@Override
