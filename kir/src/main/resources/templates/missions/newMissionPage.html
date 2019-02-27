@@ -12,99 +12,102 @@
 		<div th:replace="~{navBar :: #navBar}"></div>
 
 		<br>
-		<div class="col-md-offset-3 col-md-6">
-			<form class="form-horizontal" action="#" th:action="@{/missions/create}" th:object="${mission}" method="post" centered>
-				<div class="form-group">
-					<label class="control-label" for="titre">Titre</label>
-					<div>
-						<input id="titre" name="titre" type="text" placeholder="ex : Mission secrete" class="form-control input-md" th:field="*{titre}"> 
-						<label th:if="${#fields.hasErrors('titre')}" th:errors="*{titre}">erreur titre</label>
-					</div>
-				</div>
-
-				<div class="form-group">
-					<label class="control-label" for="description">Description</label>
-					<div>
-						<textarea id="description" name="description" type="text" placeholder="ex : Mission a Polytech" class="form-control" th:field="*{description}"></textarea>
-						<label th:if="${#fields.hasErrors('description')}" th:errors="*{description}">erreur description</label>
-					</div>
-				</div>
-
-				<div class="form-group">
-					<label class="control-label" for="date_debut">Debut</label>
-					<div>
-						<input id="date_debut" name="date_debut" type="text" placeholder="ex : 15/02/2019" class="form-control input-md" th:field="*{date_debut}">
-						<label th:if="${#fields.hasErrors('date_debut')}" th:errors="*{date_debut}">erreur date_debut</label>
-					</div>
-				</div>
-
-				<div class="form-group">
-					<label class="control-label" for="date_fin">Fin</label>
-					<div>
-						<input id="date_fin" name="date_fin" type="text" placeholder="ex : 25/02/2019" class="form-control input-md" th:field="*{date_fin}">
-						<label th:if="${#fields.hasErrors('date_fin')}" th:errors="*{date_fin}">erreur date_fin</label>
-					</div>
-				</div>
-
-				<div class="form-group">
-					<label class="control-label" for="responsable_id">Responsable</label>
-					<div th:if="${not chefsServices.empty}">
-						<select id="responsable_id" class="form-control" th:field="*{responsable_id}">
-							<option th:each="mission : ${chefsServices}" th:value="${mission.UID}" th:text="${mission.Prenom} + ' ' + ${mission.Nom}"></option>
-						</select>
-					</div>
-				</div>
-
-				<div class="form-group">
-					<label class="control-label" for="userList">Ajoutez les membres</label>
-					<div th:object="${userlist}">
-						<br>
-						<div class="row">						
-							<div class="col-md-5">
-								<div class="panel panel-default"> 
-									<span class="panel">Membres de la mission</span>
-								</div>
-								<select id="selectedPeople" class="form-control">
-									<option value="all" selected="selected">Tous les services</option>
-									<option th:each="service_id, id : ${services_ids}" th:value="${id.index+1}" th:text="${services.get(service_id)}"></option>
-								</select>
-	
-								<select class="service-sel form-control" id="allSelected" multiple="multiple"></select>
-								<div th:each="service_id, id : ${services_ids}">
-									<select class="service-sel form-control" th:id="'selected' + ${id.index+1}" multiple="multiple" style="display:none;"></select>
-								</div>
-							</div>
-							<div class="col-md-2" align="center" style="margin-bottom:20px; margin-top:20px;">
-								<button id="leftbtn" type="button" class="btn btn-primary"><<</button>
-								<button id="rightbtn" type="button" class="btn btn-primary">>></button>
-							</div>
-							<div class="col-md-5">
-								<div class="panel panel-default"> 
-									<span class="panel">Membres disponibles</span>
-								</div>
-								<select id="servicesPeople" class="form-control">
-									<option value="all" selected="selected">Tous les services</option>
-									<option th:each="service_id, id : ${services_ids}" th:value="${id.index+1}" th:text="${services.get(service_id)}"></option>
-								</select>
-	
-								<select class="service-sel form-control" id="allServices" multiple="multiple">
-									<option th:each="user : ${utilisateurs}" th:value="${user.UID}" th:text="${user.UID} + ' : ' + ${user.Prenom} + ' ' + ${user.Nom}"></option>
-								</select>
-								<div th:each="service_id, id : ${services_ids}">
-									<select class="service-sel form-control" th:id="'service' + ${id.index+1}" multiple="multiple" style="display:none;">
-										<option th:each="user : ${utilisateursServices.get(service_id)}" th:value="${user.UID}" th:text="${user.UID} + ' : ' + ${user.Prenom} + ' ' + ${user.Nom}"></option>
-									</select>
-								</div>
-							</div>
-							<input type="hidden" id="missionMembers" value="" th:field="*{userList}">
+		<div class="col-md-offset-2 col-md-8 panel panel-primary">
+			<br>
+			<div class="col-md-offset-3 col-md-6">
+				<form class="form-horizontal" action="#" th:action="@{/missions/create}" th:object="${mission}" method="post" centered>
+					<div class="form-group">
+						<label class="control-label" for="titre">Titre</label>
+						<div>
+							<input id="titre" name="titre" type="text" placeholder="ex : Mission secrete" class="form-control input-md" th:field="*{titre}"> 
+							<label th:if="${#fields.hasErrors('titre')}" th:errors="*{titre}">erreur titre</label>
 						</div>
 					</div>
-				</div>
-				<div>
-					<button id="postMission" name="" class="btn btn-primary" type="submit">Soumettre</button>
-				</div>
-			</form>
-			<br>
+
+					<div class="form-group">
+						<label class="control-label" for="description">Description</label>
+						<div>
+							<textarea id="description" name="description" type="text" placeholder="ex : Mission a Polytech" class="form-control" th:field="*{description}"></textarea>
+							<label th:if="${#fields.hasErrors('description')}" th:errors="*{description}">erreur description</label>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label" for="date_debut">Debut</label>
+						<div>
+							<input id="date_debut" name="date_debut" type="text" placeholder="ex : 15/02/2019" class="form-control input-md" th:field="*{date_debut}">
+							<label th:if="${#fields.hasErrors('date_debut')}" th:errors="*{date_debut}">erreur date_debut</label>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label" for="date_fin">Fin</label>
+						<div>
+							<input id="date_fin" name="date_fin" type="text" placeholder="ex : 25/02/2019" class="form-control input-md" th:field="*{date_fin}">
+							<label th:if="${#fields.hasErrors('date_fin')}" th:errors="*{date_fin}">erreur date_fin</label>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label" for="responsable_id">Responsable</label>
+						<div th:if="${not chefsServices.empty}">
+							<select id="responsable_id" class="form-control" th:field="*{responsable_id}">
+								<option th:each="mission : ${chefsServices}" th:value="${mission.UID}" th:text="${mission.Prenom} + ' ' + ${mission.Nom}"></option>
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label" for="userList">Ajoutez les membres</label>
+						<div th:object="${userlist}">
+							<br>
+							<div class="row">						
+								<div class="col-md-5">
+									<div class="panel panel-default"> 
+										<span class="panel">Membres de la mission</span>
+									</div>
+									<select id="selectedPeople" class="form-control">
+										<option value="all" selected="selected">Tous les services</option>
+										<option th:each="service_id, id : ${services_ids}" th:value="${id.index+1}" th:text="${services.get(service_id)}"></option>
+									</select>
+		
+									<select class="service-sel form-control" id="allSelected" multiple="multiple"></select>
+									<div th:each="service_id, id : ${services_ids}">
+										<select class="service-sel form-control" th:id="'selected' + ${id.index+1}" multiple="multiple" style="display:none;"></select>
+									</div>
+								</div>
+								<div class="col-md-2" align="center" style="margin-bottom:20px; margin-top:20px;">
+									<button id="leftbtn" type="button" class="btn btn-primary"><<</button>
+									<button id="rightbtn" type="button" class="btn btn-primary">>></button>
+								</div>
+								<div class="col-md-5">
+									<div class="panel panel-default"> 
+										<span class="panel">Membres disponibles</span>
+									</div>
+									<select id="servicesPeople" class="form-control">
+										<option value="all" selected="selected">Tous les services</option>
+										<option th:each="service_id, id : ${services_ids}" th:value="${id.index+1}" th:text="${services.get(service_id)}"></option>
+									</select>
+		
+									<select class="service-sel form-control" id="allServices" multiple="multiple">
+										<option th:each="user : ${utilisateurs}" th:value="${user.UID}" th:text="${user.UID} + ' : ' + ${user.Prenom} + ' ' + ${user.Nom}"></option>
+									</select>
+									<div th:each="service_id, id : ${services_ids}">
+										<select class="service-sel form-control" th:id="'service' + ${id.index+1}" multiple="multiple" style="display:none;">
+											<option th:each="user : ${utilisateursServices.get(service_id)}" th:value="${user.UID}" th:text="${user.UID} + ' : ' + ${user.Prenom} + ' ' + ${user.Nom}"></option>
+										</select>
+									</div>
+								</div>
+								<input type="hidden" id="missionMembers" value="" th:field="*{userList}">
+							</div>
+						</div>
+					</div>
+					<div>
+						<button id="postMission" name="" class="btn btn-primary" type="submit">Soumettre</button>
+					</div>
+				</form>
+				<br>
+			</div>
 		</div>
 	</div>
 

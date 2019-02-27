@@ -13,67 +13,70 @@
 
         <div th:replace="~{navBar :: #navBar}"></div>
         
-        <h2 class="text-center" th:text="'Demande de remboursement ' + ${monthToDisplay}"></h2>
-        
-        <div class="col-md-offset-3 col-md-6">  
-            <form th:if="${not #lists.isEmpty(missions)}" id="addNDF" class="form-horizontal" action="#" enctype="multipart/form-data" th:action="@{/remboursements/demande-remboursement}" th:object="${remboursementForm}" method="post" centered>
-                
-                <input class="form-control" type="text" th:value="${monthRequested}" id="moisNote" name="moisNote" hidden="hidden">
-                
-                <div class="form-group">
-                    <label class="control-label" for="titreMission">Mission associée</label>  
-                    <div>
-                        <select id="titreMission" class="form-control" name="titreMission" th:field="*{mission}">
-                            <option value=""> -- </option>
-                            <option th:each="mission : ${missions}" th:value="${mission.mission_id}" th:text="${mission.mission_id} + ' : ' + ${mission.titre}"></option>
-                        </select>
-                        <label class="bg-warning text-danger" th:if="${#fields.hasErrors('mission')}" th:errors="*{mission}"></label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="titreDemande">Titre de la demande</label>  
-                    <div>
-                        <input id="titreDemande" name="titreDemande" type="text" placeholder="ex : Billets avion" class="form-control input-md" th:field="*{titre}">
-                        <label class="bg-warning text-danger" th:if="${#fields.hasErrors('titre')}" th:errors="*{titre}"></label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="montant">Montant (€)</label>  
-                    <div>
-                        <input id="montant" name="montant" type="text" placeholder="ex : 42.00" class="form-control input-md" th:field="*{montant}">
-                        <label class="bg-warning text-danger" th:if="${#fields.hasErrors('montant')}" th:errors="*{montant}"></label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="date">Date (antérieure à la date d'aujourd'hui, dans le mois de la note)</label>  
-                    <div>
-                        <input id="date" name="date" type="date" class="form-control" th:field="*{date}" style="height:100%;">
-                        <label class="bg-warning text-danger" th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="motif">Motif</label>  
-                    <div>
-                        <textarea id="motif" name="motif" class="form-control" th:field="*{motif}"></textarea>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="filebutton">Justificatif</label>
-                    <div class="input-group">
-                        <label class="input-group-btn">
-                            <span class="btn btn-primary">
-                                Choisir un fichier <input type="file" name="file" hidden multiple>
-                            </span>
-                        </label>
-                        <input type="text" class="form-control col" readonly>
-                    </div>
-                </div>
-            <button id="post" name="" type="submit" class="btn btn-primary">Soumettre</button>
-            </form>
+        <div class="col-md-offset-2 col-md-8 panel panel-primary">
+            <h2 class="text-center" th:text="'Demande de remboursement ' + ${monthToDisplay}"></h2>
             
-            <div th:if="${#lists.isEmpty(missions)}">
-            	Vous n'avez pas de mission assignée, il ne vous est pas possible de créer une demande de remboursement.
+            <div class="col-md-offset-3 col-md-6">  
+                <form th:if="${not #lists.isEmpty(missions)}" id="addNDF" class="form-horizontal" action="#" enctype="multipart/form-data" th:action="@{/remboursements/demande-remboursement}" th:object="${remboursementForm}" method="post" centered>
+                    
+                    <input class="form-control" type="text" th:value="${monthRequested}" id="moisNote" name="moisNote" hidden="hidden">
+                    
+                    <div class="form-group">
+                        <label class="control-label" for="titreMission">Mission associée</label>  
+                        <div>
+                            <select id="titreMission" class="form-control" name="titreMission" th:field="*{mission}">
+                                <option value=""> -- </option>
+                                <option th:each="mission : ${missions}" th:value="${mission.mission_id}" th:text="${mission.mission_id} + ' : ' + ${mission.titre}"></option>
+                            </select>
+                            <label class="bg-warning text-danger" th:if="${#fields.hasErrors('mission')}" th:errors="*{mission}"></label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="titreDemande">Titre de la demande</label>  
+                        <div>
+                            <input id="titreDemande" name="titreDemande" type="text" placeholder="ex : Billets avion" class="form-control input-md" th:field="*{titre}">
+                            <label class="bg-warning text-danger" th:if="${#fields.hasErrors('titre')}" th:errors="*{titre}"></label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="montant">Montant (€)</label>  
+                        <div>
+                            <input id="montant" name="montant" type="text" placeholder="ex : 42.00" class="form-control input-md" th:field="*{montant}">
+                            <label class="bg-warning text-danger" th:if="${#fields.hasErrors('montant')}" th:errors="*{montant}"></label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="date">Date (antérieure à la date d'aujourd'hui, dans le mois de la note)</label>  
+                        <div>
+                            <input id="date" name="date" type="date" class="form-control" th:field="*{date}" style="height:100%;">
+                            <label class="bg-warning text-danger" th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="motif">Motif</label>  
+                        <div>
+                            <textarea id="motif" name="motif" class="form-control" th:field="*{motif}"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="filebutton">Justificatif</label>
+                        <div class="input-group">
+                            <label class="input-group-btn">
+                                <span class="btn btn-primary">
+                                    Choisir un fichier <input type="file" name="file" hidden multiple>
+                                </span>
+                            </label>
+                            <input type="text" class="form-control col" readonly>
+                        </div>
+                    </div>
+                <button id="post" name="" type="submit" class="btn btn-primary">Soumettre</button>
+                </form>
+                <br>
+                <div th:if="${#lists.isEmpty(missions)}">
+                	Vous n'avez pas de mission assignée, il ne vous est pas possible de créer une demande de remboursement.
+                </div>
             </div>
+            <br>
         </div>
     </div>
 	
