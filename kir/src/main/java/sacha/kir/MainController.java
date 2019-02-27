@@ -196,14 +196,14 @@ public class MainController {
         // Sinon on met le user dans la bd.
         // Utilisateur
         Utilisateur user = new Utilisateur();
-        String[] datesNaissance = userForm.getDateNaissance().split("/");
+        String[] datesNaissance = userForm.getDateNaissance().split("-");
         if (datesNaissance.length == 3)
         {
         	try
         	{
-             	int jour = Integer.parseInt(datesNaissance[0]);
+             	int jour = Integer.parseInt(datesNaissance[2]);
             	int mois = Integer.parseInt(datesNaissance[1]);
-            	int annee = Integer.parseInt(datesNaissance[2]);
+            	int annee = Integer.parseInt(datesNaissance[0]);
             	
             	LocalDate localDate = LocalDate.now();
             	
