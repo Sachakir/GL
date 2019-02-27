@@ -44,7 +44,11 @@
 								</thead>
 								<tbody>
 									<tr th:each="demandeR : ${remboursementsMissions[mission.mission_id]}">
-										<td><a th:href="'/remboursements/note=' + ${note.mois} + '/remboursement_id=' + ${demandeR.demande_id}" th:text="${demandeR.titre}"></a></td>
+										<td>
+											<button th:id="${demandeR.demande_id}" data-toggle="modal" th:data-target="'#motif' + ${demandeR.demande_id}" type="button" class="btn btn-primary" style="white-space:normal;">
+												<span th:text="${demandeR.titre}"></span>
+											</button>
+										</td>
 										<td th:text="${#numbers.formatDecimal(demandeR.montant, 0, 'COMMA', 2, 'POINT')} + ' €'"></td>
 										<td th:text="${mission.titre}"></td>
 										<td th:text="${#temporals.format(demandeR.date, 'dd/MM/yyyy')}"></td>
@@ -55,12 +59,12 @@
 										<td th:text="${demandeR.validationchefservice}"></td>
 										<td th:text="${demandeR.validationfinances}"></td>
 										<td>
-											<a type="button" class="btn btn-primary" th:if="${demandeR.validationchefservice == enAttente and demandeR.validationfinances == enAttente}" th:href="'/remboursements/note=' + ${moisUrl} + '/remboursement_id=' + ${demandeR.demande_id} + '/edit'">
+											<button th:if="${demandeR.validationchefservice == enAttente and demandeR.validationfinances == enAttente}" data-toggle="modal" th:data-target="'#edit' + ${demandeR.demande_id}" type="button" class="btn btn-primary">
 												<span class="glyphicon glyphicon-search"></span>
-											</a>
+											</button>
 										</td>
 										<td>
-											<button th:id="${demandeR.demande_id}" data-toggle="modal" data-target="#warning_msg" value="suppr" type="button" class="btn btn-danger">
+											<button data-toggle="modal" data-target="#warning_msg" value="suppr" type="button" class="btn btn-danger">
 												<span class="glyphicon glyphicon-ban-circle"></span>
 											</button>
 										</td>
@@ -72,6 +76,63 @@
 				</div>
 				<div th:if="${#lists.isEmpty(missions)}" class="panel-heading" style="color:black; background:white;">
 					<h3 class="panel-title">Votre note de frais est vide</h3>
+				</div>
+			</div>
+			
+			<div th:if="${missions != null}">
+				<div th:each="mission : ${missions}">
+					<div th:each="demandeR : ${remboursementsMissions[mission.mission_id]}">
+						<div class="modal fade" th:id="'motif' + ${demandeR.demande_id}" role="dialog">
+							<div class="modal-dialog modal-sm"> 
+								<div class="modal-content panel-primary">
+									<div class="modal-header panel-heading">
+										<button type="button" class="close" data-dismiss="modal">x</button>
+										<h4 class="modal-title" th:text="'Motif : ' + ${demandeR.titre}"></h4>
+									</div>
+									<div class="modal-body">
+										<p th:text="${demandeR.motif == '' ? 'Pas de motif renseigné' : demandeR.motif}" th:style="${demandeR.motif == '' ? 'color:red' : ''}"></p>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal fade" th:id="'edit' + ${demandeR.demande_id}" role="dialog">
+							<div class="modal-dialog" role="document"> 
+								<div class="modal-content panel-primary">
+									<div class="modal-header panel-heading">
+										<button type="button" class="close" data-dismiss="modal">x</button>
+										<h4 class="modal-title" th:text="'Modification : ' + ${demandeR.titre}"></h4>
+									</div>
+									<div class="modal-body">
+										<form class="form-horizontal" action="#" th:action="@{'/note=' + ${note.mois} + '/id=' + ${demandeR.demande_id} + '/edit'}" th:object="${remboursementEditForm}" method="post">
+											<div class="form-group">
+												<label class="control-label">Motif</label>
+												<div>
+													<textarea id="motif" name="motif" class="form-control"></textarea> <!-- th:field="*{motif}" -->
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label" for="filebutton">Justificatif</label>
+						                        <div class="input-group">
+						                            <label class="input-group-btn">
+						                                <span class="btn btn-primary">
+						                                    Choisir un fichier <input type="file" name="file" hidden="hidden" multiple>
+						                                </span>
+						                            </label>
+						                            <input type="text" class="form-control col" readonly>
+						                        </div>
+											</div>
+										</form>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-danger" data-dismiss="modal">Annuler</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 			

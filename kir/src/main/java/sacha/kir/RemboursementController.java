@@ -46,6 +46,7 @@ import sacha.kir.bdd.remboursement.Statut;
 import sacha.kir.bdd.remboursementsnote.InterfaceRemboursementsNoteService;
 import sacha.kir.bdd.userrole.InterfaceUserRoleService;
 import sacha.kir.bdd.utilisateur.InterfaceUtilisateurService;
+import sacha.kir.form.RemboursementEditForm;
 import sacha.kir.form.RemboursementForm;
 
 @Controller
@@ -73,6 +74,15 @@ public class RemboursementController {
     InterfaceAppRoleService AppRoleService;
 	@Autowired
 	InterfaceUserRoleService UserRoleService;
+	
+	public String reverse(String toReverse) {
+		StringBuilder sb = new StringBuilder();
+		for(int i=toReverse.length() - 1; i>=0; i--) {
+			sb.append(toReverse.charAt(i));
+		}
+		
+		return sb.toString();
+	}
 	
 	@ModelAttribute("username")
 	public String getUsername(Principal principal) {
@@ -249,7 +259,7 @@ public class RemboursementController {
 		return "forward:/notFound";
 	}
 	
-	@GetMapping(value = "/note={mois:.+}/remboursement_id={remboursement_id:.+}")
+	@GetMapping(value = "/note={mois:.+}/id={remboursement_id:.+}")
 	public String displayRemboursement(@PathVariable String mois, @PathVariable String remboursement_id, Model model, Principal principal)
 	{
 		try {
@@ -279,7 +289,7 @@ public class RemboursementController {
 	
 	//TODO utiliser le template remboursement form (???) ou s'en inspirer pour les modifs
 	
-	/*@GetMapping(value = "/note={mois:.+}/remboursement_id={remboursement_id:.+}/edit")
+	@PostMapping(value = "/note={mois:.+}/id={remboursement_id:.+}/edit")
 	public String modifyRemboursement(@PathVariable String mois, @PathVariable String remboursement_id, Model model, Principal principal)
 	{
 		try {
@@ -295,12 +305,15 @@ public class RemboursementController {
 				Remboursement r = RemboursementService.findById(remboursement_id_long);
 				Mission m = MissionService.findMissionById(r.getMission_id());
 				
-				model.addAttribute("remboursementForm", new RemboursementForm());
-			    model.addAttribute("missions", userMissions);
-			    model.addAttribute("monthRequested", monthRequested);
+				String moisNote = r.getDate().toString().substring(0,7);
+				moisNote = moisNote.substring(5, 7) + "-" + moisNote.substring(0, 4);
 				
+				model.addAttribute("remboursementEditForm", new RemboursementEditForm());
 				model.addAttribute("remboursement", r);
 				model.addAttribute("mission", m);
+				model.addAttribute("note", NoteService.findNoteByMonthAndUID(moisNote, userId));
+				
+				System.out.println(moisNote);
 				
 				return "remboursements/remboursementDetail";
 			}
@@ -310,7 +323,7 @@ public class RemboursementController {
 		}
 		
 		return "forward:/notFound";
-	}*/
+	}
 	
 	@RequestMapping("/delete")
 	public String deleteRemboursement(@RequestHeader(value = "referer", required = false) final String referer, 

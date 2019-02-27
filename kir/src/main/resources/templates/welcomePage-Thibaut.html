@@ -101,7 +101,7 @@
 								</thead>
 								<tbody>
 									<tr th:each="demandeR : ${recentDemandesRemboursement}">
-										<td><a th:href="'/remboursements/note=' + ${notesAssociees[demandeR.demande_id]} + '/remboursement_id=' + ${demandeR.demande_id}" th:text="${demandeR.titre}"></a></td>
+										<td><a th:href="'/remboursements/note=' + ${notesAssociees[demandeR.demande_id]} + '/id=' + ${demandeR.demande_id}" th:text="${demandeR.titre}"></a></td>
 										<td th:text="${#numbers.formatDecimal(demandeR.montant, 0, 'COMMA', 2, 'POINT')} + ' €'"></td>
 										<td th:text="${missionNames[demandeR.mission_id]}"></td>
 										<td th:text="${#temporals.format(demandeR.date, 'dd/MM/yyyy')}"></td>
