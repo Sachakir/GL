@@ -123,14 +123,52 @@ $(document).ready(function () {
 		
 		select: function(startDate, endDate) {
 			if(today.getTime()<startDate && today.getTime()<endDate){
+				var debut = new Date(startDate);
+				var fin = new Date(endDate);
+				var d = debut.getTime();
+				var f = fin.getTime();
+				var msg = "";
 				
-				$("#dateD").val(startDate.format()+"T08:00");
-				$("#dateF").val(endDate.format()+"T08:00");
+				if(debut.getDay()==6)
+				{
+					d += 2*86400000;
+					msg+="Vous ne pouvez pas commencer un congé Samedi! Choisissez une date de début hors weekend!\n";
+				}
+				else if(debut.getDay()==0)
+				{
+					d += 86400000;
+					msg+="Vous ne pouvez pas commencer un congé Dimanche! Choisissez une date de début hors weekend!\n";
+				}
+				if(fin.getDay()==6)
+				{
+					f += 2*86400000;
+					msg+="Vous ne pouvez pas finir un congé Samedi! Choisissez une date de fin hors weekend!\n";
+				}
+				else if(fin.getDay()==0)
+				{
+					f += 86400000;
+					msg+="Vous ne pouvez pas fin un congé Dimanche! Choisissez une date de fin hors weekend!\n";
+				}
+				if(msg!="")
+				{
+					alert(msg);
+				}
+				debut = new Date(d);
+				fin = new Date(f);
+				var day = ("0" + debut.getDate()).slice(-2);
+				var month = ("0" + (debut.getMonth() + 1)).slice(-2);
+				var debutString = debut.getFullYear() + "-"+(month)+"-"+(day)+"T08:00";
+				day = ("0" + fin.getDate()).slice(-2);
+				month = ("0" + (fin.getMonth() + 1)).slice(-2);
+				var finString = fin.getFullYear() + "-"+(month)+"-"+(day)+"T18:00";
+				alert(debut + "    " + endDate.format()+"T08:00");
+				$("#dateD").val(debutString);
+				$("#dateF").val(finString);
 				$('#calendarC').fullCalendar('removeEvents');
 				$('#calendarC').fullCalendar('renderEvent', {
 					title: 'Congé',
-					start: startDate,
-					end: endDate
+					start: debutString,
+					end: finString
 				});
 			}
 		}
@@ -253,6 +291,24 @@ function verifDateD(){
 			$("#dateF").val(dateString);
 		}
 	}
+	else if(debut.getDay()==6 ){
+		alert("Vous ne pouvez pas commencer un congé Samedi! Choisissez une date de début hors weekend!");
+		var d = new Date($("#dateD").val());
+		d = new Date(d.getTime() + 2*86400000);
+		var da = ("0" + d.getDate()).slice(-2);
+		var m = ("0" + (d.getMonth() + 1)).slice(-2);
+		var dString = d.getFullYear()+"-"+(m)+"-"+(da)+"T"+dateDebutWtime[1] ;
+		$("#dateD").val(dString);
+	}
+	else if(debut.getDay()==0 ){
+		alert("Vous ne pouvez pas commencer un congé Dimanche! Choisissez une date de début hors weekend!");
+		var d = new Date($("#dateD").val());
+		d = new Date(d.getTime() + 86400000);
+		var da = ("0" + d.getDate()).slice(-2);
+		var m = ("0" + (d.getMonth() + 1)).slice(-2);
+		var dString = d.getFullYear()+"-"+(m)+"-"+(da)+"T"+dateDebutWtime[1] ;
+		$("#dateD").val(dString);
+	}
 	else if(fin.getTime()<debut.getTime()){
 		alert("Entrez une date de début antérieure à la date de fin de votre congé.");
 		$("#dateF").val($("#dateD").val());
@@ -294,6 +350,24 @@ function verifDateF(){
 		else{
 			$("#dateF").val($("#dateD").val());
 		}
+	}
+	else if(fin.getDay()==6 ){
+		alert("Vous ne pouvez pas finir un congé Samedi! Choisissez une date de fin hors weekend!");
+		var d = new Date($("#dateF").val());
+		d = new Date(d.getTime() + 2*86400000);
+		var da = ("0" + d.getDate()).slice(-2);
+		var m = ("0" + (d.getMonth() + 1)).slice(-2);
+		var dString = d.getFullYear()+"-"+(m)+"-"+(da)+"T"+dateFinWtime[1] ;
+		$("#dateF").val(dString);
+	}
+	else if(fin.getDay()==0 ){
+		alert("Vous ne pouvez pas commencer un congé Dimanche! Choisissez une date de fin hors weekend!");
+		var d = new Date($("#dateF").val());
+		d = new Date(d.getTime() + 86400000);
+		var da = ("0" + d.getDate()).slice(-2);
+		var m = ("0" + (d.getMonth() + 1)).slice(-2);
+		var dString = d.getFullYear()+"-"+(m)+"-"+(da)+"T"+dateFinWtime[1] ;
+		$("#dateF").val(dString);
 	}
 	else if(fin.getTime()<debut.getTime()){
 		alert("Entrez une date de fin ultérieure à la date de début de votre congé.");
