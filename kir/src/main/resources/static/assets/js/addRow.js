@@ -236,10 +236,9 @@ function verifDateD(){
 	var dateDebutWtime = $("#dateD").val().split("T");
 	var dateFin = dateFinWtime[0].split("-");
 	var dateDebut = dateDebutWtime[0].split("-");
+	var timeDebut = dateDebutWtime[1].split(":");
 	var now = new Date();
 	var tomorrow = new Date(now.getTime() + 86400000);
-	/*var fin = new Date(dateFin[0],dateFin[1]-1,dateFin[2]);
-	var debut = new Date(dateDebut[0],dateDebut[1]-1,dateDebut[2]);*/
 	var fin = new Date($("#dateF").val());
 	var debut = new Date($("#dateD").val());
     var day = ("0" + tomorrow.getDate()).slice(-2);
@@ -258,6 +257,12 @@ function verifDateD(){
 		alert("Entrez une date de début antérieure à la date de fin de votre congé.");
 		$("#dateF").val($("#dateD").val());
 	}
+	else if(timeDebut[0]<8 || timeDebut[0]>18)
+	{
+		alert("Entrez un horaire de début de congé entre 8h et 18h." );
+		$("#dateD").val(dateDebutWtime[0]+"T08:00");
+	}
+			
 	$('#calendarC').fullCalendar('removeEvents');
 	$('#calendarC').fullCalendar('renderEvent', {
 		title: 'congé',
@@ -271,10 +276,9 @@ function verifDateF(){
 	var dateDebutWtime = $("#dateD").val().split("T");
 	var dateFin = dateFinWtime[0].split("-");
 	var dateDebut = dateDebutWtime[0].split("-");
+	var timeFin = dateFinWtime[1].split(":");
 	var now = new Date();
 	var tomorrow = new Date(now.getTime() + 86400000);
-	/*var fin = new Date(dateFin[0],dateFin[1]-1,dateFin[2]);
-	var debut = new Date(dateDebut[0],dateDebut[1]-1,dateDebut[2]);*/
 	var fin = new Date($("#dateF").val());
 	var debut = new Date($("#dateD").val());
     var day = ("0" + tomorrow.getDate()).slice(-2);
@@ -294,6 +298,11 @@ function verifDateF(){
 	else if(fin.getTime()<debut.getTime()){
 		alert("Entrez une date de fin ultérieure à la date de début de votre congé.");
 		$("#dateF").val($("#dateD").val());
+	}
+	else if(timeFin[0]<8 || timeFin[0]>18)
+	{
+		alert("Entrez un horaire de fin de congé entre 8h et 18h." );
+		$("#dateF").val(dateDebutWtime[0]+"T18:00");
 	}
 	$('#calendarC').fullCalendar('removeEvents');
 	$('#calendarC').fullCalendar('renderEvent', {
