@@ -55,63 +55,15 @@
 			<ul class="nav navbar-nav navbar-right">
 				<li id="notification_li">
 					<a href="#" id="notificationLink"><span class="glyphicon glyphicon-bell"></span> Notifications <span id="notification_count" class="label label-danger label-pill">9</span></a>
-					<div id="notificationContainer" class="hidden-xs hidden-sm">
-						<div id="notificationTitle">Notifications</div>
-						<div id="notificationsBody" class="notifications">
-							<div class="list-group pre-scrollable">
-								<a href="#" id="notificationLink1" class="list-group-item">
-									Demande de remboursement
-									<span class="badge">12 Janvier 2019</span>
-								</a>
-								<a href="https://www.google.fr/" class="list-group-item">
-									Demande de congés - 10 jour(s)
-									<span class="badge">12 Janvier 2019</span>
-								</a>
-								<a href="#" class="list-group-item">
-									Demande de congés - 10 jour(s)
-									<span class="badge">12 Janvier 2019</span>
-								</a>
-								<a href="#" class="list-group-item">
-									Demande de congés - 10 jour(s)
-									<span class="badge">12 Janvier 2019</span>
-								</a>
-								<a href="#" class="list-group-item">
-									Demande de congés - 10 jour(s)
-									<span class="badge">12 Janvier 2019</span>
-								</a>
-								<a href="#" class="list-group-item">
-									Demande de congés - 10 jour(s)
-									<span class="badge">12 Janvier 2019</span>
-								</a>
-								<a href="#" class="list-group-item">
-									Demande de congés - 10 jour(s)
-									<span class="badge">12 Janvier 2019</span>
-								</a>
-								<a href="#" class="list-group-item">
-									Demande de congés - 10 jour(s)
-									<span class="badge">12 Janvier 2019</span>
-								</a>
-								<a href="#" class="list-group-item">
-									Demande de congés - 10 jour(s)
-									<span class="badge">12 Janvier 2019</span>
-								</a>
-								<a href="#" class="list-group-item">
-									Demande de congés - 14 jour(s)
-									<span class="badge">12 Janvier 2019</span>
-								</a>
-							</div></div>
-							<div id="notificationFooter"><a href="https://www.google.fr/">Voir tout</a></div>
-						</div>
-
-					</li>
-					<li class="dropdown"> 
-						<a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false"> <span class="glyphicon glyphicon-user"></span> <span th:text="'Compte'"></span> <b class="caret"></b></a>
-						<ul class="dropdown-menu">
-							<li><a href="/parametres">Paramètres</a></li>
-							<li><a th:if="${#request.userPrincipal != null}" th:href="@{/logout}">Deconnexion</a></li>
-						</ul>
-					</li> 
-				</ul>
+				</li>
+				<li class="dropdown"> 
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false"> <span class="glyphicon glyphicon-user"></span> <span th:text="'Compte'"></span> <b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li><a href="/parametres">Paramètres</a></li>
+						<li><a th:if="${#request.userPrincipal != null}" th:href="@{/logout}">Deconnexion</a></li>
+					</ul>
+				</li> 
+			</ul>
         </div>
     </div>
 </nav>
