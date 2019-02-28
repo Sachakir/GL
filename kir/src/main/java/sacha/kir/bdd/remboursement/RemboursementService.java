@@ -140,4 +140,13 @@ public class RemboursementService implements InterfaceRemboursementService {
 			repository.deleteById(demande_id);
 		}
 	}
+	
+	@Override
+	public void update(Remboursement remb) {
+		Remboursement r = repository.findById(remb.getDemande_id()).orElse(null);
+		
+		if(r != null) {
+			repository.save(remb);
+		}
+	}
 }

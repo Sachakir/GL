@@ -18,6 +18,11 @@ function showMDP2()
 	}
 }
 
+function resetFile()
+{
+	$("#filetext").value = "";
+	alert("WTFBATAR");
+}
 
 function sendData()
 {

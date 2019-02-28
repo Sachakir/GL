@@ -560,7 +560,7 @@ public class MainController {
 	        {
 	        	moisInt--;
 	        }
-	        moisPrecedent = (moisInt < 10 ? "0" + moisInt : moisInt) + "/" + yearInt;
+	        moisPrecedent = (moisInt < 10 ? "0" + moisInt : moisInt) + "-" + yearInt;
 	        Note notePrecedente = NoteService.findNoteByMonthAndUID(moisPrecedent, uid);
 	        
 	        if (notePrecedente == null)

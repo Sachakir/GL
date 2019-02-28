@@ -44,6 +44,7 @@ import sacha.kir.bdd.remboursement.InterfaceRemboursementService;
 import sacha.kir.bdd.remboursement.Remboursement;
 import sacha.kir.bdd.remboursement.Statut;
 import sacha.kir.bdd.remboursementsnote.InterfaceRemboursementsNoteService;
+import sacha.kir.bdd.remboursementsnote.RemboursementsNote;
 import sacha.kir.bdd.userrole.InterfaceUserRoleService;
 import sacha.kir.bdd.utilisateur.InterfaceUtilisateurService;
 import sacha.kir.form.RemboursementEditForm;
@@ -181,6 +182,9 @@ public class RemboursementController {
 		model.addAttribute("moisPrecedent", moisPrecedentStr);
 		model.addAttribute("enAttente", Statut.enAttente.statut());
 		
+		// RemboursementEditForm pour la modification de demande
+		model.addAttribute("remboursementEditForm", new RemboursementEditForm());
+		
 		return "remboursements/remboursements";
 	}
 	
@@ -253,35 +257,10 @@ public class RemboursementController {
 	        model.addAttribute("actuel", actuel);
 	        model.addAttribute("enAttente", Statut.enAttente.statut());
 	        
+	        // RemboursementEditForm pour la modification de demande
+	        model.addAttribute("remboursementEditForm", new RemboursementEditForm());
+	        
 	        return "remboursements/noteFrais";
-		}
-		
-		return "forward:/notFound";
-	}
-	
-	@GetMapping(value = "/note={mois:.+}/id={remboursement_id:.+}")
-	public String displayRemboursement(@PathVariable String mois, @PathVariable String remboursement_id, Model model, Principal principal)
-	{
-		try {
-			long remboursement_id_long = Long.parseLong(remboursement_id);
-			String[] names = principal.getName().split("\\.");
-	    	Long userId = UtilisateurService.findPrenomNom(names[1], names[0]).getUID();
-	    	
-			Note note = NoteService.findNoteByMonthAndUID(mois, userId);
-				
-			// On peut afficher la demande dans ce cas là
-			if(note != null && RemboursementsNoteService.findByNoteIdAndDemandeId(note.getNote_id(), remboursement_id_long) != null) {
-				Remboursement r = RemboursementService.findById(remboursement_id_long);
-				Mission m = MissionService.findMissionById(r.getMission_id());
-				
-				model.addAttribute("remboursement", r);
-				model.addAttribute("mission", m);
-				
-				return "remboursements/remboursementDetail";
-			}
-		}
-		catch(NumberFormatException e) {
-			e.printStackTrace();
 		}
 		
 		return "forward:/notFound";
@@ -289,38 +268,55 @@ public class RemboursementController {
 	
 	//TODO utiliser le template remboursement form (???) ou s'en inspirer pour les modifs
 	
+	@GetMapping(value = "/note={mois:.+}/id={remboursement_id:.+}/edit")
+	public String noGetForModifyRemboursement() {
+		return "forward:/notFound";
+	}
+	
 	@PostMapping(value = "/note={mois:.+}/id={remboursement_id:.+}/edit")
-	public String modifyRemboursement(@PathVariable String mois, @PathVariable String remboursement_id, Model model, Principal principal)
+	public String modifyRemboursement(@PathVariable String mois, @PathVariable String remboursement_id, @RequestParam("file") MultipartFile file, @Valid RemboursementEditForm remboursementEditForm, Model model, Principal principal)
 	{
+		String[] names = principal.getName().split("\\.");
+    	Long userId = UtilisateurService.findPrenomNom(names[1], names[0]).getUID();
+		
 		try {
-			long remboursement_id_long = Long.parseLong(remboursement_id);
-			String[] names = principal.getName().split("\\.");
-	    	Long userId = UtilisateurService.findPrenomNom(names[1], names[0]).getUID();
-	    	
+			long demande_id = Long.parseLong(remboursement_id);
+			
 			Note note = NoteService.findNoteByMonthAndUID(mois, userId);
-				
-			// On peut afficher la demande dans ce cas là
-			if(note != null && RemboursementsNoteService.findByNoteIdAndDemandeId(note.getNote_id(), remboursement_id_long) != null) {
-				
-				Remboursement r = RemboursementService.findById(remboursement_id_long);
-				Mission m = MissionService.findMissionById(r.getMission_id());
-				
-				String moisNote = r.getDate().toString().substring(0,7);
-				moisNote = moisNote.substring(5, 7) + "-" + moisNote.substring(0, 4);
-				
-				model.addAttribute("remboursementEditForm", new RemboursementEditForm());
-				model.addAttribute("remboursement", r);
-				model.addAttribute("mission", m);
-				model.addAttribute("note", NoteService.findNoteByMonthAndUID(moisNote, userId));
-				
-				System.out.println(moisNote);
-				
-				return "remboursements/remboursementDetail";
+			System.out.println(mois + " and note is " + note.toString());
+			if(note != null) {
+				// Sert a verifier que la demande de remboursement appartient bien a l'utilisateur
+				RemboursementsNote rembNote = RemboursementsNoteService.findByNoteIdAndDemandeId(note.getNote_id(), demande_id);
+				if(rembNote != null) {
+					Remboursement remb = RemboursementService.findById(demande_id);
+					remb.setMotif(remboursementEditForm.getMotif());
+					
+					if(!file.isEmpty()) {
+						if(remb.getJustificatifid() == null) {
+							Justificatif j = JustificatifService.store(file);
+							remb.setJustificatifid(j.getJustificatif_id());
+						}
+						else JustificatifService.update(remb.getJustificatifid(), file);
+		    		}
+		    		else {
+		    			if(remb.getJustificatifid() != null) {
+		    				JustificatifService.deleteById(remb.getJustificatifid());
+		    				remb.setJustificatifid(null);
+		    			}
+		    		}
+					
+					// Sauvegarde
+					RemboursementService.update(remb);
+					
+					return "redirect:/remboursements/note=" + mois;
+				}
 			}
 		}
-		catch(NumberFormatException e) {
+		catch (NumberFormatException e) {
 			e.printStackTrace();
 		}
+    	
+		
 		
 		return "forward:/notFound";
 	}
@@ -494,13 +490,11 @@ public class RemboursementController {
     		r.setValidationfinances("En attente");
     		
     		// Stockage du fichier dans la BD
-    		if(!file.isEmpty())
-    		{
-    			Justificatif j = JustificatifService.storeJustificatif(file);
+    		if(!file.isEmpty()) {
+    			Justificatif j = JustificatifService.store(file);
     			r.setJustificatifid(j.getJustificatif_id());
     		}
-    		else
-    		{
+    		else {
     			r.setJustificatifid(null);
     		}
     		

@@ -34,7 +34,7 @@ public class JustificatifService implements InterfaceJustificatifService {
 	}
 	
 	@Override
-	public Justificatif storeJustificatif (MultipartFile file) {
+	public Justificatif store (MultipartFile file) {
 		String filepath = StringUtils.cleanPath(file.getOriginalFilename());
 		try {
 			if(filepath.contains("..")) {
@@ -54,6 +54,24 @@ public class JustificatifService implements InterfaceJustificatifService {
             e.printStackTrace();
             return null;
         }
+	}
+	
+	@Override
+	public Justificatif update (long justificatif_id, MultipartFile file) {
+		String filepath = StringUtils.cleanPath(file.getOriginalFilename());
+		try {
+			Justificatif j = new Justificatif(justificatif_id, file.getBytes(), file.getOriginalFilename());
+	        return repository.save(j);
+		} catch (IOException e) {
+            System.err.println("Could not store file " + filepath + ". Please try again!");
+            e.printStackTrace();
+            return null;
+        }
+	}
+	
+	@Override
+	public void deleteById (long justificatif_id) {
+		repository.deleteById(justificatif_id);
 	}
 	
 	@Override

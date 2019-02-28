@@ -63,10 +63,15 @@
                         <div class="input-group">
                             <label class="input-group-btn">
                                 <span class="btn btn-primary">
-                                    Choisir un fichier <input type="file" name="file" hidden multiple>
+                                    Choisir un fichier <input id="filetext" type="file" name="file" hidden="hidden" multiple>
                                 </span>
                             </label>
-                            <input type="text" class="form-control col" readonly>
+                            <div style="display:flex; flex-direction:row;">
+	                            <input type="text" class="form-control col" readonly>
+	                            <button type="button" class="btn btn-danger" onclick="resetFile()">
+	                            	<span class="glyphicon glyphicon-remove"></span>
+	                            </button>
+	                        </div>
                         </div>
                     </div>
                 <button id="post" name="" type="submit" class="btn btn-primary">Soumettre</button>

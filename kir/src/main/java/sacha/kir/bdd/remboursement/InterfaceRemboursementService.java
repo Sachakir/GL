@@ -18,5 +18,6 @@ public interface InterfaceRemboursementService {
 	public String getChefState(long demandeid);
 	public void deleteRembUid(long uid);
 	public void deleteById(long demande_id);
+	public void update(Remboursement remb);
 
 }

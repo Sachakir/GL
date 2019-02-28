@@ -105,12 +105,12 @@
 										<button type="button" class="close" data-dismiss="modal">x</button>
 										<h4 class="modal-title" th:text="'Modification : ' + ${demandeR.titre}"></h4>
 									</div>
-									<div class="modal-body">
-										<form class="form-horizontal" action="#" th:action="@{'/note=' + ${note.mois} + '/id=' + ${demandeR.demande_id} + '/edit'}" th:object="${remboursementEditForm}" method="post">
+									<form id="rembEditForm" class="form-horizontal" action="#" th:action="'/remboursements/note=' + ${note.mois} + '/id=' + ${demandeR.demande_id} + '/edit'" enctype="multipart/form-data" th:object="${remboursementEditForm}" method="post">
+										<div class="modal-body">
 											<div class="form-group">
 												<label class="control-label">Motif</label>
 												<div>
-													<textarea id="motif" name="motif" class="form-control"></textarea> <!-- th:field="*{motif}" -->
+													<textarea id="motif" name="motif" class="form-control" th:field="*{motif}" th:value="${demandeR.motif}"></textarea>
 												</div>
 											</div>
 											<div class="form-group">
@@ -118,17 +118,24 @@
 						                        <div class="input-group">
 						                            <label class="input-group-btn">
 						                                <span class="btn btn-primary">
-						                                    Choisir un fichier <input type="file" name="file" hidden="hidden" multiple>
+						                                    Choisir un fichier <input id="filetext" type="file" name="file" hidden="hidden" multiple>
 						                                </span>
 						                            </label>
-						                            <input type="text" class="form-control col" readonly>
+						                            <div style="display:flex; flex-direction:row;">
+							                            <input type="text" class="form-control col" readonly>
+							                            <button type="button" class="btn btn-danger" onclick="resetFile()">
+							                            	<span class="glyphicon glyphicon-remove"></span>
+							                            </button>
+							                        </div>
 						                        </div>
 											</div>
-										</form>
-									</div>
-									<div class="modal-footer">
-										<button type="button" class="btn btn-danger" data-dismiss="modal">Annuler</button>
-									</div>
+										
+										</div>
+										<div class="modal-footer">
+											<button type="submit" class="btn btn-success" onclick="">Valider</button>
+											<button type="button" class="btn btn-danger" data-dismiss="modal">Annuler</button>
+										</div>
+									</form>
 								</div>
 							</div>
 						</div>
