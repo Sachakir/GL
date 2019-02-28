@@ -291,19 +291,21 @@ public class RemboursementController {
 					Remboursement remb = RemboursementService.findById(demande_id);
 					remb.setMotif(remboursementEditForm.getMotif());
 					
-					if(!file.isEmpty()) {
-						if(remb.getJustificatifid() == null) {
-							Justificatif j = JustificatifService.store(file);
-							remb.setJustificatifid(j.getJustificatif_id());
-						}
-						else JustificatifService.update(remb.getJustificatifid(), file);
-		    		}
-		    		else {
-		    			if(remb.getJustificatifid() != null) {
-		    				JustificatifService.deleteById(remb.getJustificatifid());
-		    				remb.setJustificatifid(null);
-		    			}
-		    		}
+					if(remboursementEditForm.getUpdateFile()) {
+						if(!file.isEmpty()) {
+							if(remb.getJustificatifid() == null) {
+								Justificatif j = JustificatifService.store(file);
+								remb.setJustificatifid(j.getJustificatif_id());
+							}
+							else JustificatifService.update(remb.getJustificatifid(), file);
+			    		}
+			    		else {
+			    			if(remb.getJustificatifid() != null) {
+			    				JustificatifService.deleteById(remb.getJustificatifid());
+			    				remb.setJustificatifid(null);
+			    			}
+			    		}
+					}
 					
 					// Sauvegarde
 					RemboursementService.update(remb);

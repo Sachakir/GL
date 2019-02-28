@@ -15,12 +15,12 @@
 				</div>
 				<div th:if="${missions != null}">
 					<div th:each="mission : ${missions}">
-						<div class="panel" style="margin-bottom: 1px; background:">
+						<div class="panel" style="margin-bottom: 1px;">
 							<div class="panel-heading">
 								<span th:text="${mission.titre}" style="font-size: 1.2em;"></span>
 								<a data-toggle="collapse" aria-expanded="false" th:href="'#collapse-' + ${mission.mission_id}">
 									<i class="glyphicon glyphicon-menu-down pull-right"></i>
-	      								<i class="glyphicon glyphicon-menu-up pull-right"></i>
+	      							<i class="glyphicon glyphicon-menu-up pull-right"></i>
 								</a>
 							</div>
 						</div>
@@ -64,7 +64,7 @@
 											</button>
 										</td>
 										<td>
-											<button data-toggle="modal" data-target="#warning_msg" value="suppr" type="button" class="btn btn-danger">
+											<button th:id="${demandeR.demande_id}" data-toggle="modal" data-target="#warning_msg" value="suppr" type="button" class="btn btn-danger">
 												<span class="glyphicon glyphicon-ban-circle"></span>
 											</button>
 										</td>
@@ -108,26 +108,38 @@
 									<form id="rembEditForm" class="form-horizontal" action="#" th:action="'/remboursements/note=' + ${note.mois} + '/id=' + ${demandeR.demande_id} + '/edit'" enctype="multipart/form-data" th:object="${remboursementEditForm}" method="post">
 										<div class="modal-body">
 											<div class="form-group">
-												<label class="control-label">Motif</label>
 												<div>
-													<textarea id="motif" name="motif" class="form-control" th:field="*{motif}" th:value="${demandeR.motif}"></textarea>
+													<label class="control-label">Ancien motif</label>
+													<textarea class="form-control" th:text="${demandeR.motif}" readonly></textarea>
+												</div>
+												<label class="control-label">Nouveau motif</label>
+												<div>
+													<textarea id="motif" name="motif" class="form-control" th:field="*{motif}"></textarea>
 												</div>
 											</div>
 											<div class="form-group">
 												<label class="control-label" for="filebutton">Justificatif</label>
-						                        <div class="input-group">
-						                            <label class="input-group-btn">
-						                                <span class="btn btn-primary">
-						                                    Choisir un fichier <input id="filetext" type="file" name="file" hidden="hidden" multiple>
-						                                </span>
-						                            </label>
-						                            <div style="display:flex; flex-direction:row;">
-							                            <input type="text" class="form-control col" readonly>
-							                            <button type="button" class="btn btn-danger" onclick="resetFile()">
-							                            	<span class="glyphicon glyphicon-remove"></span>
-							                            </button>
+												<div class="panel panel-default">
+													<div class="input-group" style="width:100%;">
+														<div class="panel-heading" style="display:flex; flex-direction: row;">
+							                        		<span>Mettre à jour le justificatif</span>
+							                        		<input id="edit-file" type="checkbox" value="true" th:field="*{updateFile}" onclick="showOrHideFileForm(this)" style="width:30px; margin-left:auto;">
+							                        	</div>
+													</div>
+							                        <div class="input-group update-file" style="display:none;">
+							                            <label class="input-group-btn">
+							                                <span class="btn btn-primary">
+							                                    Choisir un fichier <input id="file" type="file" name="file" hidden="hidden" multiple>
+							                                </span>
+							                            </label>
+							                            <div style="display:flex; flex-direction:row;">
+								                            <input type="text" class="form-control col" readonly>
+								                            <button type="button" class="btn btn-danger" onclick="resetFile()">
+								                            	<span class="glyphicon glyphicon-remove"></span>
+								                            </button>
+								                        </div>
 							                        </div>
-						                        </div>
+												</div>
 											</div>
 										
 										</div>

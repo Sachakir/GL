@@ -18,10 +18,19 @@ function showMDP2()
 	}
 }
 
-function resetFile()
-{
-	$("#filetext").value = "";
-	alert("WTFBATAR");
+function resetFile () {
+	  var input = $(":file");
+	  input.trigger('fileselect', [0, ""]);
+	  input.val("");
+}
+
+function showOrHideFileForm(input) {
+	if($(input).is(":checked")){
+		$('.update-file').show();
+	}
+	else {
+		$('.update-file').hide();
+	}
 }
 
 function sendData()
@@ -77,7 +86,7 @@ function deleteRemboursement() {
 		},
 		error: function()
 		{
-			alert("Echec de la suppression");
+			alert("Echec de la suppression")
 		}
 	});
 }
