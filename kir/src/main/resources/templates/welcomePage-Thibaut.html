@@ -18,16 +18,41 @@
 
 		<br>
 
+		<div class="modal fade" id="warning_ndf" role="dialog" >
+			<div class="modal-dialog"> 
+				<div class="modal-content panel-warning">
+					<div class="modal-header panel-heading">
+						<button type="button" class="close" data-dismiss="modal">x</button>
+						<h4 class="modal-title">Attention</h4>
+					</div>
+					<div class="modal-body">
+						<p th:text="${NotifNote}"></p>
+					</div>
+					<div class="modal-footer" centered>
+						<a href="/remboursements/creer-note-frais?mois=precedent" class="btn btn-primary" role="button">
+							Créer une note de frais pour le mois précédent
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script th:inline="javascript">
+		/*<![CDATA[*/
+		    window.onload = function() {
+		        if([[${NotifNote} != null]])
+		        {
+		            $('#warning_ndf').modal('show');
+		        }
+		    };
+
+		/*]]>*/
+		</script>
+		
 		<section class="boxAccueil row panel panel-primary ">
 			
 					<div class="col-md-4">
 						<h4 th:if="${WelcomeMsg != null}" th:utext="${WelcomeMsg}"></h4>
-						<div style="text-decoration-color: red;" th:if="${NotifNote != null}">
-							<h4 th:text="${NotifNote}"></h4>
-							<a href="/remboursements/creer-note-frais?mois=precedent" class="btn btn-primary" role="button">
-								Créer une note de frais pour le mois précédent
-							</a>
-						</div>
 					</div>
 					<div class="col-md-4">
 						<a href="/AjouterConge" class="btn btn-primary" role="button">
@@ -121,7 +146,7 @@
 	</section>
 	<section class="row">
 		<div th:if="${isAdmin}">
-			<div class="col-sm-3">
+			<div centered>
 				<a href="/adminShow" class="btn btn-primary" role="button">
 					Gérer les utilisateurs
 				</a>
