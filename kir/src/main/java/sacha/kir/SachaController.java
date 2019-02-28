@@ -358,6 +358,22 @@ public class SachaController
 		{
 			joursDemandes-=0.5;
 		}
+		double weeks = Math.floor(joursDemandes / 7);
+		joursDemandes-= weeks * 2;
+		int startDay = date1.getDayOfWeek().getValue();
+	    int endDay = date2.getDayOfWeek().getValue();
+	    // Remove weekend not previously removed.   
+	    if (startDay - endDay > 1) {
+	        joursDemandes -= 2;
+	    }
+	    // Remove start day if span starts on Sunday but ends before Saturday
+	    if (startDay == 0 && endDay != 6) {
+	        joursDemandes--;  
+	    }
+	    // Remove end day if span ends on Saturday but starts after Sunday
+	    if (endDay == 6 && startDay != 0) {
+	        joursDemandes--;
+	    }
 		System.out.println("joursDemandes (inshallah float): "+joursDemandes);
 		if (joursDemandes == 0)
 		{
