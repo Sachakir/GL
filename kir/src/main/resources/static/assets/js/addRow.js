@@ -389,7 +389,8 @@ function validationAjoutUtilisateur(){
 	
 	var deb = new Date($("#dateD").val());
 	var fi = new Date($("#dateF").val());
-	var dureeConge = heureDiff(deb,fi);
+	//var dureeConge = heureDiff(deb,fi);
+	var dureeConge = workingDaysBetweenDates(deb,fi);
 	var days = $("#days").text().split(" ");
 	var rtt = $("#daysrtt").text().split(" ");
 	var msgBool =0;
@@ -429,14 +430,53 @@ function heureDiff(d1, d2)
   
   var x1 = d1.getTime() / 86400000;
   var x2 = d2.getTime() / 86400000;
-  var jours = new Number(x2 - x1).toFixed(0);
+  var jours = Math.trunc(x2 - x1);
   d1 = d1.getTime() / 3600000;
   d2 = d2.getTime() / 3600000;
   var heures =d2-d1;
-  alert("heure: "+ heures + " jours: " + jours);
   if(heures%24>4)
 	  jours+=1.0;
   else if(heures%24>0 && heures%24<=4)
 	  jours+=0.5;
   return jours;
+}
+function workingDaysBetweenDates(d0, d1) {
+	var holidays = ['2016-05-03','2016-05-05'];
+    var startDate = d0;
+    var endDate = d1;  
+    // Validate input
+    if (endDate < startDate) {
+        return 0;
+    }
+    // Calculate days between dates  
+    var days = heureDiff(d0,d1);
+    
+    // Subtract two weekend days for every week in between
+    var weeks = Math.floor(days / 7);
+    days -= weeks * 2;
+
+    // Handle special cases
+    var startDay = startDate.getDay();
+    var endDay = endDate.getDay();
+    
+    // Remove weekend not previously removed.   
+    if (startDay - endDay > 1) {
+        days -= 2;
+    }
+    // Remove start day if span starts on Sunday but ends before Saturday
+    if (startDay == 0 && endDay != 6) {
+        days--;  
+    }
+    // Remove end day if span ends on Saturday but starts after Sunday
+    if (endDay == 6 && startDay != 0) {
+        days--;
+    }
+    /* Here is the code */
+    /*for (var i in holidays) {
+      if ((holidays[i] >= d0) && (holidays[i] <= d1)) {
+      	days--;
+      }
+    }*/
+	
+    return days;
 }
