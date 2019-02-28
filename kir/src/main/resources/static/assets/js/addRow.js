@@ -126,7 +126,7 @@ $(document).ready(function () {
 				var debut = new Date(startDate);
 				var fin = new Date(endDate);
 				var d = debut.getTime();
-				var f = fin.getTime();
+				var f = fin.getTime()-86400000;
 				var msg = "";
 				
 				if(debut.getDay()==6)
@@ -139,12 +139,15 @@ $(document).ready(function () {
 					d += 86400000;
 					msg+="Vous ne pouvez pas commencer un congé Dimanche! Choisissez une date de début hors weekend!\n";
 				}
-				if(fin.getDay()==6)
+				var jour=fin.getDay()-1;
+				if(jour==-1)
+					jour=6;
+				if(jour==6)
 				{
 					f += 2*86400000;
 					msg+="Vous ne pouvez pas finir un congé Samedi! Choisissez une date de fin hors weekend!\n";
 				}
-				else if(fin.getDay()==0)
+				else if(jour==0)
 				{
 					f += 86400000;
 					msg+="Vous ne pouvez pas fin un congé Dimanche! Choisissez une date de fin hors weekend!\n";
@@ -160,7 +163,7 @@ $(document).ready(function () {
 				var debutString = debut.getFullYear() + "-"+(month)+"-"+(day)+"T08:00";
 				day = ("0" + fin.getDate()).slice(-2);
 				month = ("0" + (fin.getMonth() + 1)).slice(-2);
-				var finString = fin.getFullYear() + "-"+(month)+"-"+(day)+"T08:00";
+				var finString = fin.getFullYear() + "-"+(month)+"-"+(day)+"T18:00";
 				$("#dateD").val(debutString);
 				$("#dateF").val(finString);
 				$('#calendarC').fullCalendar('removeEvents');

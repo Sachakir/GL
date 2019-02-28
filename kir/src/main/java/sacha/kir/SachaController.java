@@ -367,11 +367,11 @@ public class SachaController
 	        joursDemandes -= 2;
 	    }
 	    // Remove start day if span starts on Sunday but ends before Saturday
-	    if (startDay == 0 && endDay != 6) {
+	    if (startDay == 7 && endDay != 6) {
 	        joursDemandes--;  
 	    }
 	    // Remove end day if span ends on Saturday but starts after Sunday
-	    if (endDay == 6 && startDay != 0) {
+	    if (endDay == 6 && startDay != 7) {
 	        joursDemandes--;
 	    }
 		System.out.println("joursDemandes (inshallah float): "+joursDemandes);
