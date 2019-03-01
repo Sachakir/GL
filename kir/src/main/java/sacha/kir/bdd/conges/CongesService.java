@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import sacha.kir.bdd.notif.InterfaceNotifService;
 import sacha.kir.bdd.remboursement.Statut;
 
 @Service
@@ -13,6 +14,9 @@ public class CongesService implements InterfaceCongesService
 {
 	@Autowired
     private	CongesRepository repository;
+	
+	@Autowired
+	InterfaceNotifService NotifService;
 	
 	@Override
 	public List<Conges> findAll() {
@@ -32,8 +36,12 @@ public class CongesService implements InterfaceCongesService
 		c.setValidationchefdeservice(Statut.enAttente.statut());
 		c.setValidationrh(Statut.enAttente.statut());
 		c.setRtt(rtt);
-		System.out.println("rtt en entree: "+ rtt+ " rtt en sortie: "+c.isRtt());
+		System.out.println("rtt en entree: "+ rtt+ " rtt en sortie: " + c.isRtt());
 		repository.save(c);
+		String titre = "Demande de congés du " + date_debut.substring(0, 9) + " au " + date_fin.substring(0, 9);
+		if (titre.length() > 60)
+			titre = titre.substring(0, 56) + "...";
+		NotifService.addNotif(30, titre, "/Calendrier");
 	}
 
 	@Override
@@ -54,11 +62,21 @@ public class CongesService implements InterfaceCongesService
 	@Override
 	public void updateChefState(long congesid, String newstate) {
 		repository.updateChefState(congesid, newstate);
+		Conges c = repository.getCongesbyId(congesid);
+		String titre = "Validation service : congés du " + c.getDatedebut().substring(0, 9) + " au " + c.getDatefin().substring(0, 9);
+		if (titre.length() > 60)
+			titre = titre.substring(0, 56) + "...";
+		NotifService.addNotif(c.getUid(), titre, "/GererConges");
 	}
 
 	@Override
 	public void updateRHState(long congesid, String newstate) {
 		repository.updateRHState(congesid, newstate);
+		Conges c = repository.getCongesbyId(congesid);
+		String titre = "Validation RH : congés du " + c.getDatedebut().substring(0, 9) + " au " + c.getDatefin().substring(0, 9);
+		if (titre.length() > 60)
+			titre = titre.substring(0, 56) + "...";
+		NotifService.addNotif(c.getUid(), titre, "/GererConges");
 	}
 
 	@Override
@@ -69,6 +87,11 @@ public class CongesService implements InterfaceCongesService
 	@Override
 	public void updateConges(long congesid, String newdebut, String newfin) {
 		repository.updateConges(congesid, newdebut, newfin);
+		Conges c = repository.getCongesbyId(congesid);
+		String titre = "Demande de congés : " + c.getDatedebut().substring(0, 9) + " -> " + c.getDatefin().substring(0, 9);
+		if (titre.length() > 60)
+			titre = titre.substring(0, 56) + "...";
+		NotifService.addNotif(30, titre, "/Calendrier");
 	}
 	
 	@Override
