@@ -22,8 +22,7 @@
 				<form th:action="@{/roleChanged}" th:object="${editForm}" method="post">
 					<input type="hidden" th:field="*{uid}">
 					<input type="hidden" th:field="*{prenom}">	
-					<input type="hidden" th:field="*{nom}">
-					<input type="hidden" th:field="*{dateNaissance}">	
+					<input type="hidden" th:field="*{nom}">	
 					<input type="hidden" th:field="*{joursCongesRest}">		
 					<input type="hidden" th:field="*{rtt}">
 					<input type="hidden" th:field="*{mdp}">
@@ -38,10 +37,6 @@
 							<tr>
 								<td><span> Nom </span></td>	
 								<td><span th:text="${editForm.nom}"></span></td>			
-							</tr>
-							<tr>
-								<td><span> Date de naissance </span></td>	
-								<td><span th:text="${editForm.dateNaissance}"></span></td>			
 							</tr>
 							<tr>
 								<td><span> Numero de télephone </span></td>	

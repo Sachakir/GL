@@ -2,6 +2,7 @@ package sacha.kir.form;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 public class UserForm {
@@ -16,12 +17,8 @@ public class UserForm {
 	private String prenom;
 	
 	@NotNull
-	@Size(min=1, max=42)
+	@Pattern(regexp="^(?:(?:\\+|00)33|0)\\s*[1-9](?:[\\s.-]*\\d{2}){4}$", message="Le numéro de téléphone entré n'est pas valide")
 	private String numTel;
-	
-	@NotNull
-	@Size(min=1, max=42)
-	private String dateNaissance;
 	
 	@NotNull
 	@Min(value = 0, message = "0 jours de conges minimum")
@@ -72,10 +69,6 @@ public class UserForm {
 		return numTel;
 	}
 	
-	public String getDateNaissance() {
-		return dateNaissance;
-	}
-	
 	public float getJoursCongesRest() {
 		return joursCongesRest;
 	}
@@ -117,10 +110,6 @@ public class UserForm {
 		this.numTel = numTel;
 	}
 	
-	public void setDateNaissance(String dateNaissance) {
-		this.dateNaissance = dateNaissance;
-	}
-	
 	public void setJoursCongesRest(float joursCongesRest) {
 		this.joursCongesRest = joursCongesRest;
 	}
@@ -151,7 +140,4 @@ public class UserForm {
 	public void setHeurestravail(int heurestravail) {
 		this.heurestravail = heurestravail;
 	}
-	
-	
-	
 }

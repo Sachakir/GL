@@ -40,13 +40,6 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label" for="dateNaissance">Date de naissance</label>  
-								<div>
-									<input id="dateNaissance" name="dateNaissance" type="date" class="form-control input-md" th:field="*{dateNaissance}" style="height:100%;">
-									<label th:if="${#fields.hasErrors('dateNaissance')}" th:errors="*{dateNaissance}">erreur dateNaissance</label>
-								</div>
-							</div>
-							<div class="form-group">
 								<label class="control-label" for="heures_travail">Heures de travail par semaine</label>  
 								<div>
 									<input id="heures_travail" name="heures_travail" type="text" placeholder="ex : 35" class="form-control input-md" th:field="*{heurestravail}">

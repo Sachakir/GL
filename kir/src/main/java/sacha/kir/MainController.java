@@ -221,38 +221,6 @@ public class MainController {
         // Sinon on met le user dans la bd.
         // Utilisateur
         Utilisateur user = new Utilisateur();
-        String[] datesNaissance = userForm.getDateNaissance().split("-");
-        if (datesNaissance.length == 3)
-        {
-        	try
-        	{
-             	int jour = Integer.parseInt(datesNaissance[2]);
-            	int mois = Integer.parseInt(datesNaissance[1]);
-            	int annee = Integer.parseInt(datesNaissance[0]);
-            	
-            	LocalDate localDate = LocalDate.now();
-            	
-            	if (jour > 0 && jour <= 31 && mois > 0 && mois <= 12 && annee > 0 && annee <= localDate.getYear())
-            	{
-                    user.setDateNaissance(userForm.getDateNaissance());
-            	}
-            	else
-            	{
-            		System.out.println("Dates hors bornes");
-            		return "redirect:/adminShow";
-            	}
-        	}
-        	catch (Exception e)
-        	{
-        		System.out.println("Erreur format date");
-        		return "redirect:/adminShow";
-        	}
-        }
-        else
-        {
-        	System.out.println("Erreur champ date " + datesNaissance.length);
-    		return "redirect:/adminShow";
-        }
         
         user.setJoursCongesRestants(35);//TODO par défaut 35 jours ?
         user.setNom(userForm.getNom());
@@ -737,7 +705,6 @@ public class MainController {
     	        
     	        if(user != null)
     	        {
-    	        	editForm.setDateNaissance(user.getDateNaissance());
     	        	editForm.setJoursCongesRest((int) user.getJoursCongesRestants());
     	        	editForm.setNom(user.getNom());
     	        	editForm.setNumTel(user.getNumeroTel());
@@ -758,7 +725,7 @@ public class MainController {
     	
     	// Ajout du form pour l'ajout de personne
     	model.addAttribute("userForm", userForm);
-  /////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
+    	/////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
   		SachaClasse nbCongesEtRemb = new SachaClasse();	
   		boolean IsChef = nbCongesEtRemb.isChef(principal, UtilisateurService, MembresServiceBddService);
   		if (IsChef)
@@ -792,7 +759,6 @@ public class MainController {
     	user.setPrenom(editForm.getPrenom());
     	user.setNom(editForm.getNom());
     	user.setNumeroTel(editForm.getNumTel());
-    	user.setDateNaissance(editForm.getDateNaissance());
     	user.setHeuresContrat(editForm.getHeurestravail());
     	user.setJoursCongesRestants(editForm.getJoursCongesRest());
     	user.setRtt(editForm.getRtt());

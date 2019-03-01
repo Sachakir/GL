@@ -14,32 +14,36 @@ public class Utilisateur {
     //@GeneratedValue(strategy = GenerationType.AUTO)
     @NotNull
     private Long UID;
+    
     @NotNull
     @Size(min=1, max=42)
     private String Nom;
-    //@NotNull
+    
+    @NotNull
     private String Prenom;
-    //@NotNull
+    
+    @NotNull
     private String Numerotel;
-    //@NotNull
-    private String datenaissance;
-    //@NotNull
+    
+    @NotNull
 	private float Jourscongesrestants;
     
+    @NotNull
     private float rtt;
+    
+    @NotNull
     private long HeuresContrat;
    
 
 	public Utilisateur() {}
 
-	public Utilisateur(Long uID, String nom, String prenom, String numeroTel, String dateNaissance,
+	public Utilisateur(Long uID, String nom, String prenom, String numeroTel,
 			long joursCongesRestants,float rTT,long Heurescontrat) 
 	{
 		UID = uID;
 		Nom = nom;
 		Prenom = prenom;
 		Numerotel = numeroTel;
-		datenaissance = dateNaissance;
 		Jourscongesrestants = joursCongesRestants;
 		rtt = rTT;
 		HeuresContrat = Heurescontrat;
@@ -77,14 +81,6 @@ public class Utilisateur {
 		Numerotel = numeroTel;
 	}
 
-	public String getDateNaissance() {
-		return datenaissance;
-	}
-
-	public void setDateNaissance(String dateNaissance) {
-		datenaissance = dateNaissance;
-	}
-
 	public float getJoursCongesRestants() {
 		return Jourscongesrestants;
 	}
@@ -92,7 +88,6 @@ public class Utilisateur {
 	public void setJoursCongesRestants(float joursCongesRestants) {
 		Jourscongesrestants = joursCongesRestants;
 	}
-	
 	 
     public float getRtt() {
 		return rtt;
