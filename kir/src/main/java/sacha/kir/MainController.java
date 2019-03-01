@@ -12,11 +12,15 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -97,6 +101,7 @@ public class MainController {
 	@Autowired
 	MembresServiceBddRepository membresServiceBddRepository;
 	/******************/
+	
 	enum TypesConges {
 		CongePaye(0, "Congé payé"),
 	    RTT(1,"RTT");
@@ -109,6 +114,7 @@ public class MainController {
 		    	this.name = name;
 	    }
 	};
+	
 	// Methodes communes aux pages
 	
 	@ModelAttribute("username")
@@ -211,16 +217,6 @@ public class MainController {
         
         user.setJoursCongesRestants(35);//TODO par défaut 35 jours ?
         user.setNom(userForm.getNom());
-
-        for (int character = 0;character < userForm.getNumTel().length();character++)
-        {
-        	char chiffre = userForm.getNumTel().charAt(character);
-        	if (!Character.toString(chiffre).matches("[0-9?]"))
-        	{
-        		System.out.println("Numero avec des lettres !");
-        		return "redirect:/adminShow";
-        	}
-        }
         user.setNumeroTel(userForm.getNumTel());
         user.setPrenom(userForm.getPrenom());
         
@@ -230,7 +226,7 @@ public class MainController {
         else
         	user.setUID((long) 1);
         user.setRtt(0);
-        user.setHeuresContrat(userForm.getHeurestravail());
+        user.setHeuresContrat(Integer.parseInt(userForm.getHeurestravail()));
         UtilisateurService.addUser(user);
         
         // Indentifiant / Mot de passe
@@ -658,7 +654,7 @@ public class MainController {
         	        	editForm.setService_id(membreService.getServiceId());
         	        	editForm.setIsAdmin(membreService.getIsAdmin());
         	        	editForm.setUid(uid);
-        	        	editForm.setHeurestravail((int) user.getHeuresContrat());
+        	        	editForm.setHeurestravail(Long.toString(user.getHeuresContrat()).toString());
         	        	editForm.setRtt(user.getRtt());
         	        	editForm.setMdp("---");
         	        	model.addAttribute("editForm", editForm);
@@ -687,12 +683,13 @@ public class MainController {
             redirectAttributes.addFlashAttribute("success", false);
     	}
     	else {
+    		
     		Utilisateur user = new Utilisateur();
         	user.setUID(editForm.getUid());
         	user.setPrenom(editForm.getPrenom());
         	user.setNom(editForm.getNom());
         	user.setNumeroTel(editForm.getNumTel());
-        	user.setHeuresContrat(editForm.getHeurestravail());
+        	user.setHeuresContrat(Integer.parseInt(editForm.getHeurestravail()));
         	user.setJoursCongesRestants(editForm.getJoursCongesRest());
         	user.setRtt(editForm.getRtt());
         	

@@ -12,7 +12,7 @@
 		
 		<div th:replace="~{navBar :: #navBar}"></div>
 		
-		<div th:if="${editForm != null}" class="col-md-4" style="margin-bottom:20px;">
+		<div th:if="${editForm != null}" class="col-md-6" style="margin-bottom:20px;">
 			<div class="border-detail">
 				<div class="panel panel-primary" style="margin-bottom:0px;">
 					<div class="panel-heading">
@@ -21,69 +21,71 @@
 				</div>
 				<form class="form-horizontal" th:action="@{/adminShow}" th:object="${editForm}" method="post">
 					<input type="hidden" th:field="*{uid}">
-					<input type="hidden" th:field="*{mdp}">
-					<div class="col-offset-1 col-10 col-xs-offset-1 col-xs-10 col-md-offset-1 col-md-10 col-lg-offset-1 col-lg-10 col-xl-offset-1 col-xl-10 text-center">
+					<input id="noMdp" type="hidden" th:field="*{mdp}">
+					<div class="col-offset-1 col-10 col-xs-offset-1 col-xs-10 col-md-offset-1 col-md-10 col-lg-offset-1 col-lg-10 col-xl-offset-1 col-xl-10">
 						<br>
 						<div th:if="${success != null}" class="thumbnail" style="margin-bottom: 15px;">
-							<span th:text="${success ? 'Modification effectuée avec succès' : 'Aucune modification effectuée'}" th:class="${success ? 'text-success' : 'text-danger'}" style="font-weight: bold;"></span>
+							<span th:text="${success ? 'Modification effectuée avec succès' : 'Aucune modification effectuée'}" th:class="${success ? 'text-success' : 'text-danger'}" style="font-weight: bold; text-align:center;"></span>
 						</div>	
-						<div class="form-group">
+						<div class="input-desc">
 							<span> Prenom </span>
 							<input th:field="*{prenom}" class="form-control" readonly>
 						</div>
+						<br>
 						
-						<div class="form-group">
+						<div class="input-desc">
 							<span> Nom </span>
 							<input th:field="*{nom}" class="form-control" readonly>
-							<br>
 						</div>
+						<br>
 						
-						<div class="form-group">
+						<div class="input-desc">
 							<span> Numero de télephone </span>	
 							<input th:field="*{numTel}" class="form-control">
-							<label class="bg-warning text-danger" th:if="${#fields.hasErrors('numTel')}" th:errors="*{numTel}"></label>
-							<br>
 						</div>
+						<label class="bg-warning text-danger text-center" th:if="${#fields.hasErrors('numTel')}" th:errors="*{numTel}" style="margin-bottom:15px;"></label>
+						<br>
 						
-						<div class="form-group">
+						<div class="input-desc">
 							<span> Heures de travail par semaine </span>
-							<input th:field="*{heurestravail}" class="form-control">	
-							<label class="bg-warning text-danger" th:if="${#fields.hasErrors('heurestravail')}" th:errors="*{heurestravail}"></label>
-							<br>	
+							<input th:field="*{heurestravail}" class="form-control">		
 						</div>
+						<label class="bg-warning text-danger text-center" th:if="${#fields.hasErrors('heurestravail')}" th:errors="*{heurestravail}" style="margin-bottom:15px;"></label>
+						<br>
 						
-						<div class="form-group">
+						<div class="input-desc">
 							<span> Jours de congés restants </span>
-							<input th:field="*{joursCongesRest}" class="form-control" readonly>	
-							<br>			
+							<input th:field="*{joursCongesRest}" class="form-control" readonly>				
 						</div>
+						<br>
 						
-						<div class="form-group">
+						<div class="input-desc">
 							<span> Jours de RTT restants </span>	
 							<input th:field="*{rtt}" class="form-control" readonly>
-							<br>
-						</div>
+							</div>
+						<br>
 						
-						<div class="form-group">
+						<div class="input-desc">
 							<span> Service </span>
 							<select th:field="*{service_id}" class="form-control">
 								<option th:each="service_id : ${services_ids}" th:value="${service_id}" th:text="${services.get(service_id)}"></option> 
-							</select>  	
-							<br>	
+							</select>  		
 						</div>
+						<br>
 						
-						<div class="form-group">
+						<div class="input-desc">
 							<span> Role </span>	
 							<select th:field="*{role_id}" class="form-control">
 								<option th:each="role_id : ${roles_ids}" th:value="${role_id}" th:text="${roles.get(role_id)}"></option>
 							</select>		
-							<br>
 						</div>
+						<br>
 						
-						<div class="form-group">
+						<div class="input-desc">
 							<span> Administrateur </span>
-							<input type="checkbox" id="isAdmin" name="isAdmin" class="form-control" th:field="*{isAdmin}" th:value="true">		
+							<input type="checkbox" id="isAdmin" name="isAdmin" th:field="*{isAdmin}" th:value="true">		
 						</div>
+						<br>
 					</div>
 					<button id="post" type="submit" class="btn btn-primary" style="width:100%;">
 						<h3 class="panel-title" style="font-weight:bold;">Modifier le profil de l'utilisateur</h3>
@@ -92,7 +94,7 @@
 			</div>
 		</div>
 
-		<div th:class="${editForm != null} ? 'col-md-8' : 'col-md-offset-2 col-md-8'">
+		<div th:class="${editForm != null} ? 'col-md-6' : 'col-md-offset-1 col-md-10'">
 			<div class="panel panel-primary table-responsive">
 				<div class="panel-heading"> 
 					<h3 class="panel-title">Liste des utilisateurs</h3>

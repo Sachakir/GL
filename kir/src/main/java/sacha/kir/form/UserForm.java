@@ -43,8 +43,8 @@ public class UserForm {
 	private float rtt;
 	
 	@NotNull
-	@Min(value=0, message="0 heures de travail minimum")
-	private int heurestravail;
+	@Pattern(regexp="([1-9][0-9]+)|([0-9])", message="Le nombre d''heures entré n''est pas valide")
+	private String heurestravail;
 	
 	public UserForm() {
 		isAdmin = false;
@@ -133,11 +133,11 @@ public class UserForm {
 		this.rtt=n;
 	}
 
-	public int getHeurestravail() {
+	public String getHeurestravail() {
 		return heurestravail;
 	}
 
-	public void setHeurestravail(int heurestravail) {
+	public void setHeurestravail(String heurestravail) {
 		this.heurestravail = heurestravail;
 	}
 }

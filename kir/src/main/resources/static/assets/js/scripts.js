@@ -45,6 +45,7 @@ function sendData()
 		{
 			$("#formulaire").modal("hide"); 
 			$('#success_msg').modal('show');
+			location.reload();
 		},
 		error: function()
 		{

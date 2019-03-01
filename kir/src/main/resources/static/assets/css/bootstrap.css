@@ -43,6 +43,22 @@ a[aria-expanded=false] .glyphicon-menu-up {
 	border-radius: 4px;
 }
 
+.input-desc {
+	display: flex;
+}
+
+.input-desc input {
+	width: 150px;
+	text-align: center;
+	margin-left: auto
+}
+
+.input-desc select {
+	width: 220px;
+	text-align: center;
+	margin-left: auto
+}
+
 html {
   font-family: sans-serif;
   -webkit-text-size-adjust: 100%;
