@@ -396,26 +396,25 @@ function validationAjoutUtilisateur(){
 	var dureeConge = workingDaysBetweenDates(deb,fi);
 	var days = $("#days").text().split(" ");
 	var rtt = $("#daysrtt").text().split(" ");
-	var msgBool =0;
 	var msg="";
 	alert("\ndureeConge :"+dureeConge+"  solde congé:"+days[4]+" solde rtt:"+rtt[4]);
 	if(!$("#dateD").val()){
 		msg+="Entrez une date de début!\n";
-		msgBool=1;
 	}
 	if(!$("#dateF").val()){
 		msg+="Entrez une date de fin!\n";
-		msgBool=1;
 	}
 	if(dureeConge>parseInt(days[4])&&$('#0').prop('checked')){
 		msg+="Votre solde de congés n'est pas suffisant pour prendre un aussi long congé.\nVeuillez entrer un congé plus court.\n";
-		msgBool=1;
 	}
 	if(dureeConge>parseInt(rtt[4])&&$('#1').prop('checked')){
 		msg+="Votre solde de RTT n'est pas suffisant pour prendre un aussi long congé.\nVeuillez entrer un congé plus court.\n";
-		msgBool=1;
 	}
-	if(msgBool){
+	if(!$("#type1").is("checked") && !$("#type2").is("checked"))
+	{
+		msg+="Sélectionnez un type de congé. \n";
+	}
+	if(msg!=""){
 		alert(msg);
 		return false;
 	}
