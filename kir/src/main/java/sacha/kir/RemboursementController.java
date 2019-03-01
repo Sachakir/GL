@@ -266,6 +266,38 @@ public class RemboursementController {
 		return "forward:/notFound";
 	}
 	
+	@GetMapping(value = "/note={mois:.+}/id={remboursement_id:.+}")
+	public String displayRemboursement(@PathVariable String mois, @PathVariable String remboursement_id, Model model, Principal principal)
+	{
+		//System.out.println("Je suis dans displayRemboursement");
+		try {
+			long remboursement_id_long = Long.parseLong(remboursement_id);
+			String[] names = principal.getName().split("\\.");
+	    	Long userId = UtilisateurService.findPrenomNom(names[1], names[0]).getUID();
+	    	
+			Note note = NoteService.findNoteByMonthAndUID(mois, userId);
+			if (note==null)
+				System.out.println("Note est null");
+				
+			// On peut afficher la demande dans ce cas là
+			if(note != null && RemboursementsNoteService.findByNoteIdAndDemandeId(note.getNote_id(), remboursement_id_long) != null) {
+				Remboursement r = RemboursementService.findById(remboursement_id_long);
+				Mission m = MissionService.findMissionById(r.getMission_id());
+				
+				model.addAttribute("remboursement", r);
+				model.addAttribute("mission", m);
+				//System.out.println("Je suis dans le if de displayRemboursement");
+				return "remboursements/remboursementDetail";
+			}
+		}
+		catch(NumberFormatException e) {
+			e.printStackTrace();
+		}
+
+		//System.out.println("Je vais retourner notFound");
+		return "forward:/notFound";
+	}
+	
 	//TODO utiliser le template remboursement form (???) ou s'en inspirer pour les modifs
 	
 	@GetMapping(value = "/note={mois:.+}/id={remboursement_id:.+}/edit")

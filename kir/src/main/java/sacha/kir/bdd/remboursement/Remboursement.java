@@ -69,7 +69,7 @@ public class Remboursement {
 		String mois = date.getMonthValue() + "-" + date.getYear();
 		if (date.getMonthValue() < 10)
 			mois = "0" + mois;
-		return "/remboursements/note=" + mois + "/remboursement_id=" + demande_id;
+		return "/remboursements/note=" + mois + "/id=" + demande_id;
 	}
 
 	public Long getDemande_id() {
