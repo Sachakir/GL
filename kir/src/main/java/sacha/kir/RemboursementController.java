@@ -36,6 +36,7 @@ import sacha.kir.bdd.conges.InterfaceCongesService;
 import sacha.kir.bdd.justificatif.InterfaceJustificatifService;
 import sacha.kir.bdd.justificatif.Justificatif;
 import sacha.kir.bdd.membresmission.InterfaceMembresMissionService;
+import sacha.kir.bdd.membresservice.InterfaceMembresServiceBddService;
 import sacha.kir.bdd.mission.InterfaceMissionService;
 import sacha.kir.bdd.mission.Mission;
 import sacha.kir.bdd.note.InterfaceNoteService;
@@ -75,6 +76,8 @@ public class RemboursementController {
     InterfaceAppRoleService AppRoleService;
 	@Autowired
 	InterfaceUserRoleService UserRoleService;
+	@Autowired
+	InterfaceMembresServiceBddService MembresServiceBddService;
 	
 	public String reverse(String toReverse) {
 		StringBuilder sb = new StringBuilder();
@@ -184,7 +187,19 @@ public class RemboursementController {
 		
 		// RemboursementEditForm pour la modification de demande
 		model.addAttribute("remboursementEditForm", new RemboursementEditForm());
-		
+	/////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
+			SachaClasse nbCongesEtRemb = new SachaClasse();	
+			boolean IsChef = nbCongesEtRemb.isChef(principal, UtilisateurService, MembresServiceBddService);
+			if (IsChef)
+			{
+				int nbConges = nbCongesEtRemb.getNbConges(CongesService, UtilisateurService, MembresServiceBddService, principal);
+				int nbRemb = nbCongesEtRemb.getNbRemb(principal, MembresServiceBddService, RemboursementService, UtilisateurService);
+				
+		        model.addAttribute("nbRemb", nbRemb);
+				model.addAttribute("nbConges",nbConges);
+				model.addAttribute("IsChef", IsChef);
+			}
+			/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
 		return "remboursements/remboursements";
 	}
 	
@@ -262,7 +277,19 @@ public class RemboursementController {
 	        
 	        return "remboursements/noteFrais";
 		}
-		
+	/////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
+				SachaClasse nbCongesEtRemb = new SachaClasse();	
+				boolean IsChef = nbCongesEtRemb.isChef(principal, UtilisateurService, MembresServiceBddService);
+				if (IsChef)
+				{
+					int nbConges = nbCongesEtRemb.getNbConges(CongesService, UtilisateurService, MembresServiceBddService, principal);
+					int nbRemb = nbCongesEtRemb.getNbRemb(principal, MembresServiceBddService, RemboursementService, UtilisateurService);
+					
+			        model.addAttribute("nbRemb", nbRemb);
+					model.addAttribute("nbConges",nbConges);
+					model.addAttribute("IsChef", IsChef);
+				}
+				/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
 		return "forward:/notFound";
 	}
 	
@@ -295,6 +322,19 @@ public class RemboursementController {
 		}
 
 		//System.out.println("Je vais retourner notFound");
+	/////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
+				SachaClasse nbCongesEtRemb = new SachaClasse();	
+				boolean IsChef = nbCongesEtRemb.isChef(principal, UtilisateurService, MembresServiceBddService);
+				if (IsChef)
+				{
+					int nbConges = nbCongesEtRemb.getNbConges(CongesService, UtilisateurService, MembresServiceBddService, principal);
+					int nbRemb = nbCongesEtRemb.getNbRemb(principal, MembresServiceBddService, RemboursementService, UtilisateurService);
+					
+			        model.addAttribute("nbRemb", nbRemb);
+					model.addAttribute("nbConges",nbConges);
+					model.addAttribute("IsChef", IsChef);
+				}
+				/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
 		return "forward:/notFound";
 	}
 	
@@ -448,6 +488,19 @@ public class RemboursementController {
         }
         
         // Appel de la page du formulaire
+  /////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
+  			SachaClasse nbCongesEtRemb = new SachaClasse();	
+  			boolean IsChef = nbCongesEtRemb.isChef(principal, UtilisateurService, MembresServiceBddService);
+  			if (IsChef)
+  			{
+  				int nbConges = nbCongesEtRemb.getNbConges(CongesService, UtilisateurService, MembresServiceBddService, principal);
+  				int nbRemb = nbCongesEtRemb.getNbRemb(principal, MembresServiceBddService, RemboursementService, UtilisateurService);
+  				
+  		        model.addAttribute("nbRemb", nbRemb);
+  				model.addAttribute("nbConges",nbConges);
+  				model.addAttribute("IsChef", IsChef);
+  			}
+  			/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
         return "remboursements/remboursementForm";
     }
 
@@ -549,6 +602,19 @@ public class RemboursementController {
     public String createNoteFrais(@RequestHeader(value = "referer", required = false) final String referer, 
     							  @RequestParam(value = "mois", required = false) String monthRequested,
     							  Model model, Principal principal) {
+  /////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
+  			SachaClasse nbCongesEtRemb = new SachaClasse();	
+  			boolean IsChef = nbCongesEtRemb.isChef(principal, UtilisateurService, MembresServiceBddService);
+  			if (IsChef)
+  			{
+  				int nbConges = nbCongesEtRemb.getNbConges(CongesService, UtilisateurService, MembresServiceBddService, principal);
+  				int nbRemb = nbCongesEtRemb.getNbRemb(principal, MembresServiceBddService, RemboursementService, UtilisateurService);
+  				
+  		        model.addAttribute("nbRemb", nbRemb);
+  				model.addAttribute("nbConges",nbConges);
+  				model.addAttribute("IsChef", IsChef);
+  			}
+  			/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
     	if(referer == null || monthRequested == null)
     		return "redirect:/Accueil";
     	else 

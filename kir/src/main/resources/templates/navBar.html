@@ -33,7 +33,7 @@
 					<ul class="dropdown-menu">
 						<li><a href="/AjouterConge">Nouvelle demande de congé</a></li>
 						<li><a href="/GererConges">Historique des congés</a></li>
-						<li th:if="${IsChef}"><a href="/Calendrier">Valider une demande de congé <span class="label label-warning label-pill">5</span></a></li>
+						<li th:if="${IsChef}"><a href="/Calendrier">Valider une demande de congé <span class="label label-danger label-pill" th:text="${nbConges}">5</span></a></li>
 					</ul>
 				</li> 
 				<li class="dropdown">

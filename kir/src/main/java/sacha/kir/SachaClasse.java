@@ -3,6 +3,8 @@ package sacha.kir;
 import java.security.Principal;
 import java.util.List;
 
+import sacha.kir.bdd.conges.Conges;
+import sacha.kir.bdd.conges.InterfaceCongesService;
 import sacha.kir.bdd.membresservice.InterfaceMembresServiceBddService;
 import sacha.kir.bdd.membresservice.MembresServiceBdd;
 import sacha.kir.bdd.membresservice.Role;
@@ -12,12 +14,15 @@ import sacha.kir.bdd.remboursement.Statut;
 import sacha.kir.bdd.services.ServicesFixes;
 import sacha.kir.bdd.utilisateur.InterfaceUtilisateurService;
 import sacha.kir.bdd.utilisateur.Utilisateur;
+import sacha.kir.form.CongesV2;
 
 public class SachaClasse {
 
-	public int getNbRemb(Utilisateur ut,InterfaceMembresServiceBddService MembresServiceBddService,InterfaceRemboursementService RemboursementService)
+	public int getNbRemb(Principal principal,InterfaceMembresServiceBddService MembresServiceBddService,InterfaceRemboursementService RemboursementService,InterfaceUtilisateurService UtilisateurService)
 	{
 		int nbRemb = 0;
+		String[] names = principal.getName().split("\\.");
+		Utilisateur ut = UtilisateurService.findPrenomNom(names[1], names[0]);
     	MembresServiceBdd ms = MembresServiceBddService.findById(ut.getUID());
 		List<Remboursement> allRemboursements = RemboursementService.findAll();
     	if (ms.getRoleId() == Role.chefDeService.getRoleId())//Seulement pour un chef de service
@@ -60,5 +65,44 @@ public class SachaClasse {
 			return true;
 		}
 		return false;
+	}
+	
+	public int getNbConges(InterfaceCongesService CongesService,InterfaceUtilisateurService UtilisateurService,InterfaceMembresServiceBddService MembresServiceBddService,Principal principal)
+	{
+		int nbConges = 0;
+		
+		String[] names = principal.getName().split("\\.");
+		Utilisateur validateur = UtilisateurService.findPrenomNom(names[1], names[0]);
+		MembresServiceBdd validateurRoles = MembresServiceBddService.findById(validateur.getUID());
+		long myServiceId = validateurRoles.getServiceId();
+		long uidConges;
+		
+		List<Conges> conges = CongesService.findAll();
+		
+		for(int j=0;j<conges.size();j++) {			
+			if (validateurRoles.getRoleId() == Role.chefDeService.getRoleId())
+			{
+				uidConges = conges.get(j).getUid();
+				if (MembresServiceBddService.findById(uidConges).getServiceId() == myServiceId)//Du meme service
+				{
+					if (conges.get(j).getValidationchefdeservice().equals(Statut.enAttente.statut()))//Demandes en attente
+					{
+						if (conges.get(j).getUid() != validateur.getUID())//Check si pas autovalidation
+						{
+							nbConges++;
+						}
+					}
+				}
+				else if (myServiceId == ServicesFixes.ressourcesHumaines.getServiceId() && conges.get(j).getValidationchefdeservice().equals(Statut.valide.statut()) && conges.get(j).getValidationrh().equals(Statut.enAttente.statut()))
+	    		//Service different, mais la demande est validé par leur chef de service
+				{
+					if (conges.get(j).getUid() != validateur.getUID())//Check si pas autovalidation
+					{
+						nbConges++;
+					}
+				}
+			}			
+		}		
+		return nbConges;
 	}
 }

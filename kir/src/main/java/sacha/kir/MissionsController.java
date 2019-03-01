@@ -140,12 +140,24 @@ public class MissionsController {
  	
     	model.addAttribute("userList", new UserList());
     	model.addAttribute("mesmissions",mesMissions);
-
+  /////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
+  		SachaClasse nbCongesEtRemb = new SachaClasse();	
+  		boolean IsChef = nbCongesEtRemb.isChef(principal, UtilisateurService, MembresServiceBddService);
+  		if (IsChef)
+  		{
+  			int nbConges = nbCongesEtRemb.getNbConges(CongesService, UtilisateurService, MembresServiceBddService, principal);
+  			int nbRemb = nbCongesEtRemb.getNbRemb(principal, MembresServiceBddService, RemboursementService, UtilisateurService);
+  			
+  	        model.addAttribute("nbRemb", nbRemb);
+  			model.addAttribute("nbConges",nbConges);
+  			model.addAttribute("IsChef", IsChef);
+  		}
+  		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
 		return "missions/choixMission";
     }
 	
 	@GetMapping("/create")
-    public String addMission(Mission mission,Model model)
+    public String addMission(Mission mission,Model model,Principal principal)
     {	
 		// Services et id respectifs
 		List<Long> services_ids = ServiceBddService.getServiceIdList();
@@ -181,6 +193,19 @@ public class MissionsController {
     	model.addAttribute("chefsServices", chefsServices);
     	model.addAttribute("utilisateurs", utilisateurs);
     	model.addAttribute("utilisateursServices", utilisateursServices);
+  /////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
+  		SachaClasse nbCongesEtRemb = new SachaClasse();	
+  		boolean IsChef = nbCongesEtRemb.isChef(principal, UtilisateurService, MembresServiceBddService);
+  		if (IsChef)
+  		{
+  			int nbConges = nbCongesEtRemb.getNbConges(CongesService, UtilisateurService, MembresServiceBddService, principal);
+  			int nbRemb = nbCongesEtRemb.getNbRemb(principal, MembresServiceBddService, RemboursementService, UtilisateurService);
+  			
+  	        model.addAttribute("nbRemb", nbRemb);
+  			model.addAttribute("nbConges",nbConges);
+  			model.addAttribute("IsChef", IsChef);
+  		}
+  		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
         return "missions/newMissionPage";
     }
 	
