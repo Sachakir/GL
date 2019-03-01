@@ -17,7 +17,7 @@ public class UserForm {
 	private String prenom;
 	
 	@NotNull
-	@Pattern(regexp="^(?:(?:\\+|00)33|0)\\s*[1-9](?:[\\s.-]*\\d{2}){4}$", message="Le numéro de téléphone entré n'est pas valide")
+	@Pattern(regexp="^(?:(?:\\+|00)33|0)\\s*[1-9](?:[\\s.-]*\\d{2}){4}$", message="Le numéro de téléphone entré n''est pas valide")
 	private String numTel;
 	
 	@NotNull
@@ -39,11 +39,11 @@ public class UserForm {
 	private boolean isAdmin;
 	
 	@NotNull
-	@Min(value=0)
+	@Min(value=0, message="0 jours de RTT minimum")
 	private float rtt;
 	
 	@NotNull
-	@Min(value=0)
+	@Min(value=0, message="0 heures de travail minimum")
 	private int heurestravail;
 	
 	public UserForm() {

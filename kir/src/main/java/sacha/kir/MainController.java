@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import sacha.kir.bdd.approle.AppRole;
 import sacha.kir.bdd.approle.InterfaceAppRoleService;
@@ -626,7 +627,7 @@ public class MainController {
     }
     
     @RequestMapping("/adminShow")
-    public String adminShow(@RequestParam(value = "user_id", required = false) String user_id, Model model, Principal principal, UserForm userForm, UserForm editForm)
+    public String adminShow(@RequestParam(value = "user_id", required = false) String user_id, Model model, Principal principal, UserForm userForm)
     {
     	// Informations pour les services disponibles (liste des services)
     	model = addServiceListIntoModel(model);
@@ -646,18 +647,22 @@ public class MainController {
     	        
     	        if(user != null)
     	        {
-    	        	editForm.setJoursCongesRest((int) user.getJoursCongesRestants());
-    	        	editForm.setNom(user.getNom());
-    	        	editForm.setNumTel(user.getNumeroTel());
-    	        	editForm.setPrenom(user.getPrenom());
-    	        	editForm.setRole_id(membreService.getRoleId());
-    	        	editForm.setService_id(membreService.getServiceId());
-    	        	editForm.setIsAdmin(membreService.getIsAdmin());
-    	        	editForm.setUid(uid);
-    	        	editForm.setHeurestravail((int) user.getHeuresContrat());
-    	        	editForm.setRtt(user.getRtt());
-    	        	editForm.setMdp("---");
-    	        	model.addAttribute("editForm", editForm);
+    	        	if(!model.containsAttribute("editForm"))
+    	        	{
+    	        		UserForm editForm = new UserForm();
+    	        		editForm.setJoursCongesRest((int) user.getJoursCongesRestants());
+        	        	editForm.setNom(user.getNom());
+        	        	editForm.setNumTel(user.getNumeroTel());
+        	        	editForm.setPrenom(user.getPrenom());
+        	        	editForm.setRole_id(membreService.getRoleId());
+        	        	editForm.setService_id(membreService.getServiceId());
+        	        	editForm.setIsAdmin(membreService.getIsAdmin());
+        	        	editForm.setUid(uid);
+        	        	editForm.setHeurestravail((int) user.getHeuresContrat());
+        	        	editForm.setRtt(user.getRtt());
+        	        	editForm.setMdp("---");
+        	        	model.addAttribute("editForm", editForm);
+    	        	}
     	        }		
     		} catch (NumberFormatException e) {
     			e.printStackTrace();
@@ -673,38 +678,36 @@ public class MainController {
         return "showUsers";
     }
     
-    @GetMapping("/roleChanged") 
-    public String roleChanged() {
-    	return "forward:/notFound";
-    }
-    
-    @PostMapping("/roleChanged")
-    public String roleChanged(@Valid UserForm editForm, Model model) {
-    	if (editForm.getRole_id() == 0 || editForm.getService_id() == 0)
-    	{
-    		model.addAttribute("change", "non change");
-    		return "roleChanged";
+    @PostMapping("/adminShow")
+    public String roleChanged(@Valid UserForm editForm, BindingResult result, RedirectAttributes redirectAttributes, Model model) {
+    	
+    	if(result.hasErrors()) {
+    		redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.editForm", result);
+            redirectAttributes.addFlashAttribute("editForm", editForm);
+            redirectAttributes.addFlashAttribute("success", false);
+    	}
+    	else {
+    		Utilisateur user = new Utilisateur();
+        	user.setUID(editForm.getUid());
+        	user.setPrenom(editForm.getPrenom());
+        	user.setNom(editForm.getNom());
+        	user.setNumeroTel(editForm.getNumTel());
+        	user.setHeuresContrat(editForm.getHeurestravail());
+        	user.setJoursCongesRestants(editForm.getJoursCongesRest());
+        	user.setRtt(editForm.getRtt());
+        	
+        	MembresServiceBdd membre = new MembresServiceBdd();
+        	membre.setUid(editForm.getUid());
+        	membre.setRoleId(editForm.getRole_id());
+        	membre.setServiceId(editForm.getService_id());
+        	membre.setIsAdmin(editForm.getIsAdmin());
+        	
+        	// Met a jour l'utilisateur
+        	utilisateurRepository.save(user);
+        	membresServiceBddRepository.save(membre);
+        	redirectAttributes.addFlashAttribute("success", true);
     	}
     	
-    	Utilisateur user = new Utilisateur();
-    	user.setUID(editForm.getUid());
-    	user.setPrenom(editForm.getPrenom());
-    	user.setNom(editForm.getNom());
-    	user.setNumeroTel(editForm.getNumTel());
-    	user.setHeuresContrat(editForm.getHeurestravail());
-    	user.setJoursCongesRestants(editForm.getJoursCongesRest());
-    	user.setRtt(editForm.getRtt());
-    	
-    	MembresServiceBdd membre = new MembresServiceBdd();
-    	membre.setUid(editForm.getUid());
-    	membre.setRoleId(editForm.getRole_id());
-    	membre.setServiceId(editForm.getService_id());
-    	membre.setIsAdmin(editForm.getIsAdmin());
-    	
-    	// Met a jour l'utilisateur
-    	utilisateurRepository.save(user);
-    	membresServiceBddRepository.save(membre);
-    	
-        return "redirect:/adminShow?user_id=" + user.getUID();
+        return "redirect:/adminShow?user_id=" + editForm.getUid();
     }
 }

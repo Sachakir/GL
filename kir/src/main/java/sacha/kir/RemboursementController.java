@@ -20,6 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import sacha.kir.bdd.approle.InterfaceAppRoleService;
 import sacha.kir.bdd.appuser.InterfaceAppUserService;
@@ -415,7 +417,9 @@ public class RemboursementController {
     	List<Mission> userMissions = MissionService.findMissionsById(missionsIDs);
     	
     	// Ajout des attributs pour la mise en forme du formulaire
-        model.addAttribute("remboursementForm", new RemboursementForm());
+    	if (!model.containsAttribute("remboursementForm")) {
+    		model.addAttribute("remboursementForm", new RemboursementForm());
+    	}
         model.addAttribute("missions", userMissions);
         model.addAttribute("monthRequested", monthRequested);
         
@@ -470,9 +474,10 @@ public class RemboursementController {
     }
 
 	@PostMapping("/demande-remboursement")
-    public String sendRemboursementForm(Model model, Principal principal, @RequestParam("file") MultipartFile file, @Valid RemboursementForm remboursementForm, Errors errors) {
+    public String sendRemboursementForm(Model model, Principal principal, @RequestParam("file") MultipartFile file, @Valid RemboursementForm remboursementForm, BindingResult result, RedirectAttributes redirectAttributes) {
     	// Recuperation des missions assignees a l'user
     	String monthRequested = remboursementForm.getMoisNote();
+    	Errors errors = (Errors)result;
     	
     	String[] names = principal.getName().split("\\.");
     	Long userId = UtilisateurService.findPrenomNom(names[1], names[0]).getUID();
@@ -509,21 +514,10 @@ public class RemboursementController {
     	
     	if(errors.hasErrors())
     	{
-    		List<Long> missionsIDs = MembresMissionService.findMissionsByUID(userId);
-        	Collections.sort(missionsIDs);
-        	List<Mission> userMissions = MissionService.findMissionsById(missionsIDs);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.remboursementForm", result);
+            redirectAttributes.addFlashAttribute("remboursementForm", remboursementForm);
         	
-            model.addAttribute("missions", userMissions);
-            model.addAttribute("monthRequested", monthRequested);
-            
-            String monthToDisplay = "pour ";
-            String moisNote = new DateFormatSymbols().getMonths()[moisNow-1];
-            moisNote = moisNote.substring(0, 1).toUpperCase() + moisNote.substring(1);
-            monthToDisplay += moisNote + " " + yearNow;
-            
-            model.addAttribute("monthToDisplay", monthToDisplay);
-        	
-        	return "remboursements/remboursementForm";
+        	return "redirect:/remboursements/demande-remboursement?mois=" + monthRequested;
     	}
     	else
     	{	
@@ -567,7 +561,7 @@ public class RemboursementController {
     public String createNoteFrais(@RequestHeader(value = "referer", required = false) final String referer, 
     							  @RequestParam(value = "mois", required = false) String monthRequested,
     							  Model model, Principal principal) {
-  /////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
+    		/////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
   			SachaClasse nbCongesEtRemb = new SachaClasse();
   			model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService);
   			/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
