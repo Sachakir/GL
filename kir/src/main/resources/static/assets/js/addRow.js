@@ -410,10 +410,7 @@ function validationAjoutUtilisateur(){
 	if(dureeConge>parseInt(rtt[4])&&$('#1').prop('checked')){
 		msg+="Votre solde de RTT n'est pas suffisant pour prendre un aussi long congé.\nVeuillez entrer un congé plus court.\n";
 	}
-	if(!$("#type1").is("checked") && !$("#type2").is("checked"))
-	{
-		msg+="Sélectionnez un type de congé. \n";
-	}
+	
 	if(msg!=""){
 		alert(msg);
 		return false;
