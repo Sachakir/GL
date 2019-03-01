@@ -424,7 +424,7 @@ public class SachaController
 				Utilisateur demandeur = UtilisateurService.findById(demandeUID);
     			if (congesDemande.isRtt())
     			{
-    				UtilisateurService.updateJoursRtt(demandeUID, (long) (demandeur.getRtt() - joursDemandes));
+    				UtilisateurService.updateJoursRtt(demandeUID,  demandeur.getRtt() - joursDemandes);
     			}
     			else if (!congesDemande.isRtt())
     			{

@@ -50,6 +50,6 @@ public interface CongesRepository extends CrudRepository<Conges, Long>{
 	
 	@Transactional
 	@Modifying
-	@Query("DELETE FROM Conges WHERE UID = :userid")
+	@Query("DELETE FROM Conges WHERE CongesID = :userid")
 	public void deleteCongesbyCongesID(@Param("userid") long congesId);
 }

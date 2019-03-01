@@ -109,6 +109,7 @@ $(document).ready(function () {
 				document.getElementById("edit").hidden=true;
 				document.getElementById("delete").hidden=true;
 			}
+			$("#delete").attr("href","/DeleteConges/"+$(this).find("td:nth-child(7)").text());
         }
       });
 	  
@@ -213,7 +214,7 @@ $(document).ready(function () {
 	});
     document.getElementById("editer").onclick = function() {bouttonDeRow()};
 	document.getElementById("edit").onclick = function() {editer()};
-    
+    $('#0').attr('checked',true);
 
 });
 
@@ -254,22 +255,21 @@ function bouttonDeRow()
     }
 }
 function editer(){
-	if(document.getElementById("detailsConge").value=="locked"){
-		document.getElementById("dateD").disabled=true;
-		document.getElementById("dateF").disabled=true;
-		document.getElementById("detailsConge").value="unlocked";
-		document.getElementById("submit").hidden=true;
-	}
-	else{
-		document.getElementById("dateD").disabled=false;
-		document.getElementById("dateF").disabled=false;
-		document.getElementById("detailsConge").value="locked";
-		document.getElementById("submit").hidden=false;
-	}
-	
-	
+	document.getElementById("dateD").disabled=false;
+	document.getElementById("dateF").disabled=false;
+	document.getElementById("submit").hidden=false;
+	document.getElementById("cancel").hidden=false;
+	document.getElementById("edit").hidden=true;
+	document.getElementById("delete").hidden=true;
 }
-
+function annuler(){
+	document.getElementById("dateD").disabled=true;
+	document.getElementById("dateF").disabled=true;
+	document.getElementById("submit").hidden=true;
+	document.getElementById("cancel").hidden=true;
+	document.getElementById("edit").hidden=false;
+	document.getElementById("delete").hidden=false;
+}
 function verifDateD(){
 	
 	var dateFinWtime = $("#dateF").val().split("T");
