@@ -600,21 +600,9 @@ public class MainController {
         Utilisateur utilisa = UtilisateurService.findPrenomNom(names[1], names[0]);
         int nbRemb = SachaEstClasse.getNbRemb(utilisa,MembresServiceBddService,RemboursementService);
         model.addAttribute("nbRemb", nbRemb);
-        
 
 		/*** DERNIERES NOTIFS ***/
 		List<Notif> notifs = NotifService.getAllByIdDesc(userId);
-		/*for (Remboursement r : recentDemandesRemboursement) {
-			Long note_id = RemboursementsNoteService.findNoteIdByDemandeId(r.getDemande_id());
-			String mois = NoteService.findById(note_id).getMois();
-			mois = mois.substring(0, 2) + "-" + mois.substring(3);
-			notifs.add(new Notif(r.getTitre(),
-					r.getTimestamp().toString(),
-					"/remboursements/note=" + mois + "/remboursement_id=" + r.getDemande_id()));
-		}*/
-		notifs.add(new Notif((long) 4, (long) 30, false, new Date(), "la description 1", "https://google.fr"));
-		notifs.add(new Notif((long) 5, (long) 30, false, new Date(), "la description 2", "https://google.fr"));
-		notifs.add(new Notif((long) 6, (long) 30, false, new Date(), "la description 3", "https://google.fr"));
 		model.addAttribute("notifs", notifs);
 		/*** DERNIERES NOTIFS ***/
         
@@ -627,8 +615,12 @@ public class MainController {
     }
     
     @RequestMapping("/Notifications")
-    public String nofitications(Model model,Principal principal)
+    public String nofitications(Model model, Principal principal)
     {
+    	List<Utilisateur> cs = (List<Utilisateur>) utilisateurRepository.findAll();
+    	String[] names = principal.getName().split("\\.");
+    	List<Notif> notifs = NotifService.getAllByIdDesc(UtilisateurService.findPrenomNom(names[1], names[0]).getUID());
+    	model.addAttribute("notifs", notifs);
     	return "notifications";
     }
     
