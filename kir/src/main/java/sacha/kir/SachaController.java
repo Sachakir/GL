@@ -214,16 +214,7 @@ public class SachaController
 		
 		/////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
 		SachaClasse nbCongesEtRemb = new SachaClasse();	
-		boolean IsChef = nbCongesEtRemb.isChef(principal, UtilisateurService, MembresServiceBddService);
-		if (IsChef)
-		{
-			int nbConges = nbCongesEtRemb.getNbConges(CongesService, UtilisateurService, MembresServiceBddService, principal);
-			int nbRemb = nbCongesEtRemb.getNbRemb(principal, MembresServiceBddService, RemboursementService, UtilisateurService);
-			
-	        model.addAttribute("nbRemb", nbRemb);
-			model.addAttribute("nbConges",nbConges);
-			model.addAttribute("IsChef", IsChef);
-		}
+		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService);
 		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
 		
 		return "validerndf";
@@ -322,6 +313,7 @@ public class SachaController
   			model.addAttribute("nbConges",nbConges);
   			model.addAttribute("IsChef", IsChef);
   		}
+  		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService);
   		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
     	
     	

@@ -164,17 +164,8 @@ public class MainController {
                     + "<br> You do not have permission to access this page!";
             model.addAttribute("message", message);
       /////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
-    		SachaClasse nbCongesEtRemb = new SachaClasse();	
-    		boolean IsChef = nbCongesEtRemb.isChef(principal, UtilisateurService, MembresServiceBddService);
-    		if (IsChef)
-    		{
-    			int nbConges = nbCongesEtRemb.getNbConges(CongesService, UtilisateurService, MembresServiceBddService, principal);
-    			int nbRemb = nbCongesEtRemb.getNbRemb(principal, MembresServiceBddService, RemboursementService, UtilisateurService);
-    			
-    	        model.addAttribute("nbRemb", nbRemb);
-    			model.addAttribute("nbConges",nbConges);
-    			model.addAttribute("IsChef", IsChef);
-    		}
+    		SachaClasse nbCongesEtRemb = new SachaClasse();
+    		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService);
     		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
         }
  
@@ -186,17 +177,8 @@ public class MainController {
     public String showForm(UserForm userForm, Model model,Principal principal) {
     	model = addServiceListIntoModel(model);
   /////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
-  		SachaClasse nbCongesEtRemb = new SachaClasse();	
-  		boolean IsChef = nbCongesEtRemb.isChef(principal, UtilisateurService, MembresServiceBddService);
-  		if (IsChef)
-  		{
-  			int nbConges = nbCongesEtRemb.getNbConges(CongesService, UtilisateurService, MembresServiceBddService, principal);
-  			int nbRemb = nbCongesEtRemb.getNbRemb(principal, MembresServiceBddService, RemboursementService, UtilisateurService);
-  			
-  	        model.addAttribute("nbRemb", nbRemb);
-  			model.addAttribute("nbConges",nbConges);
-  			model.addAttribute("IsChef", IsChef);
-  		}
+  		SachaClasse nbCongesEtRemb = new SachaClasse();
+  		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService);
   		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
         return "form";
     }
@@ -279,17 +261,8 @@ public class MainController {
     	}
     	model.addAttribute("types", TypesConges.values());
   /////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
-  		SachaClasse nbCongesEtRemb = new SachaClasse();	
-  		boolean IsChef = nbCongesEtRemb.isChef(principal, UtilisateurService, MembresServiceBddService);
-  		if (IsChef)
-  		{
-  			int nbConges = nbCongesEtRemb.getNbConges(CongesService, UtilisateurService, MembresServiceBddService, principal);
-  			int nbRemb = nbCongesEtRemb.getNbRemb(principal, MembresServiceBddService, RemboursementService, UtilisateurService);
-  			
-  	        model.addAttribute("nbRemb", nbRemb);
-  			model.addAttribute("nbConges",nbConges);
-  			model.addAttribute("IsChef", IsChef);
-  		}
+  		SachaClasse nbCongesEtRemb = new SachaClasse();
+  		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService);
   		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
     	
     	return "ajouterConge";
@@ -454,17 +427,8 @@ public class MainController {
     	model.addAttribute("utilisateurs",aujourdhuiU);
     	
   /////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
-  		SachaClasse nbCongesEtRemb = new SachaClasse();	
-  		boolean IsChef = nbCongesEtRemb.isChef(principal, UtilisateurService, MembresServiceBddService);
-  		if (IsChef)
-  		{
-  			int nbConges = nbCongesEtRemb.getNbConges(CongesService, UtilisateurService, MembresServiceBddService, principal);
-  			int nbRemb = nbCongesEtRemb.getNbRemb(principal, MembresServiceBddService, RemboursementService, UtilisateurService);
-  			
-  	        model.addAttribute("nbRemb", nbRemb);
-  			model.addAttribute("nbConges",nbConges);
-  			model.addAttribute("IsChef", IsChef);
-  		}
+  		SachaClasse nbCongesEtRemb = new SachaClasse();
+  		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService);
   		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
 		
         return "calendrier";
@@ -493,17 +457,8 @@ public class MainController {
     	}
     	model.addAttribute("demandesConges",mesConges);
   /////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
-  		SachaClasse nbCongesEtRemb = new SachaClasse();	
-  		boolean IsChef = nbCongesEtRemb.isChef(principal, UtilisateurService, MembresServiceBddService);
-  		if (IsChef)
-  		{
-  			int nbConges = nbCongesEtRemb.getNbConges(CongesService, UtilisateurService, MembresServiceBddService, principal);
-  			int nbRemb = nbCongesEtRemb.getNbRemb(principal, MembresServiceBddService, RemboursementService, UtilisateurService);
-  			
-  	        model.addAttribute("nbRemb", nbRemb);
-  			model.addAttribute("nbConges",nbConges);
-  			model.addAttribute("IsChef", IsChef);
-  		}
+  		SachaClasse nbCongesEtRemb = new SachaClasse();
+  		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService);
   		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
     	
     	return "gererConges";
@@ -548,17 +503,8 @@ public class MainController {
     @GetMapping("/addConges")
     public String addConges(CongeForm congeForm,Principal principal,Model model) {
   /////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
-  		SachaClasse nbCongesEtRemb = new SachaClasse();	
-  		boolean IsChef = nbCongesEtRemb.isChef(principal, UtilisateurService, MembresServiceBddService);
-  		if (IsChef)
-  		{
-  			int nbConges = nbCongesEtRemb.getNbConges(CongesService, UtilisateurService, MembresServiceBddService, principal);
-  			int nbRemb = nbCongesEtRemb.getNbRemb(principal, MembresServiceBddService, RemboursementService, UtilisateurService);
-  			
-  	        model.addAttribute("nbRemb", nbRemb);
-  			model.addAttribute("nbConges",nbConges);
-  			model.addAttribute("IsChef", IsChef);
-  		}
+  		SachaClasse nbCongesEtRemb = new SachaClasse();
+  		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService);
   		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
         return "addCongesPage";
     }
@@ -669,17 +615,8 @@ public class MainController {
     	List<Notif> notifs = NotifService.getAllByIdDesc(UtilisateurService.findPrenomNom(names[1], names[0]).getUID());
     	model.addAttribute("notifs", notifs);
   /////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
-  		SachaClasse nbCongesEtRemb = new SachaClasse();	
-  		boolean IsChef = nbCongesEtRemb.isChef(principal, UtilisateurService, MembresServiceBddService);
-  		if (IsChef)
-  		{
-  			int nbConges = nbCongesEtRemb.getNbConges(CongesService, UtilisateurService, MembresServiceBddService, principal);
-  			int nbRemb = nbCongesEtRemb.getNbRemb(principal, MembresServiceBddService, RemboursementService, UtilisateurService);
-  			
-  	        model.addAttribute("nbRemb", nbRemb);
-  			model.addAttribute("nbConges",nbConges);
-  			model.addAttribute("IsChef", IsChef);
-  		}
+  		SachaClasse nbCongesEtRemb = new SachaClasse();
+  		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService);
   		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
     	return "notifications";
     }
@@ -726,17 +663,8 @@ public class MainController {
     	// Ajout du form pour l'ajout de personne
     	model.addAttribute("userForm", userForm);
     	/////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
-  		SachaClasse nbCongesEtRemb = new SachaClasse();	
-  		boolean IsChef = nbCongesEtRemb.isChef(principal, UtilisateurService, MembresServiceBddService);
-  		if (IsChef)
-  		{
-  			int nbConges = nbCongesEtRemb.getNbConges(CongesService, UtilisateurService, MembresServiceBddService, principal);
-  			int nbRemb = nbCongesEtRemb.getNbRemb(principal, MembresServiceBddService, RemboursementService, UtilisateurService);
-  			
-  	        model.addAttribute("nbRemb", nbRemb);
-  			model.addAttribute("nbConges",nbConges);
-  			model.addAttribute("IsChef", IsChef);
-  		}
+  		SachaClasse nbCongesEtRemb = new SachaClasse();
+  		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService);
   		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
         return "showUsers";
     }

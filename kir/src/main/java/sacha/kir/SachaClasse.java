@@ -3,6 +3,8 @@ package sacha.kir;
 import java.security.Principal;
 import java.util.List;
 
+import org.springframework.ui.Model;
+
 import sacha.kir.bdd.conges.Conges;
 import sacha.kir.bdd.conges.InterfaceCongesService;
 import sacha.kir.bdd.membresservice.InterfaceMembresServiceBddService;
@@ -104,5 +106,24 @@ public class SachaClasse {
 			}			
 		}		
 		return nbConges;
+	}
+	
+	public Model addNumbersToModel(Model model,Principal principal,InterfaceCongesService CongesService,InterfaceUtilisateurService UtilisateurService,InterfaceMembresServiceBddService MembresServiceBddService,InterfaceRemboursementService RemboursementService)
+	{
+	/////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
+			SachaClasse nbCongesEtRemb = new SachaClasse();	
+			boolean IsChef = nbCongesEtRemb.isChef(principal, UtilisateurService, MembresServiceBddService);
+			if (IsChef)
+			{
+				int nbConges = nbCongesEtRemb.getNbConges(CongesService, UtilisateurService, MembresServiceBddService, principal);
+				int nbRemb = nbCongesEtRemb.getNbRemb(principal, MembresServiceBddService, RemboursementService, UtilisateurService);
+				
+		        model.addAttribute("nbRemb", nbRemb);
+				model.addAttribute("nbConges",nbConges);
+				model.addAttribute("IsChef", IsChef);
+			}
+			
+			return model;
+			/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
 	}
 }
