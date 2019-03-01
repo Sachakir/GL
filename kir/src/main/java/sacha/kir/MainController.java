@@ -149,7 +149,11 @@ public class MainController {
         }
         else return "Login";   
     }
-
+    @RequestMapping(value="/login-Error", method = RequestMethod.GET)
+    public String welcomePageWithError(Model model, Principal principal) {
+    	model.addAttribute("loginError", true);
+    	return "Login";
+    }
     @RequestMapping(value = "/403", method = RequestMethod.GET)
     public String accessDenied(Model model, Principal principal) {
  

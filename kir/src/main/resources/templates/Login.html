@@ -31,9 +31,7 @@
 					<c:out value="${SPRING_SECURITY_LAST_EXCEPTION.message}" />
 				  </div>
 				</c:if> -->
-				<c:if test="${param.error == 'true'}">
-					<span><spring:message test="Votre adresse mail ou votre mot de passe est incorrect!" /></span>
-				</c:if>
+				<p th:if="${loginError}" class="error">Mauvaise adresse mail ou mot de passe entré!</p>
                 <br>
                 <div centered>
                     <button id="btnSubmit" class="btn" type="submit" style="background-color: #132f5d; color:  #FFF;">Se connecter</button>

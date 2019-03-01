@@ -40,7 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
  
         // The pages does not require login
-        http.authorizeRequests().antMatchers("/", "/login", "/logout").permitAll();
+        http.authorizeRequests().antMatchers("/", "/login", "/logout","/login-Error").permitAll();
         
         // For ADMIN only.
         http.authorizeRequests().antMatchers("/adminAdd","/adminShow","/showUserDetails/**","/deleteUser/**").hasRole("ADMIN");
@@ -62,7 +62,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/j_spring_security_check") // Submit URL
                 .loginPage("/login")//
                 .defaultSuccessUrl("/Accueil")//
-                .failureUrl("/login?error=true")//
+                .failureUrl("/login-Error")//
                 .usernameParameter("username")//
                 .passwordParameter("password")
                 // Config for Logout Page
