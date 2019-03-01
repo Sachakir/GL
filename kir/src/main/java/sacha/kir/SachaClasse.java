@@ -1,5 +1,6 @@
 package sacha.kir;
 
+import java.security.Principal;
 import java.util.List;
 
 import sacha.kir.bdd.membresservice.InterfaceMembresServiceBddService;
@@ -9,6 +10,7 @@ import sacha.kir.bdd.remboursement.InterfaceRemboursementService;
 import sacha.kir.bdd.remboursement.Remboursement;
 import sacha.kir.bdd.remboursement.Statut;
 import sacha.kir.bdd.services.ServicesFixes;
+import sacha.kir.bdd.utilisateur.InterfaceUtilisateurService;
 import sacha.kir.bdd.utilisateur.Utilisateur;
 
 public class SachaClasse {
@@ -47,5 +49,16 @@ public class SachaClasse {
     	}
 		
 		return nbRemb;
+	}
+	
+	public boolean isChef(Principal principal, InterfaceUtilisateurService UtilisateurService, InterfaceMembresServiceBddService MembresServiceBddService)
+	{
+		String[] names = principal.getName().split("\\.");
+		long myUID = UtilisateurService.findPrenomNom(names[1], names[0]).getUID();
+		if (MembresServiceBddService.findById(myUID).getRoleId() == Role.chefDeService.getRoleId())
+		{
+			return true;
+		}
+		return false;
 	}
 }

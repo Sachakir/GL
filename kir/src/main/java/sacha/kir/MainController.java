@@ -618,7 +618,11 @@ public class MainController {
 		model.addAttribute("notifs", notifs);
 		/*** DERNIERES NOTIFS ***/
         
-        
+		boolean IsChef = SachaEstClasse.isChef(principal, UtilisateurService, MembresServiceBddService);
+		if (IsChef)
+		{
+			model.addAttribute("IsChef", IsChef);
+		}
         return "welcomePage-Thibaut";
     }
     
