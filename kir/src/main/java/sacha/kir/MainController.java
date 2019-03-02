@@ -382,6 +382,10 @@ public class MainController {
 			x.setUid(conge.getUid());
 			x.setValidationrh(conge.getValidationrh());
 			x.setValidationchefservice(conge.getValidationchefdeservice());
+			if(conge.isRtt())
+				x.setType("Rtt");
+			else
+				x.setType("Congé payé");
 			for(int k=0;k<cs.size();k++) {
 				
 				if(cs.get(k).getUID()==x.getUid()) {

@@ -78,7 +78,7 @@ $(document).ready(function () {
 			$("#dateF").text("Date de fin: "+$(this).find("td:nth-child(3)").text());
 			$("#vRH").text("Validation RH: "+$(this).find("td:nth-child(4)").text());
 			$("#vC").text("Validation Chef de Service: "+$(this).find("td:nth-child(5)").text());
-
+      $("#type").text("Type: "+$(this).find("td:nth-child(8)").text());
 			$("#accept").attr("href","/ValidationConges/"+$(this).find("td:nth-child(7)").text());
 			$("#refuse").attr("href","/RefusConges/"+$(this).find("td:nth-child(7)").text());
 			document.getElementById("bouttons").hidden=false;
@@ -101,7 +101,7 @@ $(document).ready(function () {
 			$("#cid").val( $(this).find("td:nth-child(7)").text());
 			$("#vRH").text("Validation RH: "+$(this).find("td:nth-child(4)").text());
 			$("#vC").text("Validation Chef de Service: "+$(this).find("td:nth-child(5)").text());
-      $("#type").text("Type: "+$(this).find("td:nth-child(8)").text())
+      $("#type").text("Type: "+$(this).find("td:nth-child(8)").text());
 			if($(this).find("td:nth-child(4)").text() == "En attente" && $(this).find("td:nth-child(5)").text() == "En attente"){
 				document.getElementById("edit").hidden=false;
 				document.getElementById("delete").hidden=false;
