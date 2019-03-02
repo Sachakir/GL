@@ -8,7 +8,7 @@ $(document).ready(function () {
         cols += '<td><input type="text"/></td>';
         cols += '<td><input type="date"/></td>';
         cols += '<td><input type="number"/></td>';
-	
+
 		cols += '<td><input type="file"/></td>';
 
         cols += '<td><input type="button" class="ibtnDel btn btn-md btn-danger "  value="Delete"></td>';
@@ -20,12 +20,12 @@ $(document).ready(function () {
 
 
     $("table.order-list").on("click", ".ibtnDel", function (event) {
-        $(this).closest("tr").remove();       
+        $(this).closest("tr").remove();
         counter -= 1
     });
-    
+
     $('#myTable').on('click', 'tbody tr', function(event) {
-        
+
       $(this).addClass('highlight').siblings().removeClass('highlight');
       $("#nom").val($(this).find("td:nth-child(1)").text());
       $("#date").text("Date: "+$(this).find("td:nth-child(3)").text());
@@ -47,11 +47,11 @@ $(document).ready(function () {
 			var fic = "/ValidationRemb/";
 			fic=fic+$(this).find("td:nth-child(8)").text();
 			document.getElementById('accept').href = fic;
-			
+
 			var fic2 = "/RefusRemb/";
 			fic2=fic2+$(this).find("td:nth-child(8)").text();
 			document.getElementById('refuse').href = fic2;
-			
+
 			var fic3 = "/remboursements/files?file_id=";
 			fic3=fic3+$(this).find("td:nth-child(9)").text();
 			document.getElementById('download').href = fic3;
@@ -64,7 +64,7 @@ $(document).ready(function () {
 				document.getElementById("justif").hidden= true;
 			}
 		}
-        
+
       });
 	  $('#demandes').on('click', 'tbody tr', function(event) {
         if($(this).find("td:nth-child(1)").text() != "Il n'y a pas de demandes de congé!")
@@ -74,16 +74,16 @@ $(document).ready(function () {
 			var res = $(this).find("td:nth-child(1)").text().split(" ");
 			$("#nom").text("Nom : "+ res[0]);
 			$("#prenom").text("Prénom : "+ res[1]);
-			
+
 			$("#dateF").text("Date de fin: "+$(this).find("td:nth-child(3)").text());
 			$("#vRH").text("Validation RH: "+$(this).find("td:nth-child(4)").text());
 			$("#vC").text("Validation Chef de Service: "+$(this).find("td:nth-child(5)").text());
-			
+
 			$("#accept").attr("href","/ValidationConges/"+$(this).find("td:nth-child(7)").text());
 			$("#refuse").attr("href","/RefusConges/"+$(this).find("td:nth-child(7)").text());
 			document.getElementById("bouttons").hidden=false;
 		}
-        
+
       });
 	  $('#demandesGestion').on('click', 'tbody tr', function(event) {
         if($(this).find("td:nth-child(1)").text() != "Pas de demandes de congés effectuées!")
@@ -91,13 +91,13 @@ $(document).ready(function () {
 			$(this).addClass('highlight').siblings().removeClass('highlight');
 			var debut = $(this).find("td:nth-child(2)").text();
 			var d = debut.substring(6,10)+"-"+debut.substring(3,5)+"-"+debut.substring(0,2)+"T"+debut.substring(11,16);
-			
+
 			$("#dateD").val(d);
 			var fin = $(this).find("td:nth-child(3)").text();
 			var f = fin.substring(6,10)+"-"+fin.substring(3,5)+"-"+fin.substring(0,2)+"T"+fin.substring(11,16);
-			
+
 			$("#dateF").val(f);
-			
+
 			$("#cid").val( $(this).find("td:nth-child(7)").text());
 			$("#vRH").text("Validation RH: "+$(this).find("td:nth-child(4)").text());
 			$("#vC").text("Validation Chef de Service: "+$(this).find("td:nth-child(5)").text());
@@ -112,7 +112,7 @@ $(document).ready(function () {
 			$("#delete").attr("href","/DeleteConges/"+$(this).find("td:nth-child(7)").text());
         }
       });
-	  
+
 	var today = new Date();
 	var d = $.fullCalendar.moment(today);
 	$('#calendarC').fullCalendar({
@@ -120,16 +120,17 @@ $(document).ready(function () {
 		editable: true,
 		eventLimit: true,
 		selectable: true,
-		
-		
+
+
 		select: function(startDate, endDate) {
+
 			if(today.getTime()<startDate && today.getTime()<endDate){
 				var debut = new Date(startDate);
 				var fin = new Date(endDate);
 				var d = debut.getTime();
 				var f = fin.getTime()-86400000;
 				var msg = "";
-				
+
 				if(debut.getDay()==6)
 				{
 					d += 2*86400000;
@@ -176,15 +177,15 @@ $(document).ready(function () {
 			}
 		}
 	});
-	
+
 	$('#calendarCGestion').fullCalendar({
 		defaultDate: d,
 		editable: true,
 		eventLimit: true,
 		selectable: true,
-		
-		
-		
+
+
+
 	});
 	$("#demandesGestion tbody").find('tr').each(function(i,el){
 		var $tds = $(this).find('td');
@@ -233,8 +234,8 @@ function calculateGrandTotal() {
     $("#grandtotal").text(grandTotal.toFixed(2));
 }
 function bouttonDeRow()
-{ 
-    
+{
+
     if(document.getElementById("ndf").value=="locked"){
         document.getElementById("addrow").disabled=true;
         document.getElementById("dropdownMenuButton").disabled=true;
@@ -271,7 +272,7 @@ function annuler(){
 	document.getElementById("delete").hidden=false;
 }
 function verifDateD(){
-	
+
 	var dateFinWtime = $("#dateF").val().split("T");
 	var dateDebutWtime = $("#dateD").val().split("T");
 	var dateFin = dateFinWtime[0].split("-");
@@ -284,8 +285,8 @@ function verifDateD(){
     var day = ("0" + tomorrow.getDate()).slice(-2);
     var month = ("0" + (tomorrow.getMonth() + 1)).slice(-2);
     var dateString = tomorrow.getFullYear()+"-"+(month)+"-"+(day)+"T"+dateDebutWtime[1] ;
-	
-	
+
+
 	if(debut.getTime()<now.getTime()){
 		alert("Entrez une date de début ultérieure à aujourd'hui");
 		$("#dateD").val(dateString);
@@ -320,14 +321,14 @@ function verifDateD(){
 		alert("Entrez un horaire de début de congé entre 8h et 18h." );
 		$("#dateD").val(dateDebutWtime[0]+"T08:00");
 	}
-			
+
 	$('#calendarC').fullCalendar('removeEvents');
 	$('#calendarC').fullCalendar('renderEvent', {
 		title: 'congé',
 		start: $("#dateD").val(),
 		end: $("#dateF").val()
 	},true);
-	
+
 }
 function verifDateF(){
 	var dateFinWtime = $("#dateF").val().split("T");
@@ -344,7 +345,7 @@ function verifDateF(){
     var dateString = tomorrow.getFullYear()+"-"+(month)+"-"+(day)+"T"+dateFinWtime[1] ;
 	if(fin.getTime()<now.getTime()){
 		alert("Entrez une date de fin ultérieure à aujourd'hui");
-		
+
 		if(!$("#dateD").val()){
 			$("#dateF").val(dateString);
 			$("#dateD").val(dateString);
@@ -386,10 +387,10 @@ function verifDateF(){
 		start: $("#dateD").val(),
 		end: $("#dateF").val()
 	},true);
-	
+
 }
 function validationAjoutUtilisateur(){
-	
+
 	var deb = new Date($("#dateD").val());
 	var fi = new Date($("#dateF").val());
 	//var dureeConge = heureDiff(deb,fi);
@@ -410,7 +411,7 @@ function validationAjoutUtilisateur(){
 	if(dureeConge>parseInt(rtt[4])&&$('#1').prop('checked')){
 		msg+="Votre solde de RTT n'est pas suffisant pour prendre un aussi long congé.\nVeuillez entrer un congé plus court.\n";
 	}
-	
+
 	if(msg!=""){
 		alert(msg);
 		return false;
@@ -426,7 +427,7 @@ function dayDiff(d1, d2)
 }
 function heureDiff(d1, d2)
 {
-  
+
   var x1 = d1.getTime() / 86400000;
   var x2 = d2.getTime() / 86400000;
   var jours = Math.trunc(x2 - x1);
@@ -442,14 +443,14 @@ function heureDiff(d1, d2)
 function workingDaysBetweenDates(d0, d1) {
 	var holidays = ['2016-05-03','2016-05-05'];
     var startDate = d0;
-    var endDate = d1;  
+    var endDate = d1;
     // Validate input
     if (endDate < startDate) {
         return 0;
     }
-    // Calculate days between dates  
+    // Calculate days between dates
     var days = heureDiff(d0,d1);
-    
+
     // Subtract two weekend days for every week in between
     var weeks = Math.floor(days / 7);
     days -= weeks * 2;
@@ -457,14 +458,14 @@ function workingDaysBetweenDates(d0, d1) {
     // Handle special cases
     var startDay = startDate.getDay();
     var endDay = endDate.getDay();
-    
-    // Remove weekend not previously removed.   
+
+    // Remove weekend not previously removed.
     if (startDay - endDay > 1) {
         days -= 2;
     }
     // Remove start day if span starts on Sunday but ends before Saturday
     if (startDay == 0 && endDay != 6) {
-        days--;  
+        days--;
     }
     // Remove end day if span ends on Saturday but starts after Sunday
     if (endDay == 6 && startDay != 0) {
@@ -476,6 +477,6 @@ function workingDaysBetweenDates(d0, d1) {
       	days--;
       }
     }*/
-	
+
     return days;
 }

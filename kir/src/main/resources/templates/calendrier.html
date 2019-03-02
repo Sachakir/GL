@@ -4,17 +4,17 @@
 <head>
 	<title th:utext="${title}"></title>
 	<meta charset="utf-8">
+
 	<link href="assets/css/bootstrap.css" rel="stylesheet">
 	<link rel="stylesheet" href="/assets/css/style.css" />
 	<link href='assets/css/calendrier.css' rel='stylesheet' />
 	<link href='assets/css/calendrier.print.css' rel='stylesheet' media='print' />
 
 
-
 </head>
 
 <body>
-	
+
 	<div class="container">
 		<div th:replace="~{navBar :: #navBar}"></div>
 		<section class="row">
@@ -23,7 +23,7 @@
 				<div class = " col-sm-4">
 					<div id="panelConges" class="panel panel-primary table-responsive" value="17/02/2019">
 						<table class="table table-condensed w-auto" id="demandes" >
-							<div class="panel-heading"> 
+							<div class="panel-heading">
 								<h3 class="panel-title">Demandes de congés :</h3>
 							</div>
 							<thead>
@@ -31,7 +31,7 @@
 									<th>Utilisateur</th>
 									<th>Date de début</th>
 									<th>Date de fin</th>
-									
+
 								</tr>
 							</thead>
 							<tbody>
@@ -39,7 +39,7 @@
 									<td colspan="3">Il n'y a pas de demandes de congé!</td>
 								</tr>
 								<tr th:each="conges : ${demandesConges}">
-									<td><span th:text="${conges.prenomNom}"> prenom et nom </span></td>	
+									<td><span th:text="${conges.prenomNom}"> prenom et nom </span></td>
 									<td><span th:text="${conges.datedebut}"> Date de début </span></td>
 									<td><span th:text="${conges.datefin}"> Date de fin </span></td>
 									<td style="display: none;"><span th:text="${conges.validationrh}">EnAttente</span></td>
@@ -49,16 +49,16 @@
 								</tr>
 							</tbody>
 						</table>
-						
+
 					</div>
-					
+
 				</div>
 				<div id='calendar' class="col-sm-4" ><br></div>
 				<br>
 				<div class ="col-sm-4">
 					<div id="panelConges" class="panel panel-primary table-responsive" value="17/02/2019" >
 						<table class="table table-striped table-condensed w-auto" id="listConge">
-							<div class="panel-heading"> 
+							<div class="panel-heading">
 								<h3 class="panel-title">Liste des utilisateurs en congé :</h3>
 							</div>
 							<thead>
@@ -66,8 +66,8 @@
 									<th>Utilisateur</th>
 									<th>Date de début</th>
 									<th>Date de fin</th>
-									
-									
+
+
 								</tr>
 							</thead>
 							<tbody>
@@ -75,11 +75,11 @@
 									<td colspan="3">Personne n'est en congé!</td>
 								</tr>
 								<tr th:each="conges : ${listConges}">
-									<td><span th:text="${conges.prenomNom}"> Nom et prénom </span></td>	
+									<td><span th:text="${conges.prenomNom}"> Nom et prénom </span></td>
 									<td><span th:text="${conges.datedebut}"> Date de début </span></td>
 									<td><span th:text="${conges.datefin}"> Date de fin </span></td>
-									
-												
+
+
 								</tr>
 							</tbody>
 						</table>
@@ -90,7 +90,7 @@
 		<br>
 		<section class="row">
 			<div id="panelConges" class="panel panel-primary " >
-				<div class="panel-heading"> 
+				<div class="panel-heading">
 					<h3 class="panel-title">Détails de la demande de congé sélectionnée :</h3>
 				</div>
 				<div class = "panel-body details">
@@ -104,25 +104,25 @@
 							<h4 id="prenom">Prénom: xxx</h4>
 							<h4 id ="dateF">Date de fin: xxx </h4>
 							<h4 id="vRH">Validation RH: xxx </h4>
-							
-							
+
+
 						</div>
 					</div>
 					<div centered class="row" hidden=true id="bouttons">
 						<a href="" id='accept' class="btn btn-primary btn-lg">
-							<span class="glyphicon glyphicon-ok"></span> 
-						</a> 
+							<span class="glyphicon glyphicon-ok"></span>
+						</a>
 						<a href="" id='refuse' class="btn btn-danger btn-lg">
-							<span class="glyphicon glyphicon-ban-circle"></span> 
+							<span class="glyphicon glyphicon-ban-circle"></span>
 						</a>
 					</div>
 					<br>
 				</div>
-			
+
 			</div>
 		</section>
 
-		
+
 	</div>
 
 
@@ -140,22 +140,22 @@
 			$('#calendar').fullCalendar({
 				defaultDate: d,
 				editable: true,
-				  eventLimit: true,
-				  selectable: true,
-				  
+				eventLimit: true,
+				selectable: true,
+
 				dayClick: function(date, jsEvent, view) {
-					
+
 					$("#listConge tr>td").remove();
 					/*<![CDATA[*/
-						
+
 
 						var cs = [[${toutConges}]];
-						
 
-						
+
+
 					/*]]>*/
-					var _months = { 
-						  "Jan" : "01", 
+					var _months = {
+						  "Jan" : "01",
 						  "Feb" : "02",
 						  "Mar" : "03",
 						  "Apr" : "04",
@@ -168,7 +168,7 @@
 						  "Nov" : "11",
 						  "Dec" : "12"
 					  };
-					
+
 					cs.forEach(function(element){
 						var newRow = $("<tr>");
 						var cols = "";
@@ -194,19 +194,53 @@
 								}
 							}
 						}
-						
-						
+
+
 					});
-					
+
+				},
+				select: function(startDate, endDate) {
+					$("#listConge tr>td").remove();
+					/*<![CDATA[*/
+
+
+						var cs = [[${toutConges}]];
+
+
+
+					/*]]>*/
+
+					cs.forEach(function(element){
+						var newRow = $("<tr>");
+						var cols = "";
+						var d = element.datedebut.split(" ");
+						var f = element.datefin.split(" ");
+						var d1 = d[0].split("/");
+						var f1 = f[0].split("/");
+						var dateDebut = moment(d1[2]+"-"+d1[1]+"-"+d1[0]+"T"+d[1]);
+						var dateFin = moment(f1[2]+"-"+f1[1]+"-"+f1[0]+"T"+f[1]);
+						var sd = new Date(startDate);
+						var ed = new Date(endDate);
+						var vRH = element.validationrh;
+						var vC = element.validationchefservice;
+						//alert("CongesID : " + element.congesid +"\n datedebut: "+ sd +"\n datefin: "+ ed + "\n D :"+dateDebut.format()+"\nF: "+dateFin.format()+ "\n datefin > D : " + dateDebut.isBefore(ed) + "\n F > datedebut : " + dateFin.isAfter(sd))
+						if( dateDebut.isBefore(ed) && dateFin.isAfter(sd) && vRH=="Validé" && vC=="Validé"){
+							cols+='<td>'+ element.prenomNom+'</td>	';
+							cols+='<td>'+ element.datedebut + '</td>	';
+							cols += '<td>' + element.datefin + '</td>';
+							newRow.append(cols);
+							$("#listConge").append(newRow);
+						}
+
+
+					});
 				}
 			  }
-			  
+
 			  );
-			
+
 		});
 	</script>
 
 </body>
 </html>
-		
-		
