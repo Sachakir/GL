@@ -9,7 +9,14 @@ public class CongesV2
 	 private String datefin;
 	 private String datedebut;
 	 private String prenomNom;
+	 private String type;
 	 
+		public String getType() {
+			return type;
+		}
+		public void setType(String type) {
+			this.type = type;
+		}
 		public String getPrenomNom() {
 		return prenomNom;
 		}

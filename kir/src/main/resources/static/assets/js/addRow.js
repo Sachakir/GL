@@ -101,6 +101,7 @@ $(document).ready(function () {
 			$("#cid").val( $(this).find("td:nth-child(7)").text());
 			$("#vRH").text("Validation RH: "+$(this).find("td:nth-child(4)").text());
 			$("#vC").text("Validation Chef de Service: "+$(this).find("td:nth-child(5)").text());
+      $("#type").text("Type: "+$(this).find("td:nth-child(8)").text())
 			if($(this).find("td:nth-child(4)").text() == "En attente" && $(this).find("td:nth-child(5)").text() == "En attente"){
 				document.getElementById("edit").hidden=false;
 				document.getElementById("delete").hidden=false;
@@ -189,7 +190,7 @@ $(document).ready(function () {
 	});
 	$("#demandesGestion tbody").find('tr').each(function(i,el){
 		var $tds = $(this).find('td');
-		
+
 		var d1 = $tds.eq(1).text().split(" ");
 		var f1 = $tds.eq(2).text().split(" ");
 		var d = d1[0].split("/");

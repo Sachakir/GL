@@ -453,6 +453,10 @@ public class MainController {
 				c.setValidationrh(conge.getValidationrh());
 				c.setValidationchefservice(conge.getValidationchefdeservice());
 				c.setPrenomNom(prenomnom);
+				if(conge.isRtt()) 
+					c.setType("Rtt");
+				else
+					c.setType("Congé payé");
 				mesConges.add(c);
     		}
     	}
