@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import sacha.kir.bdd.justificatif.JustificatifRepository;
+import sacha.kir.bdd.membresservice.InterfaceMembresServiceBddService;
+import sacha.kir.bdd.membresservice.MembresServiceBdd;
 import sacha.kir.bdd.note.InterfaceNoteService;
 import sacha.kir.bdd.notif.InterfaceNotifService;
 import sacha.kir.bdd.remboursementsnote.InterfaceRemboursementsNoteService;
@@ -19,7 +21,10 @@ public class RemboursementService implements InterfaceRemboursementService {
     InterfaceNoteService NoteService;
     @Autowired
     InterfaceRemboursementsNoteService RemboursementsNoteService;
-
+	
+	@Autowired
+	InterfaceMembresServiceBddService MembresServiceBddService;
+    
 	@Autowired
 	RemboursementRepository repository;
 	
@@ -47,7 +52,12 @@ public class RemboursementService implements InterfaceRemboursementService {
 		r.setDemande_id(demande_id);
 		repository.save(r);
 		String titre = "Demande : " + r.getTitre();
-		NotifService.addNotif(30, titre, r.genererLien());
+		long service_id = MembresServiceBddService.findById(r.getUid()).getServiceId();
+		// Envoi des notifications aux chefs du service du demandeur de remboursement
+		List<MembresServiceBdd> interesses = MembresServiceBddService.getChefByServiceId(service_id);
+		for (MembresServiceBdd membre : interesses)
+			if (membre.getUid() != r.getUid())
+				NotifService.addNotif(membre.getUid(), titre, "/validationNDF");
 		
 		return r;
 	}
@@ -105,7 +115,17 @@ public class RemboursementService implements InterfaceRemboursementService {
 
 		Remboursement r = repository.findById(demandeid).orElse(null);
 		String titre = "Validation service : " + r.getTitre();
+		// Envoie de la notification au demandeur de remboursement
 		NotifService.addNotif(r.getUid(), titre, r.genererLien());
+		
+		// Envoi des notifications aux chefs du service finances , sauf si le chef qui a validé est déjà chef finances
+		titre = "Demande : " + r.getTitre();
+		if (MembresServiceBddService.findById(r.getUid()).getServiceId() != 2) {
+			List<MembresServiceBdd> interesses = MembresServiceBddService.getChefByServiceId(2);
+			for (MembresServiceBdd membre : interesses)
+				if (membre.getUid() != r.getUid())
+					NotifService.addNotif(membre.getUid(), titre, "/validationNDF");
+		}
 	}
 
 	@Override
@@ -138,9 +158,15 @@ public class RemboursementService implements InterfaceRemboursementService {
 	@Override
 	public void update(Remboursement remb) {
 		Remboursement r = repository.findById(remb.getDemande_id()).orElse(null);
-		
 		if(r != null) {
 			repository.save(remb);
 		}
+		String titre = "Demande : " + r.getTitre();
+		long service_id = MembresServiceBddService.findById(r.getUid()).getServiceId();
+		// Envoi des notifications aux chefs du service du demandeur de remboursement
+		List<MembresServiceBdd> interesses = MembresServiceBddService.getChefByServiceId(service_id);
+		for (MembresServiceBdd membre : interesses)
+			if (membre.getUid() != r.getUid())
+				NotifService.addNotif(membre.getUid(), titre, "/validationNDF");
 	}
 }

@@ -25,9 +25,6 @@ public class CongesService implements InterfaceCongesService
 	@Autowired
 	InterfaceMembresServiceBddService MembresServiceBddService;
 
-	@Autowired
-	InterfaceUtilisateurService UtilisateurService;
-	
 	@Override
 	public List<Conges> findAll() {
 		List<Conges> users = (List<Conges>) repository.findAll();
@@ -108,7 +105,12 @@ public class CongesService implements InterfaceCongesService
 		repository.updateConges(congesid, newdebut, newfin);
 		Conges c = repository.getCongesbyId(congesid);
 		String titre = "Demande de congés du " + c.getDatedebut().substring(0, 5) + " au " + c.getDatefin().substring(0, 10);
-		NotifService.addNotif(30, titre, "/Calendrier");
+		long service_id = MembresServiceBddService.findById(c.getUid()).getServiceId();
+		// Envoi des notifications aux chefs du service du demandeur de congés
+		List<MembresServiceBdd> interesses = MembresServiceBddService.getChefByServiceId(service_id);
+		for (MembresServiceBdd membre : interesses)
+			if (membre.getUid() != c.getUid())
+				NotifService.addNotif(membre.getUid(), titre, "/Calendrier");
 	}
 	
 	@Override
