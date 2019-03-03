@@ -47,8 +47,6 @@ public class RemboursementService implements InterfaceRemboursementService {
 		r.setDemande_id(demande_id);
 		repository.save(r);
 		String titre = "Demande : " + r.getTitre();
-		if (titre.length() > 60)
-			titre = titre.substring(0, 56) + "...";
 		NotifService.addNotif(30, titre, r.genererLien());
 		
 		return r;
@@ -98,8 +96,6 @@ public class RemboursementService implements InterfaceRemboursementService {
 		
 		Remboursement r = repository.findById(demandeid).orElse(null);
 		String titre = "Validation finances : " + r.getTitre();
-		if (titre.length() > 60)
-			titre = titre.substring(0, 56) + "...";
 		NotifService.addNotif(r.getUid(), titre, r.genererLien());
 	}
 
@@ -109,8 +105,6 @@ public class RemboursementService implements InterfaceRemboursementService {
 
 		Remboursement r = repository.findById(demandeid).orElse(null);
 		String titre = "Validation service : " + r.getTitre();
-		if (titre.length() > 60)
-			titre = titre.substring(0, 56) + "...";
 		NotifService.addNotif(r.getUid(), titre, r.genererLien());
 	}
 

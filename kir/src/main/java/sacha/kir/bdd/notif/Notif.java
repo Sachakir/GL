@@ -40,6 +40,8 @@ public class Notif {
 		this.uid = uid;
 		this.vue = vue;
 		this.date = date;
+		if (titre.length() > 60)
+			titre = titre.substring(0, 56) + "...";
 		this.titre = titre;
 		this.lien = lien;
 	}
@@ -91,6 +93,5 @@ public class Notif {
 	public void setLien(String lien) {
 		this.lien = lien;
 	}
-	
 	
 }

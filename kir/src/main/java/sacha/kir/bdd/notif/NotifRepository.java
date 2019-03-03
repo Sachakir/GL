@@ -14,4 +14,6 @@ public interface NotifRepository extends CrudRepository<Notif, Long>{
 
 	@Query("SELECT n FROM Notif n WHERE uid = :uid ORDER BY date DESC")
 	public List<Notif> getAllByIdDesc(long uid);
+	
+	
 }
