@@ -1,5 +1,6 @@
 package sacha.kir.bdd.notif;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -37,6 +38,11 @@ public class NotifService implements InterfaceNotifService {
 		Notif n = new Notif(notif_id, uid, false, new Date(), titre, lien);
 		repository.save(n);
 		
+		// On supprime les notifs en trop quand il y en a plus que 10 pour le meme utilisateur
+		List<Notif> notifs =  repository.getAllByIdDesc(uid);
+		if (notifs.size() > 10)
+			for (int i=10; i<notifs.size(); ++i)
+				repository.delete(notifs.get(i));
 	}
 
 }
