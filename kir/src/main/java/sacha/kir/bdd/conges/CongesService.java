@@ -38,7 +38,7 @@ public class CongesService implements InterfaceCongesService
 		c.setRtt(rtt);
 		System.out.println("rtt en entree: "+ rtt+ " rtt en sortie: " + c.isRtt());
 		repository.save(c);
-		String titre = "Demande de congés du " + date_debut.substring(0, 6) + " au " + date_fin.substring(0, 10);
+		String titre = "Demande de congés du " + date_debut.substring(0, 5) + " au " + date_fin.substring(0, 10);
 		NotifService.addNotif(30, titre, "/Calendrier");
 	}
 
@@ -61,7 +61,7 @@ public class CongesService implements InterfaceCongesService
 	public void updateChefState(long congesid, String newstate) {
 		repository.updateChefState(congesid, newstate);
 		Conges c = repository.getCongesbyId(congesid);
-		String titre = "Validation service : congés du " + c.getDatedebut().substring(0, 6) + " au " + c.getDatefin().substring(0, 10);
+		String titre = "Validation service : congés du " + c.getDatedebut().substring(0, 5) + " au " + c.getDatefin().substring(0, 10);
 		NotifService.addNotif(c.getUid(), titre, "/GererConges");
 	}
 
@@ -69,7 +69,7 @@ public class CongesService implements InterfaceCongesService
 	public void updateRHState(long congesid, String newstate) {
 		repository.updateRHState(congesid, newstate);
 		Conges c = repository.getCongesbyId(congesid);
-		String titre = "Validation RH : congés du " + c.getDatedebut().substring(0, 6) + " au " + c.getDatefin().substring(0, 10);
+		String titre = "Validation RH : congés du " + c.getDatedebut().substring(0, 5) + " au " + c.getDatefin().substring(0, 10);
 		NotifService.addNotif(c.getUid(), titre, "/GererConges");
 	}
 
@@ -82,7 +82,7 @@ public class CongesService implements InterfaceCongesService
 	public void updateConges(long congesid, String newdebut, String newfin) {
 		repository.updateConges(congesid, newdebut, newfin);
 		Conges c = repository.getCongesbyId(congesid);
-		String titre = "Demande de congés du " + c.getDatedebut().substring(0, 6) + " au " + c.getDatefin().substring(0, 10);
+		String titre = "Demande de congés du " + c.getDatedebut().substring(0, 5) + " au " + c.getDatefin().substring(0, 10);
 		NotifService.addNotif(30, titre, "/Calendrier");
 	}
 	
