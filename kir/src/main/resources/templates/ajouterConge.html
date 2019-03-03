@@ -14,25 +14,25 @@
 </head>
 
 <body>
-	
+
 	<div class="container">
 		<div th:replace="~{navBar :: #navBar}"></div>
 		<section class="row ">
-			<div class="col-sm-4 ">
+			<div class="col-md-4 ">
 				<div class="panel panel-primary">
 					<div class="panel-heading">
 						<h2 class="panel-title text-center">Nouvelle demande de congé</h2>
 					</div>
 					<div class = "panel-body details">
-						
+
 						<h4 id="days" th:text= "'Nombre de jours restants: '+ ${user.joursCongesRest}+' jours'">Nombre de jours restants: </h4>
 						<h4  id="daysrtt" th:text= "'Nombre de RTT restants: '+ ${user.rtt}+' jours'">Nombre de RTT restants: </h4>
 						<form action="#" th:action="@{/AjouterConge}" th:object="${congeForm}" method="post" onsubmit="return validationAjoutUtilisateur();">
-							
-							
+
+
 							<h4 >Date de début: <input id="dateD" type="datetime-local" th:field="*{dateDebut}" onchange="verifDateD();"></h4>
 							<h4 >Date de fin:   <input id="dateF" type="datetime-local" th:field="*{dateFin}" onchange="verifDateF();"></h4>
-							
+
 							<div class="row">
 								<div class ="mLeft" th:each="typ : ${types}">
 									<input type="radio" th:field="*{type}"  th:value="${typ.id}"  /><label th:text="| &nbsp; ${typ.name} |"  >Something is wrong !</label>
@@ -50,22 +50,22 @@
 								  <label class="form-check-label" for="radioRTT">
 									RTT
 								  </label>
-								</div>	
+								</div>
 							</div> -->
 							<div centered class="row">
 								<input name="submit" type="submit" class="btn btn-primary" value="Valider">
 							</div>
-							
+
 						</form>
 					</div>
 					<br>
 				</div>
-				
+
 			</div>
-			<div id='calendarC' class="col-sm-7 ol-sm-offset-5" ></div>
+			<div id='calendarC' class="col-md-7 col-md-offset-5" ></div>
 		</section>
-		
-		
+
+
 	</div>
 
 
@@ -76,9 +76,7 @@
 	<script src='assets/js/moment.min.js'></script>
 	<script src='assets/js/calendrier.js'></script>
 
-	
+
 
 </body>
 </html>
-		
-		
