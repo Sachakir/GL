@@ -59,6 +59,7 @@
 							Nouvelle demande de congés
 						</a>
 					</div>
+					<br class="hidden-lg hidden-md">
 					<div class="col-md-4">
 						<a href="/remboursements/demande-remboursement" class="btn btn-primary" role="button">
 							Nouvelle demande de remboursement
@@ -67,7 +68,6 @@
 				
 		</section>
 
-	<br>
 	<section class="row">
 		<div class="col-md-6">
 			<section class="row">
@@ -76,11 +76,15 @@
 						<div class="panel-heading">
 							<h3 class="panel-title">Dernières notifications</h3>
 						</div>
-						<div class="list-group" th:each="notif : ${notifs}">
-							<a th:href="${notif.lien}" class="list-group-item" data-toggle="modal">
-								<span th:text="${notif.titre}"></span>
-								<span class="badge" th:text="${notif.date}"></span>
-							</a>
+						<div class="panel-body pre-scrollable" style="max-height: 580px;">
+							<div class="list-group" th:each="notif : ${notifs}" >
+								<a th:href="${notif.lien}" class="list-group-item">
+									<div>
+										<span th:text="${notif.titre}"></span>
+									</div>
+									<span class="badge text-truncate" th:text="${notif.date}"></span>
+								</a>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -97,9 +101,9 @@
 					</div>
 				</section>
 				<section class="row">
-					<div class="col-md-offset-4 col-md-4">
-						<a href="/Calendrier" class="btn btn-primary" type="button">
-							Voir calendrier
+					<div centered>
+						<a href="/GererConges" class="btn btn-primary" type="button">
+							Voir mes congés
 						</a>
 					</div>
 				</section>
@@ -109,33 +113,36 @@
 			<section class="row">
 				<div class="col-md-12 col-xs-12">
 					<div class="panel panel-primary table-responsive">
-						<table class="table table-striped w-auto">
+						
 							<div class="panel-heading"> 
 								<h3 class="panel-title">Mes dernières demandes de remboursement</h3>
 							</div>
-							<div th:if="${not #lists.isEmpty(recentDemandesRemboursement)}">
-								<thead>
-									<tr>
-										<th>Titre</th>
-										<th>Montant</th>
-										<th>Mission</th>
-										<th>Date</th>
-										<th>Etat (Chef de service)</th>
-										<th>Etat (Finances)</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr th:each="demandeR : ${recentDemandesRemboursement}">
-										<td><a th:href="'/remboursements/note=' + ${notesAssociees[demandeR.demande_id]} + '/id=' + ${demandeR.demande_id}" th:text="${demandeR.titre}"></a></td>
-										<td th:text="${#numbers.formatDecimal(demandeR.montant, 0, 'COMMA', 2, 'POINT')} + ' €'"></td>
-										<td th:text="${missionNames[demandeR.mission_id]}"></td>
-										<td th:text="${#temporals.format(demandeR.date, 'dd/MM/yyyy')}"></td>
-										<td th:text="${demandeR.validationchefservice}"></td>
-										<td th:text="${demandeR.validationfinances}"></td>
-									</tr>
-								</tbody>
+							<div class="panel-body pre-scrollable" style="max-height: 380px;"> 
+								<table class="table table-striped w-auto">
+									<div th:if="${not #lists.isEmpty(recentDemandesRemboursement)}">
+										<thead>
+											<tr>
+												<th>Titre</th>
+												<th>Montant</th>
+												<th>Mission</th>
+												<th>Date</th>
+												<th>Etat (Chef)</th>
+												<th>Etat (Finances)</th>
+											</tr>
+										</thead>
+										<tbody style="overflow: scroll;">
+											<tr th:each="demandeR : ${recentDemandesRemboursement}">
+												<td><a th:href="'/remboursements/note=' + ${notesAssociees[demandeR.demande_id]} + '/id=' + ${demandeR.demande_id}" th:text="${demandeR.titre}"></a></td>
+												<td th:text="${#numbers.formatDecimal(demandeR.montant, 0, 'COMMA', 2, 'POINT')} + ' €'"></td>
+												<td th:text="${missionNames[demandeR.mission_id]}"></td>
+												<td th:text="${#temporals.format(demandeR.date, 'dd/MM/yyyy')}"></td>
+												<td th:text="${demandeR.validationchefservice}"></td>
+												<td th:text="${demandeR.validationfinances}"></td>
+											</tr>
+										</tbody>
+									</div>
+								</table>
 							</div>
-						</table>
 						<div th:if="${#lists.isEmpty(recentDemandesRemboursement)}" class="panel-heading" style="color:black; background:white;"> 
 							<h3 class="panel-title">Aucune demande de remboursement n'a été réalisé</h3>
 						</div>
