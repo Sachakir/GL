@@ -6,20 +6,20 @@
 	<link href="/assets/css/bootstrap.css" rel="stylesheet">
 	<link rel="stylesheet" href="/assets/css/style.css" />
 	<link href='/assets/css/calendrier.css' rel='stylesheet' />
-	<link href='/assets/css/calendrier.print.css' rel='stylesheet' />    
+	<link href='/assets/css/calendrier.print.css' rel='stylesheet' />
 </head>
 
 <body>
 
 	<div id='calendar'></div>
 	<div class="container">
-		
+
 		<div th:replace="~{navBar :: #navBar}"></div>
 
 		<br>
 
 		<div class="modal fade" id="warning_ndf" role="dialog" >
-			<div class="modal-dialog"> 
+			<div class="modal-dialog">
 				<div class="modal-content panel-warning">
 					<div class="modal-header panel-heading">
 						<button type="button" class="close" data-dismiss="modal">x</button>
@@ -50,7 +50,7 @@
 		</script>
 
 		<section class="boxAccueil row panel panel-primary ">
-			
+
 					<div class="col-md-4">
 						<h4 th:if="${WelcomeMsg != null}" th:utext="${WelcomeMsg}"></h4>
 					</div>
@@ -65,7 +65,7 @@
 							Nouvelle demande de remboursement
 						</a>
 					</div>
-				
+
 		</section>
 
 	<section class="row">
@@ -79,10 +79,10 @@
 						<div class="panel-body pre-scrollable" style="max-height: 580px;">
 							<div class="list-group" th:each="notif : ${notifs}" >
 								<a th:href="${notif.lien}" class="list-group-item">
-									<div>
-										<span th:text="${notif.titre}"></span>
-									</div>
-									<span class="badge text-truncate" th:text="${notif.date}"></span>
+
+									<span th:utext="${notif.titre}+'&lt;br /&gt;'"></span>
+
+									<span class="text-muted" th:text="${notif.date}"></span>
 								</a>
 							</div>
 						</div>
@@ -109,15 +109,15 @@
 				</section>
 				<br>
 			</div>
-			
+
 			<section class="row">
 				<div class="col-md-12 col-xs-12">
 					<div class="panel panel-primary table-responsive">
-						
-							<div class="panel-heading"> 
+
+							<div class="panel-heading">
 								<h3 class="panel-title">Mes dernières demandes de remboursement</h3>
 							</div>
-							<div class="panel-body pre-scrollable" style="max-height: 380px;"> 
+							<div class="panel-body pre-scrollable" style="max-height: 380px;">
 								<table class="table table-striped w-auto">
 									<div th:if="${not #lists.isEmpty(recentDemandesRemboursement)}">
 										<thead>
@@ -143,7 +143,7 @@
 									</div>
 								</table>
 							</div>
-						<div th:if="${#lists.isEmpty(recentDemandesRemboursement)}" class="panel-heading" style="color:black; background:white;"> 
+						<div th:if="${#lists.isEmpty(recentDemandesRemboursement)}" class="panel-heading" style="color:black; background:white;">
 							<h3 class="panel-title">Aucune demande de remboursement n'a été réalisé</h3>
 						</div>
 					</div>
@@ -165,6 +165,6 @@
 
 <script type="text/javascript" src="/assets/js/jquery.js"></script>
 <script type="text/javascript" src="/assets/js/bootstrap.js"></script>
-<script type="text/javascript" src="/assets/js/scripts.js"></script>  
+<script type="text/javascript" src="/assets/js/scripts.js"></script>
 </body>
 </html>
