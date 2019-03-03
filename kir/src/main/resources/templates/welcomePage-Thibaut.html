@@ -6,7 +6,8 @@
 	<link href="/assets/css/bootstrap.css" rel="stylesheet">
 	<link rel="stylesheet" href="/assets/css/style.css" />
 	<link href='/assets/css/calendrier.css' rel='stylesheet' />
-	<link href='/assets/css/calendrier.print.css' rel='stylesheet' />    
+	<link href='/assets/css/calendrier.print.css' rel='stylesheet' />
+	<!--<link href='/assets/css/welcomePage-Thibaut.css' rel='stylesheet' />-->
 </head>
 
 <body>
@@ -78,7 +79,7 @@
 						</div>
 						<div class="list-group" th:each="notif : ${notifs}">
 							<a th:href="${notif.lien}" class="list-group-item" data-toggle="modal">
-								<span th:text="${notif.titre}"></span>
+								<span th:text="${notif.titre}" ></span>
 								<span class="badge" th:text="${notif.date}"></span>
 							</a>
 						</div>

@@ -6,8 +6,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import sacha.kir.bdd.membresservice.InterfaceMembresServiceBddService;
+import sacha.kir.bdd.membresservice.MembresServiceBdd;
 import sacha.kir.bdd.notif.InterfaceNotifService;
 import sacha.kir.bdd.remboursement.Statut;
+import sacha.kir.bdd.utilisateur.InterfaceUtilisateurService;
+import sacha.kir.bdd.utilisateur.Utilisateur;
 
 @Service
 public class CongesService implements InterfaceCongesService
@@ -17,6 +21,12 @@ public class CongesService implements InterfaceCongesService
 	
 	@Autowired
 	InterfaceNotifService NotifService;
+	
+	@Autowired
+	InterfaceMembresServiceBddService MembresServiceBddService;
+
+	@Autowired
+	InterfaceUtilisateurService UtilisateurService;
 	
 	@Override
 	public List<Conges> findAll() {
@@ -39,7 +49,12 @@ public class CongesService implements InterfaceCongesService
 		System.out.println("rtt en entree: "+ rtt+ " rtt en sortie: " + c.isRtt());
 		repository.save(c);
 		String titre = "Demande de congés du " + date_debut.substring(0, 5) + " au " + date_fin.substring(0, 10);
-		NotifService.addNotif(30, titre, "/Calendrier");
+		long service_id = MembresServiceBddService.findById(uID).getServiceId();
+		// Envoi des notifications aux chefs du service du demandeur de congés
+		List<MembresServiceBdd> interesses = MembresServiceBddService.getChefByServiceId(service_id);
+		for (MembresServiceBdd membre : interesses)
+			if (membre.getUid() != uID)
+				NotifService.addNotif(membre.getUid(), titre, "/Calendrier");
 	}
 
 	@Override
@@ -62,7 +77,16 @@ public class CongesService implements InterfaceCongesService
 		repository.updateChefState(congesid, newstate);
 		Conges c = repository.getCongesbyId(congesid);
 		String titre = "Validation service : congés du " + c.getDatedebut().substring(0, 5) + " au " + c.getDatefin().substring(0, 10);
+		// Envoi de la notification au demandeur de congés
 		NotifService.addNotif(c.getUid(), titre, "/GererConges");
+		// Envoi des notifications aux chefs du service RH, sauf si le chef qui a validé est déjà chef RH
+		titre = "Demande de congés du " + c.getDatedebut().substring(0, 5) + " au " + c.getDatefin().substring(0, 10);
+		if (MembresServiceBddService.findById(c.getUid()).getServiceId() != 1) {
+			List<MembresServiceBdd> interesses = MembresServiceBddService.getChefByServiceId(1);
+			for (MembresServiceBdd membre : interesses)
+				if (membre.getUid() != c.getUid())
+					NotifService.addNotif(membre.getUid(), titre, "/Calendrier");
+		}
 	}
 
 	@Override
@@ -70,6 +94,7 @@ public class CongesService implements InterfaceCongesService
 		repository.updateRHState(congesid, newstate);
 		Conges c = repository.getCongesbyId(congesid);
 		String titre = "Validation RH : congés du " + c.getDatedebut().substring(0, 5) + " au " + c.getDatefin().substring(0, 10);
+		// Envoi de la notification au demandeur de congés
 		NotifService.addNotif(c.getUid(), titre, "/GererConges");
 	}
 
