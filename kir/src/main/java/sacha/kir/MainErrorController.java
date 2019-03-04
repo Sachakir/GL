@@ -2,10 +2,11 @@ package sacha.kir;
 
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-//@Controller
+@Controller
 public class MainErrorController {//implements ErrorController {
 
 	/*@RequestMapping(value = "/error", method = RequestMethod.GET)
@@ -18,4 +19,9 @@ public class MainErrorController {//implements ErrorController {
     public String getErrorPath() {
         return "/error";
     }*/
+	@GetMapping("/notFound")
+	public String notFound()
+	{
+		return "notFound";
+	}
 }
