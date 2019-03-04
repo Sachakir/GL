@@ -267,13 +267,13 @@ public class RemboursementController {
 	        
 	        // RemboursementEditForm pour la modification de demande
 	        model.addAttribute("remboursementEditForm", new RemboursementEditForm());
-	        
+	  /////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
+	  				SachaClasse nbCongesEtRemb = new SachaClasse();
+	  				model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService);
+	  				/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
 	        return "remboursements/noteFrais";
 		}
-	/////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
-				SachaClasse nbCongesEtRemb = new SachaClasse();
-				model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService);
-				/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
+	
 		return "forward:/notFound";
 	}
 	

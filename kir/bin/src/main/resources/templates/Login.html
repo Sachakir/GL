@@ -26,6 +26,12 @@
                 <div class="form-group">
                     <input class="form-control" type="password" name="password" placeholder="Mot de passe"/>
                 </div>
+				<!--<c:if test="${param.error =='true'}">
+				  <div class="error">
+					<c:out value="${SPRING_SECURITY_LAST_EXCEPTION.message}" />
+				  </div>
+				</c:if> -->
+				<p th:if="${loginError}" class="error">Mauvaise adresse mail ou mot de passe entré!</p>
                 <br>
                 <div centered>
                     <button id="btnSubmit" class="btn" type="submit" style="background-color: #132f5d; color:  #FFF;">Se connecter</button>
