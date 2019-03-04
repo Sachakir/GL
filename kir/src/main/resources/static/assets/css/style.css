@@ -17,6 +17,15 @@ a:active, a:focus { outline:none; }
   width: 100px;
 }
 
+.notif-link {
+	color:white;
+}
+
+.notif-link:hover {
+	color:#132f5d;
+	text-decoration: none;
+}
+
 /* navbar */
 .navbar-default {
   background-color: #3472d5;
@@ -80,6 +89,18 @@ a:active, a:focus { outline:none; }
 }
 
 @media (max-width: 992px) {
+	.navbar-default .navbar-nav .open .dropdown-menu > li > a {
+	    color: #132f5d;
+	}
+	.navbar-default .navbar-nav .open .dropdown-menu > li > a:hover {
+	    color: #132f5d;
+	}
+	.navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
+	    color: #132f5d;
+	}
+}
+/*
+
     .navbar-header {
         float: none;
     }
@@ -114,17 +135,8 @@ a:active, a:focus { outline:none; }
     .collapse.in{
         display:block !important;
     }
-
-    .navbar-default .navbar-nav .open .dropdown-menu > li > a {
-    color: #132f5d;
   }
-  .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover {
-    color: #132f5d;
-  }
-  .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
-    color: #132f5d;
-  }
-}
+}*/
 
 .label-pill {
   padding-right: .6em;

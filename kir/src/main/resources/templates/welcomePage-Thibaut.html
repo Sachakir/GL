@@ -60,6 +60,7 @@
 							Nouvelle demande de congés
 						</a>
 					</div>
+					<br class="hidden-lg hidden-md">
 					<div class="col-md-4">
 						<a href="/remboursements/demande-remboursement" class="btn btn-primary" role="button">
 							Nouvelle demande de remboursement
@@ -75,7 +76,9 @@
 				<div class="col-md-10">
 					<div class="panel panel-primary">
 						<div class="panel-heading">
-							<h3 class="panel-title">Dernières notifications</h3>
+							<a href="/Notifications" class="notif-link">
+								<span class="panel-title">Dernières notifications</span>
+							</a>
 						</div>
 						<div class="list-group" th:each="notif : ${notifs}">
 							<a th:href="${notif.lien}" class="list-group-item" data-toggle="modal" th:styleappend="${notif.vue} ? 'background-color:#ffffff' : 'background-color:#c8dcf0'" th:onmouseover="'survol(this,'+${notif.vue}+')'" th:onmouseout="'finSurvol(this,'+${notif.vue}+')'">

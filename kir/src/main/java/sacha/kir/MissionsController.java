@@ -143,6 +143,11 @@ public class MissionsController {
     	    				
     	    				model.addAttribute("missionEditForm", missionEditForm);
     	    			}
+    	    			if(!model.containsAttribute("userList")) {
+    	    				UserList userList = new UserList();
+    	    				userList.setUserList(membres);
+    	    				model.addAttribute("userList", userList);
+    	    			}
     	    	    	
     					break;
     				}
@@ -153,7 +158,6 @@ public class MissionsController {
     		}
     	}
  	
-    	model.addAttribute("userList", new UserList());
     	model.addAttribute("mesmissions",mesMissions);
     	/////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
   		SachaClasse nbCongesEtRemb = new SachaClasse();
@@ -184,14 +188,9 @@ public class MissionsController {
 				if(!missionEditForm.getDate_fin().equals("")) {
 					date_fin = LocalDate.parse(missionEditForm.getDate_fin(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 					
-					if(date_fin.isBefore(mission.getDate_debut())) {
-						result.rejectValue("date_fin", "dateTooEarly", "Date de fin précédant la date d'aujourd'hui");
-					}
-					else if(date_fin.equals(mission.getDate_debut())) {
-						result.rejectValue("date_fin", "dateBeforeStart", "Date de fin égale à la date de debut");
-					}
-					
-					if(date_fin.isBefore(LocalDate.now())) {
+					if(date_fin.isBefore(mission.getDate_debut())){
+						result.rejectValue("date_fin", "dateBeforeStart", "Date de fin précédant la date de début");
+					} else if(date_fin.isBefore(LocalDate.now())) {
 						result.rejectValue("date_fin", "dateTooEarly", "Date de fin précédant la date d'aujourd'hui");
 					}
 				}
@@ -319,18 +318,8 @@ public class MissionsController {
 			if(date_debut.isBefore(LocalDate.now())) {
 				result.rejectValue("date_debut", "dateTooEarly", "Date de début précédant la date d'aujourd'hui");
 			}
-			
-			if(date_fin.isBefore(LocalDate.now())) {
-				result.rejectValue("date_fin", "dateTooEarly", "Date de fin précédant la date d'aujourd'hui");
-			}
-			
 			if(date_fin.isBefore(date_debut)) {
 				result.rejectValue("date_fin", "dateBeforeStart", "Date de fin précédant la date de début");
-			}
-			
-			if(date_debut.equals(date_fin)) {
-				result.rejectValue("date_debut", "dateEquals", "Date de début égale à la date de fin");
-				result.rejectValue("date_fin", "dateBeforeStart", "Date de fin égale à la date de debut");
 			}
 		}
 		
