@@ -1,6 +1,7 @@
 package sacha.kir;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,12 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import sacha.kir.bdd.approle.InterfaceAppRoleService;
 import sacha.kir.bdd.appuser.InterfaceAppUserService;
@@ -140,7 +143,7 @@ public class MissionsController {
  	
     	model.addAttribute("userList", new UserList());
     	model.addAttribute("mesmissions",mesMissions);
-  /////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
+    	/////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
   		SachaClasse nbCongesEtRemb = new SachaClasse();
   		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService);
   		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
@@ -148,7 +151,7 @@ public class MissionsController {
     }
 	
 	@GetMapping("/create")
-    public String addMission(Mission mission,Model model,Principal principal)
+    public String addMission(Model model,Principal principal)
     {	
 		// Services et id respectifs
 		List<Long> services_ids = ServiceBddService.getServiceIdList();
@@ -184,7 +187,11 @@ public class MissionsController {
     	model.addAttribute("chefsServices", chefsServices);
     	model.addAttribute("utilisateurs", utilisateurs);
     	model.addAttribute("utilisateursServices", utilisateursServices);
-  /////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
+    	
+    	if(!model.containsAttribute("mission")) {
+    		model.addAttribute("mission", new Mission());
+    	}
+    	/////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
   		SachaClasse nbCongesEtRemb = new SachaClasse();
   		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService);
   		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
@@ -192,21 +199,38 @@ public class MissionsController {
     }
 	
 	@PostMapping("/create")
-    public String checkMission(@Valid Mission mission,@ModelAttribute("userlist") UserList userlist)
+    public String checkMission(@Valid Mission mission, BindingResult result, RedirectAttributes redirectAttributes, @ModelAttribute("userlist") UserList userlist)
     {
-		//Creation de la mission
+		// Verification des dates pour les missions
+		LocalDate date_debut = mission.getDate_debut();
+		LocalDate date_fin = mission.getDate_fin();
 		
-		System.out.println(mission.getResponsable_id());
-		System.out.println(mission.getDate_debut());
-		System.out.println(mission.getDate_fin());
-		System.out.println(mission.getTitre());
-		System.out.println(mission.getDescription());
+		if(date_debut.isBefore(LocalDate.now())) {
+			result.rejectValue("date_debut", "dateTooEarly", "La date de début ne peut pas précéder celle d'aujourd'hui");
+		}
+		
+		if(date_fin.isBefore(LocalDate.now())) {
+			result.rejectValue("date_fin", "dateTooEarly", "La date de fin ne peut pas précéder celle d'aujourd'hui");
+		}
+		
+		if(date_fin.isBefore(date_debut)) {
+			result.rejectValue("date_fin", "dateBeforeStart", "La date de fin ne peut pas précéder la date de début");
+		}
+		
+		// Erreur de formulaire
+		if(result.hasErrors()) {
+			redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.mission", result);
+			redirectAttributes.addFlashAttribute("mission", mission);
+			
+			return "redirect:/missions/create";
+		}
+		
+		//Creation de la mission
 		int maxid = MissionService.getMaxMissionId();
 		mission.setMission_id((long) (maxid + 1));
 		
 		MissionService.addMission(mission);
 		//Ajout des membres
-		System.out.println(userlist.getUserList().size());
 		MembresMission membresMission = new MembresMission();
 
 		for (int i = 0;i < userlist.getUserList().size();i++)

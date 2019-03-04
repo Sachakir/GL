@@ -1,9 +1,13 @@
 package sacha.kir.bdd.mission;
 
+import java.time.LocalDate;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "mission")
@@ -14,23 +18,28 @@ public class Mission
 	private Long mission_id;
 	
 	@Column(name="Titre")
+	@NotNull
+	@Size(min=1, message="Le titre de la mission ne doit pas être vide")
+	@Size(max=60, message="Le titre de la mission doit faire moins de 60 caractères")
 	private String titre;
 	
 	@Column(name="Description")
 	private String description;
 	
 	@Column(name="date_debut")
-	private String date_debut;
+	@NotNull
+	private LocalDate date_debut;
 	
 	@Column(name="date_fin")
-	private String date_fin;
+	@NotNull
+	private LocalDate date_fin;
 	
 	@Column(name="ResponsableID")
 	private Long responsable_id;
 	
 	public Mission() {}
 
-	public Mission(Long mission_id, String titre, String description, String date_debut, String date_fin, Long responsable_id)
+	public Mission(Long mission_id, String titre, String description, LocalDate date_debut, LocalDate date_fin, Long responsable_id)
 	{
 		this.mission_id = mission_id;
 		this.titre = titre;
@@ -64,19 +73,19 @@ public class Mission
 		this.description = description;
 	}
 
-	public String getDate_debut() {
+	public LocalDate getDate_debut() {
 		return date_debut;
 	}
 
-	public void setDate_debut(String date_debut) {
+	public void setDate_debut(LocalDate date_debut) {
 		this.date_debut = date_debut;
 	}
 
-	public String getDate_fin() {
+	public LocalDate getDate_fin() {
 		return date_fin;
 	}
 
-	public void setDate_fin(String date_fin) {
+	public void setDate_fin(LocalDate date_fin) {
 		this.date_fin = date_fin;
 	}
 
