@@ -195,7 +195,7 @@ public class RemboursementController {
 		model.addAttribute("remboursementEditForm", new RemboursementEditForm());
 	/////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
 			SachaClasse nbCongesEtRemb = new SachaClasse();
-			model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService);
+			model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService,NotifService);
 			/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
 		return "remboursements/remboursements";
 	}
@@ -273,7 +273,7 @@ public class RemboursementController {
 	        model.addAttribute("remboursementEditForm", new RemboursementEditForm());
 	  /////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
 	  				SachaClasse nbCongesEtRemb = new SachaClasse();
-	  				model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService);
+	  				model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService,NotifService);
 	  				/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
 	        return "remboursements/noteFrais";
 		}
@@ -284,10 +284,7 @@ public class RemboursementController {
 	@GetMapping(value = "/note={mois:.+}/id={remboursement_id:.+}")
 	public String displayRemboursement(@PathVariable String mois, @PathVariable String remboursement_id, Model model, Principal principal)
 	{
-		/////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
-		SachaClasse nbCongesEtRemb = new SachaClasse();
-		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService);
-		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
+		
 		//System.out.println("Je suis dans displayRemboursement");
 		try {
 			long remboursement_id_long = Long.parseLong(remboursement_id);
@@ -308,6 +305,10 @@ public class RemboursementController {
 	  			}
 	  		}
 	  		/// NOTIF FIN  ///
+	  /////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
+			SachaClasse nbCongesEtRemb = new SachaClasse();
+			model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService,NotifService);
+			/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
 	    	
 			Note note = NoteService.findNoteByMonthAndUID(mois, userId);
 			if (note==null)
@@ -490,7 +491,7 @@ public class RemboursementController {
         // Appel de la page du formulaire
   /////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
   			SachaClasse nbCongesEtRemb = new SachaClasse();
-  			model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService);
+  			model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService,NotifService);
   			/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
         return "remboursements/remboursementForm";
     }
@@ -585,7 +586,7 @@ public class RemboursementController {
     							  Model model, Principal principal) {
     		/////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
   			SachaClasse nbCongesEtRemb = new SachaClasse();
-  			model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService);
+  			model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService,NotifService);
   			/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
     	if(referer == null || monthRequested == null)
     		return "redirect:/Accueil";

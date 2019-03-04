@@ -216,10 +216,7 @@ public class SachaController
     	}
 		model.addAttribute("remboursements", remboursementAssocies);
 		
-		/////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
-		SachaClasse nbCongesEtRemb = new SachaClasse();	
-		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService);
-		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
+	
 		
 		/// NOTIF DEBUT ///
   		List<Notif> allNotif = NotifService.findAll();
@@ -234,6 +231,10 @@ public class SachaController
   			}
   		}
   		/// NOTIF FIN  ///
+  		/////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
+		SachaClasse nbCongesEtRemb = new SachaClasse();	
+		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService,NotifService);
+		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
 		
 		return "validerndf";
     }
@@ -321,7 +322,7 @@ public class SachaController
     	
   /////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
   		SachaClasse nbCongesEtRemb = new SachaClasse();
-  		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService);
+  		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService,NotifService);
   		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
     	
     	
@@ -333,7 +334,7 @@ public class SachaController
     {
 	/////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
 			SachaClasse nbCongesEtRemb = new SachaClasse();
-			model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService);
+			model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService,NotifService);
 			/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
 		return "changeMdp";
     }

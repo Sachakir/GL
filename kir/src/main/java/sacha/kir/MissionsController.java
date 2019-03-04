@@ -34,6 +34,7 @@ import sacha.kir.bdd.membresservice.Role;
 import sacha.kir.bdd.mission.InterfaceMissionService;
 import sacha.kir.bdd.mission.Mission;
 import sacha.kir.bdd.note.InterfaceNoteService;
+import sacha.kir.bdd.notif.InterfaceNotifService;
 import sacha.kir.bdd.remboursement.InterfaceRemboursementService;
 import sacha.kir.bdd.services.InterfaceServiceBddService;
 import sacha.kir.bdd.userrole.InterfaceUserRoleService;
@@ -68,6 +69,8 @@ public class MissionsController {
 	InterfaceServiceBddService ServiceBddService;
 	@Autowired
 	InterfaceMembresServiceBddService MembresServiceBddService;
+	@Autowired
+	InterfaceNotifService NotifService;
 	
 	@GetMapping(value = {"", "/"})
     public String listMissions(@RequestParam(value = "mission_id", required = false) String mission_id, Principal principal, Model model)
@@ -161,7 +164,7 @@ public class MissionsController {
     	model.addAttribute("mesmissions",mesMissions);
     	/////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
   		SachaClasse nbCongesEtRemb = new SachaClasse();
-  		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService);
+  		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService,NotifService);
   		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
 		return "missions/choixMission";
     }
@@ -299,7 +302,7 @@ public class MissionsController {
 		model.addAttribute("nonMembresServices", nonMembresServices);
     	/////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
   		SachaClasse nbCongesEtRemb = new SachaClasse();
-  		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService);
+  		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService,NotifService);
   		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
         return "missions/newMissionPage";
     }

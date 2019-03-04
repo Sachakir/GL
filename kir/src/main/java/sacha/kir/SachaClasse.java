@@ -3,6 +3,7 @@ package sacha.kir;
 import java.security.Principal;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 
 import sacha.kir.bdd.conges.Conges;
@@ -10,6 +11,8 @@ import sacha.kir.bdd.conges.InterfaceCongesService;
 import sacha.kir.bdd.membresservice.InterfaceMembresServiceBddService;
 import sacha.kir.bdd.membresservice.MembresServiceBdd;
 import sacha.kir.bdd.membresservice.Role;
+import sacha.kir.bdd.notif.InterfaceNotifService;
+import sacha.kir.bdd.notif.Notif;
 import sacha.kir.bdd.remboursement.InterfaceRemboursementService;
 import sacha.kir.bdd.remboursement.Remboursement;
 import sacha.kir.bdd.remboursement.Statut;
@@ -108,7 +111,7 @@ public class SachaClasse {
 		return nbConges;
 	}
 	
-	public Model addNumbersToModel(Model model,Principal principal,InterfaceCongesService CongesService,InterfaceUtilisateurService UtilisateurService,InterfaceMembresServiceBddService MembresServiceBddService,InterfaceRemboursementService RemboursementService)
+	public Model addNumbersToModel(Model model,Principal principal,InterfaceCongesService CongesService,InterfaceUtilisateurService UtilisateurService,InterfaceMembresServiceBddService MembresServiceBddService,InterfaceRemboursementService RemboursementService, InterfaceNotifService NotifService)
 	{
 	/////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
 			SachaClasse nbCongesEtRemb = new SachaClasse();	
@@ -121,9 +124,22 @@ public class SachaClasse {
 		        model.addAttribute("nbRemb", nbRemb);
 				model.addAttribute("nbConges",nbConges);
 				model.addAttribute("IsChef", IsChef);
-				model.addAttribute("nbNotifs", nbConges);
 			}
 			
+			String[] names = principal.getName().split("\\.");
+			Utilisateur personne = UtilisateurService.findPrenomNom(names[1], names[0]);
+			List<Notif> ln = NotifService.getAllByIdDesc(personne.getUID());
+			int nbNotif = 0;
+			for (int i = 0;i < ln.size();i++)
+			{
+				if (ln.get(i).getVue() == false)
+				{
+					nbNotif++;
+				}
+			}
+			System.out.println("NOTIF NB : " + nbNotif);
+			model.addAttribute("nbNotifs", nbNotif);
+
 			return model;
 			/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
 	}

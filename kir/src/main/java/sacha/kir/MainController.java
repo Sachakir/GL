@@ -176,7 +176,7 @@ public class MainController {
             model.addAttribute("message", message);
       /////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
     		SachaClasse nbCongesEtRemb = new SachaClasse();
-    		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService);
+    		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService,NotifService);
     		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
         }
  
@@ -189,7 +189,7 @@ public class MainController {
     	model = addServiceListIntoModel(model);
   /////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
   		SachaClasse nbCongesEtRemb = new SachaClasse();
-  		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService);
+  		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService,NotifService);
   		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
         return "form";
     }
@@ -263,7 +263,7 @@ public class MainController {
     	model.addAttribute("types", TypesConges.values());
   /////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
   		SachaClasse nbCongesEtRemb = new SachaClasse();
-  		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService);
+  		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService,NotifService);
   		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
     	
     	return "ajouterConge";
@@ -431,10 +431,7 @@ public class MainController {
     	model.addAttribute("listConges",aujourdhuiConges);
     	model.addAttribute("utilisateurs",aujourdhuiU);
     	
-  /////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
-  		SachaClasse nbCongesEtRemb = new SachaClasse();
-  		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService);
-  		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
+
 		
   		/// NOTIF DEBUT ///
   		List<Notif> allNotif = NotifService.getAllByIdDesc(validateur.getUID());
@@ -447,6 +444,11 @@ public class MainController {
   		}
   		
   		/// NOTIF FIN  ///
+  		
+  	  /////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
+  		SachaClasse nbCongesEtRemb = new SachaClasse();
+  		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService,NotifService);
+  		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
   		
         return "calendrier";
     }
@@ -477,10 +479,7 @@ public class MainController {
     		}
     	}
     	model.addAttribute("demandesConges",mesConges);
-  /////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
-  		SachaClasse nbCongesEtRemb = new SachaClasse();
-  		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService);
-  		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
+  
     	
   		/// NOTIF DEBUT ///
   		List<Notif> allNotif = NotifService.findAll();
@@ -495,6 +494,11 @@ public class MainController {
   			}
   		}
   		/// NOTIF FIN  ///
+  		
+  /////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
+    		SachaClasse nbCongesEtRemb = new SachaClasse();
+    		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService,NotifService);
+    		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
   		
     	return "gererConges";
     }
@@ -539,7 +543,7 @@ public class MainController {
     public String addConges(CongeForm congeForm,Principal principal,Model model) {
   /////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
   		SachaClasse nbCongesEtRemb = new SachaClasse();
-  		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService);
+  		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService,NotifService);
   		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
         return "addCongesPage";
     }
@@ -640,6 +644,21 @@ public class MainController {
 		int nbConges = SachaEstClasse.getNbConges(CongesService, UtilisateurService, MembresServiceBddService, principal);
 		model.addAttribute("nbConges",nbConges);
 		
+		// NOTIF
+		Utilisateur personne = UtilisateurService.findPrenomNom(names[1], names[0]);
+		List<Notif> ln = NotifService.getAllByIdDesc(personne.getUID());
+		System.out.println("LN : " + ln.size());
+		int nbNotif = 0;
+		for (int i = 0;i < ln.size();i++)
+		{
+			System.out.println("Notif ID = " + ln.get(i).getNotif_id());
+			if (ln.get(i).getVue() == false)
+			{
+				nbNotif++;
+			}
+		}
+		model.addAttribute("nbNotifs", nbNotif);
+		
         return "welcomePage-Thibaut";
     }
     
@@ -651,7 +670,7 @@ public class MainController {
     	model.addAttribute("notifs", notifs);
   /////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
   		SachaClasse nbCongesEtRemb = new SachaClasse();
-  		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService);
+  		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService,NotifService);
   		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
     	return "notifications";
     }
@@ -703,7 +722,7 @@ public class MainController {
     	model.addAttribute("userForm", userForm);
     	/////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
   		SachaClasse nbCongesEtRemb = new SachaClasse();
-  		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService);
+  		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService,NotifService);
   		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
         return "showUsers";
     }
