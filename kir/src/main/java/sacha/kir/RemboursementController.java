@@ -43,6 +43,8 @@ import sacha.kir.bdd.mission.InterfaceMissionService;
 import sacha.kir.bdd.mission.Mission;
 import sacha.kir.bdd.note.InterfaceNoteService;
 import sacha.kir.bdd.note.Note;
+import sacha.kir.bdd.notif.InterfaceNotifService;
+import sacha.kir.bdd.notif.Notif;
 import sacha.kir.bdd.remboursement.InterfaceRemboursementService;
 import sacha.kir.bdd.remboursement.Remboursement;
 import sacha.kir.bdd.remboursement.Statut;
@@ -80,6 +82,8 @@ public class RemboursementController {
 	InterfaceUserRoleService UserRoleService;
 	@Autowired
 	InterfaceMembresServiceBddService MembresServiceBddService;
+	@Autowired
+	InterfaceNotifService NotifService;
 	
 	public String reverse(String toReverse) {
 		StringBuilder sb = new StringBuilder();
@@ -290,6 +294,21 @@ public class RemboursementController {
 			String[] names = principal.getName().split("\\.");
 	    	Long userId = UtilisateurService.findPrenomNom(names[1], names[0]).getUID();
 	    	
+	    	/// NOTIF DEBUT ///
+	  		List<Notif> allNotif = NotifService.findAll();
+	  		for (int i = 0;i < allNotif.size();i++)
+	  		{
+	  			if (allNotif.get(i).getUid() == userId)
+	  			{
+	  				if (allNotif.get(i).getLien().equals("/remboursements/note="+mois+"/id="+remboursement_id))
+	  				{
+	  					System.out.println("/remboursements/note="+mois+"/id="+remboursement_id);
+	  	  				NotifService.updateNotif(allNotif.get(i).getNotif_id(), true);
+	  				}
+	  			}
+	  		}
+	  		/// NOTIF FIN  ///
+	    	
 			Note note = NoteService.findNoteByMonthAndUID(mois, userId);
 			if (note==null)
 				System.out.println("Note est null");
@@ -302,6 +321,9 @@ public class RemboursementController {
 				model.addAttribute("remboursement", r);
 				model.addAttribute("mission", m);
 				//System.out.println("Je suis dans le if de displayRemboursement");
+				
+				
+				
 				return "remboursements/remboursementDetail";
 			}
 		}

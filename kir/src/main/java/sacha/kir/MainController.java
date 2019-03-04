@@ -437,17 +437,15 @@ public class MainController {
   		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
 		
   		/// NOTIF DEBUT ///
-  		List<Notif> allNotif = NotifService.findAll();
-  		for (int i = 0;i < demandesConges.size();i++)
+  		List<Notif> allNotif = NotifService.getAllByIdDesc(validateur.getUID());
+  		for (int j = 0;j < allNotif.size();j++)
   		{
-  			for (int j = 0;j < allNotif.size();j++)
+  			if (allNotif.get(j).getLien().equals("/Calendrier"))
   			{
-  				if (demandesConges.get(i).getUid() == allNotif.get(j).getUid())//Toutes les demandes passent vues
-  				{
-  					NotifService.updateNotif(allNotif.get(j).getNotif_id(), true);
-  				}
+  				NotifService.updateNotif(allNotif.get(j).getNotif_id(), true);
   			}
   		}
+  		
   		/// NOTIF FIN  ///
   		
         return "calendrier";
@@ -490,7 +488,10 @@ public class MainController {
   		{
   			if (allNotif.get(i).getUid() == uid)
   			{
-  				NotifService.updateNotif(allNotif.get(i).getNotif_id(), true);
+  				if (allNotif.get(i).getLien().equals("/GererConges"))
+  				{
+  	  				NotifService.updateNotif(allNotif.get(i).getNotif_id(), true);
+  				}
   			}
   		}
   		/// NOTIF FIN  ///

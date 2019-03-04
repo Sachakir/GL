@@ -35,6 +35,8 @@ import sacha.kir.bdd.membresservice.Role;
 import sacha.kir.bdd.mission.InterfaceMissionService;
 import sacha.kir.bdd.mission.Mission;
 import sacha.kir.bdd.note.InterfaceNoteService;
+import sacha.kir.bdd.notif.InterfaceNotifService;
+import sacha.kir.bdd.notif.Notif;
 import sacha.kir.bdd.remboursement.InterfaceRemboursementService;
 import sacha.kir.bdd.remboursement.Remboursement;
 import sacha.kir.bdd.remboursement.Statut;
@@ -75,6 +77,8 @@ public class SachaController
 	InterfaceServiceBddService ServiceBddService;
 	@Autowired
 	InterfaceMembresServiceBddService MembresServiceBddService;
+	@Autowired
+	InterfaceNotifService NotifService;
 	
     @ModelAttribute("username")
     public String getUsername(Principal principal) {
@@ -216,6 +220,20 @@ public class SachaController
 		SachaClasse nbCongesEtRemb = new SachaClasse();	
 		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService);
 		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
+		
+		/// NOTIF DEBUT ///
+  		List<Notif> allNotif = NotifService.findAll();
+  		for (int i = 0;i < allNotif.size();i++)
+  		{
+  			if (allNotif.get(i).getUid() == ut.getUID())
+  			{
+  				if (allNotif.get(i).getLien().equals("/validationNDF"))
+  				{
+  	  				NotifService.updateNotif(allNotif.get(i).getNotif_id(), true);
+  				}
+  			}
+  		}
+  		/// NOTIF FIN  ///
 		
 		return "validerndf";
     }
