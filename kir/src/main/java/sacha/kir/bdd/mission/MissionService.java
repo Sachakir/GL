@@ -63,5 +63,15 @@ public class MissionService implements InterfaceMissionService{
 		if(m != null)
 			repository.delete(m);
 	}
+	
+	@Override
+	public void update(Mission m){
+		if(m.getMission_id() != null) {
+			Mission mission = repository.findById(m.getMission_id()).orElse(null);
+			if(mission != null) {
+				repository.save(m);
+			}
+		}
+	}
 
 }
