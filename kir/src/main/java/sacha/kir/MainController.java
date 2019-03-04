@@ -631,7 +631,7 @@ public class MainController {
         model.addAttribute("nbRemb", nbRemb);
 
 		/*** DERNIERES NOTIFS ***/
-		List<Notif> notifs = NotifService.getAllByIdDesc(userId);
+		List<Notif> notifs = NotifService.getAllByIdDesc(userId).subList(0, 10);
 		model.addAttribute("notifs", notifs);
 		/*** DERNIERES NOTIFS ***/
         
