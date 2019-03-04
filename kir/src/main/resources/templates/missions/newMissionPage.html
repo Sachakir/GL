@@ -35,7 +35,7 @@
 					<div class="form-group">
 						<label class="control-label" for="date_debut">Debut</label>
 						<div>
-							<input id="date_debut" name="date_debut" type="text" placeholder="ex : 15/02/2019" class="form-control input-md" th:field="*{date_debut}">
+							<input id="date_debut" name="date_debut" type="date" placeholder="ex : 15/02/2019" class="form-control input-md" th:field="*{date_debut}">
 							<label class="bg-warning text-danger" th:if="${#fields.hasErrors('date_debut')}" th:errors="*{date_debut}">erreur date_debut</label>
 						</div>
 					</div>
@@ -43,7 +43,7 @@
 					<div class="form-group">
 						<label class="control-label" for="date_fin">Fin</label>
 						<div>
-							<input id="date_fin" name="date_fin" type="text" placeholder="ex : 25/02/2019" class="form-control input-md" th:field="*{date_fin}">
+							<input id="date_fin" name="date_fin" type="date" placeholder="ex : 25/02/2019" class="form-control input-md" th:field="*{date_fin}">
 							<label class="bg-warning text-danger" th:if="${#fields.hasErrors('date_fin')}" th:errors="*{date_fin}">erreur date_fin</label>
 						</div>
 					</div>
