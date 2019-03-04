@@ -24,7 +24,7 @@
 					<input id="noMdp" type="hidden" th:field="*{mdp}">
 					<div class="col-offset-1 col-10 col-xs-offset-1 col-xs-10 col-md-offset-1 col-md-10 col-lg-offset-1 col-lg-10 col-xl-offset-1 col-xl-10">
 						<br>
-						<div th:if="${success != null}" class="thumbnail" style="margin-bottom: 15px;">
+						<div th:if="${success != null}" class="thumbnail btn-bottom">
 							<span th:text="${success ? 'Modification effectuée avec succès' : 'Aucune modification effectuée'}" th:class="${success ? 'text-success' : 'text-danger'}" style="font-weight: bold; text-align:center;"></span>
 						</div>	
 						<div class="input-desc">

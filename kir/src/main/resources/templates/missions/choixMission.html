@@ -62,23 +62,37 @@
 		<div th:if="${mission != null}" class="col-md-12 center-block text-center border-detail" style="padding:0px 0px;">
 			<div class="panel panel-primary table-responsive">
 				<div class="panel-heading" style="width:100%"> 
-					<h3 class="panel-title" th:text="'Détail de demande de remboursement : ' + ${mission.titre}"></h3>
+					<h3 class="panel-title" th:text="'Détail de mission : ' + ${mission.titre}"></h3>
 				</div>
 			</div>
-			<form class="form-horizontal" action="#" th:action="@{/missions/edit}" method="post">
-			<div th:object="${mission}">
-				<input type="hidden" th:field="*{mission_id}">
-				<input type="hidden" th:field="*{titre}">
-				<input type="hidden" th:field="*{description}">
-				<input type="hidden" th:field="*{date_debut}">
-				<input type="hidden" th:field="*{date_fin}">
-				<input type="hidden" th:field="*{responsable_id}">
+			<form class="form-horizontal" action="#" th:action="'/missions/edit?id=' + ${mission.mission_id}" method="post" th:object="${missionEditForm}">
 				<div class="col-md-offset-1 col-md-10" style="text-align: left">
-					<span th:text="'Description : ' + ${mission.description}"></span> <br>
-					<span th:text="'Date de début : ' + ${mission.date_debut}"></span> <br>
-					<span th:text="'Date de fin : ' + ${mission.date_fin}"></span> <br>
+					<div th:if="${success != null}" class="thumbnail btn-bottom text-center">
+						<span th:text="${success ? 'Modification effectuée avec succès' : 'Aucune modification effectuée'}" th:class="${success ? 'text-success' : 'text-danger'}" style="font-weight: bold; text-align:center;"></span>
+					</div>
+					<div class="form-group">
+						<label class="control-label" for="description">Description</label>
+						<div>
+							<textarea id="description" name="description" placeholder="ex : Mission a Polytech" class="form-control" th:field="*{description}"></textarea>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="control-label" for="description">Date de début</label>
+						<div>
+							<input type="date" class="form-control input-md" th:value="${#temporals.format(mission.date_debut, 'yyyy-MM-dd')}" style="height:100%;" readonly>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="control-label" for="description">Date de fin</label>
+						<div>
+							<input id="date_fin" name="date_fin" type="date" class="form-control input-md" th:field="*{date_fin}" style="height:100%;">
+							<label class="bg-warning text-danger" th:if="${#fields.hasErrors('date_fin')}" th:errors="*{date_fin}">erreur date_fin</label>
+						</div>
+					</div>
+					
 				</div>
-			</div>
 				
 				<div class="form-group">
 					<label class="control-label" for="userList">Modifiez les membres de la mission</label>
@@ -130,7 +144,7 @@
 					</div>
 				</div>
 				<div>
-					<button id="postMission" name="" class="btn btn-primary" type="submit">Soumettre</button>
+					<button id="postMission" name="" class="btn btn-primary" type="submit" style="margin-bottom:20px;">Soumettre</button>
 				</div>
 			</form>
 		</div>

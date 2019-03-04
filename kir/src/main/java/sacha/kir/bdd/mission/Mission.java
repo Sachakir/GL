@@ -19,8 +19,8 @@ public class Mission
 	
 	@Column(name="Titre")
 	@NotNull
-	@Size(min=1, message="Le titre de la mission ne doit pas être vide")
-	@Size(max=60, message="Le titre de la mission doit faire moins de 60 caractères")
+	@Size(min=1, message="Titre de la mission vide")
+	@Size(max=60, message="Titre de la mission de plus de 60 caractères")
 	private String titre;
 	
 	@Column(name="Description")

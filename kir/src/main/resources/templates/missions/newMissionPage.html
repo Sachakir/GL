@@ -14,8 +14,8 @@
 		<br>
 		<div class="col-md-offset-2 col-md-8 panel panel-primary">
 			<br>
-			<form class="form-horizontal" action="#" th:action="@{/missions/create}" th:object="${mission}" method="post" centered>
-				<div class="col-md-offset-3 col-md-6">
+			<form class="form-horizontal" action="#" th:action="@{/missions/create}" th:object="${missionForm}" method="post" centered>
+				<div class="col-md-offset-2 col-md-8">
 					<div class="form-group">
 						<label class="control-label" for="titre">Titre</label>
 						<div>
@@ -35,7 +35,7 @@
 					<div class="form-group">
 						<label class="control-label" for="date_debut">Debut</label>
 						<div>
-							<input id="date_debut" name="date_debut" type="date" placeholder="ex : 15/02/2019" class="form-control input-md" th:field="*{date_debut}">
+							<input id="date_debut" name="date_debut" type="date" class="form-control input-md" th:field="*{date_debut}" style="height:100%;">
 							<label class="bg-warning text-danger" th:if="${#fields.hasErrors('date_debut')}" th:errors="*{date_debut}">erreur date_debut</label>
 						</div>
 					</div>
@@ -43,7 +43,7 @@
 					<div class="form-group">
 						<label class="control-label" for="date_fin">Fin</label>
 						<div>
-							<input id="date_fin" name="date_fin" type="date" placeholder="ex : 25/02/2019" class="form-control input-md" th:field="*{date_fin}">
+							<input id="date_fin" name="date_fin" type="date" class="form-control input-md" th:field="*{date_fin}" style="height:100%;">
 							<label class="bg-warning text-danger" th:if="${#fields.hasErrors('date_fin')}" th:errors="*{date_fin}">erreur date_fin</label>
 						</div>
 					</div>
@@ -52,9 +52,11 @@
 						<label class="control-label" for="responsable_id">Responsable</label>
 						<div th:if="${not chefsServices.empty}">
 							<select id="responsable_id" class="form-control" th:field="*{responsable_id}">
+								<option value=""> -- </option>
 								<option th:each="mission : ${chefsServices}" th:value="${mission.UID}" th:text="${mission.Prenom} + ' ' + ${mission.Nom}"></option>
 							</select>
 						</div>
+						<label class="bg-warning text-danger" th:if="${#fields.hasErrors('responsable_id')}" th:errors="*{responsable_id}">erreur responsable_id</label>
 					</div>
 					<br>
 				</div>
@@ -73,9 +75,13 @@
 										<option th:each="service_id, id : ${services_ids}" th:value="${id.index+1}" th:text="${services.get(service_id)}"></option>
 									</select>
 		
-									<select class="service-sel form-control" id="allSelected" multiple="multiple"></select>
+									<select class="service-sel form-control" id="allSelected" multiple="multiple">
+										<option th:each="user : ${membres}" th:value="${user.UID}" th:text="${user.UID} + ' : ' + ${user.Prenom} + ' ' + ${user.Nom}"></option>
+									</select>
 									<div th:each="service_id, id : ${services_ids}">
-										<select class="service-sel form-control" th:id="'selected' + ${id.index+1}" multiple="multiple" style="display:none;"></select>
+										<select class="service-sel form-control" th:id="'selected' + ${id.index+1}" multiple="multiple" style="display:none;">
+											<option th:each="user : ${membresServices.get(service_id)}" th:value="${user.UID}" th:text="${user.UID} + ' : ' + ${user.Prenom} + ' ' + ${user.Nom}">
+										</select>
 									</div>
 								</div>
 								<div class="col-md-2" align="center" style="margin-bottom:20px; margin-top:20px;">
@@ -92,11 +98,11 @@
 									</select>
 		
 									<select class="service-sel form-control" id="allServices" multiple="multiple">
-										<option th:each="user : ${utilisateurs}" th:value="${user.UID}" th:text="${user.UID} + ' : ' + ${user.Prenom} + ' ' + ${user.Nom}"></option>
+										<option th:each="user : ${nonMembres}" th:value="${user.UID}" th:text="${user.UID} + ' : ' + ${user.Prenom} + ' ' + ${user.Nom}"></option>
 									</select>
 									<div th:each="service_id, id : ${services_ids}">
 										<select class="service-sel form-control" th:id="'service' + ${id.index+1}" multiple="multiple" style="display:none;">
-											<option th:each="user : ${utilisateursServices.get(service_id)}" th:value="${user.UID}" th:text="${user.UID} + ' : ' + ${user.Prenom} + ' ' + ${user.Nom}"></option>
+											<option th:each="user : ${nonMembresServices.get(service_id)}" th:value="${user.UID}" th:text="${user.UID} + ' : ' + ${user.Prenom} + ' ' + ${user.Nom}"></option>
 										</select>
 									</div>
 								</div>

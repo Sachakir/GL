@@ -59,6 +59,10 @@ a[aria-expanded=false] .glyphicon-menu-up {
 	margin-left: auto
 }
 
+.btn-bottom {
+	margin-bottom: 20px;
+}
+
 html {
   font-family: sans-serif;
   -webkit-text-size-adjust: 100%;
