@@ -44,4 +44,9 @@ public class NotifService implements InterfaceNotifService {
 				repository.delete(notifs.get(i));
 	}
 
+	@Override
+	public void updateNotif(long notifId, boolean estVue) {
+		repository.updateNotif(notifId, estVue);
+	}
+
 }

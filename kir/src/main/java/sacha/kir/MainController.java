@@ -436,6 +436,20 @@ public class MainController {
   		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService);
   		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
 		
+  		/// NOTIF DEBUT ///
+  		List<Notif> allNotif = NotifService.findAll();
+  		for (int i = 0;i < demandesConges.size();i++)
+  		{
+  			for (int j = 0;j < allNotif.size();j++)
+  			{
+  				if (demandesConges.get(i).getUid() == allNotif.get(j).getUid())//Toutes les demandes passent vues
+  				{
+  					NotifService.updateNotif(allNotif.get(j).getNotif_id(), true);
+  				}
+  			}
+  		}
+  		/// NOTIF FIN  ///
+  		
         return "calendrier";
     }
     @GetMapping("/GererConges")
@@ -470,6 +484,17 @@ public class MainController {
   		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService);
   		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
     	
+  		/// NOTIF DEBUT ///
+  		List<Notif> allNotif = NotifService.findAll();
+  		for (int i = 0;i < allNotif.size();i++)
+  		{
+  			if (allNotif.get(i).getUid() == uid)
+  			{
+  				NotifService.updateNotif(allNotif.get(i).getNotif_id(), true);
+  			}
+  		}
+  		/// NOTIF FIN  ///
+  		
     	return "gererConges";
     }
     @PostMapping("/GererConges")
