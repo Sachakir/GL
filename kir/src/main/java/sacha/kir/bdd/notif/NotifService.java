@@ -39,8 +39,8 @@ public class NotifService implements InterfaceNotifService {
 		
 		// On supprime les notifs en trop quand il y en a plus que 10 pour le meme utilisateur
 		List<Notif> notifs =  repository.getAllByIdDesc(uid);
-		if (notifs.size() > 10)
-			for (int i=10; i<notifs.size(); ++i)
+		if (notifs.size() > 20)
+			for (int i=20; i<notifs.size(); ++i)
 				repository.delete(notifs.get(i));
 	}
 

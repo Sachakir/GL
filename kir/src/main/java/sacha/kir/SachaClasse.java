@@ -121,6 +121,7 @@ public class SachaClasse {
 		        model.addAttribute("nbRemb", nbRemb);
 				model.addAttribute("nbConges",nbConges);
 				model.addAttribute("IsChef", IsChef);
+				model.addAttribute("nbNotifs", nbConges);
 			}
 			
 			return model;
