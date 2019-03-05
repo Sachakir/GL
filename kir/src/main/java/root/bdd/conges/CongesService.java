@@ -73,7 +73,7 @@ public class CongesService implements InterfaceCongesService
 	public void updateChefState(long congesid, String newstate) {
 		repository.updateChefState(congesid, newstate);
 		Conges c = repository.getCongesbyId(congesid);
-		String titre = "Validation service : congés du " + c.getDatedebut().substring(0, 5) + " au " + c.getDatefin().substring(0, 10);
+		String titre = (newstate.equals(Statut.valide.statut()) ? "Validation" : "Refus") + " service : congés du " + c.getDatedebut().substring(0, 5) + " au " + c.getDatefin().substring(0, 10);
 		// Envoi de la notification au demandeur de congés
 		NotifService.addNotif(c.getUid(), titre, "/GererConges");
 		// Envoi des notifications aux chefs du service RH, sauf si le chef qui a validé est déjà chef RH
@@ -90,7 +90,7 @@ public class CongesService implements InterfaceCongesService
 	public void updateRHState(long congesid, String newstate) {
 		repository.updateRHState(congesid, newstate);
 		Conges c = repository.getCongesbyId(congesid);
-		String titre = "Validation RH : congés du " + c.getDatedebut().substring(0, 5) + " au " + c.getDatefin().substring(0, 10);
+		String titre = (newstate.equals(Statut.valide.statut()) ? "Validation" : "Refus") + " RH : congés du " + c.getDatedebut().substring(0, 5) + " au " + c.getDatefin().substring(0, 10);
 		// Envoi de la notification au demandeur de congés
 		NotifService.addNotif(c.getUid(), titre, "/GererConges");
 	}

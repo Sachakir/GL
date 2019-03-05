@@ -105,7 +105,7 @@ public class RemboursementService implements InterfaceRemboursementService {
 		repository.updateFinancesState(demandeid, newstate);
 		
 		Remboursement r = repository.findById(demandeid).orElse(null);
-		String titre = "Validation finances : " + r.getTitre();
+		String titre = (newstate.equals(Statut.valide.statut()) ? "Validation" : "Refus") + " finances : " + r.getTitre();
 		NotifService.addNotif(r.getUid(), titre, r.genererLien());
 	}
 
@@ -114,7 +114,7 @@ public class RemboursementService implements InterfaceRemboursementService {
 		repository.updateChefState(demandeid, newstate);
 
 		Remboursement r = repository.findById(demandeid).orElse(null);
-		String titre = "Validation service : " + r.getTitre();
+		String titre = (newstate.equals(Statut.valide.statut()) ? "Validation" : "Refus") + " service : " + r.getTitre();
 		// Envoie de la notification au demandeur de remboursement
 		NotifService.addNotif(r.getUid(), titre, r.genererLien());
 		
