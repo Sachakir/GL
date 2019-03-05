@@ -9,7 +9,7 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import root.EncrytedPasswordUtils;
-import root.SachaClasse;
+import root.NotifClasse;
 import root.bdd.appuser.InterfaceAppUserService;
 import root.bdd.conges.InterfaceCongesService;
 import root.bdd.justificatif.InterfaceJustificatifService;
@@ -197,7 +197,7 @@ public class GestionUtilisateursController {
     	// Ajout du form pour l'ajout de personne
     	model.addAttribute("userForm", userForm);
     	/////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
-  		SachaClasse nbCongesEtRemb = new SachaClasse();
+  		NotifClasse nbCongesEtRemb = new NotifClasse();
   		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService,NotifService);
   		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
         return "showUsers";

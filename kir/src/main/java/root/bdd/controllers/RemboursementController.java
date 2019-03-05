@@ -13,7 +13,7 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
-import root.SachaClasse;
+import root.NotifClasse;
 import root.bdd.appuser.InterfaceAppUserService;
 import root.bdd.conges.InterfaceCongesService;
 import root.bdd.justificatif.InterfaceJustificatifService;
@@ -206,7 +206,7 @@ public class RemboursementController {
 		// RemboursementEditForm pour la modification de demande
 		model.addAttribute("remboursementEditForm", new RemboursementEditForm());
 	/////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
-			SachaClasse nbCongesEtRemb = new SachaClasse();
+			NotifClasse nbCongesEtRemb = new NotifClasse();
 			model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService,NotifService);
 			/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
 		return "remboursements/remboursements";
@@ -284,7 +284,7 @@ public class RemboursementController {
 	        // RemboursementEditForm pour la modification de demande
 	        model.addAttribute("remboursementEditForm", new RemboursementEditForm());
 	  /////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
-	  				SachaClasse nbCongesEtRemb = new SachaClasse();
+	  				NotifClasse nbCongesEtRemb = new NotifClasse();
 	  				model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService,NotifService);
 	  				/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
 	        return "remboursements/noteFrais";
@@ -318,7 +318,7 @@ public class RemboursementController {
 	  		}
 	  		/// NOTIF FIN  ///
 	  /////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
-			SachaClasse nbCongesEtRemb = new SachaClasse();
+			NotifClasse nbCongesEtRemb = new NotifClasse();
 			model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService,NotifService);
 			/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
 	    	
@@ -502,7 +502,7 @@ public class RemboursementController {
         
         // Appel de la page du formulaire
   /////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
-  			SachaClasse nbCongesEtRemb = new SachaClasse();
+  			NotifClasse nbCongesEtRemb = new NotifClasse();
   			model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService,NotifService);
   			/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
         return "remboursements/remboursementForm";
@@ -597,7 +597,7 @@ public class RemboursementController {
     							  @RequestParam(value = "mois", required = false) String monthRequested,
     							  Model model, Principal principal) {
     		/////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
-  			SachaClasse nbCongesEtRemb = new SachaClasse();
+  			NotifClasse nbCongesEtRemb = new NotifClasse();
   			model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService,NotifService);
   			/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
     	if(referer == null || monthRequested == null)

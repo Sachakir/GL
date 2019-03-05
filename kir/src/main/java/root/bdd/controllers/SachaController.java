@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import root.EncrytedPasswordUtils;
-import root.SachaClasse;
+import root.NotifClasse;
 import root.bdd.appuser.InterfaceAppUserService;
 import root.bdd.conges.Conges;
 import root.bdd.conges.InterfaceCongesService;
@@ -173,7 +173,7 @@ public class SachaController
   		}
   		/// NOTIF FIN  ///
   		/////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
-		SachaClasse nbCongesEtRemb = new SachaClasse();	
+		NotifClasse nbCongesEtRemb = new NotifClasse();	
 		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService,NotifService);
 		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
 		
@@ -262,7 +262,7 @@ public class SachaController
     	model.addAttribute("service", sbdd.getNom());
     	
   /////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
-  		SachaClasse nbCongesEtRemb = new SachaClasse();
+  		NotifClasse nbCongesEtRemb = new NotifClasse();
   		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService,NotifService);
   		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
     	
@@ -274,7 +274,7 @@ public class SachaController
     public String changeMdp(Passwords passwords,Principal principal,Model model)
     {
 	/////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
-			SachaClasse nbCongesEtRemb = new SachaClasse();
+			NotifClasse nbCongesEtRemb = new NotifClasse();
 			model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService,NotifService);
 			/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
 		return "changeMdp";

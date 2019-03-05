@@ -19,7 +19,7 @@ import root.bdd.services.ServicesFixes;
 import root.bdd.utilisateur.InterfaceUtilisateurService;
 import root.bdd.utilisateur.Utilisateur;
 
-public class SachaClasse {
+public class NotifClasse {
 
 	public int getNbRemb(Principal principal,InterfaceMembresServiceBddService MembresServiceBddService,InterfaceRemboursementService RemboursementService,InterfaceUtilisateurService UtilisateurService)
 	{
@@ -112,7 +112,7 @@ public class SachaClasse {
 	public Model addNumbersToModel(Model model,Principal principal,InterfaceCongesService CongesService,InterfaceUtilisateurService UtilisateurService,InterfaceMembresServiceBddService MembresServiceBddService,InterfaceRemboursementService RemboursementService, InterfaceNotifService NotifService)
 	{
 	/////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
-			SachaClasse nbCongesEtRemb = new SachaClasse();	
+			NotifClasse nbCongesEtRemb = new NotifClasse();	
 			boolean IsChef = nbCongesEtRemb.isChef(principal, UtilisateurService, MembresServiceBddService);
 			if (IsChef)
 			{

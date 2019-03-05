@@ -12,7 +12,7 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import root.EncrytedPasswordUtils;
-import root.SachaClasse;
+import root.NotifClasse;
 import root.WebUtils;
 import root.bdd.appuser.InterfaceAppUserService;
 import root.bdd.conges.Conges;
@@ -141,7 +141,7 @@ public class MainController {
                     + "<br> You do not have permission to access this page!";
             model.addAttribute("message", message);
             /////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
-    		SachaClasse nbCongesEtRemb = new SachaClasse();
+    		NotifClasse nbCongesEtRemb = new NotifClasse();
     		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService,NotifService);
     		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
         }
@@ -164,7 +164,7 @@ public class MainController {
     	}
     	model.addAttribute("types", TypesConges.values());
   /////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
-  		SachaClasse nbCongesEtRemb = new SachaClasse();
+  		NotifClasse nbCongesEtRemb = new NotifClasse();
   		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService,NotifService);
   		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
     	
@@ -348,7 +348,7 @@ public class MainController {
   		/// NOTIF FIN  ///
   		
   	  /////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
-  		SachaClasse nbCongesEtRemb = new SachaClasse();
+  		NotifClasse nbCongesEtRemb = new NotifClasse();
   		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService,NotifService);
   		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
   		
@@ -398,7 +398,7 @@ public class MainController {
   		/// NOTIF FIN  ///
   		
   /////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
-    		SachaClasse nbCongesEtRemb = new SachaClasse();
+    		NotifClasse nbCongesEtRemb = new NotifClasse();
     		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService,NotifService);
     		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
   		
@@ -444,7 +444,7 @@ public class MainController {
     @GetMapping("/addConges")
     public String addConges(CongeForm congeForm,Principal principal,Model model) {
   /////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
-  		SachaClasse nbCongesEtRemb = new SachaClasse();
+  		NotifClasse nbCongesEtRemb = new NotifClasse();
   		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService,NotifService);
   		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
         return "addCongesPage";
@@ -476,7 +476,7 @@ public class MainController {
     	
     	/**** NOTIFICATION ***********/
         LocalDate localDate = LocalDate.now();
-        if (localDate.getDayOfMonth() >= 14)
+        if (localDate.getDayOfMonth() >= 5)
         {   
 	        Utilisateur ut = UtilisateurService.findPrenomNom(names[1], names[0]);
 	        long uid = ut.getUID();
@@ -528,7 +528,7 @@ public class MainController {
         /**** DERNIERES DEMANDES DE CONGES ****/
         
         //Nombre de demandes de remboursement
-        SachaClasse SachaEstClasse = new SachaClasse();
+        NotifClasse SachaEstClasse = new NotifClasse();
         int nbRemb = SachaEstClasse.getNbRemb(principal,MembresServiceBddService,RemboursementService,UtilisateurService);
         model.addAttribute("nbRemb", nbRemb);
 
@@ -572,7 +572,7 @@ public class MainController {
     	List<Notif> notifs = NotifService.getAllByIdDesc(UtilisateurService.findPrenomNom(names[1], names[0]).getUID());
     	model.addAttribute("notifs", notifs);
   /////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
-  		SachaClasse nbCongesEtRemb = new SachaClasse();
+  		NotifClasse nbCongesEtRemb = new NotifClasse();
   		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService,NotifService);
   		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
     	return "notifications";
