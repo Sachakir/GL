@@ -10,6 +10,7 @@ public class CongesV2
 	 private String datedebut;
 	 private String prenomNom;
 	 private String type;
+	 private String motifRefus;
 	 
 		public String getType() {
 			return type;
@@ -58,5 +59,11 @@ public class CongesV2
 		}
 		public void setDatedebut(String datedebut) {
 			this.datedebut = datedebut;
+		}
+		public String getMotifRefus() {
+			return motifRefus;
+		}
+		public void setMotifRefus(String motifRefus) {
+			this.motifRefus = motifRefus;
 		}
 }

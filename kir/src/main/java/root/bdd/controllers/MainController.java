@@ -378,6 +378,7 @@ public class MainController {
 				c.setValidationrh(conge.getValidationrh());
 				c.setValidationchefservice(conge.getValidationchefdeservice());
 				c.setPrenomNom(prenomnom);
+				c.setMotifRefus(conge.getMotif_refus());
 				if(conge.isRtt()) 
 					c.setType("Rtt");
 				else

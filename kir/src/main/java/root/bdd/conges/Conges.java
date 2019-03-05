@@ -31,7 +31,19 @@ public class Conges {
 	@Column(name="rtt")
 	private boolean rtt;
 	
+	@Column(name="motif_refus")
+	private String motif_refus;
 	
+	
+
+	public String getMotif_refus() {
+		return motif_refus;
+	}
+
+	public void setMotif_refus(String motif_refus) {
+		this.motif_refus = motif_refus;
+	}
+
 	public boolean isRtt() {
 		return rtt;
 	}

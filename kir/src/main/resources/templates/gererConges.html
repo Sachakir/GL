@@ -50,6 +50,7 @@
 								<td style="display: none;"><span th:text="${conges.uid}">UID</span></td>
 								<td style="display: none;"><span th:text="${conges.congesid}">ID congé</span></td>
 								<td style="display: none;"><span th:text="${conges.type}">Type</span></td>
+								<td style="display: none;"><span th:text="${conges.motifRefus}">Type</span></td>
 							</tr>
 						</tbody>
 					</table>
@@ -80,6 +81,7 @@
 								<h4 >Date de fin: <input type="datetime-local" id ="dateF" disabled=true th:field="*{dateFin}" onchange="verifDateF();"> </h4>
 								<h4 id="vC">Validation Chef de Service: xxx</h4>
 								<h6 ><input type="number" id="cid" th:field="*{congesid}" value="0" hidden=true><h6>
+								<h4 id="areaRefus" hidden=true>Motif de refus: <textarea id="mR" rows="2" cols="45" disabled></textarea></h4>
 
 							</div>
 						</div>

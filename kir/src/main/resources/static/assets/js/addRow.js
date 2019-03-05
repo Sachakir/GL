@@ -108,10 +108,19 @@ $(document).ready(function () {
   			if($(this).find("td:nth-child(4)").text() == "En attente" && $(this).find("td:nth-child(5)").text() == "En attente"){
   				document.getElementById("edit").hidden=false;
   				document.getElementById("delete").hidden=false;
+          document.getElementById("areaRefus").hidden=true;
   			}
   			else{
   				document.getElementById("edit").hidden=true;
   				document.getElementById("delete").hidden=true;
+          if($(this).find("td:nth-child(4)").text() == "Refusé" || $(this).find("td:nth-child(5)").text() == "Refusé")
+          {
+            document.getElementById("areaRefus").hidden=false;
+            $("#mR").val($(this).find("td:nth-child(9)").text());
+          }
+          else{
+            document.getElementById("areaRefus").hidden=true;
+          }
   			}
   			$("#delete").attr("href","/DeleteConges/"+$(this).find("td:nth-child(7)").text());
         }
