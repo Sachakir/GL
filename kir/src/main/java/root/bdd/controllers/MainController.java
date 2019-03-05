@@ -42,6 +42,7 @@ import root.bdd.utilisateur.Utilisateur;
 import root.bdd.utilisateur.UtilisateurRepository;
 import root.forms.conges.CongeForm;
 import root.forms.conges.CongesV2;
+import root.forms.remboursement.RemboursementV2;
 import root.forms.utilisateur.UserForm;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -302,34 +303,31 @@ public class MainController {
 			}
 			c2.add(x);
 			
-			
-			if (validateurRoles.getRoleId() == Role.chefDeService.getRoleId())
+			/////////////
+			uidConges = conges.get(j).getUid();
+			if (validateurRoles.getRoleId() == Role.chefDeService.getRoleId() && MembresServiceBddService.findById(uidConges).getServiceId() == myServiceId)
 			{
-				uidConges = conges.get(j).getUid();
-				if (MembresServiceBddService.findById(uidConges).getServiceId() == myServiceId)//Du meme service
+				if (conges.get(j).getValidationchefdeservice().equals(Statut.enAttente.statut()))//Demandes en attente
 				{
-					if (conges.get(j).getValidationchefdeservice().equals(Statut.enAttente.statut()))//Demandes en attente
-					{
-						if (conges.get(j).getUid() != validateur.getUID())//Check si pas autovalidation
-						{
-							demandesConges.add(x);
-						}
-					}
-				}
-				else if (myServiceId == ServicesFixes.ressourcesHumaines.getServiceId() && conges.get(j).getValidationchefdeservice().equals(Statut.valide.statut()) && conges.get(j).getValidationrh().equals(Statut.enAttente.statut()))
-	    		//Service different, mais la demande est validé par leur chef de service
-				{
-					if (conges.get(j).getUid() != validateur.getUID())//Check si pas autovalidation
+					if (conges.get(j).getUid() != validateurRoles.getUid())//Check si pas autovalidation
 					{
 						demandesConges.add(x);
 					}
 				}
+
 			}
-			else
+			else//Service RH
 			{
-				throw new Exception("Le validateur de conges est n'est pas un chef de service !");
+				if (conges.get(j).getValidationrh().equals(Statut.enAttente.statut()))//Demandes en attente
+				{
+					if (conges.get(j).getUid() != validateurRoles.getUid())//Check si pas autovalidation
+					{
+						demandesConges.add(x);
+					}
+				}
+
 			}
-			
+			/////////////
 			
 		}
     	

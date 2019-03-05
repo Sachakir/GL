@@ -15,7 +15,6 @@ import root.bdd.notif.Notif;
 import root.bdd.remboursement.InterfaceRemboursementService;
 import root.bdd.remboursement.Remboursement;
 import root.bdd.remboursement.Statut;
-import root.bdd.services.ServicesFixes;
 import root.bdd.utilisateur.InterfaceUtilisateurService;
 import root.bdd.utilisateur.Utilisateur;
 
@@ -24,51 +23,36 @@ public class NotifClasse {
 	public int getNbRemb(Utilisateur ut, InterfaceMembresServiceBddService MembresServiceBddService,InterfaceRemboursementService RemboursementService)
 	{
 		int nbRemb = 0;
-    	MembresServiceBdd ms = MembresServiceBddService.findById(ut.getUID());
+
+		MembresServiceBdd ms = MembresServiceBddService.findById(ut.getUID());
 		List<Remboursement> allRemboursements = RemboursementService.findAll();
-    	if (ms.getRoleId() == Role.chefDeService.getRoleId())//Seulement pour un chef de service
-    	{
-    		long myServiceId = ms.getServiceId();
-    		long uidConges;
-    		
-    		List<MembresServiceBdd> listMembresServ = MembresServiceBddService.findAll();
-    		
-    		
-    		for (int i = 0;i < allRemboursements.size();i++)
-    		{
-    			long serviceIdConges = 0;
-    			uidConges = allRemboursements.get(i).getUid();
-    			
-    			for (int j = 0;j < listMembresServ.size();j++)
-        		{
-        			if (listMembresServ.get(j).getUid() == uidConges)
-        			{
-        				serviceIdConges = listMembresServ.get(j).getServiceId();
-        				break;
-        			}
-        		}
-    			
-    			if (serviceIdConges == myServiceId)//Du meme service
-    			{
-    				if (allRemboursements.get(i).getValidationchefservice().equals(Statut.enAttente.statut()))//Demandes en attente
-    				{
-	    				if (allRemboursements.get(i).getUid() != ut.getUID())//Check si pas autovalidation
-	    				{
-	    					nbRemb++;
-	    				}
-    				}
-    			}
-    			else if (myServiceId == ServicesFixes.finances.getServiceId() && allRemboursements.get(i).getValidationchefservice().equals(Statut.valide.statut()) && allRemboursements.get(i).getValidationfinances().equals(Statut.enAttente.statut()))
-    			//Service different, mais la demande est validé par leur chef de service
-    			{
-    				if (allRemboursements.get(i).getUid() != ut.getUID())//Check si pas autovalidation
-    				{
-    					nbRemb++;
-    				}
-    			}
-    		}
-    	}
-		
+
+		long myServiceId = ms.getServiceId();
+		long uidConges;
+		for (int i = 0;i < allRemboursements.size();i++)
+		{
+			uidConges = allRemboursements.get(i).getUid();
+			if (ms.getRoleId() == Role.chefDeService.getRoleId() && MembresServiceBddService.findById(uidConges).getServiceId() == myServiceId)
+			{
+				if (allRemboursements.get(i).getValidationchefservice().equals(Statut.enAttente.statut()))//Demandes en attente
+				{
+					if (allRemboursements.get(i).getUid() != ut.getUID())//Check si pas autovalidation
+					{
+						nbRemb++;
+					}
+				}
+			}
+			else//Service Finances
+			{
+				if (allRemboursements.get(i).getValidationfinances().equals(Statut.enAttente.statut()))//Demandes en attente
+				{
+					if (allRemboursements.get(i).getUid() != ut.getUID())//Check si pas autovalidation
+					{
+						nbRemb++;
+					}
+				}
+			}
+		}
 		return nbRemb;
 	}
 	
@@ -91,40 +75,28 @@ public class NotifClasse {
 		long uidConges;
 		
 		List<Conges> conges = CongesService.findAll();
-		List<MembresServiceBdd> listMembresServ = MembresServiceBddService.findAll();
-
 		for(int j=0;j<conges.size();j++) {
-			if (validateurRoles.getRoleId() == Role.chefDeService.getRoleId())
+			uidConges = conges.get(j).getUid();
+			if (validateurRoles.getRoleId() == Role.chefDeService.getRoleId() && MembresServiceBddService.findById(uidConges).getServiceId() == myServiceId)
 			{
-				uidConges = conges.get(j).getUid();
-				long serviceIdConges = 0;
-				for (int k = 0;k < listMembresServ.size();k++)
-	    		{
-	    			if (listMembresServ.get(k).getUid() == uidConges)
-	    			{
-	    				serviceIdConges = listMembresServ.get(k).getServiceId();
-	    				break;
-	    			}
-	    		}
-				if (serviceIdConges == myServiceId)//Du meme service
+				if (conges.get(j).getValidationchefdeservice().equals(Statut.enAttente.statut()))//Demandes en attente
 				{
-					if (conges.get(j).getValidationchefdeservice().equals(Statut.enAttente.statut()))//Demandes en attente
-					{
-						if (conges.get(j).getUid() != ut.getUID())//Check si pas autovalidation
-						{
-							nbConges++;
-						}
-					}
-				}
-				else if (myServiceId == ServicesFixes.ressourcesHumaines.getServiceId() && conges.get(j).getValidationchefdeservice().equals(Statut.valide.statut()) && conges.get(j).getValidationrh().equals(Statut.enAttente.statut()))
-	    		//Service different, mais la demande est validé par leur chef de service
-				{
-					if (conges.get(j).getUid() != ut.getUID())//Check si pas autovalidation
+					if (conges.get(j).getUid() != validateurRoles.getUid())//Check si pas autovalidation
 					{
 						nbConges++;
 					}
 				}
-			}			
+			}
+			else//Service RH
+			{
+				if (conges.get(j).getValidationrh().equals(Statut.enAttente.statut()))//Demandes en attente
+				{
+					if (conges.get(j).getUid() != validateurRoles.getUid())//Check si pas autovalidation
+					{
+						nbConges++;
+					}
+				}
+			}		
 		}		
 		return nbConges;
 	}
