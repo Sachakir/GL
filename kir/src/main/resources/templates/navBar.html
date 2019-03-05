@@ -33,7 +33,7 @@
 					<ul class="dropdown-menu">
 						<li><a href="/AjouterConge">Nouvelle demande de congé</a></li>
 						<li><a href="/GererConges">Historique des congés</a></li>
-						<li th:if="${IsChef}"><a href="/Calendrier">Valider une demande de congé <span th:if="${nbConges} != 0" class="label label-danger label-pill" th:text="${nbConges}">5</span></a></li>
+						<li th:if="${authentication.contains('ROLE_VALIDATOR_RH')}"><a href="/Calendrier">Valider une demande de congé <span th:if="${nbConges} != 0" class="label label-danger label-pill" th:text="${nbConges}">5</span></a></li>
 					</ul>
 				</li> 
 				<li class="dropdown">
@@ -41,14 +41,21 @@
 					<ul class="dropdown-menu">
 						<li><a href="/remboursements/demande-remboursement">Nouvelle demande de remboursement</a></li>
 						<li><a href="/remboursements/">Gérer mes notes de frais</a></li>
-						<li th:if="${IsChef}"><a href="/validationNDF">Valider des demandes de remboursement <span th:if="${nbRemb} != 0" class="label label-danger label-pill" th:text="${nbRemb}">4</span></a></li>
+						<li th:if="${authentication.contains('ROLE_VALIDATOR_FIN')}"><a href="/validationNDF">Valider une demande de remboursement <span th:if="${nbRemb} != 0" class="label label-danger label-pill" th:text="${nbRemb}">4</span></a></li>
 					</ul>
 				</li> 
-				<li th:if="${IsChef}" class="dropdown">
+				<li th:if="${authentication.contains('ROLE_CHEF')}" class="dropdown">
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false"> <span class="glyphicon glyphicon-list-alt"></span> Missions <b class="caret"></b></a>
 					<ul class="dropdown-menu">
 						<li><a href="/missions/create">Créer nouvelle mission</a></li>
 						<li><a href="/missions">Gérer les missions</a></li>
+					</ul>
+				</li>
+				<li th:if="${authentication.contains('ROLE_ADMIN')}" class="dropdown">
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false"> <span class="glyphicon glyphicon-eye-open"></span> Administration <b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li><a href="/administration/gestion-utilisateurs">Gérer les utilisateurs</a></li>
+						<li><a href="/remboursements/">Gérer les services</a></li>
 					</ul>
 				</li> 
 			</ul>

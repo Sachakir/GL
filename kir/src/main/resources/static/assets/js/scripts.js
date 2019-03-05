@@ -40,7 +40,7 @@ function sendData()
 		type: "POST",
 		data: $("#addUserForm").serialize(),
 		cache: false,
-		url: "/adminAdd",
+		url: "/administration/gestion-utilisateurs/create",
 		success: function() 
 		{
 			$("#formulaire").modal("hide"); 
@@ -63,7 +63,7 @@ $("button[value='suppr']").click(function() {
 function deleteUser() {
 	$.ajax(
 	{
-		url: "/deleteUser/"+idSuppr,
+		url: "/administration/gestion-utilisateurs/delete?id="+idSuppr,
 		success: function() 
 		{ 
 			$("#formulaire").modal("hide");

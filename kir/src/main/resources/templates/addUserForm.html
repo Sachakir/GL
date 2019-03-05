@@ -17,7 +17,7 @@
 						<h4 class="modal-title">Ajouter un utilisateur</h4>
 					</div>
 					<div class="modal-body">
-						<form id="addUserForm" class="form-horizontal" action="#" th:action="@{/adminAdd}" th:object="${userForm}" method="post">
+						<form id="addUserForm" class="form-horizontal" action="#" th:action="'/administration/gestion-utilisateurs/create'" th:object="${userForm}" method="post">
 							<div class="form-group">
 								<label class="control-label" for="nom">Nom</label>  
 								<div>
