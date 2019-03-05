@@ -74,17 +74,17 @@
 							<div class = "col-md-6">
 
 								<h4 >Date de début: <input type="datetime-local" id="dateD" disabled=true th:field="*{dateDebut}" onchange="verifDateD();" > </h4>
-								<h4 id="vRH">Validation RH: xxx </h4>
+								<h4 >Date de fin  : <input type="datetime-local" id ="dateF" disabled=true th:field="*{dateFin}" onchange="verifDateF();"> </h4>
 								<h4 id="type">Type: xxx </h4>
 								<h6 id="rtt" th:text="${user.rtt}" hidden=true></h6>
 								<h6 id="cP" th:text="${user.joursCongesRest}" hidden=true></h6>
 							</div>
 							<div class="col-md-6">
-								<h4 >Date de fin: <input type="datetime-local" id ="dateF" disabled=true th:field="*{dateFin}" onchange="verifDateF();"> </h4>
+								<h4 id="vRH">Validation RH: xxx </h4>
 								<h4 id="vC">Validation Chef de Service: xxx</h4>
 								<h6 ><input type="number" id="cid" th:field="*{congesid}" value="0" hidden=true><h6>
 								<h4 id="areaRefus" hidden=true>Motif de refus: <textarea id="mR" rows="2" cols="45" disabled></textarea></h4>
-
+								<h4 id="solde" hidden=true>Solde: xxx</h4>
 							</div>
 						</div>
 

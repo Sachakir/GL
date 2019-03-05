@@ -55,10 +55,7 @@ $(document).ready(function () {
 			var fic3 = "/remboursements/files?file_id=";
 			fic3=fic3+$(this).find("td:nth-child(9)").text();
 			document.getElementById('download').href = fic3;
-			/*if ($(this).find("td:nth-child(9)").text() === "")
-			{
-				document.getElementById('download').style.display = "none";
-			}*/
+
 			if ($(this).find("td:nth-child(9)").text() === "")
 			{
 				document.getElementById("justif").hidden= true;
@@ -97,19 +94,7 @@ $(document).ready(function () {
         start: start,
         end: end
       },true);
-      /*while( start.format('YYYY-MM-DD') != end.format('YYYY-MM-DD') ){
-            var checkDay = new Date(start.format('YYYY-MM-DD'));
-            var dataToFind = start.format('YYYY-MM-DD');
-            if(checkDay.getDay() == 0 || checkDay.getDay() == 6){
-              $("td[data-date='"+dataToFind+"']").addClass('hideWeekend');
-            }
-            else{
-            }
-            if(event._id == "myConge"){
-              $("td[data-date='"+dataToFind+"']").addClass('dayConge');
-            }
-            start.add(1, 'd');
-        }*/
+
 		}
 
       });
@@ -136,12 +121,22 @@ $(document).ready(function () {
           document.getElementById("submit").hidden=true;
   				document.getElementById("cancel").hidden=true;
           document.getElementById("areaRefus").hidden=true;
+          document.getElementById("solde").hidden=false;
+          if($(this).find("td:nth-child(8)").text()=="Rtt"){
+            $("#solde").text("Solde en "+ $(this).find("td:nth-child(8)").text() +": "+ $("#rtt").text()+" jours");
+          }
+          else{
+            $("#solde").text("Solde en "+ $(this).find("td:nth-child(8)").text() +": "+ $("#cP").text()+" jours");
+          }
+
+
   			}
   			else{
   				document.getElementById("edit").hidden=true;
   				document.getElementById("delete").hidden=true;
           document.getElementById("submit").hidden=true;
   				document.getElementById("cancel").hidden=true;
+          document.getElementById("solde").hidden=true;
           if($(this).find("td:nth-child(4)").text() == "Refusé" || $(this).find("td:nth-child(5)").text() == "Refusé")
           {
             document.getElementById("areaRefus").hidden=false;
