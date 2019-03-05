@@ -113,41 +113,43 @@
 			<section class="row">
 				<div class="col-md-12 col-xs-12">
 					<div class="panel panel-primary table-responsive">
-						<table class="table table-striped w-auto">
-							<div class="panel-heading"> 
-								<h3 class="panel-title">Mes dernières demandes de remboursement</h3>
+						<div class="panel-heading"> 
+							<h3 class="panel-title">Mes dernières demandes de remboursement</h3>
+						</div>
+						<div th:if="${not #lists.isEmpty(recentDemandesRemboursement)}">
+							<div class="panel-body pre-scrollable" style="max-height: 420px;">
+								<table class="table table-striped w-auto">
+									<thead>
+										<tr>
+											<th>Titre</th>
+											<th>Montant</th>
+											<th>Mission</th>
+											<th>Date</th>
+											<th>Etat (Chef de service)</th>
+											<th>Etat (Finances)</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="demandeR : ${recentDemandesRemboursement}">
+											<td><a th:href="'/remboursements/note=' + ${notesAssociees[demandeR.demande_id]} + '/id=' + ${demandeR.demande_id}" th:text="${demandeR.titre}"></a></td>
+											<td th:text="${#numbers.formatDecimal(demandeR.montant, 0, 'COMMA', 2, 'POINT')} + ' €'"></td>
+											<td th:text="${missionNames[demandeR.mission_id]}"></td>
+											<td th:text="${#temporals.format(demandeR.date, 'dd/MM/yyyy')}"></td>
+											<td th:switch="${demandeR.validationchefservice}"> 
+											  <p  th:case="'En attente'" th:text="${demandeR.validationchefservice}"> </p>
+											  <p style="color:green;font-weight:bold;" th:case="'Validé'" th:text="${demandeR.validationchefservice}"></p>
+											  <p style="color:red;font-weight:bold;" th:case="'Refusé'" th:text="${demandeR.validationchefservice}"></p> 
+											</td>
+											<td th:switch="${demandeR.validationfinances}"> 
+											  <p th:case="'En attente'" th:text="${demandeR.validationfinances}"> </p>
+											  <p style="color:green;font-weight:bold;" th:case="'Validé'" th:text="${demandeR.validationfinances}"></p>
+											  <p style="color:red;font-weight:bold;" th:case="'Refusé'" th:text="${demandeR.validationfinances}"></p> 
+											</td>
+										</tr>
+									</tbody>
+								</table>
 							</div>
-							<div th:if="${not #lists.isEmpty(recentDemandesRemboursement)}">
-								<thead>
-									<tr>
-										<th>Titre</th>
-										<th>Montant</th>
-										<th>Mission</th>
-										<th>Date</th>
-										<th>Etat (Chef de service)</th>
-										<th>Etat (Finances)</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr th:each="demandeR : ${recentDemandesRemboursement}">
-										<td><a th:href="'/remboursements/note=' + ${notesAssociees[demandeR.demande_id]} + '/id=' + ${demandeR.demande_id}" th:text="${demandeR.titre}"></a></td>
-										<td th:text="${#numbers.formatDecimal(demandeR.montant, 0, 'COMMA', 2, 'POINT')} + ' €'"></td>
-										<td th:text="${missionNames[demandeR.mission_id]}"></td>
-										<td th:text="${#temporals.format(demandeR.date, 'dd/MM/yyyy')}"></td>
-										<td th:switch="${demandeR.validationchefservice}"> 
-										  <p  th:case="'En attente'" th:text="${demandeR.validationchefservice}"> </p>
-										  <p style="color:green;font-weight:bold;" th:case="'Validé'" th:text="${demandeR.validationchefservice}"></p>
-										  <p style="color:red;font-weight:bold;" th:case="'Refusé'" th:text="${demandeR.validationchefservice}"></p> 
-										</td>
-										<td th:switch="${demandeR.validationfinances}"> 
-										  <p th:case="'En attente'" th:text="${demandeR.validationfinances}"> </p>
-										  <p style="color:green;font-weight:bold;" th:case="'Validé'" th:text="${demandeR.validationfinances}"></p>
-										  <p style="color:red;font-weight:bold;" th:case="'Refusé'" th:text="${demandeR.validationfinances}"></p> 
-										</td>
-									</tr>
-								</tbody>
-							</div>
-						</table>
+						</div>
 						<div th:if="${#lists.isEmpty(recentDemandesRemboursement)}" class="panel-heading" style="color:black; background:white;">
 							<h3 class="panel-title">Aucune demande de remboursement n'a été réalisé</h3>
 						</div>
