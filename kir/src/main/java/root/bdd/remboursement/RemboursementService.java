@@ -118,7 +118,7 @@ public class RemboursementService implements InterfaceRemboursementService {
 		// Envoie de la notification au demandeur de remboursement
 		NotifService.addNotif(r.getUid(), titre, r.genererLien());
 		
-		// Envoi des notifications aux chefs du service finances , sauf si le chef qui a validé est déjà chef finances
+		// Envoi des notifications aux users du service finances , sauf si le chef qui a validé est déjà chef finances
 		titre = "Demande : " + r.getTitre();
 		if (MembresServiceBddService.findById(r.getUid()).getServiceId() != 2) {
 			

@@ -47,6 +47,7 @@ public class CongesService implements InterfaceCongesService
 		repository.save(c);
 		String titre = "Demande de congés du " + date_debut.substring(0, 5) + " au " + date_fin.substring(0, 10);
 		long service_id = MembresServiceBddService.findById(uID).getServiceId();
+		
 		// Envoi des notifications aux chefs du service du demandeur de congés
 		List<MembresServiceBdd> interesses = MembresServiceBddService.getChefByServiceId(service_id);
 		for (MembresServiceBdd membre : interesses)
@@ -74,9 +75,10 @@ public class CongesService implements InterfaceCongesService
 		repository.updateChefState(congesid, newstate);
 		Conges c = repository.getCongesbyId(congesid);
 		String titre = (newstate.equals(Statut.valide.statut()) ? "Validation" : "Refus") + " service : congés du " + c.getDatedebut().substring(0, 5) + " au " + c.getDatefin().substring(0, 10);
+		
 		// Envoi de la notification au demandeur de congés
 		NotifService.addNotif(c.getUid(), titre, "/GererConges");
-		// Envoi des notifications aux chefs du service RH, sauf si le chef qui a validé est déjà chef RH
+		// Envoi des notifications aux users du service RH, sauf si le chef qui a validé est déjà chef RH
 		titre = "Demande de congés du " + c.getDatedebut().substring(0, 5) + " au " + c.getDatefin().substring(0, 10);
 		if (MembresServiceBddService.findById(c.getUid()).getServiceId() != 1) {
 			List<Long> interesses = MembresServiceBddService.getAllUidByServiceId(1);
@@ -91,6 +93,7 @@ public class CongesService implements InterfaceCongesService
 		repository.updateRHState(congesid, newstate);
 		Conges c = repository.getCongesbyId(congesid);
 		String titre = (newstate.equals(Statut.valide.statut()) ? "Validation" : "Refus") + " RH : congés du " + c.getDatedebut().substring(0, 5) + " au " + c.getDatefin().substring(0, 10);
+		
 		// Envoi de la notification au demandeur de congés
 		NotifService.addNotif(c.getUid(), titre, "/GererConges");
 	}
