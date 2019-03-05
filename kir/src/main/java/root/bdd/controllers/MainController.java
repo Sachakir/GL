@@ -337,7 +337,7 @@ public class MainController {
     	model.addAttribute("toutConges",c2);
     	model.addAttribute("listConges",aujourdhuiConges);
     	model.addAttribute("utilisateurs",aujourdhuiU);
-    	
+    	model.addAttribute("congeForm",new CongeForm());
 
 		
   		/// NOTIF DEBUT ///

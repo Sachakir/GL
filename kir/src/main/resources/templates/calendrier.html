@@ -106,7 +106,7 @@
 							<h4 id="prenom">Prénom: xxx</h4>
 							<h4 id ="dateF">Date de fin: xxx </h4>
 							<h4 id="vRH">Validation RH: xxx </h4>
-
+							<h4 id="conID" hidden></h4>
 
 						</div>
 					</div>
@@ -114,9 +114,29 @@
 						<a href="" id='accept' class="btn btn-primary btn-lg">
 							<span class="glyphicon glyphicon-ok"></span>
 						</a>
-						<a href="" id='refuse' class="btn btn-danger btn-lg">
+						<a  id='refuse' data-toggle="modal" href="#refuseModal" class="btn btn-danger btn-lg">
 							<span class="glyphicon glyphicon-ban-circle"></span>
 						</a>
+					</div>
+					<div class="modal" id="refuseModal">
+					  <div class="modal-dialog">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <h4 class="modal-title">Etes vous sur de refuser ce congé?</h4>
+					      </div>
+								<form id="formValidation" th:action="@{/RefusConges/}" th:object="${congeForm}" method="post">
+							      <div class="modal-body" >
+											<h6>Raison du refus:</h6>
+											<textarea  rows="5" cols="70" th:field="*{motifRefus}"></textarea>
+							      </div>
+
+						      <div class="modal-footer">
+										<button type="submit" id="oui" class="btn btn-success">Refuser le congé</button>
+						        <button type="button" id="non" class="btn btn-danger" data-dismiss="modal">Anuuler</button>
+						      </div>
+							 </form>
+					    </div>
+					  </div>
 					</div>
 					<br>
 				</div>

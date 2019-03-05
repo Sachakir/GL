@@ -1,6 +1,8 @@
 package root.bdd.conges;
 import java.util.List;
 
+import org.springframework.data.repository.query.Param;
+
 public interface InterfaceCongesService 
 {
 	public List<Conges> findAll();
@@ -15,5 +17,6 @@ public interface InterfaceCongesService
 	public String getRHState(long congesid);
 	public Conges getCongesbyId(long congesid);
 	public void deleteCongesbyCongesID(long congesId);
+	public void updateMotifRefus(long id, String m);
 
 }

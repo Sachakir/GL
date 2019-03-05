@@ -16,6 +16,10 @@ public class CongeForm {
 	private long congesid;
 	
 	@NotNull
+	@Size(min=1)
+	private String motifRefus;
+	
+	@NotNull
 	private String type;
 	
 	public String getUsername() {
@@ -47,6 +51,12 @@ public class CongeForm {
 	}
 	public void setType(String type) {
 		this.type = type;
+	}
+	public String getMotifRefus() {
+		return motifRefus;
+	}
+	public void setMotifRefus(String motifRefus) {
+		this.motifRefus = motifRefus;
 	}
 	
 }

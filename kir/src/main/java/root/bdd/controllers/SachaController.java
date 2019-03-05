@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import root.EncrytedPasswordUtils;
 import root.NotifClasse;
 import root.bdd.appuser.InterfaceAppUserService;
@@ -30,6 +32,7 @@ import root.bdd.services.ServiceBdd;
 import root.bdd.services.ServicesFixes;
 import root.bdd.utilisateur.InterfaceUtilisateurService;
 import root.bdd.utilisateur.Utilisateur;
+import root.forms.conges.CongeForm;
 import root.forms.password.Passwords;
 import root.forms.remboursement.RemboursementV2;
 import root.forms.utilisateur.UserForm;
@@ -39,6 +42,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -446,15 +450,15 @@ public class SachaController
 		
     }
 	
-	@RequestMapping(path="/RefusConges/{id}")
-    public String RefusConges(@PathVariable("id") long congesId,Principal principal) throws Exception
+	
+    @RequestMapping(path="/RefusConges/{id}")
+    public String RefusConges(@PathVariable("id") long congesId,Principal principal,@Valid CongeForm congeForm, BindingResult result) throws Exception
     {
 		Conges congesAValider = CongesService.findByCongesId(congesId);
-		
 		DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"); // format jour / mois / année
 		LocalDate date1 = LocalDate.parse(congesAValider.getDatedebut()+":00", format);
 		LocalDate date2 = LocalDate.parse(congesAValider.getDatefin()+":00", format);
-		
+		System.out.println("Motif de refus: "+congeForm.getMotifRefus());
 		String[] d1=congesAValider.getDatedebut().split(" ");
 		String[] d2=congesAValider.getDatefin().split(" ");
 		String[] h1= d1[1].split(":");
@@ -497,10 +501,12 @@ public class SachaController
     				CongesService.updateChefState(congesId, Statut.refuse.statut());
     			}
     			CongesService.updateRHState(congesId, Statut.refuse.statut());
+    			CongesService.updateMotifRefus(congesId,  congeForm.getMotifRefus());
     		}
     		else//Validateur n'est pas chef du service RH, mais chef d'un autre service
     		{
     			CongesService.updateChefState(congesId, Statut.refuse.statut());
+    			CongesService.updateMotifRefus(congesId,  congeForm.getMotifRefus());
     		}
     	}
     	else//Le validateur n'est pas chef de service
@@ -509,7 +515,8 @@ public class SachaController
     	}  	
 		return "redirect:/Accueil";
     }
-	
+    
+    
 	@RequestMapping(path="/DeleteConges/{id}")
     public String DeleteConges(@PathVariable("id") long congesId,Principal principal) throws Exception
     {

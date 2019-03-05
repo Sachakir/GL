@@ -134,5 +134,9 @@ public class CongesService implements InterfaceCongesService
 	public void deleteCongesbyCongesID(long congesId) {
 		repository.deleteCongesbyCongesID(congesId);
 	}
-
+	@Override
+  	public void updateMotifRefus(long id, String m) {
+  		repository.updateMotifRefus(id, m);
+  		
+  	}
 }

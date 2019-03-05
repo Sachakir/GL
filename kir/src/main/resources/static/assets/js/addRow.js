@@ -80,37 +80,40 @@ $(document).ready(function () {
 			$("#vC").text("Validation Chef de Service: "+$(this).find("td:nth-child(5)").text());
       $("#type").text("Type: "+$(this).find("td:nth-child(8)").text());
 			$("#accept").attr("href","/ValidationConges/"+$(this).find("td:nth-child(7)").text());
-			$("#refuse").attr("href","/RefusConges/"+$(this).find("td:nth-child(7)").text());
+			//$("#refuse").attr("href","/RefusConges/"+$(this).find("td:nth-child(7)").text());
+      $("#oui").attr("href","/RefusConges/"+$(this).find("td:nth-child(7)").text());
+      $("#conID").text($(this).find("td:nth-child(7)").text());
+      $("#formValidation").attr("action","/RefusConges/"+$(this).find("td:nth-child(7)").text());
 			document.getElementById("bouttons").hidden=false;
 		}
 
       });
 	  $('#demandesGestion').on('click', 'tbody tr', function(event) {
-        if($(this).find("td:nth-child(1)").text() != "Pas de demandes de congés effectuées!")
-		{
-			$(this).addClass('highlight').siblings().removeClass('highlight');
-			var debut = $(this).find("td:nth-child(2)").text();
-			var d = debut.substring(6,10)+"-"+debut.substring(3,5)+"-"+debut.substring(0,2)+"T"+debut.substring(11,16);
+      if($(this).find("td:nth-child(1)").text() != "Pas de demandes de congés effectuées!")
+  		{
+  			$(this).addClass('highlight').siblings().removeClass('highlight');
+  			var debut = $(this).find("td:nth-child(2)").text();
+  			var d = debut.substring(6,10)+"-"+debut.substring(3,5)+"-"+debut.substring(0,2)+"T"+debut.substring(11,16);
 
-			$("#dateD").val(d);
-			var fin = $(this).find("td:nth-child(3)").text();
-			var f = fin.substring(6,10)+"-"+fin.substring(3,5)+"-"+fin.substring(0,2)+"T"+fin.substring(11,16);
+  			$("#dateD").val(d);
+  			var fin = $(this).find("td:nth-child(3)").text();
+  			var f = fin.substring(6,10)+"-"+fin.substring(3,5)+"-"+fin.substring(0,2)+"T"+fin.substring(11,16);
 
-			$("#dateF").val(f);
+  			$("#dateF").val(f);
 
-			$("#cid").val( $(this).find("td:nth-child(7)").text());
-			$("#vRH").text("Validation RH: "+$(this).find("td:nth-child(4)").text());
-			$("#vC").text("Validation Chef de Service: "+$(this).find("td:nth-child(5)").text());
-      $("#type").text("Type: "+$(this).find("td:nth-child(8)").text());
-			if($(this).find("td:nth-child(4)").text() == "En attente" && $(this).find("td:nth-child(5)").text() == "En attente"){
-				document.getElementById("edit").hidden=false;
-				document.getElementById("delete").hidden=false;
-			}
-			else{
-				document.getElementById("edit").hidden=true;
-				document.getElementById("delete").hidden=true;
-			}
-			$("#delete").attr("href","/DeleteConges/"+$(this).find("td:nth-child(7)").text());
+  			$("#cid").val( $(this).find("td:nth-child(7)").text());
+  			$("#vRH").text("Validation RH: "+$(this).find("td:nth-child(4)").text());
+  			$("#vC").text("Validation Chef de Service: "+$(this).find("td:nth-child(5)").text());
+        $("#type").text("Type: "+$(this).find("td:nth-child(8)").text());
+  			if($(this).find("td:nth-child(4)").text() == "En attente" && $(this).find("td:nth-child(5)").text() == "En attente"){
+  				document.getElementById("edit").hidden=false;
+  				document.getElementById("delete").hidden=false;
+  			}
+  			else{
+  				document.getElementById("edit").hidden=true;
+  				document.getElementById("delete").hidden=true;
+  			}
+  			$("#delete").attr("href","/DeleteConges/"+$(this).find("td:nth-child(7)").text());
         }
       });
 
