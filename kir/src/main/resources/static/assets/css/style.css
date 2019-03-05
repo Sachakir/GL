@@ -74,8 +74,8 @@ a[aria-expanded=false] .glyphicon-menu-up {
 /**************/
 
 .border-detail {
-	background:white; 
-	border: solid 1px #337ab7; 
+	background:white;
+	border: solid 1px #337ab7;
 	border-radius: 4px;
 }
 
@@ -192,7 +192,7 @@ a:active, a:focus { outline:none; }
 	.navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
 	    color: #132f5d;
 	}
-	
+
 	input[type=checkbox] {
   		transform: scale(3);
 	}
@@ -318,7 +318,7 @@ box-shadow: 0 1px 2px #C3C3C3;
 box-shadow: 0px 0px 21px 2px rgba(0,0,0,0.18);
 }
 #calendarC{
-float: right; 
+float: right;
 margin: 0 auto;
 background-color: #FFFFFF;
   border-radius: 6px;
@@ -354,5 +354,11 @@ box-shadow: 0px 0px 21px 2px rgba(0,0,0,0.18);
 	margin-left: 15px;
 }
 .error{
-	color: #c00000
+	color: #c00000;
+}
+.dayConge{
+  background-color: #FF00FF;
+}
+.hideWeekend{
+  background-color: #fff;  
 }

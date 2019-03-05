@@ -9,7 +9,7 @@ $(document).ready(function () {
         cols += '<td><input type="date"/></td>';
         cols += '<td><input type="number"/></td>';
 
-		cols += '<td><input type="file"/></td>';
+		    cols += '<td><input type="file"/></td>';
 
         cols += '<td><input type="button" class="ibtnDel btn btn-md btn-danger "  value="Delete"></td>';
         newRow.append(cols);
@@ -85,6 +85,31 @@ $(document).ready(function () {
       $("#conID").text($(this).find("td:nth-child(7)").text());
       $("#formValidation").attr("action","/RefusConges/"+$(this).find("td:nth-child(7)").text());
 			document.getElementById("bouttons").hidden=false;
+      var s = $(this).find("td:nth-child(2)").text().split(" ");
+      var s1= s[0].split("/");
+      var start = s1[2]+"-"+s1[1]+"-"+s1[0]+"T"+s[1];
+      var e = $(this).find("td:nth-child(3)").text().split(" ");
+      var e1= e[0].split("/");
+      var end = e1[2]+"-"+e1[1]+"-"+e1[0]+"T"+e[1];
+      $('#calendar').fullCalendar('removeEvents');
+      $('#calendar').fullCalendar('renderEvent', {
+        title: 'Congé',
+        start: start,
+        end: end
+      },true);
+      /*while( start.format('YYYY-MM-DD') != end.format('YYYY-MM-DD') ){
+            var checkDay = new Date(start.format('YYYY-MM-DD'));
+            var dataToFind = start.format('YYYY-MM-DD');
+            if(checkDay.getDay() == 0 || checkDay.getDay() == 6){
+              $("td[data-date='"+dataToFind+"']").addClass('hideWeekend');
+            }
+            else{
+            }
+            if(event._id == "myConge"){
+              $("td[data-date='"+dataToFind+"']").addClass('dayConge');
+            }
+            start.add(1, 'd');
+        }*/
 		}
 
       });
