@@ -35,7 +35,12 @@
 
 							<div class="row">
 								<div class ="mLeft" th:each="typ : ${types}">
-									<input type="radio" th:field="*{type}"  th:value="${typ.id}"  /><label th:text="| &nbsp; ${typ.name} |"  >Something is wrong !</label>
+									<div th:switch="${typ.id}">
+										<input type="radio" th:case="0" th:field="*{type}"  th:value="${typ.id}" th:id="${typ.id}" />
+										<input type="radio" th:case="1" th:field="*{type}"  th:value="${typ.id}" th:id="${typ.id}" />
+										<label th:text="| &nbsp; ${typ.name} |"  >Something is wrong !</label>
+									</div>
+
 								</div>
 							</div>
 							<!--<div class="row">
