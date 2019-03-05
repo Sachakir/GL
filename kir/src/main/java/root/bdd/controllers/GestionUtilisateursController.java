@@ -1,6 +1,8 @@
 package root.bdd.controllers;
 
 import java.security.Principal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,10 +38,13 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -255,55 +260,61 @@ public class GestionUtilisateursController {
     }*/
 
     @PostMapping("/create")
-    public String checkPersonInfo(@Valid UserForm userForm, BindingResult bindingResult,Model model) {
+    public @ResponseBody Map<String, String> checkPersonInfo(@Valid UserForm userForm, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
     	
-        if (bindingResult.hasErrors()) {
-            return "redirect:/Accueil";
-        }
+        Map<String, String> errors = new HashMap<String, String>();
         
         Utilisateur u = UtilisateurService.findPrenomNom(userForm.getNom(),userForm.getPrenom());
-        if (u != null)//Utilisateur avec ce nom et prenom existe deja
-        {
-        	System.out.println("Cet user existe deja !");
-        	model.addAttribute("userExists", "Cet utilisateur existe deja");
-        	return "redirect:/Accueil";
+        //Utilisateur avec ce nom et prenom existe deja
+        if (u != null) { 
+        	errors.put("#user_exists_error", "Cet utilisateur existe déja");
         }
         
-        // Sinon on met le user dans la bd.
-        // Utilisateur
-        Utilisateur user = new Utilisateur();
+        // On verifie s'il y a des erreurs
+    	if (bindingResult.hasErrors()) {
+        	 List<FieldError> fieldErrors = bindingResult.getFieldErrors();
+        	 for(FieldError f : fieldErrors) {
+        		 errors.put("#" + f.getField() + "_error", f.getDefaultMessage());
+        	 }
+    	}
+    	
+    	else 
+        {
+        	// Sinon on met le user dans la bd.
+            // Utilisateur
+            Utilisateur user = new Utilisateur();
+            
+            user.setJoursCongesRestants(35);//TODO par défaut 35 jours ?
+            user.setNom(userForm.getNom());
+            user.setNumeroTel(userForm.getNumTel());
+            user.setPrenom(userForm.getPrenom());
+            
+            Long maxId = UtilisateurService.getMaxId();//On recupere ID le plus haut de la table.
+            if(maxId != null)
+            	user.setUID((long) (maxId + 1));
+            else
+            	user.setUID((long) 1);
+            user.setRtt(0);
+            user.setHeuresContrat(Integer.parseInt(userForm.getHeurestravail()));
+            UtilisateurService.addUser(user);
+            
+            // Indentifiant / Mot de passe
+            root.bdd.appuser.AppUser appUser = new root.bdd.appuser.AppUser();
+            appUser.setUser_id((long) (maxId + 1));
+    		appUser.setEncrypted_password(EncrytedPasswordUtils.encryptePassword(userForm.getMdp()));
+    		appUser.setUser_name(userForm.getPrenom() + "." + userForm.getNom());
+    		AppUserService.addAppUser(appUser);
+            
+    		// Etablissement du role
+    		MembresServiceBdd membre = new MembresServiceBdd();
+    		membre.setUid(user.getUID());
+    		membre.setRoleId(userForm.getRole_id());
+    		membre.setServiceId(userForm.getService_id());
+    		membre.setIsAdmin(userForm.getIsAdmin());
+            MembresServiceBddService.addMembreService(membre);
+        }
         
-        user.setJoursCongesRestants(35);//TODO par défaut 35 jours ?
-        user.setNom(userForm.getNom());
-        user.setNumeroTel(userForm.getNumTel());
-        user.setPrenom(userForm.getPrenom());
-        
-        Long maxId = UtilisateurService.getMaxId();//On recupere ID le plus haut de la table.
-        if(maxId != null)
-        	user.setUID((long) (maxId + 1));
-        else
-        	user.setUID((long) 1);
-        user.setRtt(0);
-        user.setHeuresContrat(Integer.parseInt(userForm.getHeurestravail()));
-        UtilisateurService.addUser(user);
-        
-        // Indentifiant / Mot de passe
-        root.bdd.appuser.AppUser appUser = new root.bdd.appuser.AppUser();
-        appUser.setUser_id((long) (maxId + 1));
-		appUser.setEncrypted_password(EncrytedPasswordUtils.encryptePassword(userForm.getMdp()));
-		appUser.setUser_name(userForm.getPrenom() + "." + userForm.getNom());
-		AppUserService.addAppUser(appUser);
-        
-		// Etablissement du role
-		MembresServiceBdd membre = new MembresServiceBdd();
-		membre.setUid(user.getUID());
-		membre.setRoleId(userForm.getRole_id());
-		membre.setServiceId(userForm.getService_id());
-		membre.setIsAdmin(userForm.getIsAdmin());
-        MembresServiceBddService.addMembreService(membre);
-
-        // NON EXECUTE
-        return "accueil";
+        return errors;
     }
     
     @RequestMapping("/delete")
@@ -331,23 +342,13 @@ public class GestionUtilisateursController {
 				}
 				
 				MembresMissionService.deleteMembresMission(id);
-				System.out.println("Delete de membresMission");
 				CongesService.deleteConges(id);
-				System.out.println("Delete de conges");
-
 				AppUserService.deleteAppUser(id);
-				System.out.println("Delete de AppUser");
 				////////////////////////////////////////////
 
 				RemboursementService.deleteRembUid(id);
-				System.out.println("Delete de Remboursement");
-
 				NoteService.deleteNoteUid(id);
-				System.out.println("Delete de Note");
-
 				UtilisateurService.deleteUser(id);
-				System.out.println("Delete de Utilisateur");
-				
 				
 				System.out.println("DELETED " + id);
 				
@@ -363,6 +364,6 @@ public class GestionUtilisateursController {
     		e.printStackTrace();
     	}
     	
-    	return "redirect:/notFound";
+    	return "forward:/notFound";
     }
 }

@@ -41,15 +41,37 @@ function sendData()
 		data: $("#addUserForm").serialize(),
 		cache: false,
 		url: "/administration/gestion-utilisateurs/create",
-		success: function() 
+		success: function(errors) 
 		{
-			$("#formulaire").modal("hide"); 
-			$('#success_msg').modal('show');
-			location.reload();
+			$("#nom_error").html("");
+			$("#nom_error").hide();
+			$("#prenom_error").html("");
+			$("#prenom_error").hide();
+			$("#numTel_error").html("");
+			$("#numTel_error").hide();
+			$("#heurestravail_error").html("");
+			$("#heurestravail_error").hide();
+			$("#mdp_error").html("");
+			$("#mdp_error").hide();
+			$("#user_exists_error").html("");
+			$("#user_exists_error").hide();
+			
+			if($.isEmptyObject(errors)) {
+				$("#formulaire").modal("hide"); 
+				$('#success_msg').modal('show');
+				location.reload();
+			}
+			else {
+				$.each(errors, function(id, message) {
+					$(id).html(message);
+					$(id).show();
+				});
+			}
 		},
 		error: function()
 		{
-			alert("Error - Data not saved");
+			$("#formulaire").modal("hide"); 
+			$('#failure_msg').modal('show');
 		}
 	});
 }
@@ -127,7 +149,6 @@ $(function() {
           } else {
               if( log ) alert(log);
           }
-
       });
   });
 });

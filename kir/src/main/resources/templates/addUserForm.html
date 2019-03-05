@@ -8,8 +8,8 @@
 </head>
 
 <body>
-
-<div class="modal fade" id="formulaire" role="dialog">
+	<div id="formulaireUtilisateur">
+		<div class="modal fade" id="formulaire" role="dialog">
 			<div class="modal-dialog" role="document"> 
 				<div class="modal-content">
 					<div class="modal-header">
@@ -22,28 +22,29 @@
 								<label class="control-label" for="nom">Nom</label>  
 								<div>
 									<input id="nom" name="nom" type="text" placeholder="ex : Dupont" class="form-control input-md" th:field="*{nom}">
-									<label th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}">erreur nom</label>
+									<label class="bg-warning text-danger" id="nom_error" style="display:none;"></label>
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="control-label" for="prenom">Prénom</label>  
 								<div>
 									<input id="prenom" name="prenom" type="text" placeholder="ex : Jeanne" class="form-control input-md" th:field="*{prenom}">
-									<label th:if="${#fields.hasErrors('prenom')}" th:errors="*{prenom}">erreur prenom</label>
+									<label class="bg-warning text-danger" id="prenom_error" style="display:none;"></label>
+									<label class="bg-warning text-danger" id="user_exists_error" style="display:none;"></label>
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="control-label" for="numTel">Téléphone</label>  
 								<div>
 									<input id="numTel" name="numTel" type="text" placeholder="ex : 0606060606" class="form-control input-md" th:field="*{numTel}">
-									<label th:if="${#fields.hasErrors('numTel')}" th:errors="*{numTel}">erreur numéro de téléphone</label>
+									<label class="bg-warning text-danger" id="numTel_error" style="display:none;"></label>
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="control-label" for="heures_travail">Heures de travail par semaine</label>  
 								<div>
 									<input id="heures_travail" name="heures_travail" type="text" placeholder="ex : 35" class="form-control input-md" th:field="*{heurestravail}">
-									<label th:if="${#fields.hasErrors('heurestravail')}" th:errors="*{heurestravail}">erreur heures_travail</label>
+									<label class="bg-warning text-danger" id="heurestravail_error" style="display:none;"></label>
 								</div>
 							</div>
 							<!--
@@ -59,8 +60,8 @@
 								<label class="control-label" for="mdp">Mot de passe</label>  
 								<div>
 									<input id="mdp" name="mdp" type="password" placeholder="ex : *********" class="form-control input-md" th:field="*{mdp}">
-									<input type="checkbox" onclick="showMDP()"> Voir Mot de passe
-									<label th:if="${#fields.hasErrors('mdp')}" th:errors="*{mdp}">erreur mdp</label>
+									<input type="checkbox" onclick="showMDP()"> <span>Voir Mot de passe</span> <br>
+									<label class="bg-warning text-danger" id="mdp_error" style="display:none;"></label>
 								</div>
 							</div>
 							<div class="form-group">
@@ -84,7 +85,7 @@
 							<div class="form-group">
 								<label class="control-label" for="isAdmin">Donner le statut admin</label>
 								<div>
-									<input type="checkbox" id="isAdmin" name="isAdmin" class="form-control" th:field="*{isAdmin}">
+									<input class="pull-right" type="checkbox" id="isAdmin" name="isAdmin" th:field="*{isAdmin}">
 								</div>
 							</div>
 
@@ -96,7 +97,41 @@
 				</div>
 			</div>
 		</div>
-
+		
+		<div class="modal fade" id="success_msg" role="dialog">
+			<div class="modal-dialog modal-sm"> 
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">x</button>
+						<h4 class="modal-title">Réussite</h4>
+					</div>
+					<div class="modal-body">
+						<p>Utilisateur ajouté</p>
+					</div>
+					<div class="modal-footer">
+						<a th:href="@{/administration/gestion-utilisateurs}" class="btn btn-primary" role="button" data-dismiss="modal">Fermer</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="modal fade" id="failure_msg" role="dialog">
+			<div class="modal-dialog modal-sm"> 
+				<div class="modal-content panel-danger">
+					<div class="modal-header panel-heading">
+						<button type="button" class="close" data-dismiss="modal">x</button>
+						<h4 class="modal-title">Echec</h4>
+					</div>
+					<div class="modal-body">
+						<p>Erreur de communication avec le serveur</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 <script src="assets/js/jquery.js"></script>
 <script src="assets/js/bootstrap.js"></script>
 <script src="assets/js/scripts.js"></script>

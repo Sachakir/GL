@@ -31,11 +31,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         AppUser appUser = this.appUserDAO.findUserAccount(userName);
  
         if (appUser == null) {
-            System.out.println("User not found! " + userName);
             throw new UsernameNotFoundException("User " + userName + " was not found in the database");
         }
- 
-        System.out.println("Found User: " + appUser);
         
         // Roles disponibles pour le filtrage des accès au pages WebSecurityConfig :
         // VALIDATOR_RH (accès aux pages de validation : Demandes de congés UNIQUEMENT
