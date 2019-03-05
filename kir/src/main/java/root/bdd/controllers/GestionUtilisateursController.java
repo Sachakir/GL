@@ -1,8 +1,6 @@
 package root.bdd.controllers;
 
 import java.security.Principal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +37,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -278,7 +275,7 @@ public class GestionUtilisateursController {
         	 }
     	}
     	
-    	else 
+    	if(errors.isEmpty())
         {
         	// Sinon on met le user dans la bd.
             // Utilisateur

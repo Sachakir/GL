@@ -43,23 +43,49 @@ function sendData()
 		url: "/administration/gestion-utilisateurs/create",
 		success: function(errors) 
 		{
-			$("#nom_error").html("");
 			$("#nom_error").hide();
-			$("#prenom_error").html("");
 			$("#prenom_error").hide();
-			$("#numTel_error").html("");
 			$("#numTel_error").hide();
-			$("#heurestravail_error").html("");
 			$("#heurestravail_error").hide();
-			$("#mdp_error").html("");
 			$("#mdp_error").hide();
-			$("#user_exists_error").html("");
 			$("#user_exists_error").hide();
 			
 			if($.isEmptyObject(errors)) {
 				$("#formulaire").modal("hide"); 
 				$('#success_msg').modal('show');
 				location.reload();
+			}
+			else {
+				$.each(errors, function(id, message) {
+					$(id).html(message);
+					$(id).show();
+				});
+			}
+		},
+		error: function()
+		{
+			$("#formulaire").modal("hide"); 
+			$('#failure_msg').modal('show');
+		}
+	});
+}
+
+function sendService()
+{
+	$.ajax(
+	{
+		type: "POST",
+		data: $("#addServiceForm").serialize(),
+		cache: false,
+		url: "/administration/gestion-services/create",
+		success: function(errors) 
+		{
+			$("#nom_error").hide();
+			$("#service_exists_error").hide();
+			
+			if($.isEmptyObject(errors)) {
+				$("#formulaire").modal("hide"); 
+				$('#success_msg').modal('show');
 			}
 			else {
 				$.each(errors, function(id, message) {
@@ -94,6 +120,23 @@ function deleteUser() {
 		error: function()
 		{
 			alert("Echec de la suppression");
+		}
+	});
+}
+
+function deleteService() {
+	$.ajax(
+	{
+		url: "/administration/gestion-services/delete?id="+idSuppr,
+		success: function() 
+		{ 
+			$("#warning_msg").modal("hide");
+			$("#success_delete").modal("show");
+		},
+		error: function()
+		{
+			$("#warning_msg").modal("hide");
+			$("#failure_msg").modal("show");
 		}
 	});
 }
@@ -150,5 +193,9 @@ $(function() {
               if( log ) alert(log);
           }
       });
+  });
+  
+  $("#success_msg").on('hidden.bs.modal', function(){
+	    location.reload();
   });
 });

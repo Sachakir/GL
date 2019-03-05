@@ -8,5 +8,7 @@ public interface InterfaceServiceBddService {
 	public Map<Long, String> getAllServiceNames();
 	public List<Long> getServiceIdList();
 	public ServiceBdd findById(long service_id);
+	public ServiceBdd findByName(String nom);
 	public void addServiceBdd(String nom);
+	public void deleteById(long service_id);
 }

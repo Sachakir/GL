@@ -17,4 +17,6 @@ public interface ServiceBddRepository extends CrudRepository<ServiceBdd, Long>{
 	@Query("SELECT MAX(service_id) FROM ServiceBdd")
 	public Long getMaxId();
 	
+	@Query("SELECT s FROM ServiceBdd s WHERE nom LIKE :nom")
+	public ServiceBdd findByName(String nom);
 }
