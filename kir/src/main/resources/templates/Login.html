@@ -31,7 +31,7 @@
 					<c:out value="${SPRING_SECURITY_LAST_EXCEPTION.message}" />
 				  </div>
 				</c:if> -->
-				<p th:if="${loginError}" class="error">Mauvaise adresse mail ou mot de passe entré!</p>
+				<p th:if="${loginError}" class="error">Erreur de login ou de mot de passe!</p>
                 <br>
                 <div centered>
                     <button id="btnSubmit" class="btn" type="submit" style="background-color: #132f5d; color:  #FFF;">Se connecter</button>
