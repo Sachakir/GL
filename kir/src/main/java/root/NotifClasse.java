@@ -20,7 +20,7 @@ import root.bdd.utilisateur.InterfaceUtilisateurService;
 import root.bdd.utilisateur.Utilisateur;
 
 public class NotifClasse {
-
+	
 	public int getNbRemb(Principal principal,InterfaceMembresServiceBddService MembresServiceBddService,InterfaceRemboursementService RemboursementService,InterfaceUtilisateurService UtilisateurService)
 	{
 		int nbRemb = 0;
@@ -32,10 +32,25 @@ public class NotifClasse {
     	{
     		long myServiceId = ms.getServiceId();
     		long uidConges;
+    		
+    		List<MembresServiceBdd> listMembresServ = MembresServiceBddService.findAll();
+    		
+    		
     		for (int i = 0;i < allRemboursements.size();i++)
     		{
+    			long serviceIdConges = 0;
     			uidConges = allRemboursements.get(i).getUid();
-    			if (MembresServiceBddService.findById(uidConges).getServiceId() == myServiceId)//Du meme service
+    			
+    			for (int j = 0;j < listMembresServ.size();j++)
+        		{
+        			if (listMembresServ.get(j).getUid() == uidConges)
+        			{
+        				serviceIdConges = listMembresServ.get(j).getServiceId();
+        				break;
+        			}
+        		}
+    			
+    			if (serviceIdConges == myServiceId)//Du meme service
     			{
     				if (allRemboursements.get(i).getValidationchefservice().equals(Statut.enAttente.statut()))//Demandes en attente
     				{
@@ -81,12 +96,22 @@ public class NotifClasse {
 		long uidConges;
 		
 		List<Conges> conges = CongesService.findAll();
-		
-		for(int j=0;j<conges.size();j++) {			
+		List<MembresServiceBdd> listMembresServ = MembresServiceBddService.findAll();
+
+		for(int j=0;j<conges.size();j++) {
 			if (validateurRoles.getRoleId() == Role.chefDeService.getRoleId())
 			{
 				uidConges = conges.get(j).getUid();
-				if (MembresServiceBddService.findById(uidConges).getServiceId() == myServiceId)//Du meme service
+				long serviceIdConges = 0;
+				for (int k = 0;k < listMembresServ.size();k++)
+	    		{
+	    			if (listMembresServ.get(k).getUid() == uidConges)
+	    			{
+	    				serviceIdConges = listMembresServ.get(k).getServiceId();
+	    				break;
+	    			}
+	    		}
+				if (serviceIdConges == myServiceId)//Du meme service
 				{
 					if (conges.get(j).getValidationchefdeservice().equals(Statut.enAttente.statut()))//Demandes en attente
 					{
@@ -111,6 +136,9 @@ public class NotifClasse {
 	
 	public Model addNumbersToModel(Model model,Principal principal,InterfaceCongesService CongesService,InterfaceUtilisateurService UtilisateurService,InterfaceMembresServiceBddService MembresServiceBddService,InterfaceRemboursementService RemboursementService, InterfaceNotifService NotifService)
 	{
+		long debut = System.currentTimeMillis();
+
+	
 	/////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
 			NotifClasse nbCongesEtRemb = new NotifClasse();	
 			boolean IsChef = nbCongesEtRemb.isChef(principal, UtilisateurService, MembresServiceBddService);
@@ -137,8 +165,11 @@ public class NotifClasse {
 			}
 			System.out.println("NOTIF NB : " + nbNotif);
 			model.addAttribute("nbNotifs", nbNotif);
-
+			
+			long time = (System.currentTimeMillis()-debut);
+			System.out.println("Temps en ms des notifs : " + time);
 			return model;
+			
 			/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
 	}
 }

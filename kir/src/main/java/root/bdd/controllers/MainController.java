@@ -34,6 +34,7 @@ import root.bdd.remboursement.InterfaceRemboursementService;
 import root.bdd.remboursement.Remboursement;
 import root.bdd.remboursement.Statut;
 import root.bdd.remboursementsnote.InterfaceRemboursementsNoteService;
+import root.bdd.remboursementsnote.RemboursementsNote;
 import root.bdd.services.InterfaceServiceBddService;
 import root.bdd.services.ServicesFixes;
 import root.bdd.utilisateur.InterfaceUtilisateurService;
@@ -185,6 +186,10 @@ public class MainController {
     	String dateFin = dateF[2]+"/"+dateF[1]+"/"+dateF[0]+" "+dateFavecTime[1];
     	System.out.println("Type: "+congeForm.getType());
     	boolean rtt;
+    	if (congeForm.getType() == null)
+    	{
+    		return "redirect:/AjouterConge";
+    	}
     	if(congeForm.getType().equals("0"))
     		rtt=false;
     	else
@@ -507,15 +512,49 @@ public class MainController {
         Map<Long, String> missionNames = new HashMap<Long, String>();
         Map<Long, String> notesAssociees = new HashMap<Long, String>();
         
-        for(Remboursement r : recentDemandesRemboursement) {
+    	List<Mission> listMissions = MissionService.findAll();
+    	List<RemboursementsNote> listRembNote = RemboursementsNoteService.findAll();
+    	List<Note> listNote = NoteService.findAll();
+    	
+        for(Remboursement r : recentDemandesRemboursement) {//TODO
         	Long mission_id = r.getMission_id();
+        	int indMission = 0;
+        	int indRembNote = 0;
+        	String indMois = "";
+        	for (int aa = 0;aa < listMissions.size();aa++)
+        	{
+        		if (listMissions.get(aa).getMission_id() == mission_id)
+        		{
+        			indMission = aa;
+        			break;
+        		}
+        	}
         	if(!missionNames.containsKey(mission_id)) {
-        		Mission m = MissionService.findMissionById(mission_id);
+        		Mission m = listMissions.get(indMission);
         		missionNames.put(mission_id, m.getTitre());
         	}
         	
-        	Long note_id = RemboursementsNoteService.findNoteIdByDemandeId(r.getDemande_id());
-        	String mois = NoteService.findById(note_id).getMois();
+        	for (int bb = 0;bb < listRembNote.size();bb++)
+        	{
+        		if (listRembNote.get(bb).getDemande_id() == r.getDemande_id())
+        		{
+        			indRembNote = bb;
+        			break;
+        		}
+        	}
+        	
+        	Long note_id = listRembNote.get(indRembNote).getNote_id();
+        	
+        	for (int cc = 0;cc < listNote.size();cc++)
+        	{
+        		if (listNote.get(cc).getNote_id() == note_id)
+        		{
+        			indMois = listNote.get(cc).getMois();
+        			break;
+        		}
+        	}
+        	
+        	String mois = indMois;
         	mois = mois.substring(0, 2) + "-" + mois.substring(3);
         	notesAssociees.put(r.getDemande_id(), mois);
         }
