@@ -198,4 +198,8 @@ $(function() {
   $("#success_msg").on('hidden.bs.modal', function(){
 	    location.reload();
   });
+  
+  $("#success_delete").on('hidden.bs.modal', function(){
+	    location.reload();
+  });
 });

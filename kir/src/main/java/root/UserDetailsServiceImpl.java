@@ -64,12 +64,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if(membre.getRoleId() == Role.chefDeService.getRoleId() || membre.getServiceId() == ServicesFixes.finances.getServiceId()) {
         	grantList.add(new SimpleGrantedAuthority("ROLE_VALIDATOR_FIN"));
         }
-        
-        //Si on est chef d'un service
-        if(membre.getRoleId() == Role.chefDeService.getRoleId())
-        {
-        	grantList.add(new SimpleGrantedAuthority("ROLE_CHEF_SERVICE"));
-        }
  
         UserDetails userDetails = (UserDetails) new User(appUser.getUserName(), appUser.getEncrytedPassword(), grantList);
  

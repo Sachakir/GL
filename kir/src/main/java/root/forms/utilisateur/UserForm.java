@@ -26,7 +26,7 @@ public class UserForm {
 	
 	@NotNull
 	@Size(min=5, message="Le mot de passe doit être composé de 5 caractères minimum")
-	@Size(min=42, message="Le mot de passe ne peut pas faire plus de 42 caractères")
+	@Size(max=42, message="Le mot de passe ne peut pas faire plus de 42 caractères")
 	private String mdp;
 	
 	@NotNull

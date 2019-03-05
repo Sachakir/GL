@@ -20,6 +20,7 @@ import root.bdd.remboursement.InterfaceRemboursementService;
 import root.bdd.remboursementsnote.InterfaceRemboursementsNoteService;
 import root.bdd.services.InterfaceServiceBddService;
 import root.bdd.services.ServiceBdd;
+import root.bdd.services.ServicesFixes;
 import root.bdd.utilisateur.InterfaceUtilisateurService;
 import root.forms.service.ServiceForm;
 import root.forms.utilisateur.UserForm;
@@ -131,14 +132,18 @@ public class GestionServicesController {
     	if(idStr != null) try
 		{
 			long id = Long.parseLong(idStr);
-			ServiceBdd service = ServiceBddService.findById(id);
-			
-			if(service != null) {
-				List<Long> membresService = MembresServiceBddService.getAllUidByServiceId(id);
-				if (membresService.isEmpty())
-				{
-					ServiceBddService.deleteById(id);
-					return "redirect:" + root;
+			// Les services Finances et RH ne peuvent pas être supprimés
+			if(id != ServicesFixes.finances.getServiceId() && id != ServicesFixes.ressourcesHumaines.getServiceId())
+			{
+				ServiceBdd service = ServiceBddService.findById(id);
+				
+				if(service != null) {
+					List<Long> membresService = MembresServiceBddService.getAllUidByServiceId(id);
+					if (membresService.isEmpty())
+					{
+						ServiceBddService.deleteById(id);
+						return "redirect:" + root;
+					}
 				}
 			}
 		}
