@@ -342,11 +342,11 @@ public class MainController {
 		
   		/// NOTIF DEBUT ///
   		List<Notif> allNotif = NotifService.getAllByIdDesc(validateur.getUID());
-  		for (int j = 0;j < allNotif.size();j++)
+  		for (Notif n : allNotif)
   		{
-  			if (allNotif.get(j).getLien().equals("/Calendrier"))
+  			if (n.getLien().equals("/Calendrier") && !n.getVue())
   			{
-  				NotifService.updateNotif(allNotif.get(j).getNotif_id(), true);
+  				NotifService.updateNotif(n.getNotif_id(), true);
   			}
   		}
   		
@@ -377,8 +377,8 @@ public class MainController {
 				c.setUid(conge.getUid());
 				c.setValidationrh(conge.getValidationrh());
 				c.setValidationchefservice(conge.getValidationchefdeservice());
-				c.setPrenomNom(prenomnom);
 				c.setMotifRefus(conge.getMotif_refus());
+				c.setPrenomNom(prenomnom);
 				if(conge.isRtt()) 
 					c.setType("Rtt");
 				else
@@ -390,16 +390,13 @@ public class MainController {
   
     	
   		/// NOTIF DEBUT ///
-  		List<Notif> allNotif = NotifService.findAll();
-  		for (int i = 0;i < allNotif.size();i++)
+  		List<Notif> allNotif = NotifService.getAllByIdDesc(uid);
+  		for (Notif n : allNotif)
   		{
-  			if (allNotif.get(i).getUid() == uid)
-  			{
-  				if (allNotif.get(i).getLien().equals("/GererConges"))
-  				{
-  	  				NotifService.updateNotif(allNotif.get(i).getNotif_id(), true);
-  				}
-  			}
+			if (n.getLien().equals("/GererConges") && !n.getVue())
+			{
+  				NotifService.updateNotif(n.getNotif_id(), true);
+			}
   		}
   		/// NOTIF FIN  ///
   		
@@ -476,7 +473,8 @@ public class MainController {
     	String prenomnom = principal.getName();
     	String[] names = prenomnom.split("\\.");
     	model.addAttribute("WelcomeMsg", "Bienvenue " + names[0]);
-    	Long userId = UtilisateurService.findPrenomNom(names[1], names[0]).getUID();
+        Utilisateur ut = UtilisateurService.findPrenomNom(names[1], names[0]);
+    	Long userId = ut.getUID();
     	MembresServiceBdd membre = MembresServiceBddService.findById(userId);
     	model.addAttribute("isAdmin", membre.getIsAdmin());
     	
@@ -484,8 +482,6 @@ public class MainController {
         LocalDate localDate = LocalDate.now();
         if (localDate.getDayOfMonth() >= 5)
         {   
-	        Utilisateur ut = UtilisateurService.findPrenomNom(names[1], names[0]);
-	        long uid = ut.getUID();
 	        String moisPrecedent = "";
 	        int moisInt = localDate.getMonthValue();
         	int yearInt = localDate.getYear();
@@ -499,7 +495,7 @@ public class MainController {
 	        	moisInt--;
 	        }
 	        moisPrecedent = (moisInt < 10 ? "0" + moisInt : moisInt) + "-" + yearInt;
-	        Note notePrecedente = NoteService.findNoteByMonthAndUID(moisPrecedent, uid);
+	        Note notePrecedente = NoteService.findNoteByMonthAndUID(moisPrecedent, userId);
 	        
 	        if (notePrecedente == null)
 	        {
@@ -563,13 +559,13 @@ public class MainController {
         model.addAttribute("recentDemandesRemboursement", recentDemandesRemboursement);
         model.addAttribute("missionNames", missionNames);
         model.addAttribute("notesAssociees", notesAssociees);
-        model.addAttribute("joursConges","Jour(s) de congé(s) payé(s) restant(s) : " + UtilisateurService.findPrenomNom(names[1], names[0]).getJoursCongesRestants());
-        model.addAttribute("rtt","Jour(s) de RTT restant(s) : " + UtilisateurService.findPrenomNom(names[1], names[0]).getRtt());
+        model.addAttribute("joursConges","Jour(s) de congé(s) payé(s) restant(s) : " + ut.getJoursCongesRestants());
+        model.addAttribute("rtt","Jour(s) de RTT restant(s) : " + ut.getRtt());
         /**** DERNIERES DEMANDES DE CONGES ****/
         
         //Nombre de demandes de remboursement
         NotifClasse SachaEstClasse = new NotifClasse();
-        int nbRemb = SachaEstClasse.getNbRemb(principal,MembresServiceBddService,RemboursementService,UtilisateurService);
+        int nbRemb = SachaEstClasse.getNbRemb(ut, MembresServiceBddService, RemboursementService);
         model.addAttribute("nbRemb", nbRemb);
 
 		/*** DERNIERES NOTIFS ***/
@@ -578,24 +574,22 @@ public class MainController {
 		model.addAttribute("notifs", notifs);
 		/*** DERNIERES NOTIFS ***/
         
-		boolean IsChef = SachaEstClasse.isChef(principal, UtilisateurService, MembresServiceBddService);
+		boolean IsChef = SachaEstClasse.isChef(ut, MembresServiceBddService);
 		if (IsChef)
 		{
 			model.addAttribute("IsChef", IsChef);
 		}
 
-		int nbConges = SachaEstClasse.getNbConges(CongesService, UtilisateurService, MembresServiceBddService, principal);
+		int nbConges = SachaEstClasse.getNbConges(ut, CongesService, MembresServiceBddService);
 		model.addAttribute("nbConges",nbConges);
 		
 		// NOTIF
-		Utilisateur personne = UtilisateurService.findPrenomNom(names[1], names[0]);
-		List<Notif> ln = NotifService.getAllByIdDesc(personne.getUID());
-		System.out.println("LN : " + ln.size());
+		System.out.println("notifsFull : " + notifsFull.size());
 		int nbNotif = 0;
-		for (int i = 0;i < ln.size();i++)
+		for (int i = 0;i < notifsFull.size();i++)
 		{
-			System.out.println("Notif ID = " + ln.get(i).getNotif_id());
-			if (ln.get(i).getVue() == false)
+			System.out.println("Notif ID = " + notifsFull.get(i).getNotif_id());
+			if (notifsFull.get(i).getVue() == false)
 			{
 				nbNotif++;
 			}

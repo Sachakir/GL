@@ -21,11 +21,9 @@ import root.bdd.utilisateur.Utilisateur;
 
 public class NotifClasse {
 	
-	public int getNbRemb(Principal principal,InterfaceMembresServiceBddService MembresServiceBddService,InterfaceRemboursementService RemboursementService,InterfaceUtilisateurService UtilisateurService)
+	public int getNbRemb(Utilisateur ut, InterfaceMembresServiceBddService MembresServiceBddService,InterfaceRemboursementService RemboursementService)
 	{
 		int nbRemb = 0;
-		String[] names = principal.getName().split("\\.");
-		Utilisateur ut = UtilisateurService.findPrenomNom(names[1], names[0]);
     	MembresServiceBdd ms = MembresServiceBddService.findById(ut.getUID());
 		List<Remboursement> allRemboursements = RemboursementService.findAll();
     	if (ms.getRoleId() == Role.chefDeService.getRoleId())//Seulement pour un chef de service
@@ -74,10 +72,9 @@ public class NotifClasse {
 		return nbRemb;
 	}
 	
-	public boolean isChef(Principal principal, InterfaceUtilisateurService UtilisateurService, InterfaceMembresServiceBddService MembresServiceBddService)
+	public boolean isChef(Utilisateur ut, InterfaceMembresServiceBddService MembresServiceBddService)
 	{
-		String[] names = principal.getName().split("\\.");
-		long myUID = UtilisateurService.findPrenomNom(names[1], names[0]).getUID();
+		long myUID = ut.getUID();
 		if (MembresServiceBddService.findById(myUID).getRoleId() == Role.chefDeService.getRoleId())
 		{
 			return true;
@@ -85,13 +82,11 @@ public class NotifClasse {
 		return false;
 	}
 	
-	public int getNbConges(InterfaceCongesService CongesService,InterfaceUtilisateurService UtilisateurService,InterfaceMembresServiceBddService MembresServiceBddService,Principal principal)
+	public int getNbConges(Utilisateur ut, InterfaceCongesService CongesService, InterfaceMembresServiceBddService MembresServiceBddService)
 	{
 		int nbConges = 0;
 		
-		String[] names = principal.getName().split("\\.");
-		Utilisateur validateur = UtilisateurService.findPrenomNom(names[1], names[0]);
-		MembresServiceBdd validateurRoles = MembresServiceBddService.findById(validateur.getUID());
+		MembresServiceBdd validateurRoles = MembresServiceBddService.findById(ut.getUID());
 		long myServiceId = validateurRoles.getServiceId();
 		long uidConges;
 		
@@ -115,7 +110,7 @@ public class NotifClasse {
 				{
 					if (conges.get(j).getValidationchefdeservice().equals(Statut.enAttente.statut()))//Demandes en attente
 					{
-						if (conges.get(j).getUid() != validateur.getUID())//Check si pas autovalidation
+						if (conges.get(j).getUid() != ut.getUID())//Check si pas autovalidation
 						{
 							nbConges++;
 						}
@@ -124,7 +119,7 @@ public class NotifClasse {
 				else if (myServiceId == ServicesFixes.ressourcesHumaines.getServiceId() && conges.get(j).getValidationchefdeservice().equals(Statut.valide.statut()) && conges.get(j).getValidationrh().equals(Statut.enAttente.statut()))
 	    		//Service different, mais la demande est validé par leur chef de service
 				{
-					if (conges.get(j).getUid() != validateur.getUID())//Check si pas autovalidation
+					if (conges.get(j).getUid() != ut.getUID())//Check si pas autovalidation
 					{
 						nbConges++;
 					}
@@ -141,20 +136,20 @@ public class NotifClasse {
 	
 	/////// CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
 			NotifClasse nbCongesEtRemb = new NotifClasse();	
-			boolean IsChef = nbCongesEtRemb.isChef(principal, UtilisateurService, MembresServiceBddService);
+			String[] names = principal.getName().split("\\.");
+			Utilisateur ut = UtilisateurService.findPrenomNom(names[1], names[0]);
+			boolean IsChef = nbCongesEtRemb.isChef(ut, MembresServiceBddService);
 			if (IsChef)
 			{
-				int nbConges = nbCongesEtRemb.getNbConges(CongesService, UtilisateurService, MembresServiceBddService, principal);
-				int nbRemb = nbCongesEtRemb.getNbRemb(principal, MembresServiceBddService, RemboursementService, UtilisateurService);
+				int nbConges = nbCongesEtRemb.getNbConges(ut, CongesService, MembresServiceBddService);
+				int nbRemb = nbCongesEtRemb.getNbRemb(ut, MembresServiceBddService, RemboursementService);
 				
 		        model.addAttribute("nbRemb", nbRemb);
-				model.addAttribute("nbConges",nbConges);
+				model.addAttribute("nbConges", nbConges);
 				model.addAttribute("IsChef", IsChef);
 			}
 			
-			String[] names = principal.getName().split("\\.");
-			Utilisateur personne = UtilisateurService.findPrenomNom(names[1], names[0]);
-			List<Notif> ln = NotifService.getAllByIdDesc(personne.getUID());
+			List<Notif> ln = NotifService.getAllByIdDesc(ut.getUID());
 			int nbNotif = 0;
 			for (int i = 0;i < ln.size();i++)
 			{
