@@ -121,10 +121,11 @@ public class RemboursementService implements InterfaceRemboursementService {
 		// Envoi des notifications aux chefs du service finances , sauf si le chef qui a validé est déjà chef finances
 		titre = "Demande : " + r.getTitre();
 		if (MembresServiceBddService.findById(r.getUid()).getServiceId() != 2) {
-			List<MembresServiceBdd> interesses = MembresServiceBddService.getChefByServiceId(2);
-			for (MembresServiceBdd membre : interesses)
-				if (membre.getUid() != r.getUid())
-					NotifService.addNotif(membre.getUid(), titre, "/validationNDF");
+			
+			List<Long> interesses = MembresServiceBddService.getAllUidByServiceId(2);
+			for (long membre : interesses)
+				if (membre != r.getUid())
+					NotifService.addNotif(membre, titre, "/validationNDF");
 		}
 	}
 

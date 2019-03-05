@@ -79,10 +79,10 @@ public class CongesService implements InterfaceCongesService
 		// Envoi des notifications aux chefs du service RH, sauf si le chef qui a validé est déjà chef RH
 		titre = "Demande de congés du " + c.getDatedebut().substring(0, 5) + " au " + c.getDatefin().substring(0, 10);
 		if (MembresServiceBddService.findById(c.getUid()).getServiceId() != 1) {
-			List<MembresServiceBdd> interesses = MembresServiceBddService.getChefByServiceId(1);
-			for (MembresServiceBdd membre : interesses)
-				if (membre.getUid() != c.getUid())
-					NotifService.addNotif(membre.getUid(), titre, "/Calendrier");
+			List<Long> interesses = MembresServiceBddService.getAllUidByServiceId(1);
+			for (long membre : interesses)
+				if (membre != c.getUid())
+					NotifService.addNotif(membre, titre, "/Calendrier");
 		}
 	}
 
