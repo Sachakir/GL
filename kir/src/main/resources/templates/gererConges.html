@@ -69,13 +69,15 @@
 					<h3 class="panel-title">Détails de la demande de congé sélectionnée :</h3>
 				</div>
 				<div class = "panel-body details">
-					<form action="#" th:action="@{/GererConges}" th:object="${congeForm}" method="post">
+					<form action="#" th:action="@{/GererConges}" th:object="${congeForm}" method="post" onsubmit="return validationEditConge();">
 						<div class="row">
 							<div class = "col-md-6">
 
 								<h4 >Date de début: <input type="datetime-local" id="dateD" disabled=true th:field="*{dateDebut}" onchange="verifDateD();" > </h4>
 								<h4 id="vRH">Validation RH: xxx </h4>
 								<h4 id="type">Type: xxx </h4>
+								<h6 id="rtt" th:text="${user.rtt}" hidden=true></h6>
+								<h6 id="cP" th:text="${user.joursCongesRest}" hidden=true></h6>
 							</div>
 							<div class="col-md-6">
 								<h4 >Date de fin: <input type="datetime-local" id ="dateF" disabled=true th:field="*{dateFin}" onchange="verifDateF();"> </h4>

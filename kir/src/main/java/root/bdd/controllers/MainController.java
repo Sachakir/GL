@@ -404,6 +404,16 @@ public class MainController {
     		NotifClasse nbCongesEtRemb = new NotifClasse();
     		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService,NotifService);
     		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
+    		Long uID = UtilisateurService.findPrenomNom(names[1], names[0]).getUID();
+    		List<Utilisateur> cs = UtilisateurService.findAll();
+        	for(int i=0;i<cs.size();i++) {
+        		if(cs.get(i).getUID()==uID) {
+        			UserForm u = new UserForm();
+        			u.setJoursCongesRest( cs.get(i).getJoursCongesRestants());
+        			u.setRtt(cs.get(i).getRtt());
+        			model.addAttribute("user",u);
+        		}
+        	}
   		
     	return "gererConges";
     }

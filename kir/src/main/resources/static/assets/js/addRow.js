@@ -495,3 +495,33 @@ function workingDaysBetweenDates(d0, d1) {
 
     return days;
 }
+function validationEditConge(){
+  var deb = new Date($("#dateD").val());
+	var fi = new Date($("#dateF").val());
+  var t = $("#type").text().split(" ");
+  var type;
+  if(t[1]=="Rtt")
+    type=1;
+  else {
+    type=0;
+  }
+  var msg="";
+	var dureeConge = workingDaysBetweenDates(deb,fi);
+  if(!$("#dateD").val()){
+		msg+="Entrez une date de début!\n";
+	}
+	if(!$("#dateF").val()){
+		msg+="Entrez une date de fin!\n";
+	}
+  if(parseFloat($("#rtt").text())<dureeConge && type==1){
+    msg+="Votre solde de rtt n'est pas suffisant.\n"
+  }
+  if(parseFloat($("#cP").text())<dureeConge && type==0){
+    msg+="Votre solde de rtt n'est pas suffisant.\n"
+  }
+  if(msg!=""){
+    alert(msg);
+    return false;
+  }
+  return true;
+}
