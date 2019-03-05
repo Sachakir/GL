@@ -42,6 +42,11 @@ public class ServiceBddService implements InterfaceServiceBddService {
 	}
 	
 	@Override
+	public ServiceBdd findByName(String nom) {
+		return repository.findByName(nom);
+	}
+	
+	@Override
 	public void addServiceBdd(String nom) {
 		long service_id = 1;
 		if(repository.count() > 0) {
@@ -50,6 +55,9 @@ public class ServiceBddService implements InterfaceServiceBddService {
 		
 		repository.save(new ServiceBdd(service_id, nom));
 	}
-
 	
+	@Override
+	public void deleteById(long service_id) {
+		repository.deleteById(service_id);
+	}
 }
