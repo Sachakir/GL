@@ -422,10 +422,10 @@ function validationAjoutUtilisateur(){
 	if(!$("#dateF").val()){
 		msg+="Entrez une date de fin!\n";
 	}
-	if(dureeConge>parseInt(days[4])&&$('#0').prop('checked')){
+	if(dureeConge>parseInt(days[4])){
 		msg+="Votre solde de congés n'est pas suffisant pour prendre un aussi long congé.\nVeuillez entrer un congé plus court.\n";
 	}
-	if(dureeConge>parseInt(rtt[4])&&$('#1').prop('checked')){
+	if(dureeConge>parseInt(rtt[4])){
 		msg+="Votre solde de RTT n'est pas suffisant pour prendre un aussi long congé.\nVeuillez entrer un congé plus court.\n";
 	}
 

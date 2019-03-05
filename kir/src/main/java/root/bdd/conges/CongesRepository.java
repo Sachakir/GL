@@ -55,7 +55,7 @@ public interface CongesRepository extends CrudRepository<Conges, Long>{
 	
 	@Transactional
 	@Modifying
-	@Query("UPDATE Conges SET motifRefus = :m WHERE conges_id = :congesid")
+	@Query("UPDATE Conges SET motif_refus = :m WHERE conges_id = :congesid")
 	public void updateMotifRefus(@Param("congesid") long id,@Param("m") String m);
 	
 }
