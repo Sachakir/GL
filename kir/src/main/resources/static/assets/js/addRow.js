@@ -108,11 +108,15 @@ $(document).ready(function () {
   			if($(this).find("td:nth-child(4)").text() == "En attente" && $(this).find("td:nth-child(5)").text() == "En attente"){
   				document.getElementById("edit").hidden=false;
   				document.getElementById("delete").hidden=false;
+          document.getElementById("submit").hidden=true;
+  				document.getElementById("cancel").hidden=true;
           document.getElementById("areaRefus").hidden=true;
   			}
   			else{
   				document.getElementById("edit").hidden=true;
   				document.getElementById("delete").hidden=true;
+          document.getElementById("submit").hidden=true;
+  				document.getElementById("cancel").hidden=true;
           if($(this).find("td:nth-child(4)").text() == "Refusé" || $(this).find("td:nth-child(5)").text() == "Refusé")
           {
             document.getElementById("areaRefus").hidden=false;
