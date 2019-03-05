@@ -43,7 +43,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/", "/login", "/logout","/login-Error").permitAll();
         
         // For ADMIN only.
-        http.authorizeRequests().antMatchers("/adminAdd","/adminShow","/showUserDetails/**","/deleteUser/**").hasRole("ADMIN");
+        http.authorizeRequests().antMatchers("/administration/**").hasRole("ADMIN");
         
         http.authorizeRequests().antMatchers("/Calendrier","/missions/**","/validationNDF","/ValidationRemb/**","/RefusRemb/**","/ValidationConges/**","/RefusConges/**").hasRole("CHEF_SERVICE");
         

@@ -102,22 +102,24 @@
 				<div th:each="service_id : ${services_ids}">
 					<div class="panel panel-primary-light">
 						<div class="panel-heading">
-							<span th:text="${services.get(service_id)}"></span>
 							<a data-toggle="collapse" aria-expanded="false" th:href="'#collapse-' + ${service_id}">
 								<i class="glyphicon glyphicon-menu-down pull-right"></i>
 	     							<i class="glyphicon glyphicon-menu-up pull-right"></i>
 							</a>
+							<span th:text="${services.get(service_id)}"></span>
+							<span class="label label-primary label-pill" th:text="${nbMembresServices.get(service_id)}"></span>
 						</div>
 					</div>
 					<div th:id="'collapse-' + ${service_id}" class="panel-collapse collapse">
 						<div th:each="role_id : ${roles_ids_panel}">
 							<div class="panel panel-gray" style="margin-bottom: 0px;">
 								<div class="panel-heading">
-									<span th:text="${roles_panel.get(role_id)}"></span>
 									<a data-toggle="collapse" aria-expanded="false" th:href="'#collapse-' + ${service_id} + '-' + ${role_id}">
 										<i class="glyphicon glyphicon-menu-down pull-right"></i>
 			     							<i class="glyphicon glyphicon-menu-up pull-right"></i>
 									</a>
+									<span th:text="${roles_panel.get(role_id)}"></span>
+									<span class="label label-info label-pill" th:text="${utilisateurs.get(role_id).get(service_id).size()}"></span>
 								</div>
 								<div th:id="'collapse-' + ${service_id} + '-' + ${role_id}" class="panel-collapse collapse">
 									<table class="table table-striped w-auto" style="margin-bottom:0px;">

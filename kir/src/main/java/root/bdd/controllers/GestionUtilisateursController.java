@@ -136,11 +136,15 @@ public class GestionUtilisateursController {
     	roles.put(Role.chefDeService.getRoleId(), "Chefs de service");
     	roles.put(Role.utilisateur.getRoleId(), "Utilisateurs");
     	
+    	// Comptage des membres dans chaque service
+    	Map<Long, Integer> nbMembresServices = new HashMap<Long, Integer>();
+    	
     	for(long serviceId : servicesIds) {
     		usersServices.put(serviceId, new ArrayList<Utilisateur>());
     		chefsServices.put(serviceId, new ArrayList<Utilisateur>());
     		
     		List<Long> membresService = MembresServiceBddService.getAllUidByServiceId(serviceId);
+    		nbMembresServices.put(serviceId, membresService.size());
     		
     		for(long membreUid : membresService) {
 				Utilisateur user = UtilisateurService.findById(membreUid);
@@ -152,12 +156,13 @@ public class GestionUtilisateursController {
 				else if(membre.getRoleId() == Role.chefDeService.getRoleId()) {
 					chefsServices.get(serviceId).add(user);
 				}
-			}
+    		}
     	}
     	
     	model.addAttribute("utilisateurs", utilisateurs);
     	model.addAttribute("roles_ids_panel", roles_ids);
     	model.addAttribute("roles_panel", roles);
+    	model.addAttribute("nbMembresServices", nbMembresServices);
     	
     	// TODO ???
     	String[] names = principal.getName().split("\\.");
@@ -200,7 +205,7 @@ public class GestionUtilisateursController {
   		NotifClasse nbCongesEtRemb = new NotifClasse();
   		model = nbCongesEtRemb.addNumbersToModel(model, principal, CongesService, UtilisateurService, MembresServiceBddService, RemboursementService,NotifService);
   		/////// FIN DU CODE QUI GERE LES NOMBRES DE CONGES ET REMB ////////
-        return "showUsers";
+        return "admin/users/showUsers";
     }
     
     @PostMapping("")
