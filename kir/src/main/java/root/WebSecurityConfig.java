@@ -8,6 +8,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import root.bdd.controllers.MainErrorController;
  
 @Configuration
 @EnableWebSecurity
@@ -15,6 +17,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
  
     @Autowired
     UserDetailsServiceImpl userDetailsService;
+    
+    @Autowired
+    MainErrorController mainAccessDeniedHandler;
  
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
