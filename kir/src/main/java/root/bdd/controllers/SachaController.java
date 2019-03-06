@@ -136,7 +136,7 @@ public class SachaController
 				}
 
 			}
-			else//Service Finances
+			else if (ms.getServiceId() == ServicesFixes.finances.getServiceId())//Service Finances
 			{
 				if (allRemboursements.get(i).getValidationfinances().equals(Statut.enAttente.statut()))//Demandes en attente
 				{
@@ -392,7 +392,7 @@ public class SachaController
 		Utilisateur ut = UtilisateurService.findPrenomNom(names[1], names[0]);
 
 		MembresServiceBdd validateur = MembresServiceBddService.findById(ut.getUID());
-		if (validateur.getRoleId() == (Role.chefDeService.getRoleId()))
+		if (validateur.getRoleId() == (Role.chefDeService.getRoleId()) || validateur.getServiceId() == ServicesFixes.ressourcesHumaines.getServiceId())
 		{
 			if (validateur.getServiceId() == ServicesFixes.ressourcesHumaines.getServiceId())
 			{
@@ -494,7 +494,7 @@ public class SachaController
 		Utilisateur ut = UtilisateurService.findPrenomNom(names[1], names[0]);
 
 		MembresServiceBdd validateur = MembresServiceBddService.findById(ut.getUID());
-		if (validateur.getRoleId() == (Role.chefDeService.getRoleId()))
+		if (validateur.getRoleId() == (Role.chefDeService.getRoleId()) || validateur.getServiceId() == ServicesFixes.ressourcesHumaines.getServiceId())
 		{
 			if (validateur.getServiceId() == ServicesFixes.ressourcesHumaines.getServiceId())
 			{

@@ -316,7 +316,7 @@ public class MainController {
 				}
 
 			}
-			else//Service RH
+			else if (myServiceId == ServicesFixes.ressourcesHumaines.getServiceId())//Service RH
 			{
 				if (conges.get(j).getValidationrh().equals(Statut.enAttente.statut()))//Demandes en attente
 				{
