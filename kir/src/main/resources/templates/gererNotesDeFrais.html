@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PoPS1819</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/untitled.css">
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+</head>
+
+<body style="background-color:#dbedff;font-family:arial;height:100%;">
+    <nav class="navbar navbar-dark navbar-expand-md navigation-clean-search" style="border-color:#132f5d;background-color:#3472d5;padding-right:0px;height:75px;">
+        <div class="container"><a class="navbar-brand" href="#">&nbsp;CodeMasters</a><button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"></button>
+            <div class="collapse navbar-collapse" id="navcol-1" style="width:90%;">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown d-flex align-items-center"><a class="dropdown-toggle nav-link dropdown-toggle d-flex align-items-center" data-toggle="dropdown" aria-expanded="false" href="#" style="margin:0px;margin-top:0px;background-color:rgba(255,255,255,0);"><i class="fa fa-sticky-note-o"></i>&nbsp; Notes de frais&nbsp;</a>
+                        <div
+                            class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation" href="#">Nouvelle Note de frais</a><a class="dropdown-item" role="presentation" href="#">Gérer mes notes de frais</a>
+                            <div class="dropdown-divider" role="presentation"></div><a class="dropdown-item" role="presentation" href="#">Valider des notes de frais</a></div>
+            </li>
+            <li class="dropdown d-flex align-items-center"><a class="dropdown-toggle nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false" href="#" style="margin-top:0px;background-color:rgba(255,255,255,0);"><i class="fa fa-calendar"></i>&nbsp; Congés&nbsp;</a>
+                <div class="dropdown-menu"
+                    role="menu" style="margin-top:2px;"><a class="dropdown-item" role="presentation" href="#">Nouvelle demande de congé</a><a class="dropdown-item" role="presentation" href="#">Gérer mes demandes de congé</a>
+                    <div class="dropdown-divider" role="presentation"></div><a class="dropdown-item" role="presentation" href="#">Valider des demandes de congés</a><a class="dropdown-item" role="presentation" href="#">Menu Item</a></div>
+            </li>
+            </ul>
+            <ul class="nav navbar-nav ml-auto">
+                <li class="nav-item float-right" role="presentation"><a class="nav-link active d-flex align-items-center" href="#" style="height:80px;margin-left:0px;padding-right:12px;"><button class="btn btn-link btn-sm ml-auto btn-circle" type="button" style="border-radius:50px;/*border:1px solid black;*/background-color:rgba(0,0,0,0);margin-right:0px;margin-top:0px;width:50px;height:50px;"><i class="fa fa-bell" style="color:#ffffff;font-size:30px;"></i></button></a></li>
+                <li
+                    class="dropdown d-flex align-items-center align-content-center"><a class="dropdown-toggle nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false" href="#" style="margin-left:0px;color:#ffffff;background-color:rgba(255,255,255,0);"><button class="btn btn-link btn-circle" type="button" style="border-radius:50px;/*border:1px solid black;*/background-color:#525b63;width:55px;height:50px;"><i class="fa fa-users" style="color:#ffffff;font-size:30px;"></i></button> </a>
+                    <div
+                        class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation" href="#">Profil</a><a class="dropdown-item" role="presentation" href="#">Settings</a>
+                        <div class="dropdown-divider" role="presentation"></div><a class="dropdown-item" role="presentation" href="#">Déconnexion</a></div>
+        </li>
+        </ul>
+        </div>
+        </div>
+    </nav>
+    <div class="row" style="height:100%;margin:16px;margin-right:0px;margin-left:0px;width:100%;margin-top:16px;">
+        <div class="col-md-6 col-lg-5" style="height:100%;">
+            <h3 class="text-center rounded" style="border-color:#132f5d;background-color:#3472d5;color:#fff;height:24px;font-family:arial;font-size:20px;">Historique des notes de frais</h3>
+            <div class="table-responsive" id="myTable" style="height:91%;font-size:14px;">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th style="font-family:arial;">Nom</th>
+                            <th style="font-family:arial;">Date</th>
+                            <th style="font-family:arial;">Etat</th>
+                        </tr>
+                    </thead>
+                    <tbody style="border-right:1px solid #ddd;">
+                        <tr style="border-right:1px solid #dddddd;">
+                            <td style="border-right:1px solid #ddd;font-family:arial;">Diner avec clients</td>
+                            <td style="font-family:arial;">10/12/2018</td>
+                            <td style="font-family:arial;">En attente</td>
+                        </tr>
+                        <tr>
+                            <td>Voyage à Dublin</td>
+                            <td>18/01/2019<br></td>
+                            <td>En attente<br></td>
+                        </tr>
+                        <tr>
+                            <td>automatique</td>
+                            <td>automatique<br></td>
+                            <td>automatique<br></td>
+                        </tr>
+                        <tr>
+                            <td>automatique</td>
+                            <td>automatique<br></td>
+                            <td>automatique<br></td>
+                        </tr>
+                        <tr>
+                            <td>automatique</td>
+                            <td>automatique<br></td>
+                            <td>automatique<br></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-7" style="height:100%;width:100%;padding-right:0px;padding-left:0px;background-color:#9caab7;">
+            <h3 class="text-center rounded-bottom" style="border-color:#132f5d;color:#ffffff;background-color:#3472d5;margin-bottom:30px;font-family:arial;font-size:20px;width:100%;">Détails de la note de frais</h3>
+            <div class="d-inline-flex" style="width:100%;margin-bottom:15px;padding-left:5px;">
+                <h5 style="width:70px;margin-right:0px;margin-bottom:0px;font-family:arial;font-size:15px;">Nom:</h5><input class="form-control-sm" type="text" style="width:85%;height:23px;/*readonly:true;*/"></div>
+            <div class="d-inline-flex align-items-baseline" style="width:100%;margin-right:15px;margin-bottom:15px;padding-left:5px;">
+                <h5 style="width:61px;margin-right:10px;margin-bottom:0%;font-family:arial;font-size:15px;height:22px;">Mission:</h5>
+                <div class="dropdown"><button class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button" style="width:100%;background-color:rgba(0,123,255,0);color:rgb(0,0,0);height:25px;">Choisissez votre mission&nbsp;</button>
+                    <div
+                        class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation" href="#">Contrat SOPRA</a><a class="dropdown-item" role="presentation" href="#">Projet Ubisoft</a><a class="dropdown-item" role="presentation" href="#">Conférences à Dublin</a></div>
+            </div>
+        </div>
+        <div class="d-inline-flex" style="width:100%;margin-bottom:15px;padding-left:5px;">
+            <h5 style="width:71px;margin-right:0px;margin-bottom:0px;font-family:arial;font-size:15px;height:22px;">Montant:</h5><span class="align-self-baseline" style="font-size:15px;font-weight:bold;">Montant à mettre dynamiquement</span></div>
+        <h3 class="text-center rounded" style="border-color:#132f5d;color:#fff;background-color:#3472d5;margin-bottom:10px;font-family:arial;font-size:20px;">Frais</h3>
+        <div class="table-responsive order-list" style="padding-top:0px;padding-left:10px;width:100%;font-size:13px;">
+            <table class="table order-list">
+                <thead style="width:821px;">
+                    <tr style="width:813px;">
+                        <th style="width:238px;padding-right:100px;">Motif</th>
+                        <th style="width:103px;">Date</th>
+                        <th style="width:100px;">Montant</th>
+                        <th style="width:350px;">Justificatif</th>
+                        <th style="width:100px;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="width:95px;"><input type="text" style="width:100%;"></td>
+                        <td style="padding-right:0px;width:111px;"><input type="date" style="width:100%;"></td>
+                        <td style="padding-bottom:0px;padding-top:012px;"><input type="number" style="width:100%;padding-top:12px;height:30px;padding-bottom:12px;"></td>
+                        <td><input type="file"></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="visible"><button class="btn btn-primary active visible" type="submit" id="addrow" style="background-color:rgb(96,0,218);width:30%;margin-right:35%;margin-left:35%;" value="Add Row" name="addrow">Ajouter une dépense</button></div><button id="editer" class="btn btn-primary" type="button" onClick="bouttonDeRow();" style="background-color:rgb(167,162,33);width:20%;margin-left:40%;margin-right:40%;margin-top:10px;">Editer</button></div>
+    </div>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/addRow.js"></script>
+</body>
+
+</html>
